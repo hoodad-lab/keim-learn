@@ -175,6 +175,7 @@ body.cine #speedBtn, body.cine .now { display: none; }
 body.cine.uion .cap { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
 body.cine .cap { transition: padding-bottom 0.4s ease, opacity 0.4s ease; }
 /* landscape phone, cinematic: dark stage, the current slide spotlit at full height, a slim subtitle band underneath */
+@media (max-width: 680px) and (min-height: 770px) { body.port .ttl { font-size: 29px; } body.port .txt { font-size: 15.5px; line-height: 1.5; } body.port .kick, body.port .loc { font-size: 13px; } }
 body.port .cap { top: var(--capt, auto); bottom: auto; padding-top: 0; padding-bottom: 0; background: none; }
 body.cine { background: #0c0d10; }
 body.cine .cap { left: 0; right: 0; bottom: 0; top: auto; height: var(--caph); text-align: left; display: flex; align-items: center; overflow: hidden;
@@ -3433,8 +3434,11 @@ function layout() {
   const PORTL = Wp / Hp < 0.9 && !BIG; document.body.classList.toggle('port', PORTL);
   if (PORTL) { innerEl.style.height = Math.max(140, captionMax() + 6) + 'px';
     const capH = innerEl.offsetHeight, uiH = 44, avail = Hp - capH - uiH - 30;
-    zF = Math.min((Wp - 8) / 1006, Math.max(150, avail) / 1040); stageCy = 6 + 520 * zF;
-    document.documentElement.style.setProperty('--capt', Math.round(stageCy + 500 * zF + 16) + 'px');
+    zF = Math.min((Wp - 8) / 1006, Math.max(150, avail) / 1040);
+    // centre slide + caption in the screen so spare room is shared above and below, not all left at the bottom
+    const slideH = 1000 * zF, free = Hp - uiH - 30 - slideH - 16 - capH, top = 10 + Math.max(0, free * 0.45);
+    stageCy = top + slideH / 2;
+    document.documentElement.style.setProperty('--capt', Math.round(top + slideH + 16) + 'px');
     const g = gridPos(N - 1), s = stripPos(N - 1); OUTO = [s[0] - g[0], s[1] - g[1]]; dirty = true; return; }
   const fit = () => { innerEl.style.height = Math.max(140, captionMax() + 6) + 'px'; const capTop = innerEl.getBoundingClientRect().top, sh = Math.max(160, capTop - 30);
     zF = Math.min(sh / 1040, Wp / 1006); stageCy = Math.max(8 + sh / 2, capTop - 26 - 500 * zF); };
