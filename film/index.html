@@ -238,7 +238,7 @@ body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
   <span class="now" id="now"></span>
 </div>
 <div class="bubble" id="bubble" aria-live="polite"></div>
-<div class="rot" id="rot" hidden><div class="rot-card"><div class="rot-ico" aria-hidden="true">&#x1F4F1;</div><b>Turn your phone sideways</b><span>The film is made for landscape. Rotate for the full cinema view.</span><button type="button" id="rotOk">Keep watching upright</button></div></div>
+<div class="rot" id="rot" hidden><div class="rot-card"><div class="rot-ico" aria-hidden="true">&#x1F4F1;</div><b>Turn your phone sideways</b><span>The film is made for landscape. Rotate your phone for the big-screen view, then press Play.</span><button type="button" id="rotOk">Watch upright instead</button></div></div>
 <div class="chooser" id="chooser" hidden><div class="ch-card" role="dialog" aria-label="Choose how to watch"><div class="ch-kick">FROM OCHRE TO KEIM</div><div class="ch-ttl">How would you like to watch?</div>
   <div class="ch-langs" id="chLangs" role="group" aria-label="Language"><button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="de" lang="de">DE</button><button type="button" data-l="es" lang="es">ES</button><button type="button" data-l="it" lang="it">IT</button><button type="button" data-l="fr" lang="fr">FR</button><button type="button" data-l="pt" lang="pt">PT</button><button type="button" data-l="fa" lang="fa">فا</button><button type="button" data-l="ar" lang="ar">عربي</button><button type="button" data-l="hi" lang="hi">हिं</button><button type="button" data-l="zh" lang="zh">中文</button></div>
   <button class="ch-opt" id="mFull" type="button"><b>▶ Full film</b><span>About 6 minutes · every chapter, 60,000 years of paint</span></button>
@@ -3710,9 +3710,9 @@ document.getElementById('rotOk').addEventListener('click', () => { ROT.off = tru
 function rotCheck() {
   const phone = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
   const portrait = innerHeight > innerWidth;
-  ROT.el.hidden = !(phone && portrait && playing && !ROT.off);
+  ROT.el.hidden = !(phone && portrait && !ROT.off);
 }
-addEventListener('resize', rotCheck); addEventListener('orientationchange', rotCheck);
+addEventListener('resize', rotCheck); addEventListener('orientationchange', rotCheck); setTimeout(rotCheck, 300);
 function setPlaying(p) {
   if (p && !modeChosen && T < C0) { chooserEl.hidden = false; return; }
   if (p) closeInfo();
