@@ -167,18 +167,28 @@ body.cine #langCode { background: rgba(20,20,24,0.72); color: #fff; border-color
 body.cine #speedBtn, body.cine .now { display: none; }
 body.cine.uion .cap { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
 body.cine .cap { transition: padding-bottom 0.4s ease, opacity 0.4s ease; }
-body.cine .cap { left: 0; right: 0; bottom: 0; top: auto; height: var(--caph); padding: 10px max(18px, env(safe-area-inset-right, 0px)) 8px max(18px, env(safe-area-inset-left, 0px)); text-align: left;
-  background: #f3f0e8; box-shadow: 0 -1px 0 rgba(28,34,54,0.08); display: flex; align-items: flex-start; overflow: hidden; }
-body.cine.uion .cap { padding-bottom: 8px; }
-body.cine .inner { max-width: 760px; margin: 0 auto; width: 100%; }
-body.cine .row { display: flex; padding-right: 150px !important; } body.cine .num, body.cine .kick { font-size: 10px; } body.cine .vtools { display: none !important; }
-body.cine .locrow { position: absolute; right: 0; top: -6px; margin: 0; } body.cine .locrow .loc { display: none; }
-body.cine .more { padding: 4px 9px 3px 4px; font-size: 9.5px; }
-body.cine .ttl { font-size: 18px; line-height: 1.1; margin: 6px 0 4px; color: #1c2236; text-shadow: none; }
-body.cine .txt { -webkit-line-clamp: 3 !important; font-size: 12.5px; line-height: 1.38; color: #3a3f50; text-shadow: none; }
-body.cine .cta { justify-content: flex-start; margin-top: 6px; } body.cine .cta a { padding: 8px 11px 7px; font-size: 9.5px; }
+/* landscape phone, cinematic: dark stage, the current slide spotlit at full height, a slim subtitle band underneath */
+body.cine { background: #0c0d10; }
+body.cine .cap { left: 0; right: 0; bottom: 0; top: auto; height: var(--caph); text-align: left; display: flex; align-items: center; overflow: hidden;
+  padding: 6px max(20px, env(safe-area-inset-right, 0px)) 6px max(20px, env(safe-area-inset-left, 0px));
+  background: #0c0d10; box-shadow: 0 -1px 0 rgba(255,255,255,0.06); }
+body.cine.uion .cap { padding-bottom: 6px; }
+body.cine:not(.inflight) .cap { opacity: 0; pointer-events: none; }
+body.cine .inner { max-width: calc(var(--sw) + 120px); margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr auto; column-gap: 14px; align-items: center; }
+body.cine .row, body.cine .rule, body.cine .loc, body.cine .vtools { display: none !important; }
+body.cine .locrow { position: static; grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+body.cine .more { padding: 4px 10px 3px 4px; font-size: 9.5px; background: transparent; color: #fff; border-color: rgba(255,255,255,0.5); }
+body.cine .ttl { grid-column: 1; font-size: 15.5px; line-height: 1.15; margin: 0 0 2px; color: #fff; text-shadow: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.cine .txt { grid-column: 1; -webkit-line-clamp: 2 !important; font-size: 12px; line-height: 1.38; color: rgba(255,255,255,0.72); text-shadow: none; }
+body.cine .cta { grid-column: 1 / -1; justify-content: flex-start; margin-top: 4px; } body.cine .cta a { padding: 7px 11px 6px; font-size: 9.5px; }
 body.cine .maps { top: auto; }
-body.cine .ui { bottom: var(--caph); padding-block: 0 8px; }
+body.cine .ui { bottom: 0; padding-block: 0 calc(8px + env(safe-area-inset-bottom, 0px)); }
+body.cine.inflight .ui { bottom: var(--caph); }
+#vigL, #vigR { position: fixed; top: 0; bottom: var(--caph); width: calc(50vw - var(--sw) / 2 - 4px); z-index: 1; pointer-events: none; opacity: 0; transition: opacity 0.6s ease; display: none; }
+#vigL { left: 0; background: linear-gradient(to left, rgba(12,13,16,0.55), rgba(12,13,16,0.92) 70%); }
+#vigR { right: 0; background: linear-gradient(to right, rgba(12,13,16,0.55), rgba(12,13,16,0.92) 70%); }
+body.cine #vigL, body.cine #vigR { display: block; }
+body.cine.inflight #vigL, body.cine.inflight #vigR { opacity: 1; }
 #prog { position: fixed; left: 0; top: 0; height: 3px; width: 0; background: var(--accent); z-index: 4; display: none; transition: width 0.25s linear; }
 body.cine #prog { display: block; }
 body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
@@ -253,7 +263,7 @@ body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
   <span class="now" id="now"></span>
 </div>
 <div class="bubble" id="bubble" aria-live="polite"></div>
-<div id="prog" aria-hidden="true"></div>
+<div id="prog" aria-hidden="true"></div><div id="vigL" aria-hidden="true"></div><div id="vigR" aria-hidden="true"></div>
 <div class="rot" id="rot" hidden><div class="rot-card"><div class="rot-ico" aria-hidden="true">&#x1F4F1;</div><b>Turn your phone sideways</b><span>The film is made for landscape. Rotate your phone for the big-screen view, then press Play.</span><button type="button" id="rotOk">Watch upright instead</button></div></div>
 <div class="chooser" id="chooser" hidden><div class="ch-card" role="dialog" aria-label="Choose how to watch"><div class="ch-kick">FROM OCHRE TO KEIM</div><div class="ch-ttl">How would you like to watch?</div>
   <div class="ch-langs" id="chLangs" role="group" aria-label="Language"><button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="de" lang="de">DE</button><button type="button" data-l="es" lang="es">ES</button><button type="button" data-l="it" lang="it">IT</button><button type="button" data-l="fr" lang="fr">FR</button><button type="button" data-l="pt" lang="pt">PT</button><button type="button" data-l="fa" lang="fa">فا</button><button type="button" data-l="ar" lang="ar">عربي</button><button type="button" data-l="hi" lang="hi">हिं</button><button type="button" data-l="zh" lang="zh">中文</button></div>
@@ -3375,9 +3385,10 @@ function layout() {
   innerEl.style.width = ''; innerEl.style.marginLeft = '';
   CINE = Hp <= 540 && Wp / Hp >= 1.3 && Wp <= 1100; document.body.classList.toggle('cine', CINE);
   if (CINE) { innerEl.style.height = '';
-    // phone sideways: slide on top, caption in a cream band below it (never over the picture)
-    const capH = Math.round(Math.min(132, Math.max(104, Hp * 0.3))); document.documentElement.style.setProperty('--caph', capH + 'px');
-    zF = Math.min((Hp - capH - 10) / 1000, Wp / 1006); stageCy = (Hp - capH) / 2 + 2; const g = gridPos(N - 1), s = stripPos(N - 1); OUTO = [s[0] - g[0], s[1] - g[1]]; dirty = true; return; }
+    // phone sideways: slide spotlit at full height, slim subtitle band below it (never over the picture)
+    const capH = Math.round(Math.min(78, Math.max(60, Hp * 0.2))); document.documentElement.style.setProperty('--caph', capH + 'px');
+    zF = Math.min((Hp - capH - 12) / 1000, (Wp - 40) / 1006); stageCy = (Hp - capH) / 2 + 1;
+    document.documentElement.style.setProperty('--sw', Math.round(PW * zF) + 'px'); const g = gridPos(N - 1), s = stripPos(N - 1); OUTO = [s[0] - g[0], s[1] - g[1]]; dirty = true; return; }
   const fit = () => { innerEl.style.height = Math.max(140, captionMax() + 6) + 'px'; const capTop = innerEl.getBoundingClientRect().top, sh = Math.max(160, capTop - 30);
     zF = Math.min(sh / 1040, Wp / 1006); stageCy = Math.max(8 + sh / 2, capTop - 26 - 500 * zF); };
   fit();
@@ -3694,6 +3705,7 @@ function loop(ts) {
   }
   if (!(playing && started && !jump)) narrTick();
   muTick();
+  { const fl = started && T >= Z1 - 0.2 && T < F0; if (fl !== FLT) { FLT = fl; document.body.classList.toggle('inflight', fl); } }
   if (dirty && started) { render(); if (CINE) progEl.style.width = (100 * T / TMAX).toFixed(2) + '%'; }
   requestAnimationFrame(loop);
 }
@@ -3965,7 +3977,7 @@ window.addEventListener('keydown', e => {
   poke();
 });
 layout();
-let started = false;
+let started = false, FLT = null;
 // ---- direct links (…/history-of-paint.html#coolit or ?ch=coolit) and campaign tracking on every call to action
 const SLUGS = ['prologue', 'cave', 'egypt', 'pompeii', 'ultramarine', 'oil', 'lab', 'goethe', 'ludwig', 'water-glass', 'paint-tube', 'keim', '1891', 'titanium-white', 'acrylic', 'plastic-skin', 'generations', 'soldalit-me', 'coolit', 'twinstar', 'concretal-lasur', 'innostar', 'janus', 'lightfast', 'verdict', 'today', 'colours', 'visit'];
 const UTM = place => 'https://www.keim.com.au/contact?utm_source=history-film&utm_medium=interactive&utm_campaign=from-ochre-to-keim&utm_content=' + encodeURIComponent(place);
