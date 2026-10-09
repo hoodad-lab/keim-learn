@@ -213,6 +213,8 @@ body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
   display: grid; grid-template-columns: auto auto auto minmax(0, 1fr) auto auto auto auto auto auto; gap: 10px; align-items: center;
   transition: opacity 0.5s ease, transform 0.5s ease; }
 .ui.hide { opacity: 0; transform: translateY(10px); pointer-events: none; }
+/* soft paper fade behind the controls so they read clearly over the scrolling plates (not in sideways cinema mode) */
+body:not(.cine) .ui::before { content: ''; position: absolute; inset: -46px 0 0 0; z-index: -1; pointer-events: none; background: linear-gradient(to top, rgba(243,240,232,0.97) 0%, rgba(243,240,232,0.92) 55%, rgba(243,240,232,0) 100%); }
 .ui button { font: 600 11px/1 var(--sans); letter-spacing: 0.18em; text-transform: uppercase; color: #1c2236;
   background: rgba(255,255,255,0.8); border: 1px solid #d8d2c4; padding: 12px 14px 10px; cursor: pointer; border-radius: 2px; }
 .ui button:hover { border-color: #1c2236; }
