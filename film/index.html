@@ -3741,7 +3741,7 @@ document.getElementById('rotOk').addEventListener('click', () => { ROT.off = tru
 function rotCheck() {
   const phone = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
   const portrait = innerHeight > innerWidth;
-  ROT.el.hidden = !(phone && portrait && !ROT.off);
+  ROT.el.hidden = true;
 }
 addEventListener('resize', rotCheck); addEventListener('orientationchange', rotCheck); setTimeout(rotCheck, 300);
 function setPlaying(p) {
