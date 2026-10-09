@@ -357,6 +357,9 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     if (open) { const f = form.querySelector('input'); if (f) setTimeout(() => f.focus({ preventScroll: true }), 400); }
   }
   cb.addEventListener('click', () => show(true));
+  // the film's end card asks for the booking form
+  addEventListener('message', ev => { if (ev.data && ev.data.keim === 'cpd' && /learn\.keim\.com\.au$|localhost/.test(new URL(ev.origin).hostname)) show(true); });
+  if (location.hash === '#cpd') setTimeout(() => show(true), 300);
   back.addEventListener('click', () => show(false));
   const HS = 'https://api.hsforms.com/submissions/v3/integration/submit/47417993/4c447d53-c981-473f-84a4-b19e93a5f898';
   form.addEventListener('submit', async (e) => {
@@ -380,7 +383,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   const FILM = new URL('../film/', location.href).href;
   let lang = 'en';
   const screen = document.getElementById('screen'), play = document.getElementById('playBtn');
-  const url = (ch) => FILM + '?v=26&lang=' + lang + (ch ? '#' + ch : '');
+  const url = (ch) => FILM + '?v=27&lang=' + lang + (ch ? '#' + ch : '');
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
   function start(ch) {
     if (PHONE) { const w = window.open(url(ch), '_blank', 'noopener'); if (w) return; }
