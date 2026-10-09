@@ -210,7 +210,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     <p class="dur-m">7 minutes, or the 2½-minute highlights</p>
     <div class="langs" id="langs" role="group" aria-label="Language of the film">
       <p>Watch in</p>
-      <button type="button" data-l="en" aria-pressed="true">English</button><button type="button" data-l="de" lang="de">Deutsch</button><button type="button" data-l="es" lang="es">Español</button><button type="button" data-l="it" lang="it">Italiano</button><button type="button" data-l="fr" lang="fr">Français</button><button type="button" data-l="pt" lang="pt">Português</button><button type="button" data-l="fa" lang="fa">فارسی</button><button type="button" data-l="ar" lang="ar">العربية</button><button type="button" data-l="hi" lang="hi">हिन्दी</button><button type="button" data-l="zh" lang="zh">中文</button>
+      <button type="button" data-l="en" aria-pressed="true">English</button><button type="button" data-l="de" lang="de">Deutsch</button><button type="button" data-l="es" lang="es">Español</button><button type="button" data-l="it" lang="it">Italiano</button><button type="button" data-l="fr" lang="fr">Français</button><button type="button" data-l="pt" lang="pt">Português</button><button type="button" data-l="fa" lang="fa">فارسی</button><button type="button" data-l="ar" lang="ar">العربية</button><button type="button" data-l="hi" lang="hi">हिन्दी</button><button type="button" data-l="zh" lang="zh">简体中文</button><button type="button" data-l="tw" lang="zh-Hant">繁體中文</button><button type="button" data-l="da" lang="da">Dansk</button><button type="button" data-l="sv" lang="sv">Svenska</button><button type="button" data-l="no" lang="no">Norsk</button><button type="button" data-l="fi" lang="fi">Suomi</button><button type="button" data-l="nl" lang="nl">Nederlands</button><button type="button" data-l="pl" lang="pl">Polski</button>
     </div>
   </div>
 </div>
@@ -380,7 +380,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   const FILM = new URL('../film/', location.href).href;
   let lang = 'en';
   const screen = document.getElementById('screen'), play = document.getElementById('playBtn');
-  const url = (ch) => FILM + '?v=25&lang=' + lang + (ch ? '#' + ch : '');
+  const url = (ch) => FILM + '?v=26&lang=' + lang + (ch ? '#' + ch : '');
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
   function start(ch) {
     if (PHONE) { const w = window.open(url(ch), '_blank', 'noopener'); if (w) return; }
