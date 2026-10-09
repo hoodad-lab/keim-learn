@@ -357,8 +357,10 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   const FILM = new URL('../film/', location.href).href;
   let lang = 'en';
   const screen = document.getElementById('screen'), play = document.getElementById('playBtn');
-  const url = (ch) => FILM + '?v=7&lang=' + lang + (ch ? '#' + ch : '');
+  const url = (ch) => FILM + '?v=9&lang=' + lang + (ch ? '#' + ch : '');
+  const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
   function start(ch) {
+    if (PHONE) { const w = window.open(url(ch), '_blank', 'noopener'); if (w) return; }
     let f = screen.querySelector('iframe');
     if (!f) { f = document.createElement('iframe'); f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = 'From Ochre to KEIM, a brief history of paint'; screen.appendChild(f); }
     f.src = url(ch); screen.classList.add('on');

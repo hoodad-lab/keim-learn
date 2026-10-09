@@ -134,6 +134,14 @@ body.big .txt { font-size: clamp(15.5px, 0.95vw, 18.5px); line-height: 1.5; }
 @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 /* phone held sideways: cinema mode — slide fills the height, captions become subtitles */
 #fsBtn { display: inline-block; font-size: 17px; line-height: 1; }
+.rot { position: fixed; inset: 0; z-index: 9; display: grid; place-items: center; background: rgba(10,10,12,0.78); padding: 24px; }
+.rot[hidden] { display: none; }
+.rot-card { background: #f6f1e7; color: #1c2236; border-radius: 14px; padding: 28px 24px 22px; text-align: center; max-width: 320px; display: grid; gap: 8px; justify-items: center; box-shadow: 0 30px 60px rgba(0,0,0,.5); }
+.rot-ico { font-size: 44px; line-height: 1; transform: rotate(90deg); animation: rotHint 1.6s ease-in-out infinite alternate; }
+@keyframes rotHint { from { transform: rotate(0deg); } to { transform: rotate(90deg); } }
+.rot-card b { font: 600 18px/1.2 var(--sans); }
+.rot-card span { font: 400 14px/1.45 var(--sans); color: #4a4f60; }
+.rot-card button { margin-top: 10px; font: 600 11px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: #1c2236; background: transparent; border: 1px solid #b8b0a0; border-radius: 2px; padding: 11px 14px 9px; cursor: pointer; }
 body.nofs #fsBtn { display: none; }
 body.cine .cap { padding: 0 max(18px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px));
   background: linear-gradient(to top, rgba(10,10,12,0.86) 0%, rgba(10,10,12,0.62) 62%, rgba(10,10,12,0) 100%); padding-top: 34px; text-align: center; }
@@ -174,7 +182,7 @@ body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
 .ticks { position: absolute; inset: 0 8px; pointer-events: none; }
 .ticks span { position: absolute; top: 1px; width: 1px; height: 5px; background: rgba(28,34,54,0.35); }
 .now { font: italic 500 17px/1 var(--serif); color: #6b6a66; white-space: nowrap; min-width: 0; text-align: right; }
-@media (max-width: 680px) { .ttl { font-size: 26px; margin: 8px 0 5px; } .txt { font-size: 13.5px; line-height: 1.42; display: -webkit-box; overflow: visible; } .txt.full { -webkit-line-clamp: unset; display: block; } .inner.expanded { height: auto !important; } .rule { margin-top: 9px; } .locrow { margin-top: 7px; } .cta { margin-top: 9px; } .cta a { font-size: 10px; padding: 9px 12px 8px; } .cta-b { padding: 7px 10px 6px !important; } .cap { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); padding-left: 18px; padding-right: 18px; } .now { display: none; } .ui { grid-template-columns: auto auto auto minmax(30px, 1fr) auto auto auto auto auto; gap: 4px; padding-inline: 10px; } .ui button { letter-spacing: 0.06em; padding: 12px 8px 10px; } #play { min-width: 0; } #langSel { padding: 11px 6px 10px; letter-spacing: 0.04em; } #play { min-width: 64px; } .ui button.ic { padding: 7px 9px 8px; } #narrBtn, #sound { padding: 9px 7px 8px; font-size: 14px; letter-spacing: 0; } #speedBtn { padding-inline: 7px; letter-spacing: 0.04em; } #storyBtn { padding-inline: 8px; letter-spacing: 0.08em; } .ui button { padding: 11px 9px 9px; letter-spacing: 0.1em; } #play { min-width: 64px; } }
+@media (max-width: 680px) { .ttl { font-size: 26px; margin: 8px 0 5px; } .txt { font-size: 13.5px; line-height: 1.42; display: -webkit-box; overflow: visible; } .txt.full { -webkit-line-clamp: unset; display: block; } .inner.expanded { height: auto !important; } .rule { margin-top: 9px; } .locrow { margin-top: 7px; } .cta { margin-top: 9px; } .cta a { font-size: 10px; padding: 9px 12px 8px; } .cta-b { padding: 7px 10px 6px !important; } .cap { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); padding-left: 18px; padding-right: 18px; } .now { display: none; } .ui { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 5px; padding: 0 10px calc(12px + env(safe-area-inset-bottom, 0px)); } .track { flex: 0 0 100%; order: -1; height: 22px; } #speedBtn { display: none; } .ui button { letter-spacing: 0.06em; padding: 12px 8px 10px; } #play { min-width: 0; } #langSel { padding: 11px 6px 10px; letter-spacing: 0.04em; } #play { min-width: 64px; } .ui button.ic { padding: 7px 9px 8px; } #narrBtn, #sound { padding: 9px 7px 8px; font-size: 14px; letter-spacing: 0; } #speedBtn { padding-inline: 7px; letter-spacing: 0.04em; } #storyBtn { padding-inline: 8px; letter-spacing: 0.08em; } .ui button { padding: 11px 9px 9px; letter-spacing: 0.1em; } #play { min-width: 64px; } }
 .bubble { position: fixed; left: 0; top: 0; z-index: 2; max-width: 300px; background: #fff; color: #1c2236; border: 2.5px solid #1c2236; border-radius: 16px; padding: 9px 13px; font: 600 13.5px/1.35 var(--sans); box-shadow: 0 8px 22px rgba(28,34,54,0.18); transform: translate(0, -50%); pointer-events: none; opacity: 0; transition: opacity 0.25s ease; }
 .bubble::after { content: ''; position: absolute; left: -9.5px; top: 50%; width: 15px; height: 15px; background: #fff; border-left: 2.5px solid #1c2236; border-bottom: 2.5px solid #1c2236; transform: translateY(-50%) rotate(45deg); }
 .story { position: fixed; inset: 0; z-index: 6; overflow-y: auto; background: #f3f0e8; color: #1c2236; -webkit-overflow-scrolling: touch; }
@@ -225,6 +233,7 @@ body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
   <span class="now" id="now"></span>
 </div>
 <div class="bubble" id="bubble" aria-live="polite"></div>
+<div class="rot" id="rot" hidden><div class="rot-card"><div class="rot-ico" aria-hidden="true">&#x1F4F1;</div><b>Turn your phone sideways</b><span>The film is made for landscape. Rotate for the full cinema view.</span><button type="button" id="rotOk">Keep watching upright</button></div></div>
 <div class="chooser" id="chooser" hidden><div class="ch-card" role="dialog" aria-label="Choose how to watch"><div class="ch-kick">FROM OCHRE TO KEIM</div><div class="ch-ttl">How would you like to watch?</div>
   <div class="ch-langs" id="chLangs" role="group" aria-label="Language"><button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="de" lang="de">DE</button><button type="button" data-l="es" lang="es">ES</button><button type="button" data-l="it" lang="it">IT</button><button type="button" data-l="fr" lang="fr">FR</button><button type="button" data-l="pt" lang="pt">PT</button><button type="button" data-l="fa" lang="fa">فا</button><button type="button" data-l="ar" lang="ar">عربي</button><button type="button" data-l="hi" lang="hi">हिं</button><button type="button" data-l="zh" lang="zh">中文</button></div>
   <button class="ch-opt" id="mFull" type="button"><b>▶ Full film</b><span>About 6 minutes · every chapter, 60,000 years of paint</span></button>
@@ -3673,7 +3682,7 @@ let hideTimer = 0;
   let autoDone = false;
   window.autoFullscreen = () => {
     if (autoDone || d.fullscreenElement || d.webkitFullscreenElement) return; autoDone = true;
-    try { const pr = (el.requestFullscreen || el.webkitRequestFullscreen).call(el, { navigationUI: 'hide' }); if (pr && pr.catch) pr.catch(() => {}); } catch (e) {}
+    try { const pr = (el.requestFullscreen || el.webkitRequestFullscreen).call(el, { navigationUI: 'hide' }); if (pr && pr.then) pr.then(() => { try { screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape').catch(() => {}); } catch (e) {} }).catch(() => {}); } catch (e) {}
   };
   b.addEventListener('click', () => {
     autoDone = true;
@@ -3689,12 +3698,20 @@ function showChooserAgain() {
   ['mFull', 'mHl'].forEach(id => { const el = document.getElementById(id); el.classList.toggle('watched', (id === 'mHl') === HL); });
   playing = false; playBtn.textContent = 'Play'; chooserEl.hidden = false; poke();
 }
+const ROT = { el: document.getElementById('rot'), off: false };
+document.getElementById('rotOk').addEventListener('click', () => { ROT.off = true; ROT.el.hidden = true; });
+function rotCheck() {
+  const phone = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
+  const portrait = innerHeight > innerWidth;
+  ROT.el.hidden = !(phone && portrait && playing && !ROT.off);
+}
+addEventListener('resize', rotCheck); addEventListener('orientationchange', rotCheck);
 function setPlaying(p) {
   if (p && !modeChosen && T < C0) { chooserEl.hidden = false; return; }
   if (p) closeInfo();
   if (p && AU.on) audioUnlock();
   if (p && T >= TMAX - 0.01) { T = 0; dirty = true; showChooserAgain(); return; }
-  playing = p; const end = !p && T >= TMAX - 0.01;
+  playing = p; const end = !p && T >= TMAX - 0.01; rotCheck();
   playBtn.textContent = p ? 'Pause' : end ? 'Replay' : 'Play'; playBtn.setAttribute('aria-label', playBtn.textContent);
   audioLevels(); poke(); dirty = true;
 }
