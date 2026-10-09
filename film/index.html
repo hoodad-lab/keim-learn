@@ -133,8 +133,8 @@ body.big .ttl { font-size: clamp(40px, 2.3vw, 52px); margin: 14px 0 10px; }
 body.big .txt { font-size: clamp(15.5px, 0.95vw, 18.5px); line-height: 1.5; }
 @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 /* phone held sideways: cinema mode — slide fills the height, captions become subtitles */
-#fsBtn { display: none; }
-body.cine #fsBtn { display: inline-block; }
+#fsBtn { display: inline-block; font-size: 17px; line-height: 1; }
+body.nofs #fsBtn { display: none; }
 body.cine .cap { padding: 0 max(18px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px));
   background: linear-gradient(to top, rgba(10,10,12,0.86) 0%, rgba(10,10,12,0.62) 62%, rgba(10,10,12,0) 100%); padding-top: 34px; text-align: center; }
 body.cine .inner { height: auto !important; max-width: 720px; margin: 0 auto; }
@@ -3666,7 +3666,10 @@ let hideTimer = 0;
 (function () {
   const b = document.getElementById('fsBtn'), d = document, el = d.documentElement;
   const can = el.requestFullscreen || el.webkitRequestFullscreen;
-  if (!can) { b.remove(); return; }
+  const ok = can && (d.fullscreenEnabled !== false && d.webkitFullscreenEnabled !== false);
+  if (!ok) { d.body.classList.add('nofs'); b.remove(); return; }
+  const sync = () => { const on = !!(d.fullscreenElement || d.webkitFullscreenElement); b.textContent = on ? '⤡' : '⛶'; b.title = b.ariaLabel = on ? 'Exit full screen' : 'Full screen'; };
+  d.addEventListener('fullscreenchange', sync); d.addEventListener('webkitfullscreenchange', sync);
   b.addEventListener('click', () => {
     const on = d.fullscreenElement || d.webkitFullscreenElement;
     if (on) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); return; }
