@@ -3670,7 +3670,13 @@ let hideTimer = 0;
   if (!ok) { d.body.classList.add('nofs'); b.remove(); return; }
   const sync = () => { const on = !!(d.fullscreenElement || d.webkitFullscreenElement); b.textContent = on ? '⤡' : '⛶'; b.title = b.ariaLabel = on ? 'Exit full screen' : 'Full screen'; };
   d.addEventListener('fullscreenchange', sync); d.addEventListener('webkitfullscreenchange', sync);
+  let autoDone = false;
+  window.autoFullscreen = () => {
+    if (autoDone || d.fullscreenElement || d.webkitFullscreenElement) return; autoDone = true;
+    try { const pr = (el.requestFullscreen || el.webkitRequestFullscreen).call(el, { navigationUI: 'hide' }); if (pr && pr.catch) pr.catch(() => {}); } catch (e) {}
+  };
   b.addEventListener('click', () => {
+    autoDone = true;
     const on = d.fullscreenElement || d.webkitFullscreenElement;
     if (on) { (d.exitFullscreen || d.webkitExitFullscreen).call(d); return; }
     const pr = (el.requestFullscreen || el.webkitRequestFullscreen).call(el, { navigationUI: 'hide' });
@@ -3835,8 +3841,8 @@ function tourSpot(i, k) {
   openInfo(i, k, true);
 }
 function startTour(i) { if (!SPOTS[PL[i].lab]) return; setPlaying(false); tourSpot(i, 0); }
-document.getElementById('mFull').addEventListener('click', () => { setMode(false); setPlaying(true); });
-document.getElementById('mHl').addEventListener('click', () => { setMode(true); setPlaying(true); });
+document.getElementById('mFull').addEventListener('click', () => { setMode(false); if (window.autoFullscreen) autoFullscreen(); setPlaying(true); });
+document.getElementById('mHl').addEventListener('click', () => { setMode(true); if (window.autoFullscreen) autoFullscreen(); setPlaying(true); });
 chooserEl.addEventListener('click', e => { if (e.target === chooserEl) chooserEl.hidden = true; });
 
 document.getElementById('moreBtn').addEventListener('click', () => startTour(curShown >= 0 ? curShown : chapterAt(T)));

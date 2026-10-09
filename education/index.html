@@ -16,7 +16,9 @@
 :root[data-theme="dark"] { --paper: #16181d; --ink: #f1ede4; --char: #cfc9bd; --mute: #9b968c; --line: #2d3038; --sand: #262219; --card: #1e2127; color-scheme: dark; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.6 var(--sans); }
-.wrap { max-width: 1120px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 48px); }
+.wrap { max-width: 1680px; margin: 0 auto; padding-inline: clamp(16px, 3.4vw, 68px); }
+.screen, .cinema .langs { max-width: 1280px; margin-inline: auto; }
+.cinema .intro { max-width: 1280px; margin-inline: auto; }
 a { color: inherit; }
 h1, h2, h3 { text-wrap: balance; margin: 0; font-weight: 300; }
 h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; text-transform: uppercase; letter-spacing: .05em; }
@@ -103,6 +105,12 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
 .facts { display: flex; gap: 24px; }
 .facts div { display: grid; } .facts strong { font-size: 22px; font-weight: 600; line-height: 1; } .facts span { font-size: 12px; color: var(--mute); letter-spacing: .06em; text-transform: uppercase; }
 .card .btns { margin-top: auto; padding-top: 6px; }
+.btn { cursor: pointer; background: transparent; }
+.cpd-form { background: var(--card); border: 1px solid var(--red); border-radius: 12px; padding: 24px 28px 28px; display: grid; grid-template-columns: minmax(0, 720px); justify-content: center; align-content: start; }
+.cpd-form[hidden], .cpd[hidden] { display: none; }
+.cpd-form .back { justify-self: start; font: 600 12px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--red); background: none; border: 0; padding: 0 0 14px; cursor: pointer; }
+.cpd-form .hs-form-frame { min-height: 320px; }
+.cpd-alt { margin: 14px 0 0; font-size: 14px; color: var(--mute); }
 
 /* certification */
 .cert { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; background: var(--sand); border-radius: 12px; padding: 32px 36px; }
@@ -224,8 +232,13 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
         <p>A KEIM specialist comes to your office, or joins online, with real samples and demonstration panels. Bring a live project and we will work through it together.</p>
         <div class="facts"><div><strong>45 min</strong><span>session</span></div><div><strong>In person</strong><span>or online</span></div><div><strong>Informal</strong><span>CPD points</span></div></div>
         <ul><li>Hands-on with real samples</li><li>Mineral versus acrylic, side by side</li><li>Answers on your own project</li></ul>
-        <div class="btns"><a class="btn" href="https://www.keim.com.au/keimlinge" target="_blank" rel="noopener">Book through KEIMLINGE</a></div>
+        <div class="btns"><button class="btn" id="cpdBtn" type="button" aria-expanded="false" aria-controls="cpdForm">Book a CPD session</button></div>
       </article>
+    </div>
+    <div class="cpd-form" id="cpdForm" hidden>
+      <button class="back" id="cpdBack" type="button">&larr; Back to the CPD options</button>
+      <div class="hs-form-frame" data-region="na1" data-form-id="4c447d53-c981-473f-84a4-b19e93a5f898" data-portal-id="47417993"></div>
+      <p class="cpd-alt">Already a KEIMLINGE member? You can also <a href="https://www.keim.com.au/keimlinge" target="_blank" rel="noopener">book through your account</a>.</p>
     </div>
   </section>
 
@@ -280,11 +293,22 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
 
 <script>
 (function () {
+  const cb = document.getElementById('cpdBtn'), cf = document.getElementById('cpdForm'), grid = document.querySelector('.cpd'), back = document.getElementById('cpdBack'); let hsLoaded = false;
+  function show(open) {
+    if (open) { cf.style.minHeight = grid.offsetHeight + 'px'; }
+    grid.hidden = open; cf.hidden = !open; cb.setAttribute('aria-expanded', String(open));
+    if (open && !hsLoaded) { hsLoaded = true; const sc = document.createElement('script'); sc.src = 'https://js.hsforms.net/forms/embed/47417993.js'; sc.defer = true; document.body.appendChild(sc); }
+    (open ? cf : grid).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  cb.addEventListener('click', () => show(true));
+  back.addEventListener('click', () => show(false));
+})();
+(function () {
   // FILM is the hosted film. Swap for the keim.com.au/GitHub Pages URL when it moves.
   const FILM = new URL('../film/', location.href).href;
   let lang = 'en';
   const screen = document.getElementById('screen'), play = document.getElementById('playBtn');
-  const url = (ch) => FILM + '?v=3&lang=' + lang + (ch ? '#' + ch : '');
+  const url = (ch) => FILM + '?v=4&lang=' + lang + (ch ? '#' + ch : '');
   function start(ch) {
     let f = screen.querySelector('iframe');
     if (!f) { f = document.createElement('iframe'); f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = 'From Ochre to KEIM, a brief history of paint'; screen.appendChild(f); }
