@@ -168,14 +168,28 @@ body.cine #speedBtn, body.cine .now { display: none; }
 body.cine.uion .cap { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
 body.cine .cap { transition: padding-bottom 0.4s ease, opacity 0.4s ease; }
 body.cine.side .cap { left: auto; right: 0; top: 0; bottom: 0; width: var(--capw); display: flex; align-items: center; text-align: left;
-  padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(60px + env(safe-area-inset-bottom, 0px)) 16px;
-  background: linear-gradient(to right, rgba(10,10,12,0) 0, rgba(10,10,12,0.82) 18px, rgba(10,10,12,0.82) 100%); }
-body.cine.side.uion .cap { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+  padding: 14px max(18px, env(safe-area-inset-right, 0px)) calc(56px + env(safe-area-inset-bottom, 0px)) 22px;
+  background: linear-gradient(to right, rgba(243,240,232,0) 0, rgba(243,240,232,0.97) 14px, #f3f0e8 40px);
+  box-shadow: inset 1px 0 0 rgba(28,34,54,0.08); }
+body.cine.side.uion .cap { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px)); }
 body.cine.side .inner { max-width: none; margin: 0; width: 100%; }
-body.cine.side .locrow { justify-content: flex-start; }
-body.cine.side .ttl { font-size: 18px; margin: 0 0 6px; }
-body.cine.side .txt { -webkit-line-clamp: 7 !important; font-size: 13px; line-height: 1.4; }
-body.cine.side .cta { justify-content: flex-start; }
+body.cine.side .row, body.cine.side .rule, body.cine.side .loc { display: block; }
+body.cine.side .row { display: flex; }
+body.cine.side .locrow { position: static; justify-content: space-between; margin: 6px 0 0; }
+body.cine.side .num, body.cine.side .kick { font-size: 10.5px; }
+body.cine.side .loc { font-size: 11px; margin-top: 0; }
+body.cine.side .rule { width: 38px; margin-top: 8px; }
+body.cine.side .ttl { font-size: clamp(19px, 2.6vw, 24px); line-height: 1.08; margin: 7px 0 5px; color: #1c2236; text-shadow: none; }
+body.cine.side .txt { -webkit-line-clamp: 6 !important; font-size: 13px; line-height: 1.42; color: #3a3f50; text-shadow: none; }
+body.cine.side .more { padding: 4px 10px 3px 4px; font-size: 10px; }
+body.cine.side .cta { justify-content: flex-start; margin-top: 8px; }
+body.cine.side .cta a { padding: 9px 12px 8px; font-size: 10px; }
+body.cine.side .maps { top: auto; }
+body.cine.side .ui { left: 0; right: var(--capw); padding-inline: max(12px, env(safe-area-inset-left, 0px)) 12px; }
+body.cine.side .ui button, body.cine.side #langCode { background: rgba(20,20,24,0.78); }
+body.cine.side .track { min-width: 60px; }
+#prog { position: fixed; left: 0; top: 0; height: 3px; width: 0; background: var(--accent); z-index: 4; display: none; transition: width 0.25s linear; }
+body.cine #prog { display: block; }
 body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
 
 @media (min-width: 760px) { .cap { padding-left: 56px; padding-right: 56px; } .inner { height: 172px; } .ttl { font-size: 40px; } }
@@ -248,6 +262,7 @@ body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
   <span class="now" id="now"></span>
 </div>
 <div class="bubble" id="bubble" aria-live="polite"></div>
+<div id="prog" aria-hidden="true"></div>
 <div class="rot" id="rot" hidden><div class="rot-card"><div class="rot-ico" aria-hidden="true">&#x1F4F1;</div><b>Turn your phone sideways</b><span>The film is made for landscape. Rotate your phone for the big-screen view, then press Play.</span><em id="iosTip" hidden>On iPhone: tap <b>AA</b> in the address bar, then <b>Hide Toolbar</b>, for the full screen.</em><button type="button" id="rotOk">Watch upright instead</button></div></div>
 <div class="chooser" id="chooser" hidden><div class="ch-card" role="dialog" aria-label="Choose how to watch"><div class="ch-kick">FROM OCHRE TO KEIM</div><div class="ch-ttl">How would you like to watch?</div>
   <div class="ch-langs" id="chLangs" role="group" aria-label="Language"><button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="de" lang="de">DE</button><button type="button" data-l="es" lang="es">ES</button><button type="button" data-l="it" lang="it">IT</button><button type="button" data-l="fr" lang="fr">FR</button><button type="button" data-l="pt" lang="pt">PT</button><button type="button" data-l="fa" lang="fa">فا</button><button type="button" data-l="ar" lang="ar">عربي</button><button type="button" data-l="hi" lang="hi">हिं</button><button type="button" data-l="zh" lang="zh">中文</button></div>
@@ -3689,7 +3704,7 @@ function loop(ts) {
   }
   if (!(playing && started && !jump)) narrTick();
   muTick();
-  if (dirty && started) render();
+  if (dirty && started) { render(); if (CINE) progEl.style.width = (100 * T / TMAX).toFixed(2) + '%'; }
   requestAnimationFrame(loop);
 }
 let hideTimer = 0;
@@ -3719,7 +3734,7 @@ function showChooserAgain() {
   ['mFull', 'mHl'].forEach(id => { const el = document.getElementById(id); el.classList.toggle('watched', (id === 'mHl') === HL); });
   playing = false; playBtn.textContent = 'Play'; chooserEl.hidden = false; poke();
 }
-const ROT = { el: document.getElementById('rot'), off: false };
+const ROT = { el: document.getElementById('rot'), off: false }; const progEl = document.getElementById('prog');
 if (/iPhone|iPad/.test(navigator.userAgent) && !navigator.standalone) document.getElementById('iosTip').hidden = false;
 document.getElementById('rotOk').addEventListener('click', () => { ROT.off = true; ROT.el.hidden = true; });
 function rotCheck() {
