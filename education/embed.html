@@ -17,8 +17,6 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 400 16px/1.6 var(--sans); }
 .wrap { max-width: 1680px; margin: 0 auto; padding-inline: clamp(16px, 3.4vw, 68px); }
-.screen, .cinema .langs { max-width: 1280px; margin-inline: auto; }
-.cinema .intro { max-width: 1280px; margin-inline: auto; }
 a { color: inherit; }
 h1, h2, h3 { text-wrap: balance; margin: 0; font-weight: 300; }
 h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; text-transform: uppercase; letter-spacing: .05em; }
@@ -286,7 +284,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   const FILM = new URL('../film/', location.href).href;
   let lang = 'en';
   const screen = document.getElementById('screen'), play = document.getElementById('playBtn');
-  const url = (ch) => FILM + '?v=5&lang=' + lang + (ch ? '#' + ch : '');
+  const url = (ch) => FILM + '?v=6&lang=' + lang + (ch ? '#' + ch : '');
   function start(ch) {
     let f = screen.querySelector('iframe');
     if (!f) { f = document.createElement('iframe'); f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = 'From Ochre to KEIM, a brief history of paint'; screen.appendChild(f); }
