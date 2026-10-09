@@ -146,6 +146,7 @@ body.big .txt { font-size: clamp(15.5px, 0.95vw, 18.5px); line-height: 1.5; }
 @keyframes rotHint { from { transform: rotate(0deg); } to { transform: rotate(90deg); } }
 .rot-card b { font: 600 18px/1.2 var(--sans); }
 .rot-card span { font: 400 14px/1.45 var(--sans); color: #4a4f60; }
+.rot-card em { display: block; font: 400 12.5px/1.4 var(--sans); color: #6b6a66; font-style: normal; margin-top: 4px; } .rot-card em b { font-weight: 600; color: #1c2236; }
 .rot-card button { margin-top: 10px; font: 600 11px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: #1c2236; background: transparent; border: 1px solid #b8b0a0; border-radius: 2px; padding: 11px 14px 9px; cursor: pointer; }
 body.nofs #fsBtn { display: none; }
 body.cine .cap { padding: 0 max(18px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-left, 0px));
@@ -238,7 +239,7 @@ body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
   <span class="now" id="now"></span>
 </div>
 <div class="bubble" id="bubble" aria-live="polite"></div>
-<div class="rot" id="rot" hidden><div class="rot-card"><div class="rot-ico" aria-hidden="true">&#x1F4F1;</div><b>Turn your phone sideways</b><span>The film is made for landscape. Rotate your phone for the big-screen view, then press Play.</span><button type="button" id="rotOk">Watch upright instead</button></div></div>
+<div class="rot" id="rot" hidden><div class="rot-card"><div class="rot-ico" aria-hidden="true">&#x1F4F1;</div><b>Turn your phone sideways</b><span>The film is made for landscape. Rotate your phone for the big-screen view, then press Play.</span><em id="iosTip" hidden>On iPhone: tap <b>AA</b> in the address bar, then <b>Hide Toolbar</b>, for the full screen.</em><button type="button" id="rotOk">Watch upright instead</button></div></div>
 <div class="chooser" id="chooser" hidden><div class="ch-card" role="dialog" aria-label="Choose how to watch"><div class="ch-kick">FROM OCHRE TO KEIM</div><div class="ch-ttl">How would you like to watch?</div>
   <div class="ch-langs" id="chLangs" role="group" aria-label="Language"><button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="de" lang="de">DE</button><button type="button" data-l="es" lang="es">ES</button><button type="button" data-l="it" lang="it">IT</button><button type="button" data-l="fr" lang="fr">FR</button><button type="button" data-l="pt" lang="pt">PT</button><button type="button" data-l="fa" lang="fa">فا</button><button type="button" data-l="ar" lang="ar">عربي</button><button type="button" data-l="hi" lang="hi">हिं</button><button type="button" data-l="zh" lang="zh">中文</button></div>
   <button class="ch-opt" id="mFull" type="button"><b>▶ Full film</b><span>About 6 minutes · every chapter, 60,000 years of paint</span></button>
@@ -3706,6 +3707,7 @@ function showChooserAgain() {
   playing = false; playBtn.textContent = 'Play'; chooserEl.hidden = false; poke();
 }
 const ROT = { el: document.getElementById('rot'), off: false };
+if (/iPhone|iPad/.test(navigator.userAgent) && !navigator.standalone) document.getElementById('iosTip').hidden = false;
 document.getElementById('rotOk').addEventListener('click', () => { ROT.off = true; ROT.el.hidden = true; });
 function rotCheck() {
   const phone = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
