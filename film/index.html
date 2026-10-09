@@ -175,6 +175,7 @@ body.cine #speedBtn, body.cine .now { display: none; }
 body.cine.uion .cap { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
 body.cine .cap { transition: padding-bottom 0.4s ease, opacity 0.4s ease; }
 /* landscape phone, cinematic: dark stage, the current slide spotlit at full height, a slim subtitle band underneath */
+body.port .cap { top: var(--capt, auto); bottom: auto; padding-top: 0; padding-bottom: 0; background: none; }
 body.cine { background: #0c0d10; }
 body.cine .cap { left: 0; right: 0; bottom: 0; top: auto; height: var(--caph); text-align: left; display: flex; align-items: center; overflow: hidden;
   padding: 4px max(20px, env(safe-area-inset-right, 0px)) 4px max(20px, env(safe-area-inset-left, 0px));
@@ -3428,6 +3429,13 @@ function layout() {
     const capH = Math.round(Math.min(62, Math.max(48, Hp * 0.16))); document.documentElement.style.setProperty('--caph', capH + 'px');
     zF = Math.min((Hp - capH - 12) / 1000, (Wp - 40) / 1006); stageCy = (Hp - capH) / 2 + 1;
     document.documentElement.style.setProperty('--sw', Math.round(PW * zF) + 'px'); const g = gridPos(N - 1), s = stripPos(N - 1); OUTO = [s[0] - g[0], s[1] - g[1]]; dirty = true; return; }
+  // phones upright: the slide fills the width, the caption sits right under it (not pinned to the bottom with a gap)
+  const PORTL = Wp / Hp < 0.9 && !BIG; document.body.classList.toggle('port', PORTL);
+  if (PORTL) { innerEl.style.height = Math.max(140, captionMax() + 6) + 'px';
+    const capH = innerEl.offsetHeight, uiH = 44, avail = Hp - capH - uiH - 30;
+    zF = Math.min((Wp - 8) / 1006, Math.max(150, avail) / 1040); stageCy = 6 + 520 * zF;
+    document.documentElement.style.setProperty('--capt', Math.round(stageCy + 500 * zF + 16) + 'px');
+    const g = gridPos(N - 1), s = stripPos(N - 1); OUTO = [s[0] - g[0], s[1] - g[1]]; dirty = true; return; }
   const fit = () => { innerEl.style.height = Math.max(140, captionMax() + 6) + 'px'; const capTop = innerEl.getBoundingClientRect().top, sh = Math.max(160, capTop - 30);
     zF = Math.min(sh / 1040, Wp / 1006); stageCy = Math.max(8 + sh / 2, capTop - 26 - 500 * zF); };
   fit();
