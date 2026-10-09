@@ -3,6 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="From Ochre to KEIM">
+<meta name="theme-color" content="#14161b">
+<link rel="manifest" href="manifest.json">
 <title>From Ochre to KEIM — a brief history of paint</title>
 <!-- v9: flying koala guide, sequenced score -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3346,7 +3351,9 @@ function layout() {
   // big screens: the caption sits directly under the slide on show, matching its width
   const BIG = Wp >= 1100 && Wp / Hp > 1.15;
   document.body.classList.remove('side'); document.body.classList.toggle('big', BIG);
-  dpr = Math.min(3, window.devicePixelRatio || 1);
+  // phones: cap the canvas at 2x. iPhones report 3x, which triples the pixels drawn every frame and makes the film stutter.
+  const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(Wp, Hp) < 600;
+  dpr = Math.min(PHONE ? 2 : 3, window.devicePixelRatio || 1);
   cv.width = Math.round(Wp * dpr); cv.height = Math.round(Hp * dpr);
   const land = Wp / Hp > 1.15; cols = land ? 7 : 4; rows = Math.ceil(N / cols); HEAD = land ? 780 : 980;
   innerEl.style.width = ''; innerEl.style.marginLeft = '';
