@@ -192,6 +192,19 @@ body.cine.inflight #vigL, body.cine.inflight #vigR { opacity: 1; }
 #prog { position: fixed; left: 0; top: 0; height: 3px; width: 0; background: var(--accent); z-index: 4; display: none; transition: width 0.25s linear; }
 body.cine #prog { display: block; }
 body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
+@media (orientation: landscape) and (max-height: 520px) {
+  .chooser { padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); }
+  .ch-card { max-width: 640px; padding: 16px 20px 14px; border-radius: 18px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; }
+  .ch-kick, .ch-ttl, .ch-langs, .ch-note { grid-column: 1 / -1; }
+  .ch-kick { font-size: 10px; }
+  .ch-ttl { font-size: 21px; margin: 5px 0 10px; }
+  .ch-langs { margin: 0 0 12px; gap: 4px; flex-wrap: nowrap; }
+  .ch-langs button { padding: 6px 8px; font-size: 11px; }
+  .ch-opt { margin: 0; padding: 11px 13px 10px; border-radius: 12px; }
+  .ch-opt b { font-size: 13px; }
+  .ch-opt span { font-size: 12px; margin-top: 4px; }
+  .ch-note { font-size: 13px; margin-top: 8px; }
+}
 
 @media (min-width: 760px) { .cap { padding-left: 56px; padding-right: 56px; } .inner { height: 172px; } .ttl { font-size: 40px; } }
 
