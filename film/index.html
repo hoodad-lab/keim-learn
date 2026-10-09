@@ -3415,11 +3415,17 @@ function layout() {
   const g = gridPos(N - 1), s = stripPos(N - 1); OUTO = [s[0] - g[0], s[1] - g[1]];
   dirty = true;
 }
-function posterBox() { const gw = cols * PX - GUT, gh = (rows - 1) * ROWP + PW + 190; return { x0: -170, x1: gw + 170, y0: -HEAD - 60, y1: gh + 60 }; }
+const PORT = () => Wp / Hp < 0.9 && !CINE;
+function posterBox() { const gw = cols * PX - GUT, gh = (rows - 1) * ROWP + PW + 190, mx = PORT() ? 50 : 170; return { x0: -mx, x1: gw + mx, y0: -HEAD - 60, y1: gh + 60 }; }
+// portrait phones: the poster fills the width and scrolls up and down, instead of shrinking to fit the height
+let PSY = 0;
+function posterScroll() { const B = posterBox(), aw = Wp - 12, ah = Hp - 84, z = aw / (B.x1 - B.x0); return PORT() ? Math.max(0, (B.y1 - B.y0) - ah / z) : 0; }
 function camPoster(o) {
-  const B = posterBox(), aw = Wp - 24, ah = Hp - (CINE ? 64 : 84), z = Math.min(aw / (B.x1 - B.x0), ah / (B.y1 - B.y0));
-  return { cx: o[0] + (B.x0 + B.x1) / 2, cy: o[1] + (B.y0 + B.y1) / 2, z, sy: 8 + ah / 2 };
+  const B = posterBox(), aw = Wp - (PORT() ? 12 : 24), ah = Hp - (CINE ? 64 : 84), zw = aw / (B.x1 - B.x0), zh = ah / (B.y1 - B.y0);
+  if (PORT() && zw > zh) { const m = posterScroll(); PSY = clamp(PSY, 0, m); return { cx: o[0] + (B.x0 + B.x1) / 2, cy: o[1] + B.y0 + ah / (2 * zw) + PSY, z: zw, sy: 8 + ah / 2 }; }
+  return { cx: o[0] + (B.x0 + B.x1) / 2, cy: o[1] + (B.y0 + B.y1) / 2, z: Math.min(zw, zh), sy: 8 + ah / 2 };
 }
+const posterNow = () => (T <= Z0 || T >= F1) && !jump && posterScroll() > 0;
 const camFlight = (u, sp) => { const z = zF * (1 - 0.12 * sp); return { cx: u * PX + 500 + XSH / z, cy: 500, z, sy: stageCy }; };
 let panU = 0, panSnap = null;   // sideways look-around offset in card widths (finger swipe) — time is not changed
 function camLerp(A, B, e) {
@@ -3958,7 +3964,8 @@ cv.addEventListener('pointermove', e => {
   if (pinch && PTRS.size >= 2) { const [a, b] = [...PTRS.values()], mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, bc = cameraBase(T), k1 = clamp(pinch.k0 * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d0, 0.5, 4), z1 = bc.z * k1;
     VIEW.k = k1; VIEW.x = pinch.wx - (mx - Wp / 2) / z1 - bc.cx; VIEW.y = pinch.wy - (my - bc.sy) / z1 - bc.cy; clampView(); dirty = true; return; }
   if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-  if (!drag.moved && Math.hypot(dx, dy) > 8) { drag.moved = true; drag.mode = !playing && viewActive() ? 'pan' : 'scrub'; if (drag.mode === 'scrub' && playing) setPlaying(false); cv.style.cursor = 'grabbing'; }
+  if (!drag.moved && Math.hypot(dx, dy) > 8) { drag.moved = true; drag.mode = posterNow() && Math.abs(dy) > Math.abs(dx) ? 'pscroll' : !playing && viewActive() ? 'pan' : 'scrub'; drag.P0 = PSY; if (drag.mode === 'scrub' && playing) setPlaying(false); cv.style.cursor = 'grabbing'; }
+  if (drag.mode === 'pscroll') { PSY = clamp(drag.P0 - dy / cameraBase(T).z, 0, posterScroll()); dirty = true; return; }
   if (drag.mode === 'pan') { const zc = cameraBase(T).z * VIEW.k; VIEW.x = drag.V0.x - dx / zc; VIEW.y = drag.V0.y - dy / zc; clampView(); dirty = true; }
   else if (drag.mode === 'scrub') { T = clamp(drag.T0 - dx / (PX * zF) * D, 0, TMAX - 0.01); dirty = true; }
 });
@@ -3978,6 +3985,7 @@ const endDrag = (e) => {
 };
 cv.addEventListener('pointerup', endDrag); cv.addEventListener('pointercancel', e => { PTRS.delete(e.pointerId); if (!PTRS.size) { drag = null; pinch = null; } });
 cv.addEventListener('wheel', e => { e.preventDefault();
+  if (posterNow()) { PSY = clamp(PSY + e.deltaY / cameraBase(T).z, 0, posterScroll()); dirty = true; return; }
   if (!playing && viewActive()) { if (e.ctrlKey) { const t2 = zoomTarget(e.clientX, e.clientY, VIEW.k * Math.exp(-e.deltaY * 0.01)); Object.assign(VIEW, t2); } else { const zc = cameraBase(T).z * VIEW.k; VIEW.x += e.deltaX / zc; VIEW.y += e.deltaY / zc; clampView(); } }
   else { const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY; T = clamp(T + d / (PX * zF) * D, 0, TMAX - 0.01); }
   dirty = true; poke(); }, { passive: false });
@@ -3998,6 +4006,11 @@ soundBtn.addEventListener('click', () => {
 scrub.addEventListener('input', () => { T = parseFloat(scrub.value); dirty = true; poke(); if (!playing) playBtn.textContent = T >= TMAX - 0.01 ? 'Replay' : 'Play'; });
 ['pointermove', 'pointerdown', 'touchstart'].forEach(ev => window.addEventListener(ev, poke, { passive: true }));
 window.addEventListener('resize', layout);
+// phone browsers (iOS Chrome especially) change the visible height as toolbars slide in and out, often without a resize event,
+// which left the slide sitting under the caption. Re-check the real sizes a few times a second and re-lay out when they move.
+if (window.visualViewport) visualViewport.addEventListener('resize', layout);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+{ let lastSig = ''; setInterval(() => { const sig = innerWidth + 'x' + innerHeight + ':' + Math.round(innerEl.getBoundingClientRect().top) + ':' + Math.round(innerEl.offsetHeight); if (sig !== lastSig) { if (lastSig) layout(); lastSig = sig; } }, 400); }
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => layout());
 window.addEventListener('keydown', e => {
   if (!storyEl.hidden) { if (e.code === 'Escape') closeStory(); return; }
