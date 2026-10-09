@@ -58,6 +58,13 @@ h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; text-transform: upper
 .langs button { font: 500 13.5px/1 var(--sans); color: #f1ede4; background: transparent; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; padding: 8px 13px; cursor: pointer; }
 .langs button[aria-pressed="true"] { background: #fff; color: var(--night); border-color: #fff; font-weight: 600; }
 .langs button:hover { border-color: #fff; }
+.lang-sel { display: none; }
+@media (max-width: 750px) { .langs button { display: none; } .lang-sel { display: inline-block; font: 600 15px/1 var(--sans); color: #fff; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 11px 38px 11px 16px; -webkit-appearance: none; appearance: none; background-image: linear-gradient(45deg, transparent 50%, #fff 50%), linear-gradient(135deg, #fff 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size: 5px 5px; background-repeat: no-repeat; } .lang-sel option { color: #111; } }
+.proof { margin: 18px 0 0; font-size: 14.5px; color: #cfc9bd; letter-spacing: .02em; }
+.proof a { color: #fff; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--red); padding-bottom: 1px; }
+.proof a:hover { color: #ffd7d7; }
+.proof .nw { white-space: nowrap; }
+.proof .dot { color: #8d8778; margin: 0 4px; }
 
 /* 60,000-year ribbon: the film's own timeline, drawn across the page */
 .ribbon { padding: 52px 0 36px; }
@@ -183,6 +190,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   .screen .dur { display: none; }
   .dur-m { display: block; margin: 10px 0 0; font-size: 13px; color: #a9a397; letter-spacing: .04em; }
   .langs { margin-top: 18px; }
+  section.band { padding-block: 34px; }
   .facts { gap: 18px; } .facts strong { font-size: 19px; }
 }
 </style>
@@ -212,6 +220,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
       <p>Watch in</p>
       <button type="button" data-l="en" aria-pressed="true">English</button><button type="button" data-l="de" lang="de">Deutsch</button><button type="button" data-l="es" lang="es">Español</button><button type="button" data-l="it" lang="it">Italiano</button><button type="button" data-l="fr" lang="fr">Français</button><button type="button" data-l="pt" lang="pt">Português</button><button type="button" data-l="fa" lang="fa">فارسی</button><button type="button" data-l="ar" lang="ar">العربية</button><button type="button" data-l="hi" lang="hi">हिन्दी</button><button type="button" data-l="zh" lang="zh">简体中文</button><button type="button" data-l="tw" lang="zh-Hant">繁體中文</button><button type="button" data-l="da" lang="da">Dansk</button><button type="button" data-l="sv" lang="sv">Svenska</button><button type="button" data-l="no" lang="no">Norsk</button><button type="button" data-l="fi" lang="fi">Suomi</button><button type="button" data-l="nl" lang="nl">Nederlands</button><button type="button" data-l="pl" lang="pl">Polski</button><button type="button" data-l="ja" lang="ja">日本語</button><button type="button" data-l="ko" lang="ko">한국어</button><button type="button" data-l="cs" lang="cs">Čeština</button>
     </div>
+    <p class="proof">See KEIM on real buildings <span aria-hidden="true">&rarr;</span> <span class="nw"><a href="https://www.keim.com.au/case-studies?utm_source=learning-hub&amp;utm_medium=link&amp;utm_content=under-film" target="_blank" rel="noopener">Case studies</a> <span class="dot" aria-hidden="true">&middot;</span> <a href="https://www.keim.com.au/gallery?utm_source=learning-hub&amp;utm_medium=link&amp;utm_content=under-film" target="_blank" rel="noopener">Gallery</a></span></p>
   </div>
 </div>
 
@@ -392,6 +401,10 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     f.src = url(ch); screen.classList.add('on');
   }
   play.addEventListener('click', () => start());
+  // phones: one compact dropdown instead of 20 buttons (keeps the page inside the height Wix gives it)
+  (() => { const wrap = document.getElementById('langs'), sel = document.createElement('select'); sel.className = 'lang-sel'; sel.id = 'langSel'; sel.setAttribute('aria-label', 'Language of the film');
+    wrap.querySelectorAll('button').forEach(b => { const o = document.createElement('option'); o.value = b.dataset.l; o.textContent = b.textContent; if (b.getAttribute('aria-pressed') === 'true') o.selected = true; sel.appendChild(o); });
+    wrap.appendChild(sel); sel.addEventListener('change', () => { const b = wrap.querySelector('button[data-l="' + sel.value + '"]'); if (b) b.click(); }); })();
   document.querySelectorAll('#langs button').forEach(b => b.addEventListener('click', () => {
     lang = b.dataset.l; document.querySelectorAll('#langs button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
     document.documentElement.lang = lang === 'en' ? 'en-AU' : lang;
