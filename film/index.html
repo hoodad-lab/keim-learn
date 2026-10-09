@@ -167,6 +167,15 @@ body.cine #langCode { background: rgba(20,20,24,0.72); color: #fff; border-color
 body.cine #speedBtn, body.cine .now { display: none; }
 body.cine.uion .cap { padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
 body.cine .cap { transition: padding-bottom 0.4s ease, opacity 0.4s ease; }
+body.cine.side .cap { left: auto; right: 0; top: 0; bottom: 0; width: var(--capw); display: flex; align-items: center; text-align: left;
+  padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(60px + env(safe-area-inset-bottom, 0px)) 16px;
+  background: linear-gradient(to right, rgba(10,10,12,0) 0, rgba(10,10,12,0.82) 18px, rgba(10,10,12,0.82) 100%); }
+body.cine.side.uion .cap { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+body.cine.side .inner { max-width: none; margin: 0; width: 100%; }
+body.cine.side .locrow { justify-content: flex-start; }
+body.cine.side .ttl { font-size: 18px; margin: 0 0 6px; }
+body.cine.side .txt { -webkit-line-clamp: 7 !important; font-size: 13px; line-height: 1.4; }
+body.cine.side .cta { justify-content: flex-start; }
 body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
 
 @media (min-width: 760px) { .cap { padding-left: 56px; padding-right: 56px; } .inner { height: 172px; } .ttl { font-size: 40px; } }
@@ -3359,7 +3368,11 @@ function layout() {
   const land = Wp / Hp > 1.15; cols = land ? 7 : 4; rows = Math.ceil(N / cols); HEAD = land ? 780 : 980;
   innerEl.style.width = ''; innerEl.style.marginLeft = '';
   CINE = Hp <= 540 && Wp / Hp >= 1.3 && Wp <= 1100; document.body.classList.toggle('cine', CINE);
-  if (CINE) { innerEl.style.height = ''; zF = Math.min((Hp - 14) / 1000, Wp / 1006); stageCy = Hp / 2; const g = gridPos(N - 1), s = stripPos(N - 1); OUTO = [s[0] - g[0], s[1] - g[1]]; dirty = true; return; }
+  if (CINE) { innerEl.style.height = '';
+    // phone sideways: the slide sits on the left, the caption in a column on the right, so the words never cover the picture
+    const slideW = Math.round(Math.min(Hp - 14, Wp * 0.56)), capw = Wp - slideW - 16;
+    if (capw >= 200) { SIDE = true; XSH = capw / 2; document.body.classList.add('side'); document.documentElement.style.setProperty('--capw', capw + 'px'); }
+    zF = Math.min((Hp - 14) / 1000, (SIDE ? slideW : Wp) / 1006); stageCy = Hp / 2; const g = gridPos(N - 1), s = stripPos(N - 1); OUTO = [s[0] - g[0], s[1] - g[1]]; dirty = true; return; }
   const fit = () => { innerEl.style.height = Math.max(140, captionMax() + 6) + 'px'; const capTop = innerEl.getBoundingClientRect().top, sh = Math.max(160, capTop - 30);
     zF = Math.min(sh / 1040, Wp / 1006); stageCy = Math.max(8 + sh / 2, capTop - 26 - 500 * zF); };
   fit();
