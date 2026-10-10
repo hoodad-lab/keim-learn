@@ -2189,6 +2189,66 @@ function plateRise(c, G, t) {
   [[0.8, 3.3, '1934 · FIRST ACRYLIC DISPERSION · GERMANY'], [3.4, 5.4, '1945 · AFTER THE WAR, OIL BOOMS'], [5.5, 7.4, '1953 · ACRYLIC HOUSE PAINT · USA']].forEach(([a0, a1, txt]) => { const a = Math.min(pr(t, a0, a0 + 0.3), 1 - pr(t, a1 - 0.3, a1)); if (a > 0) chip(c, 0, 150, txt, a, true); });
   chip(c, 0, 1000 - 36, 'MADE FROM OIL · SOLD IN PRINT, ON RADIO & ON TV', pr(t, 7.2, 7.6), true);
 }
+function plateChem(c, G, t) {
+  // an engraved process chart: how crude oil is turned, step by step, into acrylic paint
+  bleed(c, G, '#efe6d0'); c.fillStyle = pat(c, 'chemparch', () => mottled('chemparch', 320, '#efe6d0', [[255, 250, 235, 0.35], [160, 120, 70, 0.12]], 60, 16, 80, 1953, 1100)); c.fillRect(G.L - 2, G.T - 2, G.R - G.L + 4, G.B - G.T + 4);
+  const INK = '#1c2236', RED = '#D51F24';
+  const ha = pr(t, 0.1, 0.5); c.save(); c.globalAlpha = ha; c.fillStyle = INK; c.textAlign = 'center'; c.font = '600 17px "Josefin Sans", sans-serif'; setLS(c, '6px'); c.fillText(tr('FROM CRUDE OIL TO A PLASTIC FILM'), 503, 118); setLS(c, '0px');
+  c.font = '42px "Abril Fatface", Georgia, serif'; c.fillText(tr('How oil becomes acrylic paint'), 500, 168); c.fillStyle = RED; c.fillRect(470, 184, 60, 3); c.restore();
+  const ROWS = [
+    { t: 0.6, n: '1', h: 'CRUDE OIL → NAPHTHA', d: 'Distilled in a refinery tower', f: 'C₅ – C₁₀ hydrocarbons', icon: 'tower' },
+    { t: 1.8, n: '2', h: 'STEAM CRACKING · ~850 °C', d: 'Naphtha is cracked into small molecules', f: 'CH₂=CH–CH₃', fl: 'propylene', icon: 'flame' },
+    { t: 3.0, n: '3', h: 'OXIDATION WITH AIR', d: 'Over a metal-oxide catalyst', f: 'CH₂=CH–COOH', fl: 'acrylic acid', icon: 'air' },
+    { t: 4.2, n: '4', h: '+ ALCOHOL → MONOMER', d: 'e.g. butanol, from the same oil', f: 'CH₂=CH–COO–C₄H₉', fl: 'butyl acrylate', icon: 'flask' },
+    { t: 5.4, n: '5', h: 'EMULSION POLYMERISATION', d: 'In water, monomers link into chains', f: '[ –CH₂–CH(COOR)– ]ₙ', fl: 'acrylic polymer', icon: 'chain' },
+    { t: 6.6, n: '6', h: '+ PIGMENT & ADDITIVES', d: 'Drying fuses the beads into a plastic skin', f: '', fl: '', icon: 'film' }];
+  const Y0 = 232, RH = 122;
+  // the spine connecting the steps
+  const last = ROWS.reduce((m, r, i) => t > r.t ? i : m, -1); if (last >= 0) { c.save(); c.strokeStyle = 'rgba(28,34,54,0.35)'; c.lineWidth = 3; c.setLineDash([3, 8]); c.beginPath(); c.moveTo(92, Y0 + 50); c.lineTo(92, Y0 + 50 + RH * Math.min(5, last + pr(t, ROWS[Math.min(5, last + 1)].t - 0.6, ROWS[Math.min(5, last + 1)].t))); c.stroke(); c.restore(); }
+  ROWS.forEach((r, i) => { const a = pr(t, r.t, r.t + 0.45); if (a <= 0) return; const y = Y0 + i * RH, cy = y + 50;
+    c.save(); c.globalAlpha = a; c.translate((1 - ease(a)) * -24, 0);
+    // card
+    c.fillStyle = 'rgba(255,252,244,0.92)'; c.beginPath(); c.roundRect(40, y, 920, RH - 14, 14); c.fill(); c.strokeStyle = 'rgba(28,34,54,0.25)'; c.lineWidth = 1.5; c.stroke();
+    // number
+    c.fillStyle = i === 5 ? RED : INK; c.beginPath(); c.arc(92, cy, 26, 0, TAU); c.fill(); c.fillStyle = '#fff'; c.font = '28px "Abril Fatface", Georgia, serif'; c.textAlign = 'center'; c.fillText(r.n, 92, cy + 10);
+    // icon
+    c.save(); c.translate(178, cy); chemIcon(c, r.icon, t - r.t); c.restore();
+    // words
+    c.textAlign = 'left'; c.fillStyle = INK; c.font = '700 21px "Josefin Sans", sans-serif'; setLS(c, '2px'); c.fillText(tr(r.h), 240, cy - 8, 400); setLS(c, '0px');
+    c.fillStyle = '#4b4436'; c.font = 'italic 600 23px "Cormorant Garamond", Georgia, serif'; c.fillText(tr(r.d), 240, cy + 22, 400);
+    // formula types itself out
+    if (r.f) { const ty = pr(t, r.t + 0.3, r.t + 1.0), str = r.f.slice(0, Math.ceil(r.f.length * ty)); c.textAlign = 'right'; c.font = '600 24px "IBM Plex Mono", monospace'; c.fillStyle = INK;
+      // highlight the C=C double bond that makes acrylics able to link up
+      const dbl = str.indexOf('=');
+      if (dbl >= 0) { const pre = str.slice(0, dbl), w = c.measureText(str).width, x0 = 930 - w; c.textAlign = 'left'; c.fillText(pre, x0, cy + 2); const pw = c.measureText(pre).width; c.fillStyle = RED; c.fillText('=', x0 + pw, cy + 2); c.fillStyle = INK; c.fillText(str.slice(dbl + 1), x0 + pw + c.measureText('=').width, cy + 2); }
+      else c.fillText(str, 930, cy + 2);
+      if (r.fl && ty >= 1) { c.textAlign = 'right'; c.fillStyle = RED; c.font = '700 14px "Josefin Sans", sans-serif'; setLS(c, '2px'); c.fillText(tr(r.fl).toUpperCase(), 930, cy + 30); setLS(c, '0px'); } }
+    if (r.icon === 'film') filmStrip(c, 700, cy, t - r.t);
+    c.restore(); });
+  chip(c, 0, 986, 'EVERY STEP STARTS WITH OIL', pr(t, 7.6, 8.0), true);
+}
+function chemIcon(c, k, lt) {
+  const INK = '#1c2236'; c.strokeStyle = INK; c.fillStyle = INK; c.lineWidth = 3; c.lineJoin = 'round'; c.lineCap = 'round';
+  if (k === 'tower') { c.fillRect(-14, -40, 28, 80); c.beginPath(); c.arc(0, -40, 14, Math.PI, 0); c.fill(); ['#3a2a14', '#7a5a2a', '#c99a4a', '#efd38a'].forEach((col, q) => { c.fillStyle = col; c.fillRect(16, -30 + q * 18, 26, 10); c.strokeStyle = INK; c.beginPath(); c.moveTo(14, -25 + q * 18); c.lineTo(16, -25 + q * 18); c.stroke(); }); c.fillStyle = '#111'; c.beginPath(); c.ellipse(-30, 32, 14, 8, 0, 0, TAU); c.fill(); }
+  if (k === 'flame') { c.strokeRect(-30, -10, 60, 40); for (let q = 0; q < 3; q++) { const x = -18 + q * 18, f = 0.8 + 0.2 * Math.sin(lt * 12 + q * 2); c.fillStyle = '#ff7a26'; c.beginPath(); c.moveTo(x - 7, 26); c.quadraticCurveTo(x - 9, 10, x, 26 - 34 * f); c.quadraticCurveTo(x + 9, 10, x + 7, 26); c.closePath(); c.fill(); c.fillStyle = '#ffd56a'; c.beginPath(); c.ellipse(x, 18, 3, 8 * f, 0, 0, TAU); c.fill(); } c.strokeStyle = INK; c.beginPath(); c.moveTo(-40, -24); c.lineTo(-30, -10); c.moveTo(40, -24); c.lineTo(30, -10); c.stroke(); }
+  if (k === 'air') { for (let q = 0; q < 3; q++) { c.beginPath(); for (let x = -36; x <= 0; x += 3) c.lineTo(x, -18 + q * 16 + Math.sin(x * 0.25 + lt * 6) * 3); c.stroke(); } c.fillStyle = '#b8bcc2'; c.beginPath(); for (let q = 0; q < 6; q++) { const a = q / 6 * TAU; c.lineTo(20 + Math.cos(a) * 18, Math.sin(a) * 18); } c.closePath(); c.fill(); c.stroke(); c.fillStyle = INK; c.font = '700 13px "Josefin Sans", sans-serif'; c.textAlign = 'center'; c.fillText('O₂', -18, -30); }
+  if (k === 'flask') { c.fillStyle = '#fffaf0'; c.beginPath(); c.moveTo(-8, -38); c.lineTo(8, -38); c.lineTo(8, -12); c.lineTo(30, 32); c.lineTo(-30, 32); c.lineTo(-8, -12); c.closePath(); c.fill(); c.stroke(); c.fillStyle = '#d9c27a'; c.beginPath(); c.moveTo(-18, 10); c.lineTo(18, 10); c.lineTo(28, 30); c.lineTo(-28, 30); c.closePath(); c.fill(); for (let q = 0; q < 4; q++) { const u = ((lt * 0.8 + q / 4) % 1); c.fillStyle = 'rgba(255,255,255,0.9)'; c.beginPath(); c.arc(-10 + q * 7, 26 - u * 30, 2.5, 0, TAU); c.fill(); } }
+  if (k === 'chain') { const link = clamp(lt / 1.2); for (let q = 0; q < 6; q++) { const x = -40 + q * 16, y = (q % 2 ? -8 : 8), sx = x + (1 - link) * (q - 2.5) * 6, sy = y + (1 - link) * Math.sin(q * 2) * 16; if (q && link > 0.3) { const px = -40 + (q - 1) * 16 + (1 - link) * (q - 3.5) * 6, py = ((q - 1) % 2 ? -8 : 8) + (1 - link) * Math.sin((q - 1) * 2) * 16; c.strokeStyle = '#3e8f8b'; c.lineWidth = 3; c.beginPath(); c.moveTo(px, py); c.lineTo(sx, sy); c.stroke(); } c.fillStyle = '#7ad3cf'; c.beginPath(); c.arc(sx, sy, 7, 0, TAU); c.fill(); c.strokeStyle = INK; c.lineWidth = 2; c.stroke(); }
+    c.strokeStyle = 'rgba(80,140,200,0.5)'; c.lineWidth = 2; c.beginPath(); for (let x = -46; x <= 46; x += 4) c.lineTo(x, 30 + Math.sin(x * 0.2 + lt * 4) * 2); c.stroke(); }
+  if (k === 'film') { const cg = c.createLinearGradient(-26, 0, 26, 0); cg.addColorStop(0, '#cfc8bb'); cg.addColorStop(0.4, '#f6f2ea'); cg.addColorStop(1, '#a9a297'); c.fillStyle = cg; c.fillRect(-26, -34, 52, 64); c.fillStyle = '#7ad3cf'; c.fillRect(-26, -16, 52, 26); c.fillStyle = INK; c.font = '14px Bangers, Impact, sans-serif'; c.textAlign = 'center'; c.fillText('ACRYLIC', 0, 3); c.fillStyle = '#e5ddd0'; c.beginPath(); c.ellipse(0, -34, 26, 6, 0, 0, TAU); c.fill(); c.strokeStyle = '#8a8378'; c.lineWidth = 1.5; c.stroke(); }
+}
+// beads of plastic in water on a wall; the water leaves and the beads fuse into one closed film
+function filmStrip(c, x, cy, lt) {
+  const f = clamp((lt - 0.6) / 1.4), W = 230, wallY = cy + 26;
+  c.save(); c.translate(x, 0);
+  c.fillStyle = '#b8b2a6'; c.fillRect(0, wallY, W, 16); c.fillStyle = 'rgba(0,0,0,0.12)'; for (let q = 0; q < 10; q++) c.fillRect(q * 24 + 4, wallY + 4, 12, 3);
+  if (f < 1) { c.fillStyle = `rgba(150,195,230,${0.45 * (1 - f)})`; c.fillRect(0, wallY - 34 + 26 * f, W, 34 - 26 * f); }
+  for (let q = 0; q < 16; q++) for (let r = 0; r < 2; r++) { const bx = 8 + q * 14 + (r ? 7 : 0), by = wallY - 8 - r * 12 + f * (r * 8), rad = 6 + f * 3; c.fillStyle = mixHex('#7ad3cf', '#5fbab5', f); c.beginPath(); c.arc(bx, by, rad, 0, TAU); c.fill(); if (f < 0.85) { c.strokeStyle = 'rgba(28,34,54,0.35)'; c.lineWidth = 1; c.stroke(); } }
+  if (f > 0.7) { c.globalAlpha = (f - 0.7) / 0.3; c.fillStyle = '#5fbab5'; c.fillRect(0, wallY - 16, W, 16); c.fillStyle = 'rgba(255,255,255,0.5)'; c.fillRect(0, wallY - 16, W, 3); c.globalAlpha = 1;
+    c.fillStyle = '#1c2236'; c.font = '700 13px "Josefin Sans", sans-serif'; setLS(c, '2px'); c.textAlign = 'center'; c.fillText(tr('CLOSED PLASTIC FILM'), W / 2, wallY - 26); setLS(c, '0px'); }
+  else { c.fillStyle = '#1c2236'; c.font = '700 13px "Josefin Sans", sans-serif'; setLS(c, '2px'); c.textAlign = 'center'; c.fillText(tr('PLASTIC BEADS IN WATER'), W / 2, wallY - 44); setLS(c, '0px'); }
+  c.restore();
+}
 function plateFuture(c, G, t) {
   const sk = c.createLinearGradient(0, G.T, 0, 760); sk.addColorStop(0, '#0b1630'); sk.addColorStop(0.65, '#3a2f6b'); sk.addColorStop(1, '#f08a5d'); c.fillStyle = sk; c.fillRect(G.L - 2, G.T - 2, G.R - G.L + 4, 766 - G.T);
   c.fillStyle = 'rgba(255,255,255,0.8)'; for (let k = 0; k < 50; k++) { c.globalAlpha = 0.3 + 0.5 * Math.abs(Math.sin(t * 1.3 + k)); c.fillRect(hashf(k * 3) * 1000, hashf(k * 7) * 420, 2.5, 2.5); } c.globalAlpha = 1;
@@ -3267,6 +3327,9 @@ const PL = [
   { lab: '1934 – 1953 · Acrylic', kick: '1934 – 1953', ttl: 'Why acrylic took over', loc: 'Germany → Philadelphia, USA', key: '#f6ecd6', trail: '#7ad3cf', draw: plateRise, amb: (c, t) => {}, fx: [[0.4, 'thud'], [0.6, 'pop'], [1.2, 'fire'], [2.4, 'pop'], [3.0, 'pop'], [3.6, 'pop'], [4.2, 'pop'], [4.8, 'chime'], [5.2, 'rolllong'], [5.5, 'thud'], [6.0, 'boing']],
     txt: 'Acrylic has German roots (Otto Röhm’s research from 1901; the first usable acrylic dispersion in 1934). After WWII, booming petrochemical production made plastic paint cheap — and it was sold to every home through TV, radio, magazines and newspapers: easy, fast, washable.',
     story: 'Acrylic is plastic — the same chemical family as Plexiglas, which Röhm’s company brought to market in 1933 — and its building blocks come from petroleum. The war had scaled up the oil and petrochemical industry enormously; in peacetime it needed new customers, and oil-derived plastics poured into everyday products. In 1953 Rohm and Haas launched Rhoplex AC-33, a water-based acrylic binder for house paint. Post-war paint was sold like soap powder: television commercials, radio spots, magazine and newspaper ads promised do-it-yourself paint that was easy to use, quick to dry and washed out of brushes with water. Within a few decades plastic acrylic became the world’s default wall paint.', fact: 'The building blocks of acrylic binders are made from petroleum.' },
+  { lab: 'Oil → acrylic', kick: 'The chemistry', ttl: 'How oil becomes acrylic paint', loc: 'Refinery → chemical plant → paint factory', key: '#efe6d0', trail: '#7ad3cf', draw: plateChem, slow: 0.8, amb: (c, t) => {}, fx: [[0.6, 'pop'], [1.8, 'fire'], [3.0, 'pop'], [4.2, 'pop'], [5.4, 'pop'], [6.6, 'pop'], [7.4, 'chime']],
+    txt: 'Acrylic paint is a plastic made from oil. Crude oil is distilled to naphtha and steam-cracked into propylene; propylene is oxidised to acrylic acid and joined with an alcohol into acrylic monomers. In water these link up into tiny plastic beads — the binder. As the paint dries, the beads fuse into a closed plastic film.',
+    story: 'Step by step: a refinery distils crude oil into fractions, including naphtha. Steam cracking at around 800–850 °C breaks naphtha into small molecules such as ethylene and propylene. Propylene is oxidised with air over metal-oxide catalysts, via acrolein, into acrylic acid. Reacted with alcohols such as methanol or butanol, it becomes acrylate monomers. In emulsion polymerisation, surfactants and an initiator link the monomers in water into a milky dispersion of tiny polymer particles — the acrylic binder. Paint makers then add pigments, fillers and additives. On the wall the water evaporates and the particles fuse into a continuous plastic film that sits on top of the surface.', fact: 'The C=C double bond in every acrylic monomer is what lets thousands of them link into one long plastic chain.' },
   { lab: 'The catch', kick: 'The catch', ttl: 'A plastic skin', loc: 'Homes everywhere', key: '#ff5ea8', trail: '#ff5ea8', draw: plate8, amb: (c, t) => {}, fx: [[0.6, 'wind'], [1.3, 'pop'], [1.5, 'pop'], [1.7, 'pop'], [2.25, 'crackle'], [2.35, 'peel'], [3.15, 'whoosh'], [3.65, 'type'], [4.7, 'thud']],
     txt: 'Acrylic dries into a plastic skin. Moisture gets trapped behind it, so it blisters, flakes and peels — and the flakes become microplastics. Inside the can, even most premium “water-based, low-VOC” acrylics rely on in-can preservatives such as MIT — a known skin allergen — and on biocides that rain washes out.',
     story: 'An acrylic coat is a continuous plastic film sitting on the wall. Water vapour moving out of the masonry gets trapped behind it, pushing the film into blisters until it cracks, flakes and peels — and every flake, and every sanding before repainting, releases plastic into gutters, drains and waterways. Studies such as the 2022 Environmental Action report suggest paint may be one of the largest sources of microplastics in the environment (industry bodies dispute the scale). What is in the can matters too. Water-based dispersion paints need in-can preservatives to stop them spoiling, typically isothiazolinones such as MIT, BIT and CMIT/MIT — known contact allergens that have caused allergic reactions even through the air of freshly painted rooms. Exterior acrylics often add film biocides against algae and mould, which can wash out of facades with rain. “Low VOC” only measures volatile solvents; it says nothing about these ingredients.', fact: '“Low VOC” measures volatile solvents — it says nothing about preservatives such as MIT.' },
@@ -4078,7 +4141,7 @@ function setPlaying(p) {
 const MUSIC_SRC = [0, 1, 2, 3, 4].map(e => 'audio/music/era' + e + '.mp3');
 var MUSIC_ON = MUSIC_SRC.length > 0;
 const MU = { buf: {}, pend: {}, cur: -1, src: null, g: null, t0: 0, off: 0, offEra: -1, bus: null };
-const eraOf = k => k <= 3 ? 0 : k <= 8 ? 1 : k <= 14 ? 2 : k <= 16 ? 3 : 4;
+const eraOf = k => k <= 3 ? 0 : k <= 8 ? 1 : k <= 14 ? 2 : k <= 17 ? 3 : 4;
 function muBus() { if (!MU.bus) { MU.bus = AU.ac.createGain(); MU.bus.gain.value = 0.9; MU.bus.connect(AU.master); } return MU.bus; }
 function muLoad(e) {
   if (MU.buf[e] || MU.pend[e] || !AU.ac || !MUSIC_SRC[e]) return;
@@ -4168,7 +4231,7 @@ function narrUI() {
   if (hs) hs.textContent = (NR.on ? 'About 2½ minutes · narrated' : 'About 2 minutes') + ' · the 8 key moments';
 }
 function slowAt(T) { const k = narrSlideAt(T), p = PL[k]; return p && p.slow && T >= startOf(k) && T < narrHold(k) ? p.slow : 1; }
-const HL_SET = [0, 1, 3, 6, 11, 13, 16, 27, 29, 31]; let HL = false, warping = false; setTimeout(narrUI, 0);
+const HL_SET = [0, 1, 3, 6, 11, 13, 17, 28, 30, 32]; let HL = false, warping = false; setTimeout(narrUI, 0);
 let modeChosen = false; const chooserEl = document.getElementById('chooser');
 // ---------- end card: after the last slide, offer the two next steps ----------
 const endEl = document.getElementById('endCard');
@@ -4323,7 +4386,7 @@ window.addEventListener('keydown', e => {
 layout();
 let started = false, FLT = null, titleShadow = null;
 // ---- direct links (…/history-of-paint.html#coolit or ?ch=coolit) and campaign tracking on every call to action
-const SLUGS = ['prologue', 'cave', 'egypt', 'pompeii', 'ultramarine', 'oil', 'lab', 'goethe', 'ludwig', 'water-glass', 'paint-tube', 'keim', 'white-eagle', '1891', 'titanium-white', 'acrylic', 'plastic-skin', 'generations', 'soldalit-me', 'coolit', 'twinstar', 'concretal-lasur', 'innostar', 'janus', 'lightfast', 'verdict', 'europe', 'world', 'australia', 'today', 'colours', 'visit'];
+const SLUGS = ['prologue', 'cave', 'egypt', 'pompeii', 'ultramarine', 'oil', 'lab', 'goethe', 'ludwig', 'water-glass', 'paint-tube', 'keim', 'white-eagle', '1891', 'titanium-white', 'acrylic', 'oil-to-acrylic', 'plastic-skin', 'generations', 'soldalit-me', 'coolit', 'twinstar', 'concretal-lasur', 'innostar', 'janus', 'lightfast', 'verdict', 'europe', 'world', 'australia', 'today', 'colours', 'visit'];
 const UTM = place => 'https://www.keim.com.au/contact?utm_source=history-film&utm_medium=interactive&utm_campaign=from-ochre-to-keim&utm_content=' + encodeURIComponent(place);
 const MAIL = topic => 'mailto:info@keim.com.au?subject=' + encodeURIComponent('Enquiry from “From Ochre to KEIM”' + (topic ? ' — ' + topic : ''));
 function linkedChapter() { try { const q = new URLSearchParams(location.search).get('ch') || location.hash.replace('#', ''); return SLUGS.indexOf((q || '').toLowerCase()); } catch (e) { return -1; } }
