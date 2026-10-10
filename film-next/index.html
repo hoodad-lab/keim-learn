@@ -1918,11 +1918,19 @@ function tinTube(c, x, y, rot, s, a, col, colDark, colHi) {
   c.fillStyle = col; c.fillRect(-52, -26.5, 92, 53); c.fillStyle = '#f2e8cf'; c.fillRect(-40, -18, 68, 36); c.strokeStyle = colDark; c.lineWidth = 1.2; c.strokeRect(-37, -15, 62, 30);
   c.fillStyle = '#2b2118'; c.textAlign = 'center'; c.font = '17px "Abril Fatface", Georgia, serif'; c.fillText('1841', -6, 3); c.font = '600 6.5px "Josefin Sans", sans-serif'; setLS(c, '1.5px'); c.fillText('LONDON', -6, 12); setLS(c, '0px');
   const sh = c.createLinearGradient(0, -27, 0, 27); sh.addColorStop(0, 'rgba(255,255,255,0.35)'); sh.addColorStop(0.35, 'rgba(255,255,255,0)'); sh.addColorStop(1, 'rgba(0,0,0,0.25)'); c.fillStyle = sh; c.fillRect(-52, -26.5, 92, 53);
-  // threaded neck
-  c.fillStyle = mg; c.fillRect(90, -8, 14, 16); c.strokeStyle = 'rgba(60,64,70,0.7)'; c.lineWidth = 1; for (let k = 0; k < 4; k++) { c.beginPath(); c.moveTo(92 + k * 3.5, -8); c.lineTo(94 + k * 3.5, 8); c.stroke(); }
-  // curl of paint from the nozzle onto the grass
-  const pts = [].concat(bezPts([104, 0], [118, 0], [128, -2], [142, 3], 10), bezPts([142, 3], [158, 9], [168, 14], [182, 7], 10).slice(1), bezPts([182, 7], [194, 1], [198, 14], [186, 18], 8).slice(1));
-  paintRibbon(c, pts, 1, col, 10, colDark, colHi);
+  // tapered shoulder and short threaded neck
+  c.fillStyle = mg; c.beginPath(); c.moveTo(88, -11); c.lineTo(97, -6); c.lineTo(97, 6); c.lineTo(88, 11); c.closePath(); c.fill(); c.strokeStyle = '#5d6168'; c.lineWidth = 1.2; c.stroke();
+  c.fillStyle = mg; c.fillRect(97, -5.5, 9, 11); c.strokeStyle = 'rgba(60,64,70,0.7)'; c.lineWidth = 1; for (let k = 0; k < 3; k++) { c.beginPath(); c.moveTo(98.5 + k * 3, -5.5); c.lineTo(100 + k * 3, 5.5); c.stroke(); }
+  // a soft dollop of paint squeezed out of the nozzle, slumped onto the grass
+  c.fillStyle = 'rgba(40,60,30,0.3)'; c.beginPath(); c.ellipse(130, 31, 30, 5, 0, 0, TAU); c.fill();
+  const dg = c.createRadialGradient(118, 2, 2, 128, 14, 34); dg.addColorStop(0, colHi); dg.addColorStop(0.45, col); dg.addColorStop(1, colDark); c.fillStyle = dg;
+  c.beginPath(); c.moveTo(105, -4.5); c.bezierCurveTo(114, -7, 124, -9, 133, -3); c.bezierCurveTo(146, 4, 156, 18, 151, 25); c.quadraticCurveTo(147, 30, 134, 30); c.lineTo(114, 30); c.quadraticCurveTo(104, 30, 106, 21); c.bezierCurveTo(107, 13, 104, 9, 105, 4.5); c.closePath(); c.fill();
+  c.strokeStyle = colDark; c.lineWidth = 1; c.stroke();
+  // a little folded curl where the ribbon of paint turned over
+  c.beginPath(); c.moveTo(118, 8); c.bezierCurveTo(124, 2, 136, 4, 138, 12); c.bezierCurveTo(140, 18, 132, 20, 128, 16); c.strokeStyle = colDark; c.lineWidth = 1.4; c.stroke();
+  // wet highlights
+  c.strokeStyle = 'rgba(255,255,255,0.75)'; c.lineWidth = 2.4; c.lineCap = 'round'; c.beginPath(); c.moveTo(110, -3); c.quadraticCurveTo(120, -6, 128, -3); c.stroke();
+  c.fillStyle = 'rgba(255,255,255,0.7)'; c.beginPath(); c.ellipse(141, 12, 2.5, 1.6, 0.6, 0, TAU); c.fill();
   // the cap lying beside it
   c.save(); c.translate(150, -40); c.rotate(1.25);
   c.fillStyle = 'rgba(40,60,30,0.28)'; c.beginPath(); c.ellipse(5, 6, 15, 12, 0, 0, TAU); c.fill();
@@ -2093,60 +2101,76 @@ function plateTitanium(c, G, t) {
 }
 
 function plateRise(c, G, t) {
-  bleed(c, G, '#f4ead4');
-  c.fillStyle = 'rgba(122,211,207,0.30)'; for (let k = 0; k < 12; k++) { const x = hashf(k * 3) * 1000, y = hashf(k * 7) * 1000; c.save(); c.translate(x, y); c.rotate(k); for (let q = 0; q < 4; q++) { c.rotate(Math.PI / 4); c.fillRect(-16, -1.5, 32, 3); } c.restore(); }
-  // the refinery, drawn with care: tanks, columns, a flare stack, smoke
-  const ra = pr(t, 0.2, 0.8);
-  c.save(); c.globalAlpha = ra; c.translate(0, (1 - ease(ra)) * 30);
-  const STEEL = '#3d4552', HI = '#56606f';
-  [[70, 610, 70], [170, 630, 54]].forEach(([x, y, r]) => { c.fillStyle = STEEL; c.fillRect(x - r, y - r * 0.9, r * 2, r * 1.6); c.beginPath(); c.ellipse(x, y - r * 0.9, r, r * 0.3, 0, 0, TAU); c.fill(); c.fillStyle = HI; c.fillRect(x - r + 8, y - r * 0.8, 10, r * 1.4); });
-  [[250, 300, 34, 400], [320, 360, 26, 340], [120, 400, 22, 230]].forEach(([x, y, w, h]) => { c.fillStyle = STEEL; c.fillRect(x - w / 2, y, w, h); c.beginPath(); c.arc(x, y, w / 2, Math.PI, 0); c.fill(); c.fillStyle = HI; c.fillRect(x - w / 2 + 4, y + 4, 6, h - 8);
-    c.strokeStyle = STEEL; c.lineWidth = 3; for (let yy = y + 30; yy < y + h; yy += 40) { c.beginPath(); c.moveTo(x - w / 2 - 10, yy); c.lineTo(x + w / 2 + 10, yy); c.stroke(); } });
-  c.fillStyle = STEEL; c.fillRect(178, 210, 14, 490);
-  const fl = 0.8 + 0.2 * Math.sin(t * 14); c.fillStyle = '#ff8a2a'; c.beginPath(); c.moveTo(178, 210); c.quadraticCurveTo(170, 170 - 20 * fl, 186, 130 - 24 * fl); c.quadraticCurveTo(200, 170 - 20 * fl, 192, 210); c.closePath(); c.fill(); c.fillStyle = '#ffd56a'; c.beginPath(); c.ellipse(185, 190, 6, 14 * fl, 0, 0, TAU); c.fill();
-  for (let k = 0; k < 6; k++) { const u = ((t * 0.18 + k / 6) % 1); c.fillStyle = `rgba(80,80,86,${0.3 * (1 - u)})`; c.beginPath(); c.arc(320 + u * 70, 350 - u * 200, 14 + u * 30, 0, TAU); c.fill(); }
-  c.fillStyle = '#2b2f37'; c.fillRect(G.L, 700, 420, 14);
-  c.fillStyle = '#1c2236'; c.font = '700 20px "Josefin Sans", sans-serif'; c.textAlign = 'left'; setLS(c, '3px'); c.fillText('OIL & PETROCHEMICALS', 60, 752); setLS(c, '0px');
-  // pipeline to the paint cans
-  c.strokeStyle = '#5a5f66'; c.lineWidth = 16; c.lineCap = 'round'; c.beginPath(); c.moveTo(330, 700); c.lineTo(330, 850); c.lineTo(760, 850); c.stroke();
-  c.fillStyle = '#ff5ea8'; for (let k = 0; k < 8; k++) { const u = ((t * 0.6 + k / 8) % 1), d = u * 580, x = d < 150 ? 330 : 330 + (d - 150), y = d < 150 ? 700 + d : 850; c.beginPath(); c.arc(x, y, 5, 0, TAU); c.fill(); }
+  // a 1950s poster at dusk: the oil boom on the horizon, plastic paint pouring over the new suburbs
+  const HZ = 560, sunA = pr(t, 0, 1.0);
+  const sky = c.createLinearGradient(0, G.T, 0, HZ + 40); sky.addColorStop(0, mixHex('#e9dcc0', '#1c2236', sunA)); sky.addColorStop(0.55, mixHex('#efe2c4', '#9c2f2a', sunA)); sky.addColorStop(0.85, mixHex('#f4ead4', '#ee8a3a', sunA)); sky.addColorStop(1, mixHex('#f4ead4', '#ffd27a', sunA));
+  c.fillStyle = sky; c.fillRect(G.L - 2, G.T - 2, G.R - G.L + 4, HZ + 42 - G.T);
+  // sunburst rays turning slowly behind everything
+  c.save(); c.globalAlpha = 0.16 * sunA; c.fillStyle = '#fff1c8'; c.translate(500, HZ); c.rotate(t * 0.03); for (let k = 0; k < 18; k++) { c.rotate(TAU / 18); c.beginPath(); c.moveTo(0, 0); c.lineTo(1200, -70); c.lineTo(1200, 70); c.closePath(); c.fill(); } c.restore();
+  const sg = c.createRadialGradient(500, HZ, 10, 500, HZ, 170); sg.addColorStop(0, `rgba(255,232,160,${0.95 * sunA})`); sg.addColorStop(1, 'rgba(255,200,110,0)'); c.fillStyle = sg; c.beginPath(); c.arc(500, HZ, 170, 0, TAU); c.fill();
+  c.fillStyle = `rgba(255,226,150,${sunA})`; c.beginPath(); c.arc(500, HZ, 78, Math.PI, 0); c.fill();
+  // the refinery skyline rises out of the ground as a silhouette
+  const ra = pr(t, 0.4, 1.4), lift = (1 - ease(ra)) * 260, INK = '#1c2236';
+  c.save(); c.translate(0, lift); c.fillStyle = INK;
+  const towers = [[60, 380, 40], [120, 300, 30], [175, 420, 24], [250, 250, 44], [318, 330, 30], [640, 340, 34], [705, 260, 46], [780, 400, 26], [850, 310, 36], [930, 380, 30]];
+  towers.forEach(([x, top, w]) => { c.fillRect(x - w / 2, top, w, HZ - top + 2); c.beginPath(); c.arc(x, top, w / 2, Math.PI, 0); c.fill(); for (let y = top + 30; y < HZ; y += 46) c.fillRect(x - w / 2 - 9, y, w + 18, 5); });
+  [[400, 470, 70], [560, 480, 60], [470, 500, 46]].forEach(([x, top, r]) => { c.fillRect(x - r, top, r * 2, HZ - top + 2); c.beginPath(); c.ellipse(x, top, r, r * 0.28, 0, 0, TAU); c.fill(); });
+  // pipe racks joining the towers
+  c.strokeStyle = INK; c.lineWidth = 6; c.beginPath(); c.moveTo(40, 470); c.lineTo(960, 470); c.moveTo(40, 500); c.lineTo(960, 500); c.stroke();
+  // flare stacks with real flames
+  [[200, 160], [745, 150], [890, 210]].forEach(([x, top], k) => { c.fillStyle = INK; c.fillRect(x - 7, top, 14, HZ - top); const on = pr(t, 1.2 + k * 0.25, 1.5 + k * 0.25); if (on <= 0) return; const fl = 0.75 + 0.25 * Math.sin(t * 13 + k * 2) + 0.1 * Math.sin(t * 31 + k);
+    c.save(); c.globalCompositeOperation = 'lighter'; const g = c.createRadialGradient(x, top - 30, 2, x, top - 30, 70 * on); g.addColorStop(0, 'rgba(255,190,90,0.55)'); g.addColorStop(1, 'rgba(255,120,40,0)'); c.fillStyle = g; c.beginPath(); c.arc(x, top - 30, 70 * on, 0, TAU); c.fill(); c.restore();
+    c.fillStyle = '#ff7a26'; c.beginPath(); c.moveTo(x - 9, top); c.quadraticCurveTo(x - 16, top - 40 * fl * on, x + 2, top - 82 * fl * on); c.quadraticCurveTo(x + 18, top - 40 * fl * on, x + 9, top); c.closePath(); c.fill();
+    c.fillStyle = '#ffd56a'; c.beginPath(); c.ellipse(x, top - 22 * on, 5, 20 * fl * on, 0, 0, TAU); c.fill(); });
   c.restore();
-  [[800, 860], [880, 860], [840, 790]].forEach(([x, y], k) => { const e = backOut(pr(t, 0.8 + k * 0.15, 1.2 + k * 0.15)); if (e <= 0) return; c.save(); c.translate(x, y); c.scale(e, e);
-    c.fillStyle = '#e9e4da'; c.fillRect(-34, -60, 68, 60); c.fillStyle = '#7ad3cf'; c.beginPath(); c.ellipse(0, -60, 34, 9, 0, 0, TAU); c.fill(); c.fillStyle = '#ff5ea8'; c.fillRect(-34, -44, 68, 24); c.fillStyle = '#fff'; c.font = '17px Bangers, Impact, sans-serif'; c.textAlign = 'center'; c.fillText('ACRYLIC', 0, -26); c.restore(); });
-  // the media pile up — each one lands on top of the last
-  const drop = (t0, x, y, rot, w, h, draw) => { const a = pr(t, t0, t0 + 0.45); if (a <= 0) return; const e = backOut(a); c.save(); c.translate(x, y - (1 - ease(a)) * 140); c.rotate(rot + (1 - a) * 0.3); c.scale(0.7 + 0.3 * e, 0.7 + 0.3 * e); c.globalAlpha = Math.min(1, a * 2);
-    c.fillStyle = 'rgba(40,30,20,0.22)'; c.beginPath(); c.roundRect(-w / 2 + 12, -h / 2 + 14, w, h, 18); c.fill(); draw(); c.restore(); };
-  // 1. the newspaper
-  drop(1.2, 560, 640, -0.06, 360, 250, () => {
-    c.fillStyle = '#f7f3e8'; c.fillRect(-180, -125, 360, 250); c.strokeStyle = '#2b2b2b'; c.lineWidth = 2; c.strokeRect(-180, -125, 360, 250);
-    c.fillStyle = '#1c1c1c'; c.font = '32px "Abril Fatface", Georgia, serif'; c.textAlign = 'center'; c.fillText('The Daily Herald', 0, -86); c.fillRect(-166, -74, 332, 3);
-    c.font = '28px Bangers, Impact, sans-serif'; c.fillText('MIRACLE PLASTIC PAINT!', 0, -38);
-    c.fillStyle = '#bdb6a8'; c.fillRect(-166, -20, 130, 130); c.fillStyle = '#7ad3cf'; for (let k = 0; k < 60; k++) { c.beginPath(); c.arc(-160 + (k % 10) * 12, -12 + Math.floor(k / 10) * 20, 4, 0, TAU); c.fill(); }
-    c.fillStyle = 'rgba(40,40,40,0.45)'; for (let q = 0; q < 9; q++) c.fillRect(-22, -16 + q * 14, 186 - (q % 3) * 22, 4); });
-  // 2. the magazine advert
-  drop(2.0, 790, 540, 0.07, 250, 340, () => {
-    const g = c.createLinearGradient(0, -170, 0, 170); g.addColorStop(0, '#ff8fc2'); g.addColorStop(1, '#ffd166'); c.fillStyle = g; c.fillRect(-125, -170, 250, 340); c.strokeStyle = '#ffffff'; c.lineWidth = 6; c.strokeRect(-125, -170, 250, 340);
-    c.fillStyle = '#ffffff'; c.font = '46px "Abril Fatface", Georgia, serif'; c.textAlign = 'center'; c.fillText('HOME', 0, -118);
-    c.fillStyle = '#7ad3cf'; c.fillRect(-90, -70, 180, 130); c.fillStyle = '#f4ead4'; c.beginPath(); c.moveTo(-70, 60); c.lineTo(-70, -10); c.lineTo(0, -54); c.lineTo(70, -10); c.lineTo(70, 60); c.closePath(); c.fill(); c.fillStyle = '#ff5ea8'; c.fillRect(-20, 10, 40, 50);
-    c.fillStyle = '#1c2236'; c.font = '26px Bangers, Impact, sans-serif'; c.fillText('DO IT YOURSELF!', 0, 104); c.font = '20px Bangers, Impact, sans-serif'; c.fillText('NEW ACRYLIC — DRIES IN AN HOUR', 0, 136); });
-  // 3. the radio, singing the jingle
-  drop(2.8, 470, 450, -0.04, 300, 200, () => {
-    const wd = c.createLinearGradient(0, -100, 0, 100); wd.addColorStop(0, '#a0673a'); wd.addColorStop(1, '#6a4024'); c.fillStyle = wd; c.beginPath(); c.roundRect(-150, -100, 300, 200, 40); c.fill();
-    c.fillStyle = '#e9dcc0'; c.beginPath(); c.roundRect(-128, -76, 150, 152, 20); c.fill(); c.strokeStyle = '#8a5a34'; c.lineWidth = 3; for (let k = 0; k < 8; k++) { c.beginPath(); c.moveTo(-118, -60 + k * 18); c.lineTo(12, -60 + k * 18); c.stroke(); }
-    c.fillStyle = '#f2dca8'; c.beginPath(); c.roundRect(40, -76, 90, 50, 8); c.fill(); c.strokeStyle = '#3a2a1e'; c.lineWidth = 2; for (let k = 0; k < 7; k++) { c.beginPath(); c.moveTo(48 + k * 12, -70); c.lineTo(48 + k * 12, -60 - (k % 2) * 6); c.stroke(); } c.strokeStyle = '#c4161c'; c.beginPath(); c.moveTo(80 + Math.sin(t) * 20, -76); c.lineTo(80 + Math.sin(t) * 20, -28); c.stroke();
-    c.fillStyle = '#3a2a1e'; c.beginPath(); c.arc(62, 30, 18, 0, TAU); c.arc(110, 30, 18, 0, TAU); c.fill();
-    c.strokeStyle = 'rgba(255,94,168,0.8)'; c.lineWidth = 5; for (let k = 0; k < 3; k++) { const u = ((t * 1.2 + k / 3) % 1); c.globalAlpha = 1 - u; c.beginPath(); c.arc(-150, 0, 30 + u * 80, Math.PI * 0.75, Math.PI * 1.25); c.stroke(); } c.globalAlpha = 1;
-    c.fillStyle = '#ff5ea8'; c.font = '30px Georgia, serif'; c.textAlign = 'center'; for (let k = 0; k < 3; k++) { const u = ((t * 0.7 + k / 3) % 1); c.globalAlpha = Math.sin(u * Math.PI); c.fillText('♪', -170 - u * 40, -40 - u * 60 + k * 30); } c.globalAlpha = 1; });
-  // 4. the television, last and on top
-  drop(3.6, 680, 340, 0.03, 340, 250, () => {
-    c.strokeStyle = '#3a2a1e'; c.lineWidth = 5; c.beginPath(); c.moveTo(-20, -130); c.lineTo(-70, -200); c.moveTo(20, -130); c.lineTo(70, -200); c.stroke();
-    c.fillStyle = '#8a5a34'; c.beginPath(); c.roundRect(-170, -130, 340, 250, 26); c.fill();
-    c.save(); c.beginPath(); c.roundRect(-145, -105, 220, 195, 28); c.clip();
-    const on = pr(t, 3.9, 4.2); c.fillStyle = mixHex('#1a1d20', '#dfe8e0', on); c.fillRect(-150, -110, 230, 205);
-    if (on > 0.5) { c.fillStyle = '#ff5ea8'; c.font = '42px Bangers, Impact, sans-serif'; c.textAlign = 'center'; c.fillText('NEW!', -35, -40); c.fillStyle = '#1c2236'; c.font = '30px Bangers, Impact, sans-serif'; c.fillText('PLASTIC PAINT', -35, 4); c.font = '18px Bangers, Impact, sans-serif'; c.fillText('ON EVERY WALL', -35, 34); }
-    c.fillStyle = 'rgba(0,0,0,0.12)'; for (let y = -105; y < 90; y += 6) c.fillRect(-145, y + ((t * 40) % 6), 220, 2);
-    c.restore(); c.fillStyle = '#d9c9a8'; c.beginPath(); c.arc(122, -50, 15, 0, TAU); c.arc(122, 0, 15, 0, TAU); c.fill(); });
-  chip(c, 0, 940, 'MADE FROM OIL · SOLD IN PRINT, ON RADIO & ON TV', pr(t, 4.2, 4.6), true);
+  // billowing black smoke drifting across the sky
+  const sa = pr(t, 1.3, 2.2);
+  if (sa > 0) { [[250, 250], [318, 330], [705, 260], [850, 310]].forEach(([x, top], k) => { for (let q = 0; q < 9; q++) { const u = ((t * 0.09 + q / 9 + k * 0.13) % 1), r = 18 + u * 90; c.fillStyle = `rgba(28,30,38,${0.42 * sa * (1 - u) * (1 - u * 0.3)})`; c.beginPath(); c.arc(x + u * 260 + Math.sin(u * 6 + k) * 20, top - 10 - u * 330, r, 0, TAU); c.fill(); } }); }
+  // ground and the new post-war suburb, row after identical row
+  const gr = c.createLinearGradient(0, HZ, 0, G.B); gr.addColorStop(0, '#2a2f3d'); gr.addColorStop(1, '#3a3f4c'); c.fillStyle = gr; c.fillRect(G.L - 2, HZ, G.R - G.L + 4, G.B - HZ + 2);
+  const F = 1100 - 1300 * ease(pr(t, 4.3, 6.6)); // the front of the paint wave, rolling right to left
+  const PAST = ['#ffb3cf', '#9fe3df', '#fff0a8', '#c9b8ff', '#ffc89a'];
+  const house = (x, y, s, i) => { const painted = clamp((x - F) / 80); c.save(); c.translate(x, y); c.scale(s, s);
+    c.fillStyle = mixHex('#4a5060', PAST[i % 5], painted); c.fillRect(-40, -40, 80, 40); c.fillStyle = mixHex('#3a3f4c', '#ff5ea8', painted * 0.85); c.beginPath(); c.moveTo(-48, -40); c.lineTo(0, -78); c.lineTo(48, -40); c.closePath(); c.fill();
+    c.fillStyle = painted > 0.5 ? '#ffffff' : '#ffd27a'; c.globalAlpha = 0.9; c.fillRect(-28, -30, 16, 14); c.fillRect(12, -30, 16, 14); c.globalAlpha = 1; c.fillStyle = mixHex('#2a2f3d', '#1c2236', painted); c.fillRect(-7, -20, 14, 20); c.restore(); };
+  for (let r = 0; r < 3; r++) { const y = HZ + [62, 190, 360][r], s = [0.75, 1.1, 1.6][r], step = 118 * s; for (let i = 0; i < 12; i++) { const x = ((i * step + r * step * 0.5) % 1200) - 60; house(x, y, s, i + r * 2); } }
+  // the pipeline from the refinery to a giant can of "plastic paint"
+  const pa = pr(t, 2.2, 2.8); if (pa > 0) { c.save(); c.globalAlpha = pa; c.strokeStyle = '#5a5f66'; c.lineWidth = 18; c.lineCap = 'round'; c.beginPath(); c.moveTo(560, 520); c.lineTo(560, 610); c.lineTo(790, 610); c.lineTo(790, 420); c.stroke();
+    c.fillStyle = '#ff5ea8'; for (let k = 0; k < 10; k++) { const u = ((t * 0.5 + k / 10) % 1), d = u * 510; let x, y; if (d < 90) { x = 560; y = 520 + d; } else if (d < 320) { x = 560 + d - 90; y = 610; } else { x = 790; y = 610 - (d - 320); } c.beginPath(); c.arc(x, y, 5, 0, TAU); c.fill(); } c.restore(); }
+  // the can tips over and the paint floods the suburb
+  const ca = backOut(pr(t, 2.6, 3.2)), tip = ease(pr(t, 3.6, 4.4));
+  if (ca > 0) { c.save(); c.translate(790, 330); c.scale(ca * 0.85, ca * 0.85); c.rotate(-tip * 1.1);
+    c.fillStyle = 'rgba(0,0,0,0.25)'; c.beginPath(); c.ellipse(6, 96, 90, 14, 0, 0, TAU); c.fill();
+    const cg = c.createLinearGradient(-85, 0, 85, 0); cg.addColorStop(0, '#cfc8bb'); cg.addColorStop(0.35, '#f6f2ea'); cg.addColorStop(1, '#a9a297'); c.fillStyle = cg; c.fillRect(-85, -90, 170, 180); c.beginPath(); c.ellipse(0, 90, 85, 18, 0, 0, Math.PI); c.fill();
+    c.fillStyle = '#ff5ea8'; c.fillRect(-85, -40, 170, 70); c.fillStyle = '#ffffff'; c.font = '44px Bangers, Impact, sans-serif'; c.textAlign = 'center'; c.fillText('ACRYLIC', 0, 10); c.fillStyle = '#1c2236'; c.font = '18px Bangers, Impact, sans-serif'; c.fillText('PLASTIC HOUSE PAINT', 0, -50); c.fillText('MADE FROM OIL', 0, 56);
+    c.fillStyle = '#7ad3cf'; c.beginPath(); c.ellipse(0, -90, 85, 18, 0, 0, TAU); c.fill(); c.fillStyle = '#ff5ea8'; c.beginPath(); c.ellipse(0, -90, 72, 13, 0, 0, TAU); c.fill(); c.restore(); }
+  if (tip > 0.6) { // the glossy pour and the wave rolling left over the rooftops
+    const pp = pr(t, 4.0, 4.5); c.save(); c.globalAlpha = pp; const lip = [700, 262];
+    const pg = c.createLinearGradient(0, lip[1], 0, 760); pg.addColorStop(0, '#ff7ab8'); pg.addColorStop(1, '#ff4f9e'); c.fillStyle = pg;
+    c.beginPath(); c.moveTo(lip[0] - 10, lip[1]); c.bezierCurveTo(lip[0] - 60, lip[1] + 80, lip[0] - 40, 560, lip[0] - 70, 640); c.lineTo(lip[0] + 10, 650); c.bezierCurveTo(lip[0] + 10, 560, lip[0] + 20, lip[1] + 80, lip[0] + 26, lip[1] + 10); c.closePath(); c.fill();
+    // the wave
+    const front = F; c.beginPath(); c.moveTo(1100, 640); for (let x = 1100; x >= front; x -= 20) c.lineTo(x, 640 + Math.sin(x * 0.03 + t * 3) * 10); c.quadraticCurveTo(front - 50, 600, front - 20, 560); c.quadraticCurveTo(front + 10, 620, front + 40, 660); c.lineTo(1100, 700); c.closePath(); c.fill();
+    c.strokeStyle = 'rgba(255,255,255,0.55)'; c.lineWidth = 5; c.beginPath(); for (let x = 1080; x >= front + 10; x -= 20) c.lineTo(x, 632 + Math.sin(x * 0.03 + t * 3) * 10); c.stroke(); c.restore(); }
+  // the newspaper spins in, the way the newsreels did it
+  const na = pr(t, 2.0, 2.9), nOut = pr(t, 3.5, 4.0);
+  if (na > 0) { const sp = ease(na), sc = 0.1 + sp * (1.0 - 0.45 * ease(nOut)); c.save(); c.translate(lerp(500, 210, ease(nOut)), lerp(430, 800, ease(nOut))); c.rotate((1 - sp) * 9 - 0.08 * ease(nOut)); c.scale(sc, sc);
+    c.fillStyle = 'rgba(0,0,0,0.35)'; c.fillRect(-196, -116, 400, 250); c.fillStyle = '#f7f3e8'; c.fillRect(-200, -125, 400, 250); c.strokeStyle = '#2b2b2b'; c.lineWidth = 2; c.strokeRect(-200, -125, 400, 250);
+    c.fillStyle = '#1c1c1c'; c.font = '30px "Abril Fatface", Georgia, serif'; c.textAlign = 'center'; c.fillText('The Daily Herald', 0, -88); c.fillRect(-186, -76, 372, 3);
+    c.font = '50px Bangers, Impact, sans-serif'; c.fillStyle = '#c4161c'; c.fillText('PLASTIC PAINT', 0, -22); c.fillStyle = '#1c1c1c'; c.fillText('BOOM!', 0, 30);
+    c.fillStyle = 'rgba(40,40,40,0.45)'; for (let q = 0; q < 4; q++) { c.fillRect(-186, 50 + q * 16, 170, 5); c.fillRect(16, 50 + q * 16, 170, 5); } c.restore(); }
+  // the television switches on in the foreground, the radio sings
+  const tv = backOut(pr(t, 5.6, 6.1));
+  if (tv > 0) { c.save(); c.translate(760, 820); c.scale(tv * 0.8, tv * 0.8); c.rotate(0.04);
+    c.strokeStyle = '#2a1d14'; c.lineWidth = 5; c.beginPath(); c.moveTo(-20, -130); c.lineTo(-70, -200); c.moveTo(20, -130); c.lineTo(70, -200); c.stroke();
+    c.fillStyle = 'rgba(0,0,0,0.35)'; c.beginPath(); c.roundRect(-160, -116, 340, 250, 26); c.fill(); c.fillStyle = '#8a5a34'; c.beginPath(); c.roundRect(-170, -130, 340, 250, 26); c.fill();
+    c.save(); c.beginPath(); c.roundRect(-145, -105, 220, 195, 28); c.clip(); const on = pr(t, 6.0, 6.3); c.fillStyle = mixHex('#1a1d20', '#dfe8e0', on); c.fillRect(-150, -110, 230, 205);
+    if (on > 0.5) { c.fillStyle = '#ff5ea8'; c.font = '44px Bangers, Impact, sans-serif'; c.textAlign = 'center'; c.fillText('NEW!', -35, -36); c.fillStyle = '#1c2236'; c.font = '30px Bangers, Impact, sans-serif'; c.fillText('PLASTIC PAINT', -35, 6); c.font = '19px Bangers, Impact, sans-serif'; c.fillText('ON EVERY WALL', -35, 36); }
+    c.fillStyle = 'rgba(0,0,0,0.12)'; for (let y = -105; y < 90; y += 6) c.fillRect(-145, y + ((t * 40) % 6), 220, 2); c.restore();
+    c.fillStyle = '#d9c9a8'; c.beginPath(); c.arc(122, -50, 15, 0, TAU); c.arc(122, 0, 15, 0, TAU); c.fill();
+    c.strokeStyle = 'rgba(255,94,168,0.85)'; c.lineWidth = 6; for (let k = 0; k < 3; k++) { const u = ((t * 1.1 + k / 3) % 1); c.globalAlpha = 1 - u; c.beginPath(); c.arc(-170, -10, 40 + u * 110, Math.PI * 0.72, Math.PI * 1.28); c.stroke(); } c.globalAlpha = 1; c.restore(); }
+  // the dates, stamped like a newsreel caption
+  [[0.8, 3.0, '1934 · FIRST ACRYLIC DISPERSION · GERMANY'], [3.1, 5.4, '1945 · AFTER THE WAR, OIL BOOMS'], [5.5, 7.4, '1953 · ACRYLIC HOUSE PAINT · USA']].forEach(([a0, a1, txt]) => { const a = Math.min(pr(t, a0, a0 + 0.3), 1 - pr(t, a1 - 0.3, a1)); if (a > 0) chip(c, 0, 150, txt, a, true); });
+  chip(c, 0, 960, 'MADE FROM OIL · SOLD IN PRINT, ON RADIO & ON TV', pr(t, 7.2, 7.6), true);
 }
 function plateFuture(c, G, t) {
   const sk = c.createLinearGradient(0, G.T, 0, 760); sk.addColorStop(0, '#0b1630'); sk.addColorStop(0.65, '#3a2f6b'); sk.addColorStop(1, '#f08a5d'); c.fillStyle = sk; c.fillRect(G.L - 2, G.T - 2, G.R - G.L + 4, 766 - G.T);
@@ -3223,7 +3247,7 @@ const PL = [
   { lab: '1916 · Titanium white', kick: '1916', ttl: 'Goodbye, lead white', loc: 'Fredrikstad, Norway · Niagara Falls, USA', key: '#10161f', trail: '#c9a24a', draw: plateTitanium, amb: (c, t) => {}, fx: [[0.8, 'crackle'], [1.5, 'thud'], [2.9, 'whoosh'], [3.2, 'chime'], [3.9, 'pop'], [4.05, 'pop'], [4.2, 'pop'], [4.4, 'shimmer']],
     txt: 'For centuries the brightest white was lead white — used on homes, toys and art, and slowly poisoning painters and children. From 1916, factories in Norway and the USA began producing titanium dioxide — brighter, lead-free, and today the world’s main white.',
     story: 'Lead white (basic lead carbonate) was the painter’s white for over 2,000 years: cheap, opaque and fast-drying, it went on houses, furniture, toys and canvases. But lead is a poison. Painters and the workers who made it suffered “painter’s colic” and worse, and children were harmed by swallowing flakes and dust from old painted surfaces. Titanium dioxide had been known since the 1820s, but only from 1916 did factories in Norway and the USA begin producing it in quantity. It was brighter, hid the surface underneath better and contained no lead. Many countries restricted lead white from the 1920s, and lead was later banned from household paints altogether. Today titanium dioxide is the world’s main white pigment.', fact: 'Titanium white covers far better than lead white, so fewer coats are needed.' },
-  { lab: '1934 – 1953 · Acrylic', kick: '1934 – 1953', ttl: 'Why acrylic took over', loc: 'Germany → Philadelphia, USA', key: '#f6ecd6', trail: '#7ad3cf', draw: plateRise, amb: AMBX.rise, fx: [[0.3, 'fire'], [0.9, 'pop'], [1.05, 'pop'], [1.2, 'thud'], [2.0, 'thud'], [2.8, 'thud'], [3.0, 'chime'], [3.6, 'thud'], [3.95, 'boing']],
+  { lab: '1934 – 1953 · Acrylic', kick: '1934 – 1953', ttl: 'Why acrylic took over', loc: 'Germany → Philadelphia, USA', key: '#f6ecd6', trail: '#7ad3cf', draw: plateRise, amb: (c, t) => {}, fx: [[0.4, 'thud'], [1.2, 'fire'], [2.0, 'whoosh'], [2.7, 'pop'], [3.6, 'whoosh'], [4.2, 'rolllong'], [5.6, 'pop'], [6.0, 'boing']],
     txt: 'Acrylic has German roots (Otto Röhm’s research from 1901; the first usable acrylic dispersion in 1934). After WWII, booming petrochemical production made plastic paint cheap — and it was sold to every home through TV, radio, magazines and newspapers: easy, fast, washable.',
     story: 'Acrylic is plastic — the same chemical family as Plexiglas, which Röhm’s company brought to market in 1933 — and its building blocks come from petroleum. The war had scaled up the oil and petrochemical industry enormously; in peacetime it needed new customers, and oil-derived plastics poured into everyday products. In 1953 Rohm and Haas launched Rhoplex AC-33, a water-based acrylic binder for house paint. Post-war paint was sold like soap powder: television commercials, radio spots, magazine and newspaper ads promised do-it-yourself paint that was easy to use, quick to dry and washed out of brushes with water. Within a few decades plastic acrylic became the world’s default wall paint.', fact: 'The building blocks of acrylic binders are made from petroleum.' },
   { lab: 'The catch', kick: 'The catch', ttl: 'A plastic skin', loc: 'Homes everywhere', key: '#ff5ea8', trail: '#ff5ea8', draw: plate8, amb: (c, t) => {}, fx: [[0.6, 'wind'], [1.3, 'pop'], [1.5, 'pop'], [1.7, 'pop'], [2.25, 'crackle'], [2.35, 'peel'], [3.15, 'whoosh'], [3.65, 'type'], [4.7, 'thud']],
@@ -3256,13 +3280,13 @@ const PL = [
   { lab: 'The verdict', kick: 'The verdict', ttl: 'Plastic film vs mineral bond', loc: 'Every wall, every climate', key: '#ff7fb7', trail: '#D51F24', draw: plateVersus, amb: AMBY.versus, fx: [[0.9, 'thud'], [1.6, 'thud'], [2.3, 'thud'], [3.0, 'thud'], [3.8, 'finale']],
     txt: 'Plastic paint sits on top. Mineral paint becomes part of the wall: a chemical bond, open to vapour, nothing to peel or flake, and no plastic film to shed. After 60,000 years, the answer is clear.',
     story: 'Put the two approaches side by side. A plastic film relies on surface adhesion, can trap moisture, and eventually blisters, flakes and sheds particles. A mineral silicate coating bonds chemically with the substrate, lets water vapour escape, has no film to peel, and uses lightfast inorganic pigments. That is why mineral paint from the 1890s is still on facades today.', fact: 'The oldest lesson in paint: the binder decides how long it lasts.' },
-  { lab: 'Europe', kick: 'Worldwide · Europe', ttl: 'KEIM across Europe', loc: 'London · Madrid · Nantes · Basel · Berlin · Milan', key: '#e7dcc4', trail: '#D51F24', draw: plateEurope, amb: AMB_PHOTO, fx: [[0.1, 'brush'], [1.0, 'whoosh'], [1.55, 'pop'], [2.6, 'pop'], [3.65, 'pop'], [4.7, 'pop'], [5.75, 'pop'], [6.8, 'chime']],
+  { lab: 'Europe', kick: 'Worldwide · Europe', ttl: 'KEIM across Europe', loc: 'London · Madrid · Nantes · Basel · Berlin · Milan', key: '#e7dcc4', trail: '#D51F24', draw: plateEurope, slow: 0.55, amb: AMB_PHOTO, fx: [[0.1, 'brush'], [1.0, 'whoosh'], [1.55, 'pop'], [2.6, 'pop'], [3.65, 'pop'], [4.7, 'pop'], [5.75, 'pop'], [6.8, 'chime']],
     txt: 'Across Europe, KEIM protects new landmarks and old ones — Grafton Architects’ Marshall Building in London, Madrid’s Plaza Mayor, Building Janus in Nantes, Herzog & de Meuron’s Stadtcasino Basel, the Humboldt Forum in Berlin and Milan’s Galleria Vittorio Emanuele II.',
     story: 'In London, the Marshall Building by Grafton Architects (KEIM Concretal-Lasur and Concretal Fixativ). In Madrid, the Plaza Mayor: KEIM decorative paints on its mural and KEIM Soldalit on the surrounding façades. In Nantes, Building Janus (KEIM Concretal-Lasur). In Basel, Herzog & de Meuron’s Stadtcasino (KEIM Lignosil-Color). In Berlin, the Humboldt Forum (KEIM Soldalit, Optil and Restauro-Lasur). And in Milan, the Galleria Vittorio Emanuele II (KEIM Granital).', fact: 'Every KEIM product is still made by KEIMFARBEN in Diedorf, near Augsburg.' },
-  { lab: 'Around the world', kick: 'Worldwide', ttl: 'KEIM around the world', loc: 'Landmarks on five continents', key: '#e7dcc4', trail: '#D51F24', draw: plateWorld, amb: AMB_PHOTO, fx: [[0.7, 'whoosh'], [1.4, 'pop'], [2.35, 'pop'], [3.3, 'pop'], [4.25, 'pop'], [5.2, 'pop'], [5.6, 'whoosh'], [6.45, 'pop'], [7.35, 'chime']],
+  { lab: 'Around the world', kick: 'Worldwide', ttl: 'KEIM around the world', loc: 'Landmarks on five continents', key: '#e7dcc4', trail: '#D51F24', draw: plateWorld, slow: 0.55, amb: AMB_PHOTO, fx: [[0.7, 'whoosh'], [1.4, 'pop'], [2.35, 'pop'], [3.3, 'pop'], [4.25, 'pop'], [5.2, 'pop'], [5.6, 'whoosh'], [6.45, 'pop'], [7.35, 'chime']],
     txt: 'Beyond Europe: the Hunters Point Library in New York and the Swan Reserve in Orlando, the Grande Mosquée in Algiers and the Zeitz MOCAA in Cape Town, Zayed International Airport in Abu Dhabi, Marina Bay Sands in Singapore and MVRDV’s golden Imprint in Korea.',
     story: 'In New York, Steven Holl’s Hunters Point Library (KEIM Concretal-W and Design-Lasur Metallic); in Orlando, the Walt Disney World Swan Reserve (KEIM Soldalit). In Algiers, the Grande Mosquée (KEIM Betonfinish); in Cape Town, Heatherwick Studio’s Zeitz MOCAA (KEIM Concretal-Lasur). In Abu Dhabi, Zayed International Airport (KEIM Concretal-Lasur). In Singapore, Moshe Safdie’s Marina Bay Sands (KEIM Royalan); and at Paradise City, Incheon, MVRDV’s golden Imprint (KEIM Royalan).', fact: 'The same silicate chemistry Adolf Keim patented in 1878 protects all of them.' },
-  { lab: 'Australian landmarks', kick: 'Australia', ttl: 'Landmarks closer to home', loc: 'Western Australia · Melbourne · Sydney', key: '#e7dcc4', trail: '#D51F24', draw: plateAus, amb: AMB_PHOTO, fx: [[0.7, 'whoosh'], [1.9, 'pop'], [3.0, 'pop'], [4.1, 'pop'], [5.0, 'pop'], [5.9, 'chime']],
+  { lab: 'Australian landmarks', kick: 'Australia', ttl: 'Landmarks closer to home', loc: 'Western Australia · Melbourne · Sydney', key: '#e7dcc4', trail: '#D51F24', draw: plateAus, slow: 0.55, amb: AMB_PHOTO, fx: [[0.7, 'whoosh'], [1.9, 'pop'], [3.0, 'pop'], [4.1, 'pop'], [5.0, 'pop'], [5.9, 'chime']],
     txt: 'In Australia, KEIM is on the Wellington Dam mural in Western Australia — the world’s largest dam mural — Melbourne’s Joan Kirner Women’s & Children’s Hospital, the restored 1883 Parramatta Town Hall, the WestConnex M8 tunnel and the Sydney Opera House.',
     story: 'Reflections, Guido van Helten’s 8,000 m² mural on the Wellington Dam wall near Collie in Western Australia’s South West, opened in February 2021. Melbourne’s Joan Kirner Women’s & Children’s Hospital by Lyons Architects (KEIM Concretal-Lasur). Parramatta Town Hall, opened in 1883 and restored by TKD Architects, reopened in December 2023 in KEIM Royalan with KEIM Faceal Oleo. The WestConnex M8 tunnel in Sydney, designed by Hassell (KEIM Concretal-Lasur). And the Sydney Opera House (KEIM Concretal-Lasur).', fact: 'At 8,000 m², the Wellington Dam mural is described as the largest dam mural in the world.' },
   { lab: 'Today · Mineral', kick: 'Today · Australia', ttl: 'Mineral comes home', loc: 'Matraville, Sydney, Australia', key: '#efe9dc', trail: '#6f8f5e', draw: plate9, amb: AMB[13], fx: [[1.0, 'pop'], [1.35, 'brush'], [2.15, 'rolllong'], [3.75, 'chime']],
@@ -3977,7 +4001,7 @@ function loop(ts) {
     const prev = T, k = chapterAt(T), warp = HL && T > C0 + D * 0.5 && T < CL - D * 0.5 && !HL_SET.includes(k);
     if (warp && !warping) sfx('whoosh'); warping = warp;
     const hold = narrTick();
-    if (hold) T = Math.max(prev, Math.min(T, narrHold(NR.slide) - 0.02)); else T += dt * SPEED * (warp ? 12 : narrRate());
+    if (hold) T = Math.max(prev, Math.min(T, narrHold(NR.slide) - 0.02)); else T += dt * SPEED * (warp ? 12 : Math.min(narrRate(), slowAt(T)));
     if (!warp) for (const e of EVENTS) if (e[0] > prev && e[0] <= T) sfx(e[1]);
     if (T >= TMAX) { T = TMAX - 0.001; setPlaying(false); showEnd(); }
     dirty = true;
@@ -4126,6 +4150,7 @@ function narrUI() {
   if (fs) fs.textContent = (NR.on ? 'About 7 minutes · narrated' : 'About 6 minutes') + ' · every chapter, 60,000 years of paint';
   if (hs) hs.textContent = (NR.on ? 'About 2½ minutes · narrated' : 'About 2 minutes') + ' · the 8 key moments';
 }
+function slowAt(T) { const k = narrSlideAt(T), p = PL[k]; return p && p.slow && T >= startOf(k) && T < narrHold(k) ? p.slow : 1; }
 const HL_SET = [0, 1, 3, 6, 11, 13, 16, 27, 29, 31]; let HL = false, warping = false; setTimeout(narrUI, 0);
 let modeChosen = false; const chooserEl = document.getElementById('chooser');
 // ---------- end card: after the last slide, offer the two next steps ----------
