@@ -3145,7 +3145,11 @@ function photoCard(c, key, x, y, w, h, title, sub, a, hl) {
   if (a <= 0) return; c.save(); c.globalAlpha = a; const s = 0.9 + 0.1 * backOut(a); c.translate(x + w / 2, y + h / 2); c.scale(s, s); c.rotate((1 - a) * 0.04); c.translate(-(x + w / 2), -(y + h / 2));
   const capH = Math.round(h * 0.27), ph = h - capH, pad = Math.max(6, Math.round(w * 0.03));
   c.shadowColor = 'rgba(40,30,20,0.35)'; c.shadowBlur = LITE ? 0 : 18; c.shadowOffsetY = 8; c.fillStyle = '#fffdf8'; c.fillRect(x - pad, y - pad, w + pad * 2, h + pad); c.shadowColor = 'transparent';
-  const im = XIMG[key]; if (im && im.complete && im.naturalWidth) { c.save(); c.beginPath(); c.rect(x, y, w, ph); c.clip(); const sc = Math.max(w / im.naturalWidth, ph / im.naturalHeight), iw = im.naturalWidth * sc, ih = im.naturalHeight * sc; c.drawImage(im, x + (w - iw) / 2, y + (ph - ih) / 2, iw, ih); c.restore(); } else { c.fillStyle = '#cbbd9c'; c.fillRect(x, y, w, ph); }
+  const im = XIMG[key]; if (im && im.complete && im.naturalWidth) { c.save(); c.beginPath(); c.rect(x, y, w, ph); c.clip(); const sc = Math.max(w / im.naturalWidth, ph / im.naturalHeight), iw = im.naturalWidth * sc, ih = im.naturalHeight * sc; c.drawImage(im, x + (w - iw) / 2, y + (ph - ih) / 2, iw, ih); c.restore(); } else { // no photo yet: a simple drawn sandstone facade
+    c.save(); c.beginPath(); c.rect(x, y, w, ph); c.clip(); const sky = c.createLinearGradient(0, y, 0, y + ph); sky.addColorStop(0, '#bcd3e3'); sky.addColorStop(1, '#e8eef0'); c.fillStyle = sky; c.fillRect(x, y, w, ph);
+    const fx = x + w * 0.08, fw = w * 0.84, fy = y + ph * 0.18; c.fillStyle = '#d8b98a'; c.fillRect(fx, fy, fw, ph); c.fillStyle = 'rgba(120,80,40,0.18)'; for (let yy = fy + 6; yy < y + ph; yy += Math.max(4, ph * 0.035)) c.fillRect(fx, yy, fw, 1);
+    const cols = 5, rows = 3, cw = fw / cols; c.fillStyle = '#4a4036'; for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) { const wx = fx + i * cw + cw * 0.25, wy = fy + ph * 0.12 + j * ph * 0.24, ww = cw * 0.5, wh = ph * 0.15; c.beginPath(); c.moveTo(wx, wy + wh); c.lineTo(wx, wy + ww / 2); c.arc(wx + ww / 2, wy + ww / 2, ww / 2, Math.PI, 0); c.lineTo(wx + ww, wy + wh); c.closePath(); c.fill(); }
+    c.fillStyle = '#c4a473'; c.fillRect(fx - 4, fy - 6, fw + 8, 8); c.restore(); }
   if (hl) { c.strokeStyle = '#D51F24'; c.lineWidth = 4; c.strokeRect(x - pad, y - pad, w + pad * 2, h + pad); }
   c.textAlign = 'left'; c.fillStyle = '#1c2236'; c.font = `600 ${Math.round(capH * 0.4)}px "Cormorant Garamond", Georgia, serif`; c.fillText(tr(title), x + 4, y + ph + capH * 0.47, w - 8);
   c.fillStyle = '#D51F24'; c.font = `700 ${Math.round(capH * 0.2)}px "Josefin Sans", sans-serif`; setLS(c, '2px'); c.fillText(tr(sub).toUpperCase(), x + 4, y + ph + capH * 0.8, w - 8); setLS(c, '0px'); c.restore();
@@ -3163,7 +3167,7 @@ function tourPlate(c, G, t, o) {
   const S = o.S, CY = 480, st = tourState(S, t, o.intro, o.outro);
   const proj = drawGlobe(c, G, 500, CY, st.R, st.lon, st.lat, o.paint ? o.paint(t) : 1);
   // the route so far
-  if (o.entry) { const q = proj(S[0].lon, S[0].lat); edgeLine(c, [-60, CY - 40], q[0], q[1] - 30, 1 - pr(t, 1.2, 1.8)); }
+  if (o.entry) { const q = proj(S[0].lon, S[0].lat); edgeLine(c, [-60, CY - 40], q[0], q[1] - 30, 1 - pr(t, 0.45, 0.85)); }
   routeDraw(c, proj, S, st);
   // pins: visited ones stay, the current one pulses and carries its city name
   const ON = S.map(s => pr(t, s.t - 0.35, s.t)); let cur = -1; S.forEach((s, i) => { if (t > s.t - 0.3 && t < s.t + 0.6) cur = i; });
@@ -3210,14 +3214,16 @@ function plateWorld(c, G, t) {
     regionA: t => { for (const r of WORLD_REG) if (t >= r[0] - 0.2 && t < r[1]) return Math.min(pr(t, r[0] - 0.2, r[0] + 0.2), 1 - pr(t, r[1] - 0.25, r[1])); return 0; } });
 }
 const AUS_P = [
-  { k: '', n: '', c: 'Orlando', lon: -81.56, lat: 28.37, t: 0.2, z: 1300, skip: true },
-  { k: 'wellington-dam', n: 'Wellington Dam mural', c: 'Collie, WA', cn: 'Western Australia', lon: 115.95, lat: -33.4, t: 1.9, z: 4200, side: 1, east: true, hl: true, credit: 'Neonbunyip, CC BY-SA 4.0' },
-  { k: 'joan', n: 'Joan Kirner Hospital', c: 'Melbourne', lon: 144.88, lat: -37.79, t: 3.0, z: 4200, side: -1 },
-  { k: 'parramatta', n: 'Parramatta Town Hall', c: 'Parramatta', cn: 'Sydney', lon: 151.0, lat: -33.815, t: 4.1, z: 9000, side: -1 },
-  { k: 'westconnex', n: 'WestConnex M8', c: 'St Peters', cn: 'Sydney', lon: 151.17, lat: -33.92, t: 5.0, z: 9000, side: -1 },
-  { k: 'opera', n: 'Sydney Opera House', c: 'Sydney', lon: 151.215, lat: -33.857, t: 5.9, z: 9000, side: -1 }];
+  { k: '', n: '', c: '', lon: 92, lat: -26, t: 0.2, z: 1300, skip: true },
+  { k: 'wellington-dam', n: 'Wellington Dam mural', c: 'Collie, WA', cn: 'Western Australia', lon: 115.95, lat: -33.4, t: 1.6, z: 4200, side: 1, hl: true, credit: 'Neonbunyip, CC BY-SA 4.0' },
+  { k: 'joan', n: 'Joan Kirner Hospital', c: 'Melbourne', lon: 144.88, lat: -37.79, t: 2.75, z: 4200, side: -1 },
+  { k: 'parramatta', n: 'Parramatta Town Hall', c: 'Parramatta', cn: 'Sydney', lon: 151.0, lat: -33.815, t: 3.85, z: 9000, side: -1 },
+  { k: 'westconnex', n: 'WestConnex M8', c: 'St Peters', cn: 'Sydney', lon: 151.17, lat: -33.92, t: 4.7, z: 9000, side: -1 },
+  { k: 'porter-house', n: 'The Porter House Hotel', c: 'Sydney CBD', cn: 'Sydney', lon: 151.205, lat: -33.872, t: 5.55, z: 9000, side: -1 },
+  { k: 'opera', n: 'Sydney Opera House', c: 'Sydney', lon: 151.215, lat: -33.857, t: 6.4, z: 9000, side: -1 }
+];
 function plateAus(c, G, t) {
-  tourPlate(c, G, t, { S: AUS_P, head: 'KEIM IN AUSTRALIA', intro: { t0: 0, lon: -81.56, lat: 28.37, R: 1300 }, outro: { t1: 7.4, lon: 134, lat: -28, R: 1250 }, entry: true, overviewLabels: false });
+  tourPlate(c, G, t, { S: AUS_P, head: 'KEIM IN AUSTRALIA', intro: { t0: 0, lon: 92, lat: -26, R: 1300 }, outro: { t1: 7.7, lon: 134, lat: -28, R: 1250 }, entry: true, overviewLabels: false });
 }
 // ---- the two early façades: real photographs with a slow camera that moves in on the painted details
 function kbAt(keys, t) { let K = keys[0]; for (let i = 1; i < keys.length; i++) { if (t < keys[i][0]) { const A = keys[i - 1], B = keys[i], e = easeIO((t - A[0]) / (B[0] - A[0])); return [0, lerpA(A[1], B[1], e), lerpA(A[2], B[2], e), Math.exp(lerpA(Math.log(A[3]), Math.log(B[3]), e))]; } K = keys[i]; } return K; }
@@ -3333,7 +3339,7 @@ const PL = [
   { lab: 'Around the world', kick: 'Worldwide', ttl: 'KEIM around the world', loc: 'Landmarks on five continents', key: '#e7dcc4', trail: '#D51F24', draw: plateWorld, slow: 0.55, amb: AMB_PHOTO, fx: [[0.7, 'whoosh'], [1.4, 'pop'], [2.35, 'pop'], [3.3, 'pop'], [4.25, 'pop'], [5.2, 'pop'], [5.6, 'whoosh'], [6.45, 'pop'], [7.35, 'chime']],
     txt: 'Beyond Europe: the Hunters Point Library in New York and the Swan Reserve in Orlando, the Grande Mosquée in Algiers and the Zeitz MOCAA in Cape Town, Zayed International Airport in Abu Dhabi, Marina Bay Sands in Singapore and MVRDV’s golden Imprint in Korea.',
     story: 'In New York, Steven Holl’s Hunters Point Library (KEIM Concretal-W and Design-Lasur Metallic); in Orlando, the Walt Disney World Swan Reserve (KEIM Soldalit). In Algiers, the Grande Mosquée (KEIM Betonfinish); in Cape Town, Heatherwick Studio’s Zeitz MOCAA (KEIM Concretal-Lasur). In Abu Dhabi, Zayed International Airport (KEIM Concretal-Lasur). In Singapore, Moshe Safdie’s Marina Bay Sands (KEIM Royalan); and at Paradise City, Incheon, MVRDV’s golden Imprint (KEIM Royalan).', fact: 'The same silicate chemistry Adolf Keim patented in 1878 protects all of them.' },
-  { lab: 'Australian landmarks', kick: 'Australia', ttl: 'Landmarks closer to home', loc: 'Western Australia · Melbourne · Sydney', key: '#e7dcc4', trail: '#D51F24', draw: plateAus, slow: 0.55, amb: AMB_PHOTO, fx: [[0.7, 'whoosh'], [1.9, 'pop'], [3.0, 'pop'], [4.1, 'pop'], [5.0, 'pop'], [5.9, 'chime']],
+  { lab: 'Australian landmarks', kick: 'Australia', ttl: 'Landmarks closer to home', loc: 'Western Australia · Melbourne · Sydney', key: '#e7dcc4', trail: '#D51F24', draw: plateAus, slow: 0.55, amb: AMB_PHOTO, fx: [[0.6, 'whoosh'], [1.6, 'pop'], [2.75, 'pop'], [3.85, 'pop'], [4.7, 'pop'], [5.55, 'pop'], [6.4, 'chime']],
     txt: 'In Australia, KEIM is on the Wellington Dam mural in Western Australia — the world’s largest dam mural — Melbourne’s Joan Kirner Women’s & Children’s Hospital, the restored 1883 Parramatta Town Hall, the WestConnex M8 tunnel and the Sydney Opera House.',
     story: 'Reflections, Guido van Helten’s 8,000 m² mural on the Wellington Dam wall near Collie in Western Australia’s South West, opened in February 2021 (KEIM Concretal-Lasur). Melbourne’s Joan Kirner Women’s & Children’s Hospital by Lyons Architects (KEIM Concretal-Lasur). Parramatta Town Hall, opened in 1883 and restored by TKD Architects, reopened in December 2023 in KEIM Royalan with KEIM Faceal Oleo. The WestConnex M8 tunnel in Sydney, designed by Hassell (KEIM Concretal-Lasur). And the Sydney Opera House (KEIM Concretal-Lasur).', fact: 'At 8,000 m², the Wellington Dam mural is described as the largest dam mural in the world.' },
   { lab: 'Today · Mineral', kick: 'Today · Australia', ttl: 'Mineral comes home', loc: 'Matraville, Sydney, Australia', key: '#efe9dc', trail: '#6f8f5e', draw: plate9, amb: AMB[13], fx: [[1.0, 'pop'], [1.35, 'brush'], [2.15, 'rolllong'], [3.75, 'chime']],
