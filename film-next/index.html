@@ -3710,7 +3710,7 @@ function layout() {
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(Wp, Hp) < 600;
   dpr = Math.min(PHONE ? 2 : 3, window.devicePixelRatio || 1);
   cv.width = Math.round(Wp * dpr); cv.height = Math.round(Hp * dpr);
-  const land = Wp / Hp > 1.15; HEAD = land ? 780 : 980; cols = bestCols(land ? [5, 6, 7, 8, 9, 10, 11, 12] : [3, 4], land ? 170 : 50); rows = Math.ceil(N / cols);
+  const land = Wp / Hp > 1.15; HEAD = land ? 780 : 980; cols = land ? bestCols([5, 6, 7, 8, 9, 10, 11, 12], 170) : (N % 4 === 0 ? 4 : N % 3 === 0 ? 3 : 4); rows = Math.ceil(N / cols);
   innerEl.style.width = ''; innerEl.style.marginLeft = '';
   CINE = Hp <= 540 && Wp / Hp >= 1.3 && Wp <= 1100; document.body.classList.toggle('cine', CINE);
   if (CINE) { innerEl.style.height = '';
