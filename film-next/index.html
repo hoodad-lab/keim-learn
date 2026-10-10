@@ -321,7 +321,7 @@ body:not(.cine) .ui::before { content: ''; position: absolute; inset: -46px 0 0 
 
 // ---------- languages (EN · DE · ES · IT · FR) ----------
 const I18N = {};
-const I18N_V = 13;
+const I18N_V = 14;
 const LANG_NAMES = { en: 'English', de: 'Deutsch', es: 'Español', it: 'Italiano', fr: 'Français', pt: 'Português', fa: 'فارسی', ar: 'العربية', hi: 'हिन्दी', zh: '简体中文', da: 'Dansk', sv: 'Svenska', no: 'Norsk', fi: 'Suomi', nl: 'Nederlands', pl: 'Polski', tw: '繁體中文', ja: '日本語', ko: '한국어', cs: 'Čeština' };
 const LITE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
 const AR = /[\u0600-\u06FF]/, DEV = /[\u0900-\u097F]/, HAN = /[\u3000-\u9FFF\uFF00-\uFFEF]/, HANGUL = /[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/;
@@ -2962,24 +2962,20 @@ function photoCard(c, key, x, y, w, h, title, sub, a, hl) {
 function gHeading(c, txt, sub, a, subA) { const bg = c.createLinearGradient(0, 40, 0, 230); bg.addColorStop(0, 'rgba(236,227,207,0.92)'); bg.addColorStop(0.6, 'rgba(236,227,207,0.7)'); bg.addColorStop(1, 'rgba(236,227,207,0)'); c.fillStyle = bg; c.fillRect(0, 40, 1000, 190);
   c.save(); c.globalAlpha = a; c.fillStyle = '#1c2236'; c.textAlign = 'center'; c.font = '600 24px "Josefin Sans", sans-serif'; setLS(c, '6px'); c.fillText(tr(txt), 503, 104); setLS(c, '0px'); c.fillStyle = '#D51F24'; c.fillRect(470, 118, 60 * a, 3); c.restore();
   if (sub && subA > 0) { c.save(); c.globalAlpha = subA; c.fillStyle = '#D51F24'; c.textAlign = 'center'; c.font = '700 30px "Josefin Sans", sans-serif'; setLS(c, '8px'); c.fillText(tr(sub), 505, 170); setLS(c, '0px'); c.restore(); } }
-function edgeLine(c, from, toX, toY, u) { // the flight continuing off the plate (or arriving from the previous one), plane at its tip
-  if (u <= 0) return; const [x0, y0] = from, mx = (x0 + toX) / 2, my = Math.min(y0, toY) - 120, bz = s => [(1 - s) * (1 - s) * x0 + 2 * (1 - s) * s * mx + s * s * toX, (1 - s) * (1 - s) * y0 + 2 * (1 - s) * s * my + s * s * toY], pts = [];
-  for (let k = 0; k <= 40 * u; k++) pts.push(bz(k / 40)); dotted(c, pts, 4);
-  if (u < 1) { const a = bz(Math.max(0, u - 0.03)), b = bz(Math.min(1, u + 0.03)), L = bz(u); plane(c, L[0], L[1], Math.atan2(b[1] - a[1], b[0] - a[0]), 1.2); } }
 // one tour slide: S stops (with photo key k, name n, city c), optional entry stop E (from the previous slide) and an exit to the next slide
 function tourPlate(c, G, t, o) {
   paperBg(c, G);
   const S = o.S, CY = 480, st = tourState(S, t, o.intro, o.outro);
   const proj = drawGlobe(c, G, 500, CY, st.R, st.lon, st.lat, o.paint ? o.paint(t) : 1);
   // the route so far
-  if (o.entry) { const q = proj(S[0].lon, S[0].lat); const fa = 1 - pr(t, 0.6, 0.95); if (fa > 0) { c.save(); c.globalAlpha = fa; edgeLine(c, [-60, CY - 40], q[0], q[1], pr(t, 0, 0.5)); c.restore(); } }
   routeDraw(c, proj, S, st);
+  if (o.next) { const L = S[S.length - 1], f = o.next.f * easeIO(pr(t, L.t + 0.6, o.outro.t1 + 0.6)); if (f > 0) { const pts = []; for (let k = 0; k <= 24; k++) { const g = gcAt(L, o.next, f * k / 24), q = proj(g[0], g[1]); if (q[2] > 0.02) pts.push(q); } dotted(c, pts, 4);
+    const g = gcAt(L, o.next, f), g0 = gcAt(L, o.next, Math.max(0, f - 0.01)), q = proj(g[0], g[1]), q0 = proj(g0[0], g0[1]); if (q[2] > 0) plane(c, q[0], q[1], Math.atan2(q[1] - q0[1], q[0] - q0[0]), 1.15); } }
   // pins: visited ones stay, the current one pulses and carries its city name
   const ON = S.map(s => pr(t, s.t - 0.35, s.t)); let cur = -1; S.forEach((s, i) => { if (t > s.t - 0.3 && t < s.t + 0.6) cur = i; });
   const scr = S.map(s => proj(s.lon, s.lat));
   S.forEach((s, i) => { if (s.skip || i === cur) return; const q = scr[i]; if (q[2] > 0.05) gPin(c, q[0], q[1], ON[i] * (st.done ? 1 : 0.85), false, t, (st.done > 0.5 && o.overviewLabels) ? s.c : null); });
   if (cur >= 0 && !S[cur].skip) { const q = scr[cur]; if (q[2] > 0.05) gPin(c, q[0], q[1], ON[cur], true, t, S[cur].c); }
-  if (o.exit) { const L = scr[S.length - 1]; edgeLine(c, [L[0], L[1]], 1060, CY - 40, pr(t, o.outro.t1 - 0.1, o.outro.t1 + 1.3)); }
   // big photo card beside the pin while we are there
   S.forEach((s, i) => { if (s.skip) return; const a = pr(t, s.t - 0.25, s.t + 0.05) * (1 - pr(t, s.t + 0.5, s.t + 0.75)); if (a <= 0) return;
     const q = scr[i], right = s.side ? s.side > 0 : (i % 2 === 0), W = 380, H = 330, x = right ? 592 : 28, y = clamp(q[1] - H / 2 - 40, 230, 440);
@@ -2998,11 +2994,11 @@ const EUROPE_P = [ // a clean loop: south down the Atlantic coast, east along th
   { k: 'stadtcasino-basel', n: 'Stadtcasino Basel', c: 'Basel', lon: 7.59, lat: 47.55, t: 5.75, z: 4500, side: -1 },
   { k: 'humboldt-forum', n: 'Humboldt Forum', c: 'Berlin', lon: 13.4, lat: 52.52, t: 6.8, z: 4500, side: -1 }];
 function plateEurope(c, G, t) {
-  tourPlate(c, G, t, { S: EUROPE_P, head: 'KEIM ACROSS EUROPE', intro: { t0: 0.75, lon: 4, lat: 38, R: 420 }, outro: { t1: 7.7, lon: 12, lat: 50, R: 1300 }, exit: true,
+  tourPlate(c, G, t, { S: EUROPE_P, head: 'KEIM ACROSS EUROPE', intro: { t0: 0.75, lon: 4, lat: 38, R: 420 }, outro: { t1: 7.7, lon: 6, lat: 51, R: 1300 }, next: { lon: -73.96, lat: 40.75, f: 0.196 },
     paint: t => easeIO(lin(t, 0.1, 0.8)) });
 }
 const WORLD_P = [
-  { k: '', n: '', c: 'Berlin', lon: 13.4, lat: 52.52, t: 0.2, z: 1300, skip: true },
+  { k: '', n: '', c: 'Berlin', lon: 13.4, lat: 52.52, t: -1.0, z: 1300, skip: true }, // already in the air when the slide opens
   { k: 'hunters-point-library', n: 'Hunters Point Library', c: 'New York', lon: -73.96, lat: 40.75, t: 1.24, z: 4000, side: 1 },
   { k: 'swan-reserve', n: 'Swan Reserve', c: 'Orlando', lon: -81.56, lat: 28.37, t: 2.12, z: 4000, side: 1 },
   { k: 'zeitz-mocaa', n: 'Zeitz MOCAA', c: 'Cape Town', lon: 18.42, lat: -33.91, t: 3.32, z: 4000, side: -1 },
@@ -3013,12 +3009,12 @@ const WORLD_P = [
 // region names shown under the heading [from, to, label]
 const WORLD_REG = [[0.8, 2.75, 'THE AMERICAS'], [2.75, 4.85, 'AFRICA'], [4.85, 99, 'MIDDLE EAST & ASIA']];
 function plateWorld(c, G, t) {
-  tourPlate(c, G, t, { S: WORLD_P, head: 'KEIM AROUND THE WORLD', intro: { t0: 0, lon: 13.4, lat: 52.52, R: 1300 }, outro: { t1: 8.0, lon: 126, lat: 20, R: 1300 }, entry: true, exit: true,
+  tourPlate(c, G, t, { S: WORLD_P, head: 'KEIM AROUND THE WORLD', intro: { t0: 0, lon: 13.4, lat: 52.52, R: 1300 }, outro: { t1: 8.0, lon: 124, lat: 28, R: 1300 }, next: { lon: 115.95, lat: -33.4, f: 0.07 },
     region: t => { for (const r of WORLD_REG) if (t >= r[0] - 0.2 && t < r[1]) return r[2]; return null; },
     regionA: t => { for (const r of WORLD_REG) if (t >= r[0] - 0.2 && t < r[1]) return Math.min(pr(t, r[0] - 0.2, r[0] + 0.2), 1 - pr(t, r[1] - 0.25, r[1])); return 0; } });
 }
 const AUS_P = [
-  { k: '', n: '', c: 'Incheon', lon: 126.45, lat: 37.45, t: 0.2, z: 1300, skip: true },
+  { k: '', n: '', c: 'Incheon', lon: 126.45, lat: 37.45, t: -1.0, z: 1300, skip: true }, // already in the air when the slide opens
   { k: 'wellington-dam', n: 'Wellington Dam mural', c: 'Collie, WA', cn: 'Western Australia', lon: 115.95, lat: -33.4, t: 1.9, z: 4200, side: 1, hl: true, credit: 'Neonbunyip, CC BY-SA 4.0' },
   { k: 'joan', n: 'Joan Kirner Hospital', c: 'Melbourne', lon: 144.88, lat: -37.79, t: 3.0, z: 4200, side: -1 },
   { k: 'parramatta', n: 'Parramatta Town Hall', c: 'Parramatta', cn: 'Sydney', lon: 151.0, lat: -33.815, t: 3.95, z: 9000, side: -1 },
@@ -3027,7 +3023,7 @@ const AUS_P = [
   { k: 'opera', n: 'Sydney Opera House', c: 'Sydney', lon: 151.215, lat: -33.857, t: 6.4, z: 9000, side: -1 }
 ];
 function plateAus(c, G, t) {
-  tourPlate(c, G, t, { S: AUS_P, head: 'KEIM IN AUSTRALIA', intro: { t0: 0, lon: 126, lat: 20, R: 1300 }, outro: { t1: 7.7, lon: 134, lat: -28, R: 1250 }, entry: true, overviewLabels: false });
+  tourPlate(c, G, t, { S: AUS_P, head: 'KEIM IN AUSTRALIA', intro: { t0: 0, lon: 126, lat: 20, R: 1300 }, outro: { t1: 7.7, lon: 134, lat: -28, R: 1250 }, overviewLabels: false });
 }
 // ---- the two early façades: real photographs with a slow camera that moves in on the painted details
 function kbAt(keys, t) { let K = keys[0]; for (let i = 1; i < keys.length; i++) { if (t < keys[i][0]) { const A = keys[i - 1], B = keys[i], e = easeIO((t - A[0]) / (B[0] - A[0])); return [0, lerpA(A[1], B[1], e), lerpA(A[2], B[2], e), Math.exp(lerpA(Math.log(A[3]), Math.log(B[3]), e))]; } K = keys[i]; } return K; }
@@ -3140,10 +3136,10 @@ const PL = [
   { lab: 'Europe', kick: 'Worldwide · Europe', ttl: 'KEIM across Europe', loc: 'London · Nantes · Madrid · Milan · Basel · Berlin', key: '#e7dcc4', trail: '#D51F24', draw: plateEurope, slow: 0.55, amb: AMB_PHOTO, fx: [[0.1, 'brush'], [1.0, 'whoosh'], [1.55, 'pop'], [2.6, 'pop'], [3.65, 'pop'], [4.7, 'pop'], [5.75, 'pop'], [6.8, 'chime']],
     txt: 'Across Europe, KEIM protects new landmarks and old ones — Grafton Architects’ Marshall Building in London, Madrid’s Plaza Mayor, Building Janus in Nantes, Herzog & de Meuron’s Stadtcasino Basel, the Humboldt Forum in Berlin and Milan’s Galleria Vittorio Emanuele II.',
     story: 'In London, the Marshall Building by Grafton Architects (KEIM Concretal-Lasur and Concretal Fixativ). In Madrid, the Plaza Mayor: KEIM decorative paints on its mural and KEIM Soldalit on the surrounding façades. In Nantes, Building Janus (KEIM Concretal-Lasur). In Basel, Herzog & de Meuron’s Stadtcasino (KEIM Lignosil-Color). In Berlin, the Humboldt Forum (KEIM Soldalit, Optil and Restauro-Lasur). And in Milan, the Galleria Vittorio Emanuele II (KEIM Granital).', fact: 'Every KEIM product is still made by KEIMFARBEN in Diedorf, near Augsburg.' },
-  { lab: 'Around the world', kick: 'Worldwide', ttl: 'KEIM around the world', loc: 'Landmarks on five continents', key: '#e7dcc4', trail: '#D51F24', draw: plateWorld, slow: 0.55, amb: AMB_PHOTO, fx: [[0.7, 'whoosh'], [1.4, 'pop'], [2.35, 'pop'], [3.3, 'pop'], [4.25, 'pop'], [5.2, 'pop'], [5.6, 'whoosh'], [6.45, 'pop'], [7.35, 'chime']],
+  { lab: 'Around the world', kick: 'Worldwide · Americas · Africa · Asia', ttl: 'KEIM around the world', loc: 'Landmarks on five continents', key: '#e7dcc4', trail: '#D51F24', draw: plateWorld, slow: 0.55, amb: AMB_PHOTO, fx: [[0.7, 'whoosh'], [1.4, 'pop'], [2.35, 'pop'], [3.3, 'pop'], [4.25, 'pop'], [5.2, 'pop'], [5.6, 'whoosh'], [6.45, 'pop'], [7.35, 'chime']],
     txt: 'Beyond Europe: the Hunters Point Library in New York and the Swan Reserve in Orlando, the Grande Mosquée in Algiers and the Zeitz MOCAA in Cape Town, Zayed International Airport in Abu Dhabi, Marina Bay Sands in Singapore and MVRDV’s golden Imprint in Korea.',
     story: 'In New York, Steven Holl’s Hunters Point Library (KEIM Concretal-W and Design-Lasur Metallic); in Orlando, the Walt Disney World Swan Reserve (KEIM Soldalit). In Algiers, the Grande Mosquée (KEIM Betonfinish); in Cape Town, Heatherwick Studio’s Zeitz MOCAA (KEIM Concretal-Lasur). In Abu Dhabi, Zayed International Airport (KEIM Concretal-Lasur). In Singapore, Moshe Safdie’s Marina Bay Sands (KEIM Royalan); and at Paradise City, Incheon, MVRDV’s golden Imprint (KEIM Royalan).', fact: 'The same silicate chemistry Adolf Keim patented in 1878 protects all of them.' },
-  { lab: 'Australian landmarks', kick: 'Australia', ttl: 'Landmarks closer to home', loc: 'Western Australia · Melbourne · Sydney', key: '#e7dcc4', trail: '#D51F24', draw: plateAus, slow: 0.55, amb: AMB_PHOTO, fx: [[0.6, 'whoosh'], [1.6, 'pop'], [2.75, 'pop'], [3.85, 'pop'], [4.7, 'pop'], [5.55, 'pop'], [6.4, 'chime']],
+  { lab: 'Australian landmarks', kick: 'Worldwide · Australia', ttl: 'Landmarks closer to home', loc: 'Western Australia · Melbourne · Sydney', key: '#e7dcc4', trail: '#D51F24', draw: plateAus, slow: 0.55, amb: AMB_PHOTO, fx: [[0.6, 'whoosh'], [1.6, 'pop'], [2.75, 'pop'], [3.85, 'pop'], [4.7, 'pop'], [5.55, 'pop'], [6.4, 'chime']],
     txt: 'In Australia, KEIM is on the Wellington Dam mural in Western Australia — the world’s largest dam mural — Melbourne’s Joan Kirner Women’s & Children’s Hospital, the restored 1883 Parramatta Town Hall, the WestConnex M8 tunnel, the Porter House Hotel and the Sydney Opera House.',
     story: 'Reflections, Guido van Helten’s 8,000 m² mural on the Wellington Dam wall near Collie in Western Australia’s South West, opened in February 2021 (KEIM Concretal-Lasur). Melbourne’s Joan Kirner Women’s & Children’s Hospital by Lyons Architects (KEIM Concretal-Lasur). Parramatta Town Hall, opened in 1883 and restored by TKD Architects, reopened in December 2023 in KEIM Royalan with KEIM Faceal Oleo. The WestConnex M8 tunnel in Sydney, designed by Hassell (KEIM Concretal-Lasur). In the Sydney CBD, the heritage-listed Porter House and the new Castle Residences beside it, by Angelo Candalepas Associates (KEIM Concretal-Lasur on the concrete façades). And the Sydney Opera House (KEIM Concretal-Lasur).', fact: 'At 8,000 m², the Wellington Dam mural is described as the largest dam mural in the world.' },
   { lab: 'Today · Mineral', kick: 'Today · Australia', ttl: 'Mineral comes home', loc: 'Matraville, Sydney, Australia', key: '#efe9dc', trail: '#6f8f5e', draw: plate9, amb: AMB[13], fx: [[1.0, 'pop'], [1.35, 'brush'], [2.15, 'rolllong'], [3.75, 'chime']],
@@ -3479,6 +3475,35 @@ const SPOTS = {
   'Visit us · Matraville': [
     { x: 850, y: 330, w: [5, 99], k: 'VISIT', t: 'Unit 7 / 19 McCauley Street', p: [['Address', 'Unit 7, 19 McCauley Street, Matraville NSW 2036 — near Port Botany.'], ['Come and see', 'Colour fan decks, samples and technical advice.']] }]
 };
+
+// ---- More info for every project on the three tour slides: one card per thumbnail in the bottom strip
+const TOUR_INFO = {
+  'marshall-building': ['LONDON · UK', 'Grafton Architects, for the London School of Economics; opened in 2022.', 'KEIM Concretal-Lasur and Concretal Fixativ on the exposed concrete.', 'Grafton Architects’ founders, Yvonne Farrell and Shelley McNamara, won the 2020 Pritzker Prize.'],
+  'building-janus-nantes': ['NANTES · FRANCE', 'A contemporary building in Nantes, western France.', 'KEIM Concretal-Lasur: a mineral glaze that evens out concrete while its texture stays visible and the surface stays breathable.'],
+  'plaza-mayor': ['MADRID · SPAIN', 'The great arcaded square of old Madrid, completed in 1619 under King Philip III.', 'KEIM decorative paints on the mural of the Casa de la Panadería, and KEIM Soldalit on the surrounding façades.', 'The Casa de la Panadería murals were painted by Carlos Franco in 1992.'],
+  'galleria-vittorio-emanuele': ['MILAN · ITALY', 'Designed by Giuseppe Mengoni and built from 1865 to 1877 — one of the world’s oldest shopping arcades.', 'KEIM Granital silicate paint on the façades.', 'Its glass-and-iron roofs meet in an octagon under a 47 m dome.'],
+  'stadtcasino-basel': ['BASEL · SWITZERLAND', 'Herzog & de Meuron’s extension of Basel’s 1876 concert hall, completed in 2020.', 'KEIM Lignosil-Color.'],
+  'humboldt-forum': ['BERLIN · GERMANY', 'The rebuilt Berlin Palace: Baroque façades reconstructed to a design by Franco Stella, opened in 2020–21.', 'KEIM Soldalit, Optil and Restauro-Lasur.', 'Behind the historic façades are museums of world cultures.'],
+  'hunters-point-library': ['NEW YORK · USA', 'Steven Holl Architects; opened in 2019 on the Queens waterfront.', 'KEIM Concretal-W and Design-Lasur Metallic give the concrete its shimmering aluminium tone.', 'Large carved windows frame views of the Manhattan skyline.'],
+  'swan-reserve': ['ORLANDO · USA', 'The Walt Disney World Swan Reserve hotel, opened in 2021.', 'KEIM Soldalit on the façades.'],
+  'zeitz-mocaa': ['CAPE TOWN · SOUTH AFRICA', 'Heatherwick Studio carved the museum out of a 1920s grain silo; it opened in 2017.', 'KEIM Concretal-Lasur.', 'It is the world’s largest museum of contemporary African art.'],
+  'grande-mosquee-algiers': ['ALGIERS · ALGERIA', 'Djamaa El Djazaïr, the Great Mosque of Algiers, inaugurated in 2024.', 'KEIM Betonfinish on the concrete.', 'Its 265 m minaret is the tallest in the world.'],
+  'zayed-airport': ['ABU DHABI · UAE', 'Terminal A by Kohn Pedersen Fox, opened in November 2023.', 'KEIM Concretal-Lasur.'],
+  'marina-bay-sands': ['SINGAPORE', 'Moshe Safdie; opened in 2010 — three 55-storey towers joined by a SkyPark.', 'KEIM Royalan.'],
+  'the-imprint': ['INCHEON · SOUTH KOREA', 'MVRDV, completed in 2018 at the Paradise City resort.', 'KEIM Royalan.', 'The windowless façades are imprinted with the façades of the neighbouring buildings, and the golden entrance lifts like a curtain.'],
+  'wellington-dam': ['WESTERN AUSTRALIA', '“Reflections” by Guido van Helten, on the Wellington Dam wall near Collie; opened in February 2021.', 'KEIM Concretal-Lasur.', 'At 8,000 m², the Wellington Dam mural is described as the largest dam mural in the world.'],
+  'joan': ['MELBOURNE', 'Lyons Architects; opened in 2019 in Sunshine, in Melbourne’s west.', 'KEIM Concretal-Lasur.'],
+  'parramatta': ['SYDNEY', 'Opened in 1883; restored by TKD Architects and reopened in December 2023.', 'KEIM Royalan with KEIM Faceal Oleo.'],
+  'westconnex': ['SYDNEY', 'Designed by Hassell; the M8 opened in 2020.', 'KEIM Concretal-Lasur.'],
+  'porter-house': ['SYDNEY', 'Angelo Candalepas Associates: the heritage-listed Porter House and the new Castle Residences beside it.', 'KEIM Concretal-Lasur on the concrete façades.'],
+  'opera': ['SYDNEY', 'Jørn Utzon; opened in 1973 and World Heritage-listed in 2007.', 'KEIM Concretal-Lasur.']
+};
+function tourSpots(S) { // a + on each thumbnail of the strip, appearing as the thumbnail does (same layout as tourPlate)
+  const P2 = S.filter(s => !s.skip), n = P2.length, TW = Math.min(150, (940 - (n - 1) * 14) / n), X0 = 500 - (n * TW + (n - 1) * 14) / 2;
+  return P2.map((s, i) => { const f = TOUR_INFO[s.k] || ['', '', '']; const p = [['The project', f[1]], ['KEIM', f[2]]]; if (f[3]) p.push(['✦ Fascinating fact', f[3]]);
+    return { x: Math.round(X0 + i * (TW + 14) + TW - 18), y: 850, w: [s.t + 0.8, 99], k: f[0], t: s.n, p }; });
+}
+SPOTS['Europe'] = tourSpots(EUROPE_P); SPOTS['Around the world'] = tourSpots(WORLD_P); SPOTS['Australian landmarks'] = tourSpots(AUS_P);
 
 // ---------- canvas + world ----------
 const cv = document.getElementById('film'), c = cv.getContext('2d');
