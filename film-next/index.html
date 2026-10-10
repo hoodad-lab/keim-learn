@@ -321,7 +321,7 @@ body:not(.cine) .ui::before { content: ''; position: absolute; inset: -46px 0 0 
 
 // ---------- languages (EN · DE · ES · IT · FR) ----------
 const I18N = {};
-const I18N_V = 9;
+const I18N_V = 10;
 const LANG_NAMES = { en: 'English', de: 'Deutsch', es: 'Español', it: 'Italiano', fr: 'Français', pt: 'Português', fa: 'فارسی', ar: 'العربية', hi: 'हिन्दी', zh: '简体中文', da: 'Dansk', sv: 'Svenska', no: 'Norsk', fi: 'Suomi', nl: 'Nederlands', pl: 'Polski', tw: '繁體中文', ja: '日本語', ko: '한국어', cs: 'Čeština' };
 const LITE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
 const RTL = l => l === 'fa' || l === 'ar', AR = /[\u0600-\u06FF]/, DEV = /[\u0900-\u097F]/, HAN = /[\u3000-\u9FFF\uFF00-\uFFEF]/, HANGUL = /[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/;
