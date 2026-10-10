@@ -68,7 +68,7 @@ h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; text-transform: upper
 .rail::before { content: ""; position: absolute; left: 0; right: 0; top: 48px; height: 12px; border-radius: 6px; background: linear-gradient(90deg, #c2512a 0%, #d9a441 18%, #2a62ad 36%, #8a1f2a 54%, #D51F24 72%, #ff5ea8 84%, #7fd4ff 100%); }
 .stops { list-style: none; margin: 0; padding: 0; position: relative; height: 70px; }
 .stops li { position: absolute; top: -110px; width: 0; }
-.stops a { position: absolute; left: 0; transform: translateX(-50%); display: grid; justify-items: center; text-decoration: none; width: 160px; }
+.stops a { position: absolute; left: 0; transform: translateX(-50%); display: grid; justify-items: center; text-decoration: none; width: 128px; }
 .stops img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 5px solid var(--paper); box-shadow: 0 10px 24px -8px rgba(28,34,54,.5); display: block; position: relative; z-index: 1; }
 .stops small { font: 600 11.5px/1 var(--sans); letter-spacing: .08em; color: var(--red); margin-top: 18px; }
 .stops span { font-size: 14px; line-height: 1.3; text-align: center; color: var(--ink); margin-top: 5px; }
@@ -216,18 +216,22 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     <h2 id="rib-h">Jump straight to a chapter</h2>
     <div class="rail"><ul class="stops" id="stops">
       <li style="left:4%"><a href="#cave" data-ch="cave"><img src="ch-cave.jpg" alt="" width="86" height="86"><small>60,000 years ago</small><span>Earth on stone</span></a></li>
-      <li style="left:24%"><a href="#pompeii" data-ch="pompeii"><img src="ch-pompeii.jpg" alt="" width="86" height="86"><small>79 CE</small><span>Paint that becomes the wall</span></a></li>
-      <li style="left:44%"><a href="#keim" data-ch="keim"><img src="ch-keim-c.jpg" alt="" width="86" height="86"><small>1878</small><span>Meet A. W. Keim</span></a></li>
-      <li style="left:62%"><a href="#plastic-skin" data-ch="plastic-skin"><img src="ch-plastic-c.jpg" alt="" width="86" height="86"><small>1950s</small><span>A plastic skin</span></a></li>
-      <li style="left:79%"><a href="#verdict" data-ch="verdict"><img src="ch-verdict-c.jpg" alt="" width="86" height="86"><small>The verdict</small><span>Film versus mineral bond</span></a></li>
+      <li style="left:17.5%"><a href="#pompeii" data-ch="pompeii"><img src="ch-pompeii.jpg" alt="" width="86" height="86"><small>79 CE</small><span>Paint that becomes the wall</span></a></li>
+      <li style="left:31%"><a href="#keim" data-ch="keim"><img src="ch-keim-c.jpg" alt="" width="86" height="86"><small>1878</small><span>Meet A. W. Keim</span></a></li>
+      <li style="left:44.5%"><a href="#acrylic" data-ch="acrylic"><img src="ch-acrylic-c.jpg" alt="" width="86" height="86"><small>1934–1953</small><span>Why acrylic took over</span></a></li>
+      <li style="left:58%"><a href="#plastic-skin" data-ch="plastic-skin"><img src="ch-plastic-c.jpg" alt="" width="86" height="86"><small>1950s</small><span>A plastic skin</span></a></li>
+      <li style="left:71.5%"><a href="#verdict" data-ch="verdict"><img src="ch-verdict-c.jpg" alt="" width="86" height="86"><small>The verdict</small><span>Film versus mineral bond</span></a></li>
+      <li style="left:84%"><a href="#europe" data-ch="europe"><img src="ch-world-c.jpg" alt="" width="86" height="86"><small>Worldwide</small><span>KEIM around the world</span></a></li>
       <li style="left:96%"><a href="#today" data-ch="today"><img src="ch-today-c.jpg" alt="" width="86" height="86"><small>Today</small><span>KEIM Australia</span></a></li>
     </ul></div>
     <div class="strip" id="strip">
       <a href="#cave" data-ch="cave"><img src="ch-cave.jpg" alt=""><small>60,000 years ago</small><span>Earth on stone</span></a>
       <a href="#pompeii" data-ch="pompeii"><img src="ch-pompeii.jpg" alt=""><small>79 CE</small><span>Paint that becomes the wall</span></a>
       <a href="#keim" data-ch="keim"><img src="ch-keim.jpg" alt=""><small>1878</small><span>Meet A. W. Keim</span></a>
+      <a href="#acrylic" data-ch="acrylic"><img src="ch-acrylic.jpg" alt=""><small>1934–1953</small><span>Why acrylic took over</span></a>
       <a href="#plastic-skin" data-ch="plastic-skin"><img src="ch-plastic.jpg" alt=""><small>1950s</small><span>A plastic skin</span></a>
       <a href="#verdict" data-ch="verdict"><img src="ch-verdict.jpg" alt=""><small>The verdict</small><span>Film versus mineral bond</span></a>
+      <a href="#europe" data-ch="europe"><img src="ch-world.jpg" alt=""><small>Worldwide</small><span>KEIM around the world</span></a>
       <a href="#today" data-ch="today"><img src="ch-today.jpg" alt=""><small>Today</small><span>KEIM Australia</span></a>
     </div>
   </section>
