@@ -321,7 +321,7 @@ body:not(.cine) .ui::before { content: ''; position: absolute; inset: -46px 0 0 
 
 // ---------- languages (EN · DE · ES · IT · FR) ----------
 const I18N = {};
-const I18N_V = 12;
+const I18N_V = 13;
 const LANG_NAMES = { en: 'English', de: 'Deutsch', es: 'Español', it: 'Italiano', fr: 'Français', pt: 'Português', fa: 'فارسی', ar: 'العربية', hi: 'हिन्दी', zh: '简体中文', da: 'Dansk', sv: 'Svenska', no: 'Norsk', fi: 'Suomi', nl: 'Nederlands', pl: 'Polski', tw: '繁體中文', ja: '日本語', ko: '한국어', cs: 'Čeština' };
 const LITE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
 const AR = /[\u0600-\u06FF]/, DEV = /[\u0900-\u097F]/, HAN = /[\u3000-\u9FFF\uFF00-\uFFEF]/, HANGUL = /[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/;
@@ -2906,16 +2906,20 @@ function drawGlobe(c, G, cx, cy, R, lam0, phi0, paint) {
 }
 // ---- the tour: stops, a dotted route the camera follows, photo cards that pop beside each pin
 const lerpA = (a, b, e) => a + (b - a) * e;
-function legPts(A, B, n) { let dl = B.lon - A.lon; if (B.east) { while (dl < 0) dl += 360; } else { while (dl > 180) dl -= 360; while (dl < -180) dl += 360; } const out = []; for (let i = 0; i <= n; i++) { const u = i / n; out.push([A.lon + dl * u, A.lat + (B.lat - A.lat) * u]); } return out; }
-function legAng(A, B) { const a = uvec(A.lon, A.lat), b = uvec(B.lon, B.lat); let d = Math.acos(Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2]))); if (B.east) { let dl = B.lon - A.lon; while (dl < 0) dl += 360; d = Math.max(d, dl * D2R * Math.cos((A.lat + B.lat) / 2 * D2R)); } return d; }
+function gcAt(A, B, u) { // point a fraction u along the great circle from A to B, as [lon, lat]
+  const a = uvec(A.lon, A.lat), b = uvec(B.lon, B.lat), d = Math.acos(Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2])));
+  if (d < 1e-6) return [A.lon, A.lat]; const sa = Math.sin((1 - u) * d) / Math.sin(d), sb = Math.sin(u * d) / Math.sin(d), x = a[0] * sa + b[0] * sb, y = a[1] * sa + b[1] * sb, z = a[2] * sa + b[2] * sb;
+  let lon = Math.atan2(y, x) / D2R; while (lon - A.lon > 180) lon -= 360; while (lon - A.lon < -180) lon += 360; return [lon, Math.asin(Math.max(-1, Math.min(1, z / Math.hypot(x, y, z)))) / D2R]; }
+function legPts(A, B, n) { const out = []; for (let i = 0; i <= n; i++) out.push(gcAt(A, B, i / n)); return out; }
+function legAng(A, B) { const a = uvec(A.lon, A.lat), b = uvec(B.lon, B.lat); return Math.acos(Math.max(-1, Math.min(1, a[0] * b[0] + a[1] * b[1] + a[2] * b[2]))); }
 // S: stops [{lon,lat,t,z}], each stop held around t; returns camera + route progress
 function tourState(S, t, intro, outro) {
   const arr = s => s.t - 0.2, dep = s => s.t + 0.4;
   if (t < arr(S[0])) { const u = easeIO(clamp((t - intro.t0) / (arr(S[0]) - intro.t0))); return { lon: lerpA(intro.lon, S[0].lon, u), lat: lerpA(intro.lat, S[0].lat, u), R: Math.exp(lerpA(Math.log(intro.R), Math.log(S[0].z), u)), leg: -1, u: 0 }; }
   for (let i = 0; i < S.length - 1; i++) { const A = S[i], B = S[i + 1];
     if (t < dep(A)) return { lon: A.lon, lat: A.lat, R: A.z, leg: i - 1, u: 1, at: i };
-    if (t < arr(B)) { const u = easeIO((t - dep(A)) / (arr(B) - dep(A))), p = legPts(A, B, 1), ang = legAng(A, B), hop = Math.max(320, Math.min(A.z, B.z, 430 / Math.max(ang, 1e-3)));
-      return { lon: lerpA(p[0][0], p[1][0], u), lat: lerpA(A.lat, B.lat, u), R: Math.exp(lerpA(Math.log(A.z), Math.log(B.z), u) * (1 - Math.sin(Math.PI * u)) + Math.log(hop) * Math.sin(Math.PI * u)), leg: i, u }; } }
+    if (t < arr(B)) { const u = easeIO((t - dep(A)) / (arr(B) - dep(A))), p = gcAt(A, B, u), ang = legAng(A, B), hop = Math.max(320, Math.min(A.z, B.z, 430 / Math.max(ang, 1e-3)));
+      return { lon: p[0], lat: p[1], R: Math.exp(lerpA(Math.log(A.z), Math.log(B.z), u) * (1 - Math.sin(Math.PI * u)) + Math.log(hop) * Math.sin(Math.PI * u)), leg: i, u }; } }
   const L = S[S.length - 1]; if (t < dep(L)) return { lon: L.lon, lat: L.lat, R: L.z, leg: S.length - 2, u: 1, at: S.length - 1 };
   const u = easeIO(clamp((t - dep(L)) / (outro.t1 - dep(L)))); return { lon: lerpA(L.lon, outro.lon, u), lat: lerpA(L.lat, outro.lat, u), R: Math.exp(lerpA(Math.log(L.z), Math.log(outro.R), u)), leg: S.length - 2, u: 1, done: u };
 }
@@ -2925,9 +2929,17 @@ function routeDraw(c, proj, S, st) { // dotted line through finished legs + the 
   let head = null;
   for (let i = 0; i <= Math.min(st.leg, S.length - 2); i++) { const full = i < st.leg || st.u >= 1, pts = legPts(S[i], S[i + 1], 48), m = full ? 48 : Math.max(1, Math.round(48 * st.u));
     const scr = []; for (let k = 0; k <= m; k++) { const q = proj(pts[k][0], pts[k][1]); if (q[2] > 0.02) scr.push(q); else { dotted(c, scr, 4); scr.length = 0; } } dotted(c, scr, 4);
-    if (!full) { const q = proj(lerpA(pts[0][0], pts[48][0], st.u), lerpA(S[i].lat, S[i + 1].lat, st.u)); head = q; } }
-  if (head && head[2] > 0) { c.fillStyle = '#fff'; c.strokeStyle = '#1c2236'; c.lineWidth = 4; c.beginPath(); c.arc(head[0], head[1], 9, 0, TAU); c.fill(); c.stroke(); c.fillStyle = '#D51F24'; c.beginPath(); c.arc(head[0], head[1], 4, 0, TAU); c.fill(); }
+    if (!full) { const g = gcAt(S[i], S[i + 1], st.u), g2 = gcAt(S[i], S[i + 1], Math.min(1, st.u + 0.02)), g0 = gcAt(S[i], S[i + 1], Math.max(0, st.u - 0.02)), q = proj(g[0], g[1]), q2 = proj(g2[0], g2[1]), q0 = proj(g0[0], g0[1]);
+      head = [q[0], q[1], q[2], Math.atan2(q2[1] - q0[1], q2[0] - q0[0]), Math.sin(Math.PI * st.u)]; } }
+  if (head && head[2] > 0) plane(c, head[0], head[1], head[3], 1 + 0.35 * head[4]);
 }
+function plane(c, x, y, ang, s) { // a small airliner seen from above, nose along ang; s grows mid-flight as if climbing
+  c.save(); c.translate(x, y); c.rotate(ang); c.scale(s, s);
+  c.fillStyle = 'rgba(28,20,10,0.22)'; c.save(); c.translate(-6, 10); c.beginPath(); c.ellipse(0, 0, 20, 4, 0, 0, TAU); c.fill(); c.restore();
+  c.beginPath(); c.moveTo(24, 0); c.quadraticCurveTo(22, -4, 15, -4); c.lineTo(4, -4); c.lineTo(-6, -22); c.lineTo(-12, -22); c.lineTo(-5, -4); c.lineTo(-16, -4); c.lineTo(-21, -11); c.lineTo(-25, -11); c.lineTo(-22, 0);
+  c.lineTo(-25, 11); c.lineTo(-21, 11); c.lineTo(-16, 4); c.lineTo(-5, 4); c.lineTo(-12, 22); c.lineTo(-6, 22); c.lineTo(4, 4); c.lineTo(15, 4); c.quadraticCurveTo(22, 4, 24, 0); c.closePath();
+  c.lineJoin = 'round'; c.strokeStyle = '#fff'; c.lineWidth = 4; c.stroke(); c.fillStyle = '#1c2236'; c.fill();
+  c.fillStyle = '#D51F24'; c.beginPath(); c.moveTo(-21, -11); c.lineTo(-25, -11); c.lineTo(-22, 0); c.lineTo(-25, 11); c.lineTo(-21, 11); c.lineTo(-18, 0); c.closePath(); c.fill(); c.restore(); }
 function gPin(c, x, y, a, active, t, label) { if (a <= 0) return; c.save(); c.globalAlpha = a; const s = (active ? 1 : 0.7) * (0.6 + 0.4 * backOut(a));
   if (active) for (let k = 0; k < 2; k++) { const u = ((t * 0.9 + k * 0.5) % 1); c.strokeStyle = `rgba(28,34,54,${0.7 * (1 - u)})`; c.lineWidth = 3; c.beginPath(); c.ellipse(x, y, 10 + u * 46, (10 + u * 46) * 0.5, 0, 0, TAU); c.stroke(); }
   c.translate(x, y); c.scale(s, s); c.fillStyle = 'rgba(0,0,0,0.25)'; c.beginPath(); c.ellipse(0, 0, 12, 4, 0, 0, TAU); c.fill();
@@ -2950,25 +2962,18 @@ function photoCard(c, key, x, y, w, h, title, sub, a, hl) {
 function gHeading(c, txt, sub, a, subA) { const bg = c.createLinearGradient(0, 40, 0, 230); bg.addColorStop(0, 'rgba(236,227,207,0.92)'); bg.addColorStop(0.6, 'rgba(236,227,207,0.7)'); bg.addColorStop(1, 'rgba(236,227,207,0)'); c.fillStyle = bg; c.fillRect(0, 40, 1000, 190);
   c.save(); c.globalAlpha = a; c.fillStyle = '#1c2236'; c.textAlign = 'center'; c.font = '600 24px "Josefin Sans", sans-serif'; setLS(c, '6px'); c.fillText(tr(txt), 503, 104); setLS(c, '0px'); c.fillStyle = '#D51F24'; c.fillRect(470, 118, 60 * a, 3); c.restore();
   if (sub && subA > 0) { c.save(); c.globalAlpha = subA; c.fillStyle = '#D51F24'; c.textAlign = 'center'; c.font = '700 30px "Josefin Sans", sans-serif'; setLS(c, '8px'); c.fillText(tr(sub), 505, 170); setLS(c, '0px'); c.restore(); } }
-function edgeLine(c, from, toX, toY, u) { // a dotted line leaving (or entering) the plate, so the eye follows it to the next slide
-  if (u <= 0) return; const [x0, y0] = from, mx = (x0 + toX) / 2, my = Math.min(y0, toY) - 120, pts = [];
-  for (let k = 0; k <= 40 * u; k++) { const s = k / 40; pts.push([(1 - s) * (1 - s) * x0 + 2 * (1 - s) * s * mx + s * s * toX, (1 - s) * (1 - s) * y0 + 2 * (1 - s) * s * my + s * s * toY]); } dotted(c, pts, 4);
-  const L = pts[pts.length - 1]; if (u < 1) { c.fillStyle = '#fff'; c.strokeStyle = '#1c2236'; c.lineWidth = 4; c.beginPath(); c.arc(L[0], L[1], 9, 0, TAU); c.fill(); c.stroke(); } }
 // one tour slide: S stops (with photo key k, name n, city c), optional entry stop E (from the previous slide) and an exit to the next slide
 function tourPlate(c, G, t, o) {
   paperBg(c, G);
   const S = o.S, CY = 480, st = tourState(S, t, o.intro, o.outro);
   const proj = drawGlobe(c, G, 500, CY, st.R, st.lon, st.lat, o.paint ? o.paint(t) : 1);
   // the route so far
-  if (o.entry) { const q = proj(S[0].lon, S[0].lat); edgeLine(c, [-60, CY - 40], q[0], q[1] - 30, 1 - pr(t, 0.45, 0.85)); }
   routeDraw(c, proj, S, st);
   // pins: visited ones stay, the current one pulses and carries its city name
   const ON = S.map(s => pr(t, s.t - 0.35, s.t)); let cur = -1; S.forEach((s, i) => { if (t > s.t - 0.3 && t < s.t + 0.6) cur = i; });
   const scr = S.map(s => proj(s.lon, s.lat));
   S.forEach((s, i) => { if (s.skip || i === cur) return; const q = scr[i]; if (q[2] > 0.05) gPin(c, q[0], q[1], ON[i] * (st.done ? 1 : 0.85), false, t, (st.done > 0.5 && o.overviewLabels) ? s.c : null); });
   if (cur >= 0 && !S[cur].skip) { const q = scr[cur]; if (q[2] > 0.05) gPin(c, q[0], q[1], ON[cur], true, t, S[cur].c); }
-  // exit towards the next slide
-  if (o.exit) { const L = scr[S.length - 1]; edgeLine(c, [L[0], L[1] - 30], 1060, CY - 40, pr(t, o.outro.t1 - 0.1, o.outro.t1 + 1.3)); }
   // big photo card beside the pin while we are there
   S.forEach((s, i) => { if (s.skip) return; const a = pr(t, s.t - 0.25, s.t + 0.05) * (1 - pr(t, s.t + 0.5, s.t + 0.75)); if (a <= 0) return;
     const q = scr[i], right = s.side ? s.side > 0 : (i % 2 === 0), W = 380, H = 330, x = right ? 592 : 28, y = clamp(q[1] - H / 2 - 40, 230, 440);
@@ -2980,43 +2985,44 @@ function tourPlate(c, G, t, o) {
   P2.forEach((s, i) => { const a = pr(t, s.t + 0.5, s.t + 0.8); if (a > 0) photoCard(c, s.k, X0 + i * (TW + 14), 836, TW, TW * 0.82, s.n, s.cn || s.c, a, s.hl); });
   gHeading(c, o.head, o.region ? o.region(t) : null, pr(t, 0.1, 0.6), o.region ? o.regionA(t) : 0);
 }
-const EUROPE_P = [
-  { k: 'marshall-building', n: 'Marshall Building', c: 'London', lon: -0.12, lat: 51.51, t: 1.55, z: 4500 },
-  { k: 'plaza-mayor', n: 'Plaza Mayor', c: 'Madrid', lon: -3.71, lat: 40.42, t: 2.6, z: 4500 },
-  { k: 'building-janus-nantes', n: 'Building Janus', c: 'Nantes', lon: -1.55, lat: 47.21, t: 3.65, z: 4500, side: -1 },
-  { k: 'stadtcasino-basel', n: 'Stadtcasino Basel', c: 'Basel', lon: 7.59, lat: 47.55, t: 4.7, z: 4500, side: -1 },
-  { k: 'humboldt-forum', n: 'Humboldt Forum', c: 'Berlin', lon: 13.4, lat: 52.52, t: 5.75, z: 4500, side: -1 },
-  { k: 'galleria-vittorio-emanuele', n: 'Galleria Vittorio Emanuele II', c: 'Milan', lon: 9.19, lat: 45.47, t: 6.8, z: 4500, side: 1 }];
+const EUROPE_P = [ // a clean loop: south down the Atlantic coast, east along the Mediterranean, then north over the Alps
+  { k: 'marshall-building', n: 'Marshall Building', c: 'London', lon: -0.12, lat: 51.51, t: 1.55, z: 4500, side: 1 },
+  { k: 'building-janus-nantes', n: 'Building Janus', c: 'Nantes', lon: -1.55, lat: 47.21, t: 2.6, z: 4500, side: -1 },
+  { k: 'plaza-mayor', n: 'Plaza Mayor', c: 'Madrid', lon: -3.71, lat: 40.42, t: 3.65, z: 4500, side: 1 },
+  { k: 'galleria-vittorio-emanuele', n: 'Galleria Vittorio Emanuele II', c: 'Milan', lon: 9.19, lat: 45.47, t: 4.7, z: 4500, side: 1 },
+  { k: 'stadtcasino-basel', n: 'Stadtcasino Basel', c: 'Basel', lon: 7.59, lat: 47.55, t: 5.75, z: 4500, side: -1 },
+  { k: 'humboldt-forum', n: 'Humboldt Forum', c: 'Berlin', lon: 13.4, lat: 52.52, t: 6.8, z: 4500, side: -1 }];
 function plateEurope(c, G, t) {
-  tourPlate(c, G, t, { S: EUROPE_P, head: 'KEIM ACROSS EUROPE', intro: { t0: 0.75, lon: 4, lat: 38, R: 420 }, outro: { t1: 7.7, lon: 5, lat: 48, R: 1150 }, exit: true,
+  tourPlate(c, G, t, { S: EUROPE_P, head: 'KEIM ACROSS EUROPE', intro: { t0: 0.75, lon: 4, lat: 38, R: 420 }, outro: { t1: 7.7, lon: 12, lat: 50, R: 1300 },
     paint: t => easeIO(lin(t, 0.1, 0.8)) });
 }
 const WORLD_P = [
-  { k: '', n: '', c: 'Milan', lon: 9.19, lat: 45.47, t: 0.2, z: 1300, skip: true },
-  { k: 'grande-mosquee-algiers', n: 'Grande Mosquée', c: 'Algiers', lon: 3.06, lat: 36.73, t: 1.4, z: 4000, side: 1 },
-  { k: 'zeitz-mocaa', n: 'Zeitz MOCAA', c: 'Cape Town', lon: 18.42, lat: -33.91, t: 2.35, z: 4000, side: -1 },
-  { k: 'zayed-airport', n: 'Zayed Int. Airport', c: 'Abu Dhabi', lon: 54.65, lat: 24.43, t: 3.3, z: 4000, side: -1 },
-  { k: 'marina-bay-sands', n: 'Marina Bay Sands', c: 'Singapore', lon: 103.86, lat: 1.28, t: 4.25, z: 4000, side: -1 },
-  { k: 'the-imprint', n: 'The Imprint', c: 'Incheon', lon: 126.45, lat: 37.45, t: 5.2, z: 4000, side: -1, hl: true },
-  { k: 'hunters-point-library', n: 'Hunters Point Library', c: 'New York', lon: -73.96, lat: 40.75, t: 6.45, z: 4000, side: -1, east: true },
-  { k: 'swan-reserve', n: 'Swan Reserve', c: 'Orlando', lon: -81.56, lat: 28.37, t: 7.35, z: 4000, side: 1 }];
-const WORLD_REG = [[0.9, 2.9, 'AFRICA'], [2.9, 5.9, 'MIDDLE EAST & ASIA'], [5.9, 99, 'THE AMERICAS']];
+  { k: '', n: '', c: 'Berlin', lon: 13.4, lat: 52.52, t: 0.2, z: 1300, skip: true },
+  { k: 'hunters-point-library', n: 'Hunters Point Library', c: 'New York', lon: -73.96, lat: 40.75, t: 1.24, z: 4000, side: 1 },
+  { k: 'swan-reserve', n: 'Swan Reserve', c: 'Orlando', lon: -81.56, lat: 28.37, t: 2.12, z: 4000, side: 1 },
+  { k: 'zeitz-mocaa', n: 'Zeitz MOCAA', c: 'Cape Town', lon: 18.42, lat: -33.91, t: 3.32, z: 4000, side: -1 },
+  { k: 'grande-mosquee-algiers', n: 'Grande Mosquée', c: 'Algiers', lon: 3.06, lat: 36.73, t: 4.39, z: 4000, side: 1 },
+  { k: 'zayed-airport', n: 'Zayed Int. Airport', c: 'Abu Dhabi', lon: 54.65, lat: 24.43, t: 5.36, z: 4000, side: -1 },
+  { k: 'marina-bay-sands', n: 'Marina Bay Sands', c: 'Singapore', lon: 103.86, lat: 1.28, t: 6.37, z: 4000, side: -1 },
+  { k: 'the-imprint', n: 'The Imprint', c: 'Incheon', lon: 126.45, lat: 37.45, t: 7.35, z: 4000, side: -1, hl: true }];
+// region names shown under the heading [from, to, label]
+const WORLD_REG = [[0.8, 2.75, 'THE AMERICAS'], [2.75, 4.85, 'AFRICA'], [4.85, 99, 'MIDDLE EAST & ASIA']];
 function plateWorld(c, G, t) {
-  tourPlate(c, G, t, { S: WORLD_P, head: 'KEIM AROUND THE WORLD', intro: { t0: 0, lon: 9.19, lat: 45.47, R: 1300 }, outro: { t1: 8.0, lon: -78, lat: 33, R: 1300 }, entry: true, exit: true,
+  tourPlate(c, G, t, { S: WORLD_P, head: 'KEIM AROUND THE WORLD', intro: { t0: 0, lon: 13.4, lat: 52.52, R: 1300 }, outro: { t1: 8.0, lon: 126, lat: 20, R: 1300 },
     region: t => { for (const r of WORLD_REG) if (t >= r[0] - 0.2 && t < r[1]) return r[2]; return null; },
     regionA: t => { for (const r of WORLD_REG) if (t >= r[0] - 0.2 && t < r[1]) return Math.min(pr(t, r[0] - 0.2, r[0] + 0.2), 1 - pr(t, r[1] - 0.25, r[1])); return 0; } });
 }
 const AUS_P = [
-  { k: '', n: '', c: '', lon: 92, lat: -26, t: 0.2, z: 1300, skip: true },
-  { k: 'wellington-dam', n: 'Wellington Dam mural', c: 'Collie, WA', cn: 'Western Australia', lon: 115.95, lat: -33.4, t: 1.6, z: 4200, side: 1, hl: true, credit: 'Neonbunyip, CC BY-SA 4.0' },
-  { k: 'joan', n: 'Joan Kirner Hospital', c: 'Melbourne', lon: 144.88, lat: -37.79, t: 2.75, z: 4200, side: -1 },
-  { k: 'parramatta', n: 'Parramatta Town Hall', c: 'Parramatta', cn: 'Sydney', lon: 151.0, lat: -33.815, t: 3.85, z: 9000, side: -1 },
-  { k: 'westconnex', n: 'WestConnex M8', c: 'St Peters', cn: 'Sydney', lon: 151.17, lat: -33.92, t: 4.7, z: 9000, side: -1 },
+  { k: '', n: '', c: 'Incheon', lon: 126.45, lat: 37.45, t: 0.2, z: 1300, skip: true },
+  { k: 'wellington-dam', n: 'Wellington Dam mural', c: 'Collie, WA', cn: 'Western Australia', lon: 115.95, lat: -33.4, t: 1.9, z: 4200, side: 1, hl: true, credit: 'Neonbunyip, CC BY-SA 4.0' },
+  { k: 'joan', n: 'Joan Kirner Hospital', c: 'Melbourne', lon: 144.88, lat: -37.79, t: 3.0, z: 4200, side: -1 },
+  { k: 'parramatta', n: 'Parramatta Town Hall', c: 'Parramatta', cn: 'Sydney', lon: 151.0, lat: -33.815, t: 3.95, z: 9000, side: -1 },
+  { k: 'westconnex', n: 'WestConnex M8', c: 'St Peters', cn: 'Sydney', lon: 151.17, lat: -33.92, t: 4.75, z: 9000, side: -1 },
   { k: 'porter-house', n: 'The Porter House Hotel', c: 'Sydney CBD', cn: 'Sydney', lon: 151.205, lat: -33.872, t: 5.55, z: 9000, side: -1, credit: 'Rory Gardiner' },
   { k: 'opera', n: 'Sydney Opera House', c: 'Sydney', lon: 151.215, lat: -33.857, t: 6.4, z: 9000, side: -1 }
 ];
 function plateAus(c, G, t) {
-  tourPlate(c, G, t, { S: AUS_P, head: 'KEIM IN AUSTRALIA', intro: { t0: 0, lon: 92, lat: -26, R: 1300 }, outro: { t1: 7.7, lon: 134, lat: -28, R: 1250 }, entry: true, overviewLabels: false });
+  tourPlate(c, G, t, { S: AUS_P, head: 'KEIM IN AUSTRALIA', intro: { t0: 0, lon: 126, lat: 20, R: 1300 }, outro: { t1: 7.7, lon: 134, lat: -28, R: 1250 }, overviewLabels: false });
 }
 // ---- the two early façades: real photographs with a slow camera that moves in on the painted details
 function kbAt(keys, t) { let K = keys[0]; for (let i = 1; i < keys.length; i++) { if (t < keys[i][0]) { const A = keys[i - 1], B = keys[i], e = easeIO((t - A[0]) / (B[0] - A[0])); return [0, lerpA(A[1], B[1], e), lerpA(A[2], B[2], e), Math.exp(lerpA(Math.log(A[3]), Math.log(B[3]), e))]; } K = keys[i]; } return K; }
@@ -3126,7 +3132,7 @@ const PL = [
   { lab: 'The verdict', kick: 'The verdict', ttl: 'Plastic film vs mineral bond', loc: 'Every wall, every climate', key: '#ff7fb7', trail: '#D51F24', draw: plateVersus, amb: AMBY.versus, fx: [[0.9, 'thud'], [1.6, 'thud'], [2.3, 'thud'], [3.0, 'thud'], [3.8, 'finale']],
     txt: 'Plastic paint sits on top. Mineral paint becomes part of the wall: a chemical bond, open to vapour, nothing to peel or flake, and no plastic film to shed. After 60,000 years, the answer is clear.',
     story: 'Put the two approaches side by side. A plastic film relies on surface adhesion, can trap moisture, and eventually blisters, flakes and sheds particles. A mineral silicate coating bonds chemically with the substrate, lets water vapour escape, has no film to peel, and uses lightfast inorganic pigments. That is why mineral paint from the 1890s is still on facades today.', fact: 'The oldest lesson in paint: the binder decides how long it lasts.' },
-  { lab: 'Europe', kick: 'Worldwide · Europe', ttl: 'KEIM across Europe', loc: 'London · Madrid · Nantes · Basel · Berlin · Milan', key: '#e7dcc4', trail: '#D51F24', draw: plateEurope, slow: 0.55, amb: AMB_PHOTO, fx: [[0.1, 'brush'], [1.0, 'whoosh'], [1.55, 'pop'], [2.6, 'pop'], [3.65, 'pop'], [4.7, 'pop'], [5.75, 'pop'], [6.8, 'chime']],
+  { lab: 'Europe', kick: 'Worldwide · Europe', ttl: 'KEIM across Europe', loc: 'London · Nantes · Madrid · Milan · Basel · Berlin', key: '#e7dcc4', trail: '#D51F24', draw: plateEurope, slow: 0.55, amb: AMB_PHOTO, fx: [[0.1, 'brush'], [1.0, 'whoosh'], [1.55, 'pop'], [2.6, 'pop'], [3.65, 'pop'], [4.7, 'pop'], [5.75, 'pop'], [6.8, 'chime']],
     txt: 'Across Europe, KEIM protects new landmarks and old ones — Grafton Architects’ Marshall Building in London, Madrid’s Plaza Mayor, Building Janus in Nantes, Herzog & de Meuron’s Stadtcasino Basel, the Humboldt Forum in Berlin and Milan’s Galleria Vittorio Emanuele II.',
     story: 'In London, the Marshall Building by Grafton Architects (KEIM Concretal-Lasur and Concretal Fixativ). In Madrid, the Plaza Mayor: KEIM decorative paints on its mural and KEIM Soldalit on the surrounding façades. In Nantes, Building Janus (KEIM Concretal-Lasur). In Basel, Herzog & de Meuron’s Stadtcasino (KEIM Lignosil-Color). In Berlin, the Humboldt Forum (KEIM Soldalit, Optil and Restauro-Lasur). And in Milan, the Galleria Vittorio Emanuele II (KEIM Granital).', fact: 'Every KEIM product is still made by KEIMFARBEN in Diedorf, near Augsburg.' },
   { lab: 'Around the world', kick: 'Worldwide', ttl: 'KEIM around the world', loc: 'Landmarks on five continents', key: '#e7dcc4', trail: '#D51F24', draw: plateWorld, slow: 0.55, amb: AMB_PHOTO, fx: [[0.7, 'whoosh'], [1.4, 'pop'], [2.35, 'pop'], [3.3, 'pop'], [4.25, 'pop'], [5.2, 'pop'], [5.6, 'whoosh'], [6.45, 'pop'], [7.35, 'chime']],
