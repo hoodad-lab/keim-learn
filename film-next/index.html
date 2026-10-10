@@ -3203,7 +3203,7 @@ const WORLD_P = [
   { k: 'the-imprint', n: 'The Imprint', c: 'Incheon', lon: 126.45, lat: 37.45, t: 5.2, z: 4000, side: -1, hl: true },
   { k: 'hunters-point-library', n: 'Hunters Point Library', c: 'New York', lon: -73.96, lat: 40.75, t: 6.45, z: 4000, side: -1, east: true },
   { k: 'swan-reserve', n: 'Swan Reserve', c: 'Orlando', lon: -81.56, lat: 28.37, t: 7.35, z: 4000, side: 1 }];
-const WORLD_REG = [[0.9, 2.75, 'AFRICA'], [2.8, 5.6, 'MIDDLE EAST & ASIA'], [5.9, 99, 'THE AMERICAS']];
+const WORLD_REG = [[0.9, 2.9, 'AFRICA'], [2.9, 5.9, 'MIDDLE EAST & ASIA'], [5.9, 99, 'THE AMERICAS']];
 function plateWorld(c, G, t) {
   tourPlate(c, G, t, { S: WORLD_P, head: 'KEIM AROUND THE WORLD', intro: { t0: 0, lon: 9.19, lat: 45.47, R: 1300 }, outro: { t1: 8.0, lon: -78, lat: 33, R: 1300 }, entry: true, exit: true,
     region: t => { for (const r of WORLD_REG) if (t >= r[0] - 0.2 && t < r[1]) return r[2]; return null; },
@@ -4145,7 +4145,7 @@ function muTick() {
 }
 // ---------- narration (voice: Hoodad, KEIM Australia) ----------
 const narrURL = k => 'audio/' + LANG + '/n' + String(k).padStart(2, '0') + '.mp3';
-const NARR_SRC = { length: 28 };
+const NARR_SRC = { get length() { return PL.length; } };
 var NR = { on: true, fail: {}, buf: {}, pend: {}, src: null, slide: -1, t0: 0, off: 0, done: true, speaking: false, holdEnd: 0, gain: null };
 function narrBuf(k) {
   if (NR.buf[k] || NR.pend[k] || NR.fail[k] || !AU.ac || k < 0 || k >= NARR_SRC.length) return;
@@ -4205,7 +4205,7 @@ function narrUI() {
   if (hs) hs.textContent = (NR.on ? 'About 3 minutes · narrated' : 'About 2 minutes') + ' · the 8 key moments';
 }
 function slowAt(T) { const k = narrSlideAt(T), p = PL[k]; return p && p.slow && T >= startOf(k) && T < narrHold(k) ? p.slow : 1; }
-const HL_SET = [0, 1, 3, 6, 11, 13, 17, 28, 30, 32]; let HL = false, warping = false; setTimeout(narrUI, 0);
+const HL_SET = [0, 1, 3, 11, 13, 15, 17, 26, 28, 32]; let HL = false, warping = false; setTimeout(narrUI, 0);
 let modeChosen = false; const chooserEl = document.getElementById('chooser');
 // ---------- end card: after the last slide, offer the two next steps ----------
 const endEl = document.getElementById('endCard');
