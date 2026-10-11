@@ -34,7 +34,7 @@ h1 { position: absolute; left: 51mm; top: 27mm; margin: 0; font: 300 12mm/1 "Wor
 h1 em { font: italic 500 13.5mm/1 "Cormorant Garamond", Georgia, serif; color: var(--deep); letter-spacing: 0; }
 .cert-that { left: 52mm; top: 53mm; font: italic 500 5mm/1 "Cormorant Garamond", Georgia, serif; color: #4a4c46; }
 .name { left: 52mm; top: 60mm; width: 158mm; font: 600 13mm/1.1 "Cormorant Garamond", Georgia, serif; color: var(--ink); white-space: nowrap; overflow: hidden; }
-.rule { left: 52mm; top: 77.5mm; width: 158mm; height: 1.6mm; }
+.rule { left: 52mm; top: 77.5mm; width: 158mm; height: 1.6mm; overflow: visible; }
 .reg { left: 52mm; top: 81.5mm; font: 500 3mm/1 "Work Sans", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
 .what { left: 52mm; top: 90mm; width: 158mm; margin: 0; font: 400 3.7mm/1.55 "Work Sans", sans-serif; color: #33362f; }
 .what b { color: var(--red); font-weight: 600; }
@@ -96,7 +96,7 @@ h1 em { font: italic 500 13.5mm/1 "Cormorant Garamond", Georgia, serif; color: v
     <h1>Certificate of <em>Achievement</em></h1>
     <div class="abs cert-that">This certifies that</div>
     <div class="abs name" id="cName">Your Name</div>
-    <svg class="abs rule" viewBox="0 0 158 1.6" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1=".8" x2="158" y2=".8" stroke="#1d1d1b" stroke-width=".3"/><circle cx="0.8" cy=".8" r=".6" fill="#D51F24"/><circle cx="157.2" cy=".8" r=".6" fill="#D51F24"/></svg>
+    <svg class="abs rule" viewBox="0 0 158 1.6" preserveAspectRatio="none" aria-hidden="true"><line x1="1.6" y1=".55" x2="156.4" y2=".55" stroke="#1d1d1b" stroke-width=".26"/><text x="1.8" y="1.48" font-family="Work Sans, sans-serif" font-size=".72" letter-spacing=".08" fill="#9e1418" textLength="154.4" lengthAdjust="spacing">BREATHABLE COATING SYSTEMS · KEIM AUSTRALIA · FORMAL CPD · THE MINERAL BOND · BREATHABLE COATING SYSTEMS · KEIM AUSTRALIA · FORMAL CPD · THE MINERAL BOND · BREATHABLE COATING SYSTEMS · KEIM AUSTRALIA</text><circle cx="0.8" cy=".55" r=".55" fill="#D51F24"/><circle cx="157.2" cy=".55" r=".55" fill="#D51F24"/></svg>
     <div class="abs reg" id="cReg"></div>
     <p class="abs what">has successfully completed the Formal CPD activity <b>Breathable Coating Systems</b>, presented by KEIM Australia, and passed its structured assessment.</p>
 
@@ -194,7 +194,7 @@ function rope(x, y, w, h, a, step) {
   return [d1, d2];
 }
 const MICRO = 'SILICIFICATION · Si–O–Si · THE MINERAL BOND · POTASSIUM SILICATE · SiO₂ · KEIM AUSTRALIA · BREATHABLE COATING SYSTEMS · SINCE 1878 · ';
-const [r1, r2] = rope(40, 7, 251, 196, .9, 6);
+const [r1, r2] = rope(39.9, 6.9, 251.2, 196.2, .55, 3.2);
 const net = silica(36, -4, 300, 214, 7.2, 2.6), barNet = (seed = 14, silica(-4, -4, 38, 214, 6, 2.2));
 const art = `
 <defs>
@@ -211,8 +211,25 @@ const art = `
 <rect x="0" y="0" width="34" height="210" fill="#D51F24"/>
 <line x1="34" y1="0" x2="34" y2="210" stroke="url(#gold)" stroke-width="1.1"/>
 <!-- frame: gold outer line, rope, red inner line -->
-<rect x="38.5" y="5.5" width="254" height="199" fill="none" stroke="url(#gold)" stroke-width=".7"/>
-<rect x="40.6" y="7.6" width="249.8" height="194.8" fill="none" stroke="#D51F24" stroke-width=".18"/>
+<!-- paper: faint fibre texture -->
+<filter id="paperTex" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .42  0 0 0 0 .35  0 0 0 .55 0"/></filter>
+<rect x="34" y="0" width="263" height="210" filter="url(#paperTex)" opacity=".10"/>
+<!-- embossed KEIM wedge watermark in the paper -->
+<g opacity="1">
+  <path d="M86,62 A70,70 0 0 1 178,62 L132,150 Z" fill="none" stroke="#fff" stroke-width="1.6" opacity=".55" transform="translate(-.35,-.35)"/>
+  <path d="M86,62 A70,70 0 0 1 178,62 L132,150 Z" fill="none" stroke="#8a7f5c" stroke-width="1.6" opacity=".10" transform="translate(.35,.35)"/>
+  <path d="M86,62 A70,70 0 0 1 178,62 L132,150 Z" fill="#d9d2bd" opacity=".10"/>
+</g>
+<!-- frame: gold outer line, fine gold rope band, red inner line -->
+<rect x="37.4" y="4.4" width="256.2" height="201.2" fill="none" stroke="url(#gold)" stroke-width=".8"/>
+<rect x="38.6" y="5.6" width="253.8" height="198.8" fill="none" stroke="url(#gold)" stroke-width=".18"/>
+<path d="${r1}" fill="none" stroke="url(#gold)" stroke-width=".16"/><path d="${r2}" fill="none" stroke="#c9a24f" stroke-width=".16" opacity=".8"/>
+<rect x="41.4" y="8.4" width="248.2" height="193.2" fill="none" stroke="url(#gold)" stroke-width=".18"/>
+<rect x="42.2" y="9.2" width="246.6" height="191.6" fill="none" stroke="#D51F24" stroke-width=".2"/>
+<!-- corner filigree -->
+${[[42.2,9.2,1,1],[288.8,9.2,-1,1],[42.2,200.8,1,-1],[288.8,200.8,-1,-1]].map(([x,y,sx,sy]) => `<g transform="translate(${x} ${y}) scale(${sx} ${sy})" fill="none" stroke="url(#gold)" stroke-width=".22">
+  <path d="M0,9 C3,9 4,7 4,4 C4,1.5 6,0 9,0"/><path d="M0,14 C5,14 8,11 8,7 C8,3 11,0 14,0" opacity=".7"/><path d="M2.6,2.6 m-1.3,0 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0" stroke="#D51F24"/>
+  <path d="M5.5,5.5 L9.5,9.5" stroke-width=".15"/><circle cx="10.3" cy="10.3" r=".55" fill="#D51F24" stroke="none"/></g>`).join('')}
 <line x1="52" y1="184" x2="278" y2="184" stroke="#b9b39f" stroke-width=".25"/>
 <!-- silicon element tile in the red bar -->
 <g transform="translate(9 158)">
