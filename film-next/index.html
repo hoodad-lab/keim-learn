@@ -3805,8 +3805,9 @@ function loop(ts) {
   { const want = !playing && viewActive() && storyEl.hidden && started ? 1 : 0; if (want && spotA === 0) spotT0 = performance.now(); if (Math.abs(spotA - want) > 0.001) { spotA += (want - spotA) * (1 - Math.exp(-dt * 8)); if (Math.abs(spotA - want) < 0.01) spotA = want; dirty = true; } if (want && performance.now() - spotT0 < 2500) dirty = true;
     vtoolsEl.classList.toggle('on', !!want); if (want) showHint(); }
   if (playing && started && !jump) {
-    const prev = T, k = chapterAt(T), warp = HL && T > C0 + D * 0.5 && T < CL - D * 0.5 && !HL_SET.includes(k);
-    if (warp && !warping) sfx('whoosh'); warping = warp;
+    // highlights: when a key moment ends, fly the camera straight to the next one instead of fast-forwarding through the slides between
+    const k0 = chapterAt(T); if (HL && !jump && T > C0 + D * 0.5 && T < CL - D * 0.5 && !HL_SET.includes(k0)) { const j = HL_SET.find(x => x > k0); if (j != null && j < N - 1) startJump(j); }
+    const prev = T, k = chapterAt(T), warp = false; warping = false;
     const hold = narrTick();
     if (hold) T = Math.max(prev, Math.min(T, narrHold(NR.slide) - 0.02)); else T += dt * SPEED * (warp ? 12 : Math.min(narrRate(), slowAt(T)));
     if (!warp) for (const e of EVENTS) if (e[0] > prev && e[0] <= T) sfx(e[1]);
