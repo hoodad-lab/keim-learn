@@ -80,6 +80,7 @@ body { margin: 0; background: #f3f0e8; color: #1c2236; overflow: hidden; font-fa
 .ch-langs { display: flex; gap: 5px; justify-content: center; margin: 0 0 16px; flex-wrap: wrap; }
 .ch-langs button { border: 1.5px solid #1c2236; background: #fff; color: #1c2236; border-radius: 999px; padding: 7px 9px; font: 700 12px/1 var(--sans); letter-spacing: .08em; cursor: pointer; }
 .ch-langs button[aria-pressed="true"] { background: #1c2236; color: #fff; }
+.ch-lsel { display: none; width: 100%; appearance: none; -webkit-appearance: none; border: 1.5px solid #1c2236; border-radius: 999px; padding: 9px 38px 9px 16px; font: 700 14px/1.2 var(--sans); color: #1c2236; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231c2236' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 15px center; }
 .langWrap { position: relative; display: inline-block; }
 #langSel { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; font-size: 16px; border: 0; margin: 0; }
 #langCode { display: block; pointer-events: none; appearance: none; -webkit-appearance: none; font: 600 11px/1 var(--sans); letter-spacing: 0.12em; color: #1c2236; background: rgba(255,255,255,0.8); border: 1px solid #d8d2c4; padding: 11px 10px 10px; border-radius: 2px; cursor: pointer; text-align: center; }
@@ -210,8 +211,8 @@ body.cine .ch-card { max-height: calc(100vh - 24px); overflow-y: auto; }
   .ch-kick, .ch-ttl, .ch-langs, .ch-note { grid-column: 1 / -1; }
   .ch-kick { font-size: 10px; }
   .ch-ttl { font-size: 21px; margin: 5px 0 10px; }
-  .ch-langs { margin: 0 0 12px; gap: 4px; flex-wrap: nowrap; }
-  .ch-langs button { padding: 6px 8px; font-size: 11px; }
+  .ch-langs { display: none; }
+  .ch-lsel { display: block; grid-column: 1 / -1; margin: 0 0 12px; }
   .ch-opt { margin: 0; padding: 11px 13px 10px; border-radius: 12px; }
   .ch-opt b { font-size: 13px; }
   .ch-opt span { font-size: 12px; margin-top: 4px; }
@@ -4138,12 +4139,16 @@ function setLang(l, init) {
   document.documentElement.lang = l; trTree(document.body);
   const sel = document.getElementById('langSel'); if (sel) sel.value = l; const lc = document.getElementById('langCode'); if (lc) lc.textContent = l.toUpperCase();
   document.querySelectorAll('#chLangs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.l === l ? 'true' : 'false'));
+  const cs = document.getElementById('chLSel'); if (cs) cs.value = l;
   if (changed && !init) { if (typeof narrStop === 'function') narrStop(false); NR.buf = {}; NR.pend = {}; NR.fail = {}; NR.slide = -1; NR.off = 0;
     if (typeof buildThumbs === 'function' && started) { try { buildThumbs(); } catch (e) {} } }
   dirty = true;
 }
 document.getElementById('langSel').addEventListener('change', e => setLang(e.target.value));
 document.querySelectorAll('#chLangs button').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); setLang(b.dataset.l); }));
+(() => { const box = document.getElementById('chLangs'), sel = document.createElement('select'); sel.className = 'ch-lsel'; sel.id = 'chLSel'; sel.setAttribute('aria-label', 'Language');
+  box.querySelectorAll('button').forEach(b => { const o = document.createElement('option'); o.value = b.dataset.l; o.textContent = LANG_NAMES[b.dataset.l] || b.textContent; sel.appendChild(o); });
+  box.after(sel); sel.addEventListener('click', e => e.stopPropagation()); sel.addEventListener('change', () => setLang(sel.value)); })();
 setLang(LANG, true);
 window.__seek = s => { T = s; dirty = true; render(); };
 </script>
