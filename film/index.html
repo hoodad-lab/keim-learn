@@ -1755,16 +1755,16 @@ function tinTube(c, x, y, rot, s, a, col, colDark, colHi) {
   // tapered shoulder and short threaded neck
   c.fillStyle = mg; c.beginPath(); c.moveTo(88, -11); c.lineTo(97, -6); c.lineTo(97, 6); c.lineTo(88, 11); c.closePath(); c.fill(); c.strokeStyle = '#5d6168'; c.lineWidth = 1.2; c.stroke();
   c.fillStyle = mg; c.fillRect(97, -5.5, 9, 11); c.strokeStyle = 'rgba(60,64,70,0.7)'; c.lineWidth = 1; for (let k = 0; k < 3; k++) { c.beginPath(); c.moveTo(98.5 + k * 3, -5.5); c.lineTo(100 + k * 3, 5.5); c.stroke(); }
-  // a soft dollop of paint squeezed out of the nozzle, slumped onto the grass
-  c.fillStyle = 'rgba(40,60,30,0.3)'; c.beginPath(); c.ellipse(130, 31, 30, 5, 0, 0, TAU); c.fill();
-  const dg = c.createRadialGradient(118, 2, 2, 128, 14, 34); dg.addColorStop(0, colHi); dg.addColorStop(0.45, col); dg.addColorStop(1, colDark); c.fillStyle = dg;
-  c.beginPath(); c.moveTo(105, -4.5); c.bezierCurveTo(114, -7, 124, -9, 133, -3); c.bezierCurveTo(146, 4, 156, 18, 151, 25); c.quadraticCurveTo(147, 30, 134, 30); c.lineTo(114, 30); c.quadraticCurveTo(104, 30, 106, 21); c.bezierCurveTo(107, 13, 104, 9, 105, 4.5); c.closePath(); c.fill();
-  c.strokeStyle = colDark; c.lineWidth = 1; c.stroke();
-  // a little folded curl where the ribbon of paint turned over
-  c.beginPath(); c.moveTo(118, 8); c.bezierCurveTo(124, 2, 136, 4, 138, 12); c.bezierCurveTo(140, 18, 132, 20, 128, 16); c.strokeStyle = colDark; c.lineWidth = 1.4; c.stroke();
-  // wet highlights
-  c.strokeStyle = 'rgba(255,255,255,0.75)'; c.lineWidth = 2.4; c.lineCap = 'round'; c.beginPath(); c.moveTo(110, -3); c.quadraticCurveTo(120, -6, 128, -3); c.stroke();
-  c.fillStyle = 'rgba(255,255,255,0.7)'; c.beginPath(); c.ellipse(141, 12, 2.5, 1.6, 0.6, 0, TAU); c.fill();
+  // a ribbon of paint squeezed from the nozzle: it bends down onto the grass and loops over once, like real tube paint
+  c.fillStyle = 'rgba(40,60,30,0.28)'; c.beginPath(); c.ellipse(150, 31, 36, 5, 0, 0, TAU); c.fill();
+  const rib = () => { c.beginPath(); c.moveTo(105, 0); c.bezierCurveTo(115, 0, 121, 6, 124, 14); c.bezierCurveTo(127, 22, 134, 25, 146, 25); c.bezierCurveTo(158, 25, 172, 26, 176, 21); c.bezierCurveTo(180, 15, 168, 11, 160, 15); c.bezierCurveTo(153, 19, 158, 27, 170, 27); };
+  c.lineCap = 'round'; c.lineJoin = 'round';
+  rib(); c.strokeStyle = colDark; c.lineWidth = 13; c.stroke();
+  c.save(); c.translate(0, -1); rib(); c.strokeStyle = col; c.lineWidth = 10.5; c.stroke(); c.restore();
+  c.save(); c.translate(-0.5, -3); rib(); c.strokeStyle = colHi; c.globalAlpha = a * 0.55; c.lineWidth = 2.6; c.stroke(); c.restore();
+  c.globalAlpha = a;
+  // the open nozzle end, so the ribbon visibly comes out of the tube
+  c.fillStyle = colDark; c.beginPath(); c.ellipse(105.5, 0, 2, 5.5, 0, 0, TAU); c.fill();
   // the cap lying beside it
   c.save(); c.translate(150, -40); c.rotate(1.25);
   c.fillStyle = 'rgba(40,60,30,0.28)'; c.beginPath(); c.ellipse(5, 6, 15, 12, 0, 0, TAU); c.fill();
