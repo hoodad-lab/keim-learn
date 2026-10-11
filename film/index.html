@@ -61,6 +61,9 @@ body { margin: 0; background: #f3f0e8; color: #1c2236; overflow: hidden; font-fa
 .more.on { display: inline-flex; }
 .more i { font: italic 700 13px/1 var(--serif); width: 19px; height: 19px; border-radius: 50%; background: #D51F24; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-style: italic; }
 
+.tapgo { position: fixed; inset: 0; z-index: 9; border: 0; background: rgba(28,34,54,.55); display: grid; place-items: center; cursor: pointer; }
+.tapgo span { display: inline-flex; align-items: center; gap: 14px; background: #D51F24; color: #fff; padding: 20px 40px; font: 700 15px/1 "Josefin Sans", sans-serif; letter-spacing: .14em; text-transform: uppercase; box-shadow: 0 14px 40px rgba(0,0,0,.5); }
+.tapgo span::before { content: ""; border-left: 14px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
 .chooser { position: fixed; inset: 0; z-index: 7; display: flex; align-items: center; justify-content: center; background: rgba(28,34,54,0.45); padding: 20px; }
 .chooser[hidden] { display: none; }
 #speedBtn[hidden] { display: none !important; }
@@ -322,7 +325,7 @@ body:not(.cine) .ui::before { content: ''; position: absolute; inset: -46px 0 0 
 
 // ---------- languages (EN · DE · ES · IT · FR) ----------
 const I18N = {};
-const I18N_V = 15;
+const I18N_V = 16;
 const LANG_NAMES = { en: 'English', de: 'Deutsch', es: 'Español', it: 'Italiano', fr: 'Français', pt: 'Português', fa: 'فارسی', ar: 'العربية', hi: 'हिन्दी', zh: '简体中文', da: 'Dansk', sv: 'Svenska', no: 'Norsk', fi: 'Suomi', nl: 'Nederlands', pl: 'Polski', tw: '繁體中文', ja: '日本語', ko: '한국어', cs: 'Čeština' };
 const LITE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
 const AR = /[\u0600-\u06FF]/, DEV = /[\u0900-\u097F]/, HAN = /[\u3000-\u9FFF\uFF00-\uFFEF]/, HANGUL = /[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/;
@@ -3856,6 +3859,7 @@ function rotCheck() {
 addEventListener('resize', rotCheck); addEventListener('orientationchange', rotCheck); setTimeout(rotCheck, 300);
 function setPlaying(p) {
   if (p && !modeChosen && T < C0) { chooserEl.hidden = false; return; }
+  if (p && window.self === window.top && window.autoFullscreen) window.autoFullscreen();
   if (p) closeInfo();
   if (p && AU.on) audioUnlock();
   if (p && T >= TMAX - 0.01) { T = 0; dirty = true; showChooserAgain(); return; }
@@ -4121,7 +4125,14 @@ function linkedChapter() { try { const q = new URLSearchParams(location.search).
 let lastSlug = '';
 function syncSlug(k) { const sl = SLUGS[k]; if (!sl || sl === lastSlug || T < Z1) return; lastSlug = sl; try { history.replaceState(null, '', location.pathname + location.search.replace(/([?&])ch=[^&]*/, '$1').replace(/[?&]$/, '') + '#' + sl); } catch (e) {} }
 function start() { if (started) return; started = true; buildThumbs(); document.getElementById('fade').classList.add('gone'); dirty = true;
-  const k = linkedChapter(); if (k >= 0) { modeChosen = true; HL = false; T = k === 0 ? Z1 + 0.1 : startOf(k) + 0.01; lastSlug = SLUGS[k]; dirty = true; setTimeout(() => setPlaying(true), 400); } }
+  const k = linkedChapter(); if (k >= 0) { modeChosen = true; HL = false; T = k === 0 ? Z1 + 0.1 : startOf(k) + 0.01; lastSlug = SLUGS[k]; dirty = true; setTimeout(() => setPlaying(true), 400); return; }
+  // ?mode=full or ?mode=hl: the version was already picked on the Learning Hub, so skip the chooser
+  let md = ''; try { md = new URLSearchParams(location.search).get('mode') || ''; } catch (e) {}
+  if (md === 'full' || md === 'hl') { setMode(md === 'hl');
+    if (window.self !== window.top || !matchMedia('(pointer: coarse)').matches) setTimeout(() => setPlaying(true), 400);
+    else { // phones opened in a new tab need one tap to allow sound and full screen
+      const g = document.createElement('button'); g.type = 'button'; g.className = 'tapgo'; g.innerHTML = '<span>' + tr(md === 'hl' ? 'Play the highlights' : 'Play the film') + '</span>';
+      g.addEventListener('click', () => { g.remove(); setPlaying(true); }); document.body.appendChild(g); } } }
 Promise.all([
   document.fonts.load('700 40px "Josefin Sans"'), document.fonts.load('600 30px "Josefin Sans"'), document.fonts.load('130px "Abril Fatface"'),
   document.fonts.load('italic 500 40px "Cormorant Garamond"'), document.fonts.load('600 40px "Cormorant Garamond"'), document.fonts.load('40px "Bangers"'), document.fonts.load('500 40px "IBM Plex Mono"'), document.fonts.load('700 40px Vazirmatn', 'رنگ'), document.fonts.load('400 40px Vazirmatn', 'رنگ'), document.fonts.load('700 40px "Noto Sans Devanagari"', 'रंग'), document.fonts.load('700 40px "Noto Sans SC"', '涂料'), document.fonts.load('700 40px "Noto Sans TC"', '塗料'), document.fonts.load('700 40px "Noto Sans JP"', '塗料の歴史'), document.fonts.load('700 40px "Noto Sans KR"', '페인트'),
