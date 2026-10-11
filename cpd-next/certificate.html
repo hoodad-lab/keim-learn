@@ -49,10 +49,10 @@ h1 em { font: italic 500 13.5mm/1 "Cormorant Garamond", Georgia, serif; color: v
 .comp .d { font: 400 2.6mm/1.35 "Work Sans", sans-serif; color: #33362f; }
 .comp .d b { display: block; margin-top: .6mm; font: 600 3.9mm/1 "Work Sans", sans-serif; color: var(--red); letter-spacing: .04em; }
 
-.seal-logo { left: 238.5mm; top: 41mm; width: 20mm; color: var(--red); }
+.seal { left: 216mm; top: 18.5mm; width: 64mm; height: auto; }
 .seal-logo svg { width: 100%; height: auto; display: block; }
 
-.side { left: 222mm; top: 92mm; width: 54mm; }
+.side { left: 222mm; top: 99mm; width: 54mm; }
 .side .k { margin-bottom: 2.2mm; }
 .side ol { margin: 0; padding: 0 0 0 4mm; font: 400 2.6mm/1.42 "Work Sans", sans-serif; color: #33362f; }
 .side li { margin-bottom: .8mm; padding-left: .5mm; }
@@ -60,7 +60,7 @@ h1 em { font: italic 500 13.5mm/1 "Cormorant Garamond", Georgia, serif; color: v
 
 .sign { left: 222mm; top: 157mm; width: 56mm; }
 .sig { position: relative; height: 10mm; margin-left: 1mm; font: 400 11mm/1 "Mrs Saint Delafield", cursive; color: #1f2a55; }
-.sig img { position: absolute; left: 2mm; bottom: -2.2mm; height: 17mm; width: auto; display: block; }
+.sig img { position: absolute; left: 2mm; bottom: -2.6mm; height: 21mm; width: auto; display: block; }
 .who { border-top: .3mm solid var(--ink); padding-top: 1.7mm; font: 600 2.9mm/1.3 "Work Sans", sans-serif; }
 .who span { display: block; font-weight: 400; color: var(--mute); font-size: 2.45mm; }
 
@@ -112,7 +112,7 @@ h1 em { font: italic 500 13.5mm/1 "Cormorant Garamond", Georgia, serif; color: v
       <div class="d">Detailed Design and Construction Documentation<b>PC39</b></div>
     </div>
 
-    <div class="abs seal-logo" id="sealLogo"></div>
+    <img class="abs seal" src="seal.png" alt="KEIM Australia Formal CPD seal">
     <div class="abs side">
       <div class="k">Learning outcomes</div>
       <ol>
@@ -125,7 +125,7 @@ h1 em { font: italic 500 13.5mm/1 "Cormorant Garamond", Georgia, serif; color: v
       </ol>
     </div>
     <div class="abs sign">
-      <div class="sig" id="sig"><img src="signature.svg" alt="Signature of Hoodad Mehrbod"></div>
+      <div class="sig" id="sig"><img src="signature.png" alt="Signature of Hoodad Mehrbod"></div>
       <div class="who">Hoodad Mehrbod<span>Presenter · Managing Director, KEIM Australia</span></div>
     </div>
     <div class="abs idrow">
@@ -154,7 +154,7 @@ $('cDate').textContent = fmt(C.d);
 $('cScore').textContent = C.sc ? `Passed · ${C.sc}%` : 'Passed';
 $('cId').textContent = C.id;
 document.title = `KEIM CPD Certificate — ${C.n || ''}`;
-fetch('keim-logo.svg').then(r => r.text()).then(t => { $('logo').innerHTML = t; $('sealLogo').innerHTML = t; }).catch(() => {});
+fetch('keim-logo.svg').then(r => r.text()).then(t => { $('logo').innerHTML = t; }).catch(() => {});
 
 // ---------- mineral-science artwork: silica network, sol→crystal band, quartz seal, Si tile ----------
 const f = n => n.toFixed(2);
@@ -214,21 +214,6 @@ const art = `
 <rect x="38.5" y="5.5" width="254" height="199" fill="none" stroke="url(#gold)" stroke-width=".7"/>
 <rect x="40.6" y="7.6" width="249.8" height="194.8" fill="none" stroke="#D51F24" stroke-width=".18"/>
 <line x1="52" y1="184" x2="278" y2="184" stroke="#b9b39f" stroke-width=".25"/>
-<!-- the KEIM quartz seal -->
-<g>
-  ${(() => { let g = ''; const N = 32, cx = 248, cy = 52, ro = 34.6, ri = 29.4, d = Math.PI / N;
-    for (let i = 0; i < N; i++) { const a = i * 2 * d - Math.PI / 2, p = (r, t) => f(cx + r * Math.cos(t)) + ',' + f(cy + r * Math.sin(t)), tip = p(ro - (i % 2) * 1.6, a);
-      g += `<path d="M${p(ri, a - d)}L${tip}L${p(ri - .6, a)}Z" fill="#f1dc98"/><path d="M${p(ri - .6, a)}L${tip}L${p(ri, a + d)}Z" fill="#a8822f"/>`; }
-    return `<g stroke="#8a6a24" stroke-width=".06">${g}</g>`; })()}
-  <circle cx="248" cy="52" r="29.6" fill="#F4F3EC"/>
-  <circle cx="248" cy="52" r="26.6" fill="#D51F24"/>
-  <circle cx="248" cy="52" r="26.6" fill="none" stroke="url(#gold)" stroke-width=".7"/>
-  <circle cx="248" cy="52" r="29.6" fill="none" stroke="url(#gold)" stroke-width=".25"/>
-  <text font-family="Work Sans, sans-serif" font-weight="600" font-size="2.45" letter-spacing=".5" fill="#fff"><textPath href="#sealRing">SILICIFICATION ✦ THE MINERAL BOND ✦ KEIM AUSTRALIA ✦ FORMAL CPD ✦</textPath></text>
-  <circle cx="248" cy="52" r="20" fill="url(#sealbg)"/>
-  <circle cx="248" cy="52" r="20" fill="none" stroke="url(#gold)" stroke-width=".6"/>
-  <polygon points="${[0, 1, 2, 3, 4, 5].map(i => f(248 + 18.4 * Math.cos(i * Math.PI / 3 + Math.PI / 6)) + ',' + f(52 + 18.4 * Math.sin(i * Math.PI / 3 + Math.PI / 6))).join(' ')}" fill="none" stroke="url(#gold)" stroke-width=".25"/>
-</g>
 <!-- silicon element tile in the red bar -->
 <g transform="translate(9 158)">
   <rect x="0" y="0" width="16" height="18" fill="none" stroke="url(#gold)" stroke-width=".45"/>
