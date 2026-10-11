@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Concretal-Lasur Ratio · KEIM</title>
+<meta name="description" content="See how the Concretal-Lasur to Concretal-Fixativ ratio changes the look of concrete, and work out how much of each to mix on site.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@1,500&display=swap">
+<style>
+:root { --red: #D51F24; --ink: #1d1d1b; --mute: #6c6f6a; --paper: #EEF3EF; --card: #fff; --line: #d6ddd7; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Work Sans", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+button, input { font: inherit; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 28px 16px 56px; }
+.k { font: 600 11px/1.3 "Work Sans", sans-serif; letter-spacing: .24em; text-transform: uppercase; color: var(--red); }
+h1 { font: 300 clamp(30px, 4.6vw, 52px)/1.05 "Work Sans", sans-serif; color: var(--red); margin: 8px 0 10px; }
+h1 em { font: italic 500 1.08em/1 "Cormorant Garamond", Georgia, serif; color: #9e1418; }
+.lead { font-size: 17px; line-height: 1.6; color: #33362f; max-width: 62ch; margin: 0 0 22px; }
+.grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 22px; align-items: start; }
+.panel { position: relative; aspect-ratio: 4 / 3; border-radius: 8px; overflow: hidden; box-shadow: 0 26px 60px -30px rgba(0,0,0,.5); background: #c3bcaf; touch-action: none; user-select: none; }
+.panel canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.split { position: absolute; top: 0; bottom: 0; width: 2px; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); pointer-events: none; }
+.split::after { content: "‹ ›"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 50%; background: #fff; color: var(--ink); display: grid; place-items: center; font: 700 15px/1 "Work Sans", sans-serif; box-shadow: 0 4px 14px rgba(0,0,0,.3); }
+.tagL, .tagR { position: absolute; top: 12px; font: 600 10.5px/1 "Work Sans", sans-serif; letter-spacing: .16em; text-transform: uppercase; color: #fff; background: rgba(0,0,0,.45); padding: 7px 9px 6px; border-radius: 999px; pointer-events: none; }
+.tagL { left: 12px; } .tagR { right: 12px; background: rgba(213,31,36,.85); }
+.under { display: flex; justify-content: space-between; gap: 10px; margin-top: 10px; font-size: 13px; color: var(--mute); }
+.card { background: var(--card); padding: 18px 18px 16px; border-radius: 8px; }
+.card + .card { margin-top: 14px; }
+.ratio { display: flex; align-items: baseline; gap: 12px; }
+.ratio b { font: 300 54px/1 "Work Sans", sans-serif; color: var(--red); letter-spacing: -.01em; }
+.ratio span { font-size: 14px; color: var(--mute); line-height: 1.35; }
+input[type=range] { width: 100%; accent-color: var(--red); margin: 14px 0 4px; height: 28px; }
+.ends { display: flex; justify-content: space-between; font: 600 10.5px/1 "Work Sans", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+.cups { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; min-height: 44px; align-items: flex-end; }
+.cup { width: 26px; height: 34px; border-radius: 3px 3px 7px 7px; border: 1.5px solid #9aa29b; position: relative; overflow: hidden; background: #f7faf8; }
+.cup.l { border-color: rgba(0,0,0,.25); }
+.cup i { position: absolute; left: 0; right: 0; bottom: 0; height: 78%; }
+.cup.f i { background: linear-gradient(#e9f1ee, #d6e3df); }
+.cups small { width: 100%; font-size: 12.5px; color: var(--mute); margin-top: 4px; }
+.sw { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.sw button { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1.5px var(--line); cursor: pointer; padding: 0; position: relative; }
+.sw button[aria-pressed="true"] { box-shadow: 0 0 0 2.5px var(--red); }
+.sw small { font-size: 12.5px; color: var(--mute); width: 100%; margin-top: 2px; }
+.batch { display: grid; grid-template-columns: auto 1fr; gap: 10px 14px; align-items: center; margin-top: 8px; }
+.batch label { font: 600 11px/1.3 "Work Sans", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+.batch input { width: 110px; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 6px; font-size: 17px; }
+.res { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.res div { background: #f4f6f3; border-radius: 6px; padding: 10px 12px; }
+.res b { display: block; font: 600 22px/1.1 "Work Sans", sans-serif; }
+.res span { font-size: 12.5px; color: var(--mute); }
+.tips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 26px; }
+.tips div { background: var(--card); padding: 16px; border-radius: 8px; border-top: 3px solid var(--red); font-size: 14.5px; line-height: 1.5; color: #33362f; }
+.tips b { display: block; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.btns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 14px 22px 13px; border-radius: 2px; font: 600 13px/1 "Work Sans", sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+.btn.solid { background: var(--red); color: #fff; box-shadow: 0 12px 26px -12px rgba(213,31,36,.7); }
+.btn.ghost { background: #fff; color: var(--ink); outline: 1.5px solid var(--ink); }
+.note { font-size: 12.5px; color: var(--mute); margin-top: 14px; line-height: 1.5; }
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } .tips { grid-template-columns: 1fr; } .panel { margin-inline: -16px; border-radius: 0; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="k">KEIM Concretal-Lasur · on-site mixing</div>
+  <h1>How the ratio works</h1>
+  <p class="lead">Concretal-Lasur is the colour; Concretal-Fixativ is clear. Mix more Fixativ in and the colour becomes a light, translucent glaze that lets the concrete's own texture show. Less Fixativ, and it moves toward full colour. Slide the ratio and drag the line across the wall to compare.</p>
+
+  <div class="grid">
+    <div>
+      <div class="panel" id="panel">
+        <canvas id="cv"></canvas>
+        <div class="split" id="split"></div>
+        <span class="tagL">Bare concrete</span><span class="tagR" id="tagR">1:1</span>
+      </div>
+      <div class="under"><span>Illustration only. Colours on screen are a guide; always check a test area on your actual concrete.</span></div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="k">Ratio · Lasur : Fixativ</div>
+        <div class="ratio"><b id="rLab">1:1</b><span id="rTxt"></span></div>
+        <input type="range" id="rng" min="0" max="16" step="1" value="8" aria-label="Lasur to Fixativ ratio">
+        <div class="ends"><span>Light glaze</span><span>Full colour</span></div>
+        <div class="cups" id="cups"></div>
+      </div>
+      <div class="card">
+        <div class="k">Colour</div>
+        <div class="sw" id="sw"></div>
+      </div>
+      <div class="card">
+        <div class="k">How much to mix</div>
+        <div class="batch"><label for="bL">Total batch (litres)</label><input id="bL" type="number" min="0.5" step="0.5" value="10" inputmode="decimal"></div>
+        <div class="res"><div><b id="oL">5.0 L</b><span>Concretal-Lasur</span></div><div><b id="oF">5.0 L</b><span>Concretal-Fixativ</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tips">
+    <div><b>Test first</b>Brush a small panel on the real wall and let it dry before deciding. Concrete varies from pour to pour.</div>
+    <div><b>Mix once, enough for the whole wall</b>Keep one ratio for each elevation and mix the full quantity in one go, so the tone stays even.</div>
+    <div><b>Build it up</b>A lighter ratio in two coats gives a soft, layered depth. Write your ratio down so it can be matched later.</div>
+  </div>
+
+  <div class="btns">
+    <a class="btn solid" id="visBtn" href="https://www.keim.com.au/concrete-transformations" target="_blank" rel="noopener">Preview on a photo of your wall</a>
+    <a class="btn ghost" id="mixBtn" href="https://hoodad-lab.github.io/lasur-mix/" target="_blank" rel="noopener">Open the mixing calculator</a>
+  </div>
+  <p class="note">Quantities follow the ratio you choose. For coverage, substrate preparation and the right product for your concrete, check the KEIM datasheets or talk to us on (02) 9748 7160.</p>
+</div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const DIL = [['1:10',9],['1:8',11],['1:6',14],['1:5',17],['1:4',20],['1:3',25],['1:2',33],['2:3',40],['1:1',50],['2:1',67],['3:1',75],['4:1',80],['5:1',83],['6:1',86],['8:1',89],['10:1',91],['1:0',100]];
+const COL = [['9567','#615c54'],['9569','#817c75'],['9572','#9e968b'],['9574','#b9b0a5'],['9541','#8e7c5a'],['9263','#8e775c'],['9004','#6b644d'],['9592','#918680'],['9482','#627763'],['9514','#8eb1b4'],['9003','#954737'],['9002','#dda850']];
+let idx = 8, colour = COL[1], split = 0.5;
+
+// ---- off-form concrete texture (procedural, generated once)
+const cv = $('cv'), cx = cv.getContext('2d'); let base = null, W = 0, H = 0;
+function rand(s) { let x = s; return () => (x = (x * 16807) % 2147483647) / 2147483647; }
+function makeConcrete(w, h) {
+  const c = document.createElement('canvas'); c.width = w; c.height = h; const g = c.getContext('2d');
+  const img = g.createImageData(w, h), d = img.data, r = rand(1878);
+  // multi-octave value noise for cloudy cement tone
+  const oct = [[w / 6, .5], [w / 22, .3], [w / 70, .2]].map(([s, a]) => { const gw = Math.ceil(w / s) + 2, gh = Math.ceil(h / s) + 2, v = new Float32Array(gw * gh).map(() => r()); return { s, a, gw, v }; });
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    let n = 0; for (const o of oct) { const fx = x / o.s, fy = y / o.s, ix = fx | 0, iy = fy | 0, tx = fx - ix, ty = fy - iy, sx = tx * tx * (3 - 2 * tx), sy = ty * ty * (3 - 2 * ty), v = o.v, gw = o.gw;
+      const a = v[iy * gw + ix], b = v[iy * gw + ix + 1], c2 = v[(iy + 1) * gw + ix], e = v[(iy + 1) * gw + ix + 1]; n += o.a * ((a + (b - a) * sx) + ((c2 + (e - c2) * sx) - (a + (b - a) * sx)) * sy); }
+    const grain = (r() - .5) * 18, t = 172 + (n - .5) * 46 + grain, i = (y * w + x) * 4;
+    d[i] = t + 8; d[i + 1] = t + 3; d[i + 2] = t - 6; d[i + 3] = 255;
+  }
+  g.putImageData(img, 0, 0);
+  // formwork panel joints and tie holes
+  g.strokeStyle = 'rgba(70,64,55,.28)'; g.lineWidth = Math.max(1, w / 500);
+  const pw = w / 3, ph = h / 2;
+  for (let i = 1; i < 3; i++) { g.beginPath(); g.moveTo(i * pw, 0); g.lineTo(i * pw, h); g.stroke(); }
+  g.beginPath(); g.moveTo(0, ph); g.lineTo(w, ph); g.stroke();
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 2; j++) for (const [ax, ay] of [[.25, .25], [.75, .25], [.25, .75], [.75, .75]]) {
+    const x = (i + ax) * pw, y = (j + ay) * ph, rr = w / 95; const gr = g.createRadialGradient(x - rr * .3, y - rr * .3, rr * .2, x, y, rr);
+    gr.addColorStop(0, 'rgba(60,55,48,.85)'); gr.addColorStop(.7, 'rgba(90,84,74,.6)'); gr.addColorStop(1, 'rgba(200,194,182,.0)'); g.fillStyle = gr; g.beginPath(); g.arc(x, y, rr, 0, 7); g.fill(); }
+  // pinholes / blowholes
+  for (let k = 0; k < w * h / 2600; k++) { const x = r() * w, y = r() * h, rr = .6 + r() * r() * w / 420; g.fillStyle = `rgba(55,50,44,${.25 + r() * .4})`; g.beginPath(); g.arc(x, y, rr, 0, 7); g.fill(); }
+  return c;
+}
+function hex(h) { return [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)); }
+function draw() {
+  if (!base) return;
+  cx.clearRect(0, 0, W, H); cx.drawImage(base, 0, 0);
+  const s = DIL[idx][1] / 100, [r, g, b] = hex(colour[1]);
+  const fill = [255 + (r - 255) * s, 255 + (g - 255) * s, 255 + (b - 255) * s].map(Math.round);
+  const x0 = Math.round(W * split);
+  cx.save(); cx.beginPath(); cx.rect(x0, 0, W - x0, H); cx.clip();
+  cx.globalCompositeOperation = 'multiply'; cx.fillStyle = `rgb(${fill})`; cx.fillRect(x0, 0, W - x0, H);
+  if (s >= 1) { cx.globalCompositeOperation = 'source-over'; cx.globalAlpha = .82; cx.fillStyle = colour[1]; cx.fillRect(x0, 0, W - x0, H); cx.globalAlpha = 1; }
+  cx.restore();
+  $('split').style.left = (split * 100) + '%';
+}
+function size() {
+  const p = $('panel').getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1); W = Math.round(p.width * d); H = Math.round(p.height * d);
+  if (!W || !H) return; cv.width = W; cv.height = H; base = makeConcrete(W, H); draw();
+}
+// ---- controls
+function upd() {
+  const [lab, pct] = DIL[idx], [L, F] = lab.split(':').map(Number);
+  $('rLab').textContent = lab; $('tagR').textContent = 'Lasur ' + lab;
+  $('rTxt').textContent = F === 0 ? 'Undiluted Lasur: the strongest colour.' : L === 1 && F >= 6 ? `1 part Lasur to ${F} parts Fixativ: a very light, see-through glaze.` : L >= F ? `${L} part${L > 1 ? 's' : ''} Lasur to ${F} part${F > 1 ? 's' : ''} Fixativ: strong, even colour with a hint of texture.` : `${L} part${L > 1 ? 's' : ''} Lasur to ${F} parts Fixativ: translucent colour, concrete texture shows through.`;
+  const cups = []; const scale = Math.max(L, F) > 10 ? 10 / Math.max(L, F) : 1;
+  for (let i = 0; i < Math.round(L * scale) || (i === 0 && L > 0); i++) cups.push(`<span class="cup l"><i style="background:${colour[1]}"></i></span>`);
+  for (let i = 0; i < Math.round(F * scale); i++) cups.push('<span class="cup f"><i></i></span>');
+  $('cups').innerHTML = cups.join('') + `<small>${L} × Lasur ${F ? '+ ' + F + ' × Fixativ (clear)' : 'only'}</small>`;
+  const tot = Math.max(0, parseFloat($('bL').value) || 0), lq = tot * L / (L + F), fq = tot - lq;
+  $('oL').textContent = lq.toFixed(lq < 10 ? 2 : 1) + ' L'; $('oF').textContent = fq.toFixed(fq < 10 ? 2 : 1) + ' L';
+  document.querySelectorAll('#sw button').forEach(b => b.setAttribute('aria-pressed', b.dataset.n === colour[0] ? 'true' : 'false'));
+  $('mixBtn').href = 'https://hoodad-lab.github.io/lasur-mix/?ratio=' + encodeURIComponent(lab) + '&colour=' + colour[1].slice(1) + '&name=' + encodeURIComponent('KEIM ' + colour[0]);
+  draw();
+}
+$('sw').innerHTML = COL.map(([n, h]) => `<button type="button" data-n="${n}" style="background:${h}" title="KEIM ${n}" aria-label="KEIM ${n}"></button>`).join('') + '<small id="swN"></small>';
+$('sw').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; colour = COL.find(c => c[0] === b.dataset.n); $('swN').textContent = 'KEIM ' + colour[0]; upd(); });
+$('swN').textContent = 'KEIM ' + colour[0];
+$('rng').addEventListener('input', e => { idx = +e.target.value; upd(); });
+$('bL').addEventListener('input', upd);
+const panel = $('panel'); let dragging = false;
+const setSplit = e => { const r = panel.getBoundingClientRect(); split = Math.min(.97, Math.max(.03, (e.clientX - r.left) / r.width)); draw(); };
+panel.addEventListener('pointerdown', e => { dragging = true; panel.setPointerCapture(e.pointerId); setSplit(e); });
+panel.addEventListener('pointermove', e => dragging && setSplit(e));
+panel.addEventListener('pointerup', () => dragging = false);
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(size, 150); });
+size(); upd();
+</script>
+</body>
+</html>
