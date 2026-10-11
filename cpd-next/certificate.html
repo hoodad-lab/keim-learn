@@ -156,78 +156,108 @@ $('cId').textContent = C.id;
 document.title = `KEIM CPD Certificate — ${C.n || ''}`;
 fetch('keim-logo.svg').then(r => r.text()).then(t => { $('logo').innerHTML = t; $('sealLogo').innerHTML = t; }).catch(() => {});
 
-// ---------- security-print artwork (guilloche, rope border, microtext, seal) ----------
+// ---------- mineral-science artwork: silica network, sol→crystal band, quartz seal, Si tile ----------
 const f = n => n.toFixed(2);
 function poly(fn, n) { let d = ''; for (let i = 0; i <= n; i++) { const [x, y] = fn(i / n); d += (i ? 'L' : 'M') + f(x) + ',' + f(y); } return d; }
-// a guilloche rosette: many phase-shifted wavy rings
-function rosette(cx, cy, r0, amp, lobes, rings, spread) {
-  let d = '';
-  for (let k = 0; k < rings; k++) { const ph = k / rings * Math.PI * 2 / lobes, rr = r0 + spread * (k / rings - .5);
-    d += poly(t => { const a = t * Math.PI * 2, r = rr + amp * Math.sin(lobes * a + ph * lobes) + amp * .45 * Math.sin((lobes * 2 + 1) * a - ph * 3); return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }, 720); }
-  return d;
+let seed = 1878; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+// amorphous silica network (Zachariasen glass): jittered honeycomb of Si atoms joined by Si–O–Si bridges
+function silica(x0, y0, x1, y1, a, jit) {
+  const pts = new Map(), key = (i, j) => i + ',' + j, h = a * Math.sqrt(3) / 2; let bonds = '', atoms = '', oxy = '';
+  const P = (i, j) => { const k = key(i, j); if (!pts.has(k)) pts.set(k, [x0 + i * a * 1.5 + (rnd() - .5) * jit, y0 + j * h * 2 + (i % 2 ? h : 0) + (rnd() - .5) * jit]); return pts.get(k); };
+  const I = Math.ceil((x1 - x0) / (a * 1.5)) + 1, J = Math.ceil((y1 - y0) / (h * 2)) + 1;
+  for (let i = 0; i <= I; i++) for (let j = 0; j <= J; j++) {
+    const p = P(i, j); atoms += `M${f(p[0] + .42)},${f(p[1])}a.42,.42 0 1,0 -.84,0a.42,.42 0 1,0 .84,0`;
+    const nb = [[i, j + 1], [i + 1, i % 2 ? j + 1 : j], [i + 1, i % 2 ? j : j - 1]];
+    for (const [a2, b2] of nb) { if (a2 > I || b2 < 0 || b2 > J) continue; const q = P(a2, b2), mx = (p[0] + q[0]) / 2 + (rnd() - .5) * .6, my = (p[1] + q[1]) / 2 + (rnd() - .5) * .6;
+      bonds += `M${f(p[0])},${f(p[1])}L${f(mx)},${f(my)}L${f(q[0])},${f(q[1])}`; oxy += `M${f(mx + .22)},${f(my)}a.22,.22 0 1,0 -.44,0a.22,.22 0 1,0 .44,0`; } }
+  return { bonds, atoms, oxy };
 }
-// interlaced sine waves (the banknote "wave band")
-function waves(x0, x1, yc, amp, period, lines, gap) {
-  let d = '';
+// silicification band: liquid sol waves (left) harden into crystalline zig-zag (right)
+function solToCrystal(x0, x1, yc, amp, period, lines, gap) {
+  let d = ''; const tri = u => 2 / Math.PI * Math.asin(Math.sin(u));
   for (let k = 0; k < lines; k++) { const ph = k / lines * Math.PI * 2, off = (k - lines / 2) * gap;
-    d += poly(t => { const x = x0 + (x1 - x0) * t; return [x, yc + off + amp * Math.sin((x / period) * Math.PI * 2 + ph) * Math.sin(x / (period * 3.3) + k * .15)]; }, 600); }
+    d += poly(t => { const x = x0 + (x1 - x0) * t, m = Math.min(1, Math.max(0, (t - .3) / .45)), s = m * m * (3 - 2 * m), u = (x / period) * Math.PI * 2 + ph;
+      return [x, yc + off + amp * ((1 - s) * Math.sin(u) * (0.6 + 0.4 * Math.sin(x / 41 + k * .2)) + s * tri(u))]; }, 900); }
   return d;
 }
-// rope border: two sine strands running round a rectangle
+// quartz-like faceted star rings for the seal
+function crystalRing(cx, cy, rOut, rIn, pts, rot) { let d = ''; for (let i = 0; i <= pts * 2; i++) { const a = rot + i * Math.PI / pts, r = i % 2 ? rIn : rOut; d += (i ? 'L' : 'M') + f(cx + r * Math.cos(a)) + ',' + f(cy + r * Math.sin(a)); } return d + 'Z'; }
+// SiO4 tetrahedron glyph (top view: Si centre, four O)
+function tetra(cx, cy, r, rot = -Math.PI / 2) { const v = [0, 1, 2].map(i => [cx + r * Math.cos(rot + i * 2 * Math.PI / 3), cy + r * Math.sin(rot + i * 2 * Math.PI / 3)]);
+  return `<g stroke="url(#gold)" stroke-width=".22" fill="none"><path d="M${v.map(p => f(p[0]) + ',' + f(p[1])).join('L')}Z"/>${v.map(p => `<line x1="${cx}" y1="${cy}" x2="${f(p[0])}" y2="${f(p[1])}"/>`).join('')}</g>`
+    + v.map(p => `<circle cx="${f(p[0])}" cy="${f(p[1])}" r=".55" fill="#D51F24"/>`).join('') + `<circle cx="${cx}" cy="${cy}" r=".8" fill="url(#gold)"/>`; }
+// rope border: two strands round a rectangle
 function rope(x, y, w, h, a, step) {
-  const per = [[x, y, x + w, y], [x + w, y, x + w, y + h], [x + w, y + h, x, y + h], [x, y + h, x, y]];
-  let d1 = '', d2 = '';
+  const per = [[x, y, x + w, y], [x + w, y, x + w, y + h], [x + w, y + h, x, y + h], [x, y + h, x, y]]; let d1 = '', d2 = '';
   for (const [ax, ay, bx, by] of per) { const L = Math.hypot(bx - ax, by - ay), nx = -(by - ay) / L, ny = (bx - ax) / L, n = Math.max(2, Math.round(L / step)) * 2;
-    for (const [s, ref] of [[1, 'd1'], [-1, 'd2']]) { let d = '';
-      for (let i = 0; i <= n * 8; i++) { const t = i / (n * 8), o = s * a * Math.sin(t * n * Math.PI); d += (i ? 'L' : 'M') + f(ax + (bx - ax) * t + nx * o) + ',' + f(ay + (by - ay) * t + ny * o); }
-      if (ref === 'd1') d1 += d; else d2 += d; } }
+    for (const s of [1, -1]) { let d = ''; for (let i = 0; i <= n * 8; i++) { const t = i / (n * 8), o = s * a * Math.sin(t * n * Math.PI); d += (i ? 'L' : 'M') + f(ax + (bx - ax) * t + nx * o) + ',' + f(ay + (by - ay) * t + ny * o); } if (s > 0) d1 += d; else d2 += d; } }
   return [d1, d2];
 }
-const MICRO = 'KEIM AUSTRALIA · BREATHABLE COATING SYSTEMS · FORMAL CPD · MINERAL PAINT SINCE 1878 · ';
+const MICRO = 'SILICIFICATION · Si–O–Si · THE MINERAL BOND · POTASSIUM SILICATE · SiO₂ · KEIM AUSTRALIA · BREATHABLE COATING SYSTEMS · SINCE 1878 · ';
 const [r1, r2] = rope(40, 7, 251, 196, .9, 6);
+const net = silica(36, -4, 300, 214, 7.2, 2.6), barNet = (seed = 14, silica(-4, -4, 38, 214, 6, 2.2));
 const art = `
 <defs>
   <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a6a24"/><stop offset=".35" stop-color="#e9cf86"/><stop offset=".55" stop-color="#b48a35"/><stop offset=".8" stop-color="#f3e2a6"/><stop offset="1" stop-color="#8a6a24"/></linearGradient>
-  <radialGradient id="sealbg" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#f6efe0"/></radialGradient>
+  <radialGradient id="sealbg" cx=".5" cy=".42" r=".62"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#f3ead6"/></radialGradient>
+  <radialGradient id="netFade" cx=".78" cy=".32" r=".75"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset=".55" stop-color="#fff" stop-opacity=".45"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></radialGradient>
+  <mask id="netMask"><rect x="0" y="0" width="297" height="210" fill="url(#netFade)"/></mask>
   <path id="microTop" d="M44,10.6 H287"/><path id="microBot" d="M287,199.6 H44"/>
   <path id="sealRing" d="M248,52 m-23.2,0 a23.2,23.2 0 1,1 46.4,0 a23.2,23.2 0 1,1 -46.4,0"/>
   <clipPath id="barClip"><rect x="0" y="0" width="34" height="210"/></clipPath>
+  <clipPath id="mainClip"><rect x="38.5" y="5.5" width="254" height="199"/></clipPath>
 </defs>
-<!-- red bar with white guilloche -->
+<!-- red bar with a white silica lattice -->
 <rect x="0" y="0" width="34" height="210" fill="#D51F24"/>
-<g clip-path="url(#barClip)" fill="none" stroke="#fff" stroke-width=".16" opacity=".22">
-  <path d="${rosette(17, 205, 30, 2.2, 14, 26, 10)}"/>
-  <path d="${(() => { let d = ''; for (let k = 0; k < 18; k++) d += poly(t => { const y = 210 * t; return [3 + k * 1.6 + 1.4 * Math.sin(y / 5 + k * .5), y]; }, 300); return d; })()}" opacity=".5"/>
-</g>
+<g clip-path="url(#barClip)" opacity=".16"><path d="${barNet.bonds}" fill="none" stroke="#fff" stroke-width=".18"/><path d="${barNet.atoms}" fill="#fff"/></g>
 <line x1="34" y1="0" x2="34" y2="210" stroke="url(#gold)" stroke-width="1.1"/>
-<!-- faint full-page wave band and watermark rosette -->
-<g fill="none" stroke-width=".13">
-  <path d="${waves(34, 297, 120, 7, 34, 26, .55)}" stroke="#D51F24" opacity=".09"/>
-  <path d="${waves(34, 297, 182, 4, 22, 14, .5)}" stroke="#2c6a6a" opacity=".08"/>
-  <path d="${rosette(132, 100, 44, 1.8, 20, 34, 16)}" stroke="#D51F24" opacity=".04"/>
+<!-- the silica network behind everything, strongest under the seal -->
+<g clip-path="url(#mainClip)" mask="url(#netMask)">
+  <path d="${net.bonds}" fill="none" stroke="#D51F24" stroke-width=".12" opacity=".2"/>
+  <path d="${net.atoms}" fill="#D51F24" opacity=".22"/>
+  <path d="${net.oxy}" fill="#b48a35" opacity=".35"/>
+</g>
+<!-- silicification band: sol on the left, crystal on the right -->
+<g fill="none" stroke-width=".13" clip-path="url(#mainClip)">
+  <path d="${solToCrystal(38, 293, 124, 6.5, 30, 22, .62)}" stroke="#D51F24" opacity=".11"/>
+  <path d="${solToCrystal(38, 293, 182, 3.6, 18, 12, .55)}" stroke="#2c6a6a" opacity=".1"/>
 </g>
 <!-- frame: gold outer line, rope, red inner line -->
 <rect x="38.5" y="5.5" width="254" height="199" fill="none" stroke="url(#gold)" stroke-width=".7"/>
 <path d="${r1}" fill="none" stroke="#D51F24" stroke-width=".18" opacity=".75"/><path d="${r2}" fill="none" stroke="#b48a35" stroke-width=".18" opacity=".9"/>
-<rect x="41.6" y="8.6" width="247.8" height="192.8" fill="none" stroke="#D51F24" stroke-width=".22"/>
-<!-- corner ornaments -->
-${[[41.6, 8.6], [289.4, 8.6], [41.6, 201.4], [289.4, 201.4]].map(([x, y]) => `<g fill="none" stroke="url(#gold)" stroke-width=".25"><path d="${rosette(x, y, 2.6, .5, 8, 6, 1.2)}"/></g><circle cx="${x}" cy="${y}" r=".7" fill="#D51F24"/>`).join('')}
+<rect x="41.6" y="8.6" width="247.8" height="192.8" fill="#F4F3EC" fill-opacity="0" stroke="#D51F24" stroke-width=".22"/>
+<!-- SiO4 tetrahedra on the corners -->
+${[[41.6, 8.6, Math.PI / 2], [289.4, 8.6, Math.PI / 2], [41.6, 201.4, -Math.PI / 2], [289.4, 201.4, -Math.PI / 2]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="3.6" fill="#F4F3EC"/>` + tetra(x, y, 2.9, r)).join('')}
 <!-- microtext along the frame -->
-<text font-family="Work Sans, sans-serif" font-size="1.05" letter-spacing=".12" fill="#9e1418" opacity=".8"><textPath href="#microTop">${MICRO.repeat(8)}</textPath></text>
-<text font-family="Work Sans, sans-serif" font-size="1.05" letter-spacing=".12" fill="#9e1418" opacity=".8"><textPath href="#microBot">${MICRO.repeat(8)}</textPath></text>
+<text font-family="Work Sans, sans-serif" font-size="1.05" letter-spacing=".12" fill="#9e1418" opacity=".85"><textPath href="#microTop">${MICRO.repeat(6)}</textPath></text>
+<text font-family="Work Sans, sans-serif" font-size="1.05" letter-spacing=".12" fill="#9e1418" opacity=".85"><textPath href="#microBot">${MICRO.repeat(6)}</textPath></text>
 <line x1="52" y1="184" x2="278" y2="184" stroke="#b9b39f" stroke-width=".25"/>
-<!-- the KEIM seal -->
+<!-- the KEIM quartz seal -->
 <g>
-  <circle cx="248" cy="52" r="33" fill="none" stroke="url(#gold)" stroke-width=".5"/>
-  <path d="${rosette(248, 52, 30.2, 1.5, 24, 22, 4.4)}" fill="none" stroke="#D51F24" stroke-width=".14" opacity=".85"/>
-  <path d="${rosette(248, 52, 30.2, 1.5, 24, 10, 4.4)}" fill="none" stroke="url(#gold)" stroke-width=".18"/>
+  ${(() => { let g = ''; const N = 32, cx = 248, cy = 52, ro = 34.6, ri = 29.4, d = Math.PI / N;
+    for (let i = 0; i < N; i++) { const a = i * 2 * d - Math.PI / 2, p = (r, t) => f(cx + r * Math.cos(t)) + ',' + f(cy + r * Math.sin(t)), tip = p(ro - (i % 2) * 1.6, a);
+      g += `<path d="M${p(ri, a - d)}L${tip}L${p(ri - .6, a)}Z" fill="#f1dc98"/><path d="M${p(ri - .6, a)}L${tip}L${p(ri, a + d)}Z" fill="#a8822f"/>`; }
+    return `<g stroke="#8a6a24" stroke-width=".06">${g}</g>`; })()}
+  <circle cx="248" cy="52" r="29.6" fill="#F4F3EC"/>
   <circle cx="248" cy="52" r="26.6" fill="#D51F24"/>
-  <circle cx="248" cy="52" r="26.6" fill="none" stroke="url(#gold)" stroke-width=".6"/>
-  <text font-family="Work Sans, sans-serif" font-weight="600" font-size="2.55" letter-spacing=".55" fill="#fff"><textPath href="#sealRing" startOffset="0">KEIM AUSTRALIA ✦ FORMAL CPD ✦ BREATHABLE COATING SYSTEMS ✦</textPath></text>
+  <circle cx="248" cy="52" r="26.6" fill="none" stroke="url(#gold)" stroke-width=".7"/>
+  <circle cx="248" cy="52" r="29.6" fill="none" stroke="url(#gold)" stroke-width=".25"/>
+  <text font-family="Work Sans, sans-serif" font-weight="600" font-size="2.45" letter-spacing=".5" fill="#fff"><textPath href="#sealRing">SILICIFICATION ✦ THE MINERAL BOND ✦ KEIM AUSTRALIA ✦ FORMAL CPD ✦</textPath></text>
   <circle cx="248" cy="52" r="20" fill="url(#sealbg)"/>
-  <circle cx="248" cy="52" r="20" fill="none" stroke="url(#gold)" stroke-width=".55"/>
-  <path d="${rosette(248, 52, 17.6, .7, 16, 14, 2.2)}" fill="none" stroke="#D51F24" stroke-width=".1" opacity=".35"/>
+  <path d="${(seed = 99, silica(228, 32, 268, 72, 3.2, 1).bonds)}" fill="none" stroke="#D51F24" stroke-width=".08" opacity=".22" clip-path="circle(20mm at 248mm 52mm)"/>
+  <circle cx="248" cy="52" r="20" fill="none" stroke="url(#gold)" stroke-width=".6"/>
+  <polygon points="${[0, 1, 2, 3, 4, 5].map(i => f(248 + 18.4 * Math.cos(i * Math.PI / 3 + Math.PI / 6)) + ',' + f(52 + 18.4 * Math.sin(i * Math.PI / 3 + Math.PI / 6))).join(' ')}" fill="none" stroke="url(#gold)" stroke-width=".25"/>
+</g>
+<!-- silicon element tile in the red bar -->
+<g transform="translate(9 158)">
+  <rect x="0" y="0" width="16" height="18" fill="none" stroke="url(#gold)" stroke-width=".45"/>
+  <rect x=".9" y=".9" width="14.2" height="16.2" fill="none" stroke="#fff" stroke-width=".12" opacity=".6"/>
+  <text x="2" y="3.9" font-family="Work Sans, sans-serif" font-size="2.3" font-weight="600" fill="#fff">14</text>
+  <text x="8" y="11.4" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="8.2" font-weight="600" fill="#fff">Si</text>
+  <text x="8" y="14.2" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="1.7" letter-spacing=".25" fill="#fff">SILICON</text>
+  <text x="8" y="16.4" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="1.45" fill="#fff" opacity=".8">28.085</text>
 </g>`;
+
 $('art').innerHTML = art;
 
 // shrink very long names so they stay on one line
