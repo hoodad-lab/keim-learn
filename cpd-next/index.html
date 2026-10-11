@@ -225,7 +225,7 @@ button { font: inherit; cursor: pointer; }
 <script>
 'use strict';
 // ---- settings: fill in once the HubSpot form exists (portal id + form guid). Empty = no submission.
-const HUBSPOT = { portalId: '', formId: '' };
+const HUBSPOT = { portalId: '47417993', formId: '' };
 const C = window.COURSE, N = C.titles.length, $ = id => document.getElementById(id);
 fetch('keim-logo.svg').then(r => r.text()).then(t => $('logo').innerHTML = t).catch(() => {});
 const KEY = 'keimCpdBreathable.v1';
@@ -351,7 +351,7 @@ $('fSubmit').onclick = async () => {
   }
   showDone();
 };
-function showDone() { show('vDone'); if (HUBSPOT.portalId) $('mailNote').textContent = 'We have also emailed you a link to it, so you can download it again any time.'; $('certLink').href = S.cert.link; $('certId').textContent = S.cert.id; pct(); }
+function showDone() { show('vDone'); if (HUBSPOT.portalId && HUBSPOT.formId) $('mailNote').textContent = 'We have also emailed you a link to it, so you can download it again any time.'; $('certLink').href = S.cert.link; $('certId').textContent = S.cert.id; pct(); }
 pct();
 </script>
 </body>
