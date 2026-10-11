@@ -13,13 +13,17 @@
 [hidden] { display: none !important; }
 html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: "Work Sans", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
 button { font: inherit; cursor: pointer; }
-.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 14px; background: var(--red); color: #fff; padding: 10px max(16px, env(safe-area-inset-left)) 10px; }
-.top .logo { width: 46px; flex: none; color: #fff; }
+.top { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 12px; background: var(--red); color: #fff; padding: 7px max(16px, env(safe-area-inset-left)) 9px; }
+.top .logo { width: 30px; flex: none; color: #fff; }
 .top .logo svg { width: 100%; height: auto; display: block; }
-.top .t { flex: 1; min-width: 0; }
-.top .t b { display: block; font: 600 15px/1.2 "Work Sans", sans-serif; letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.top .t span { font: 500 11px/1.3 "Work Sans", sans-serif; letter-spacing: .18em; text-transform: uppercase; opacity: .85; }
-.top .pct { font: 600 13px/1 "Work Sans", sans-serif; letter-spacing: .06em; background: rgba(255,255,255,.16); padding: 7px 11px; border-radius: 999px; white-space: nowrap; }
+.top .t { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 12px; white-space: nowrap; overflow: hidden; }
+.top .t b { font: 500 14px/1.2 "Work Sans", sans-serif; letter-spacing: .03em; overflow: hidden; text-overflow: ellipsis; }
+.top .t span { font: 500 10px/1.2 "Work Sans", sans-serif; letter-spacing: .2em; text-transform: uppercase; opacity: .8; }
+.top .pct { font: 500 11.5px/1 "Work Sans", sans-serif; letter-spacing: .08em; opacity: .9; white-space: nowrap; }
+.top .who { font: 500 11.5px/1 "Work Sans", sans-serif; opacity: .9; white-space: nowrap; }
+.top .line { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,.22); }
+.top .line i { display: block; height: 100%; width: 0; background: #fff; transition: width .4s; }
+@media (max-width: 560px) { .top .t span, .top .who { display: none; } }
 .view { display: none; } .view.on { display: block; }
 .wrap { max-width: 1240px; margin: 0 auto; padding: 22px 16px 60px; }
 
@@ -112,6 +116,11 @@ button { font: inherit; cursor: pointer; }
 .f input:focus, .f select:focus { outline: 2px solid var(--red); border-color: transparent; }
 .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45; margin-top: 14px; }
 .check input { width: 18px; height: 18px; accent-color: var(--red); margin-top: 2px; flex: none; }
+.reg { margin: 4px 0 14px; max-width: 560px; }
+.rg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.rg input { font: 400 15px/1.2 "Work Sans", sans-serif; padding: 11px 12px; border: 1.5px solid var(--line); border-radius: 4px; background: #fff; }
+.rg input:focus { outline: 2px solid var(--red); border-color: transparent; }
+.rg input[type=email] { grid-column: 1 / -1; }
 .err { color: var(--red); font-size: 13px; margin-top: 10px; min-height: 18px; }
 .done { text-align: center; max-width: 640px; margin: 30px auto; }
 .done h2 { font: 300 40px/1.1 "Work Sans", sans-serif; color: var(--red); margin: 8px 0; }
@@ -128,8 +137,10 @@ button { font: inherit; cursor: pointer; }
 <body>
 <header class="top">
   <div class="logo" id="logo"></div>
-  <div class="t"><span>Formal CPD · KEIM Australia</span><b>Breathable Coating Systems</b></div>
+  <div class="t"><b>Breathable Coating Systems</b><span>Formal CPD · KEIM Australia</span></div>
+  <div class="who" id="who"></div>
   <div class="pct" id="pct">0%</div>
+  <div class="line"><i id="pline"></i></div>
 </header>
 
 <!-- 1. welcome -->
@@ -145,8 +156,14 @@ button { font: inherit; cursor: pointer; }
         <div><b>8 questions</b><span>Pass mark 80%</span></div>
         <div><b>Certificate</b><span>Instant, emailed</span></div>
       </div>
-      <button class="cta" id="startBtn" type="button">Start the course</button>
-      <p class="small" style="margin-top:12px" id="resumeNote"></p>
+      <form class="reg f" id="regF" novalidate>
+        <div class="k" style="margin-bottom:8px">Register to save your progress</div>
+        <div class="rg"><input id="rFirst" placeholder="First name" autocomplete="given-name"><input id="rLast" placeholder="Last name" autocomplete="family-name"><input id="rEmail" type="email" placeholder="Email" autocomplete="email"></div>
+        <div class="err" id="rErr"></div>
+      </form>
+      <button class="cta" id="startBtn" type="button">Register and start</button>
+      <p class="small" style="margin-top:12px" id="resumeNote">Your place is saved as you go, so you can stop any time and pick up from the same slide.</p>
+      <p class="small" id="moveNote" hidden>On another device? <a href="#" id="copyResume">Copy your personal resume link</a> and open it there.</p>
     </div>
     <img src="slides/s-01.jpg" alt="Breathable Coating Systems title slide" width="1920" height="1080">
   </div>
@@ -229,20 +246,37 @@ const HUBSPOT = { portalId: '47417993', formId: '' };
 const C = window.COURSE, N = C.titles.length, $ = id => document.getElementById(id);
 fetch('keim-logo.svg').then(r => r.text()).then(t => $('logo').innerHTML = t).catch(() => {});
 const KEY = 'keimCpdBreathable.v1';
-let S = { heard: [], cur: 0, passed: false, score: 0, cert: null };
+let S = { heard: [], cur: 0, passed: false, score: 0, cert: null, user: null };
 try { Object.assign(S, JSON.parse(localStorage.getItem(KEY) || '{}')); } catch (e) {}
+// a personal resume link carries progress to another device: …/cpd/#r=<base64url JSON>
+try { const m = location.hash.match(/^#r=(.+)$/); if (m) { const R = JSON.parse(decodeURIComponent(escape(atob(m[1].replace(/-/g, '+').replace(/_/g, '/'))))); if (R && Array.isArray(R.heard)) { S.heard = [...new Set([...(S.heard || []), ...R.heard])]; S.cur = Math.max(S.cur || 0, R.cur || 0); S.user = S.user || R.user || null; } history.replaceState(null, '', location.pathname); } } catch (e) {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 const heard = i => S.heard.includes(i);
 const maxOpen = () => { let m = 0; while (m < N - 1 && heard(m)) m++; return m; }; // first slide not yet heard
 const allHeard = () => S.heard.length >= N;
 function show(v) { document.querySelectorAll('.view').forEach(x => x.classList.toggle('on', x.id === v)); scrollTo(0, 0); }
-function pct() { const p = Math.round(100 * S.heard.length / N); $('pct').textContent = S.passed ? 'Passed ✓' : p + '%'; }
+function pct() { const p = Math.round(100 * S.heard.length / N); $('pct').textContent = S.passed ? 'Passed ✓' : p + '%'; $('pline').style.width = (S.passed ? 100 : p) + '%'; $('who').textContent = S.user ? S.user.first : ''; }
 const fmt = s => { s = Math.round(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 const chapterOf = i => C.chapters.findIndex(([, a, b]) => i + 1 >= a && i + 1 <= b);
 
 // ---- welcome
-if (S.heard.length) { $('startBtn').textContent = allHeard() ? (S.passed ? 'View my certificate' : 'Go to the assessment') : 'Resume the course'; $('resumeNote').textContent = 'Welcome back. You have heard ' + S.heard.length + ' of ' + N + ' slides.'; }
-$('startBtn').onclick = () => { if (S.passed && S.cert) return showDone(); if (allHeard()) return openQuiz(); show('vCourse'); go(Math.min(S.cur, maxOpen()), false); };
+function resumeLink() { const R = { heard: S.heard, cur: S.cur, user: S.user }; return location.href.split('#')[0] + '#r=' + btoa(unescape(encodeURIComponent(JSON.stringify(R)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+function welcome() {
+  if (S.user) { $('regF').hidden = true; $('moveNote').hidden = false;
+    $('startBtn').textContent = S.heard.length ? (allHeard() ? (S.passed ? 'View my certificate' : 'Go to the assessment') : 'Continue where you left off') : 'Start the course';
+    $('resumeNote').textContent = 'Welcome' + (S.heard.length ? ' back' : '') + ', ' + S.user.first + '. ' + (S.heard.length ? 'You have completed ' + S.heard.length + ' of ' + N + ' slides.' : 'Your progress is saved as you go.'); }
+}
+welcome();
+$('copyResume').onclick = e => { e.preventDefault(); const u = resumeLink(); (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => { $('copyResume').textContent = 'Link copied. Open it on your other device.'; }).catch(() => prompt('Copy this link', u)); };
+$('startBtn').onclick = () => {
+  if (!S.user) {
+    const first = $('rFirst').value.trim(), last = $('rLast').value.trim(), email = $('rEmail').value.trim();
+    if (!first || !last) return $('rErr').textContent = 'Please enter your first and last name.';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return $('rErr').textContent = 'Please enter a valid email address.';
+    S.user = { first, last, email }; save(); pct();
+  }
+  if (S.passed && S.cert) return showDone(); if (allHeard()) return openQuiz(); show('vCourse'); go(Math.min(S.cur, maxOpen()), false);
+};
 
 // ---- player
 const au = new Audio(); au.preload = 'auto'; let speed = 1, playing = false;
@@ -326,7 +360,7 @@ $('submitQ').onclick = () => {
   r.innerHTML = `<div class="k">${pass ? 'Well done, you passed' : 'Not yet'}</div><b>${score}%</b><p class="small">${right} of ${C.quiz.length} correct${missing ? ' · ' + missing + ' left blank' : ''}. ${pass ? '' : 'Read the feedback on each question and try again.'}</p>` +
     (pass ? '<button class="cta" id="toForm" type="button">Continue to your certificate</button>' : '<button class="cta" id="retry" type="button">Try again</button>');
   r.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  if (pass) { S.passed = true; S.score = score; save(); pct(); $('toForm').onclick = () => show('vForm'); $('submitQ').hidden = true; }
+  if (pass) { S.passed = true; S.score = score; save(); pct(); $('toForm').onclick = () => { prefill(); show('vForm'); }; $('submitQ').hidden = true; }
   else $('retry').onclick = openQuiz;
 };
 
@@ -351,6 +385,7 @@ $('fSubmit').onclick = async () => {
   }
   showDone();
 };
+function prefill() { if (!S.user) return; $('fFirst').value ||= S.user.first; $('fLast').value ||= S.user.last; $('fEmail').value ||= S.user.email; }
 function showDone() { show('vDone'); if (HUBSPOT.portalId && HUBSPOT.formId) $('mailNote').textContent = 'We have also emailed you a link to it, so you can download it again any time.'; $('certLink').href = S.cert.link; $('certId').textContent = S.cert.id; pct(); }
 pct();
 </script>
