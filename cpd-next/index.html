@@ -255,7 +255,7 @@ const heard = i => S.heard.includes(i);
 const maxOpen = () => { let m = 0; while (m < N - 1 && heard(m)) m++; return m; }; // first slide not yet heard
 const allHeard = () => S.heard.length >= N;
 function show(v) { document.querySelectorAll('.view').forEach(x => x.classList.toggle('on', x.id === v)); scrollTo(0, 0); }
-function pct() { const p = Math.round(100 * S.heard.length / N); $('pct').textContent = S.passed ? 'Passed ✓' : p + '%'; $('pline').style.width = (S.passed ? 100 : p) + '%'; $('who').textContent = S.user ? S.user.first : ''; }
+function pct() { const p = Math.round(100 * S.heard.length / N); $('pct').textContent = S.passed ? 'Passed ✓' : p + '%'; $('pline').style.width = (S.passed ? 100 : p) + '%'; $('who').textContent = S.user && S.user.first ? S.user.first.trim().replace(/^\p{Ll}/u, c => c.toUpperCase()) : ''; }
 const fmt = s => { s = Math.round(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
 const chapterOf = i => C.chapters.findIndex(([, a, b]) => i + 1 >= a && i + 1 <= b);
 
