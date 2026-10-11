@@ -245,6 +245,24 @@ body:not(.cine) .ui::before { content: ''; position: absolute; inset: -46px 0 0 
 #play:not(.on) { animation: playPulse 2.2s ease-in-out infinite; }
 @keyframes playPulse { 0%,100% { box-shadow: 0 6px 18px rgba(213,31,36,.35), 0 0 0 0 rgba(213,31,36,.45); } 50% { box-shadow: 0 6px 18px rgba(213,31,36,.35), 0 0 0 9px rgba(213,31,36,0); } }
 #homeBtn { font-size: 17px; line-height: 1; }
+/* desktop "movie time": dark theatre while the film plays, light again when paused to explore */
+body { transition: background-color .8s ease; }
+.ttl, .txt, .num, .loc, .kick, .ui button, #langCode, .now { transition: color .8s ease, background-color .8s ease, border-color .8s ease; }
+body.movie { background: #0f1013; }
+body:not(.cine) .cap { isolation: isolate; }
+body:not(.cine) .cap::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity .8s ease;
+  background: linear-gradient(to top, rgba(15,16,19,0.98) 0%, rgba(15,16,19,0.95) 58%, rgba(15,16,19,0.6) 82%, rgba(15,16,19,0) 100%); }
+body.movie .cap::after { opacity: 1; } body.movie .cap { background: transparent; }
+body.movie .ttl { color: #f4f1ea; }
+body.movie .txt { color: rgba(244,241,234,.8); }
+body.movie .num, body.movie .loc, body.movie .now { color: rgba(244,241,234,.55); }
+body.movie .kick { color: #ff6b6f; }
+body.movie .rule { background: #ff5257; }
+body.movie .more { background: transparent; color: #fff; border-color: rgba(255,255,255,.45); }
+body.movie .vtools button { background: rgba(30,31,36,.85); color: #eee; border-color: rgba(255,255,255,.18); }
+body.movie .ui button, body.movie #langCode { background: rgba(30,31,36,.85); color: #eee; border-color: rgba(255,255,255,.16); }
+body.movie #play { background: #D51F24; border-color: #D51F24; color: #fff; }
+body.movie .ticks i, body.movie .ticks span { opacity: .5; }
 @media (prefers-reduced-motion: reduce) { #play:not(.on) { animation: none; } }
 .ui button:focus-visible, .ui input:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 2px; }
 .track { position: relative; min-width: 0; height: 26px; display: grid; align-items: center; }
@@ -3545,7 +3563,7 @@ function captionMax() {
   PL.forEach((p, i) => { probe.querySelector('.num').textContent = i > 0 && i < N - 1 ? '00 / 00' : ''; probe.querySelector('.kick').textContent = p.kick; probe.querySelector('.loc').textContent = p.loc ? '📍 ' + p.loc : ''; probe.querySelector('.ttl').textContent = p.ttl; probe.querySelector('.txt').textContent = p.txt; const pm = probe.querySelector('.more'); if (pm) pm.classList.add('on'); const pc = probe.querySelector('.cta'); if (pc) pc.classList.toggle('on', i === N - 1); mx = Math.max(mx, probe.offsetHeight); });
   probe.remove(); return mx;
 }
-let XSH = 0, CINE = false;
+let XSH = 0, CINE = false, MV = 0, MVON = false;
 function layout() {
   Wp = window.innerWidth; Hp = window.innerHeight;
   XSH = 0;
@@ -3711,6 +3729,7 @@ function render() {
   const je = jumpProgress(), jea = easeIO(je); let cam = camera(T); if (jump) cam = camLerp(jump.from, cam, jea);
   const z = cam.z, pn = jump ? 1 - jea : posterness(T), fl = 1 - pn;
   if (CINE && fl > 0.01) { c.globalAlpha = fl; c.fillStyle = '#121214'; c.fillRect(0, 0, Wp, Hp); c.globalAlpha = 1; }
+  if (!CINE && MV > 0.01 && fl > 0.01) { c.globalAlpha = MV * fl; c.fillStyle = '#0f1013'; c.fillRect(0, 0, Wp, Hp); c.globalAlpha = 1; }
   // parallax paint clouds behind the strip
   if (fl > 0.01) for (let k = 0; k < 44; k++) {
     const f = 0.35 + 0.35 * hashf(k * 7 + 1), wx = k * 420 - 600, sx = Wp / 2 + (wx - cam.cx * f) * z, sy = Hp * hashf(k * 11 + 3), r = (90 + 200 * hashf(k * 5)) * z * 1.4;
@@ -3776,6 +3795,11 @@ function render() {
  setCaption(dom); syncSlug(dom); document.getElementById('cta').classList.toggle('on', dom === N - 1);
   nowEl.textContent = pn > 0.5 ? 'The poster' : PL[dom].lab;
   if (document.activeElement !== scrub) scrub.value = T;
+  if (!CINE && MV > 0.01 && fl > 0.01) { // dim the neighbouring plates so the current one is the screen
+    c.setTransform(dpr, 0, 0, dpr, 0, 0); const hw = PW * z / 2 + 10, a = MV * fl, xl = Wp / 2 - hw, xr = Wp / 2 + hw;
+    if (xl > 0) { const g = c.createLinearGradient(xl, 0, Math.max(0, xl - 260), 0); g.addColorStop(0, `rgba(15,16,19,${0.55 * a})`); g.addColorStop(1, `rgba(15,16,19,${0.86 * a})`); c.fillStyle = g; c.fillRect(0, 0, xl, Hp); }
+    if (xr < Wp) { const g = c.createLinearGradient(xr, 0, Math.min(Wp, xr + 260), 0); g.addColorStop(0, `rgba(15,16,19,${0.55 * a})`); g.addColorStop(1, `rgba(15,16,19,${0.86 * a})`); c.fillStyle = g; c.fillRect(xr, 0, Wp - xr, Hp); }
+  }
   dirty = false; drawXF();
 }
 const TRAILC = PL.map(p => p.trail);
@@ -3847,6 +3871,7 @@ function loop(ts) {
   muTick();
   if (started) thumbTick(ts);
   { const fl = started && T >= Z1 - 0.2 && T < F0; if (fl !== FLT) { FLT = fl; document.body.classList.toggle('inflight', fl); } }
+  { const tg = !CINE && playing && FLT ? 1 : 0; if (Math.abs(tg - MV) > 0.002) { MV += (tg - MV) * 0.05; dirty = true; } else MV = tg; const on = MV > 0.5; if (on !== MVON) { MVON = on; document.body.classList.toggle('movie', on); } }
   if (dirty && started) { render(); if (CINE) progEl.style.width = (100 * T / TMAX).toFixed(2) + '%'; }
   requestAnimationFrame(loop);
 }
