@@ -203,6 +203,10 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   section.band { padding-block: 34px; }
   .facts { gap: 18px; } .facts strong { font-size: 19px; }
 }
+.world-card { position: relative; display: block; border-radius: 10px; overflow: hidden; box-shadow: 0 30px 70px -30px rgba(0,0,0,.55); }
+.world-card img { width: 100%; height: auto; display: block; aspect-ratio: 16 / 9; object-fit: cover; }
+.world-card .wc-btn { position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%); background: var(--red); color: #fff; padding: 16px 30px; font: 600 13px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; border-radius: 2px; box-shadow: 0 14px 34px rgba(0,0,0,.45); white-space: nowrap; }
+.world-card:hover .wc-btn { transform: translateX(-50%) translateY(-2px); }
 </style>
 
 <div class="cinema">
@@ -250,16 +254,16 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   <section class="band" id="cpd">
     <div class="sec-head">
       <h2>Earn your CPD points</h2>
-      <p>Online on Archify in your own time, or in person at your practice.</p>
+      <p>Online with KEIM in your own time, or in person at your practice.</p>
     </div>
     <div class="cpd">
       <article class="card formal">
         <span class="tag red">Formal CPD</span>
         <h3>Breathable Coating Systems</h3>
-        <p>How mineral silicate coatings let moisture out while keeping weather off, and how to specify them on masonry, render and concrete. Self-paced, with a certificate issued by Archify.</p>
-        <div class="facts"><div><strong>Formal</strong><span>CPD points</span></div><div><strong>Online</strong><span>self-paced</span></div><div><strong>Free</strong><span>on Archify</span></div></div>
-        <ul><li>Breathability and moisture vapour permeability</li><li>Mineral versus film-forming binders</li><li>Specifying breathable systems for Australian substrates</li></ul>
-        <div class="btns"><a class="btn solid" href="https://www.archify.com/au/education/keim-au/detail/breathable-coating-systems" target="_blank" rel="noopener">Take the course on Archify</a></div>
+        <p>Why moisture gets trapped in buildings, what it does, and how breathable mineral coatings keep masonry and concrete sound. 50 narrated slides, an 8-question assessment and an instant KEIM certificate.</p>
+        <div class="facts"><div><strong>1 point</strong><span>Formal CPD</span></div><div><strong>~40 min</strong><span>narrated, online</span></div><div><strong>Instant</strong><span>certificate</span></div></div>
+        <ul><li>How moisture gets trapped, and the damage it does</li><li>What makes a coating truly breathable</li><li>Where mineral paint fits on your next project</li></ul>
+        <div class="btns"><a class="btn solid" href="../cpd-next/" target="_blank" rel="noopener">Start the course</a></div>
       </article>
       <article class="card">
         <span class="tag">Lunch and learn</span>
@@ -309,6 +313,16 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     </div>
   </section>
 
+  <section class="band" id="world">
+    <div class="sec-head">
+      <h2>KEIM around the world</h2>
+      <p>Spin the globe and fly down to more than 200 KEIM projects, from Sydney Opera House and Albany's bridge art to Milan, Basel and Singapore.</p>
+    </div>
+    <a class="world-card" href="../world-next/" target="_blank" rel="noopener">
+      <img src="world-poster.jpg" alt="Satellite globe with KEIM project pins" width="1600" height="900" loading="lazy">
+      <span class="wc-btn">Explore the map</span>
+    </a>
+  </section>
   <section class="band" id="certified">
     <div class="cert">
       <div><h2>Cradle to Cradle Certified®, Version 5.0</h2><p>KEIM mineral paints are independently assessed on material health, circularity, clean air and climate, water and soil, and social fairness.</p></div>
