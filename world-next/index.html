@@ -4,39 +4,45 @@
 <meta charset="utf-8"><meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>KEIM around the world</title>
-<meta name="description" content="Explore KEIM mineral paint projects around the world: heritage, hospitals, schools, murals and landmarks.">
+<meta name="description" content="Fly around the globe to KEIM mineral paint projects: heritage, hospitals, schools, murals and landmarks.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Josefin+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css">
 <style>
-:root { --red: #D51F24; --ink: #1c2236; --paper: #f4efe4; --mute: #6b6a66; --sans: "Josefin Sans", "Futura", "Avenir Next", system-ui, sans-serif; --serif: "Cormorant Garamond", Georgia, serif; }
+:root { --red: #D51F24; --ink: #1c2236; --mute: #6b6a66; --sans: "Josefin Sans", "Futura", "Avenir Next", system-ui, sans-serif; --serif: "Cormorant Garamond", Georgia, serif; }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: #ece3cf; color: var(--ink); font-family: var(--sans); overflow: hidden; -webkit-tap-highlight-color: transparent; }
-#map { position: fixed; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: grab; display: block; }
-#map.drag { cursor: grabbing; }
-/* top bar */
-.top { position: fixed; left: 0; right: 0; top: 0; padding: max(14px, env(safe-area-inset-top)) 16px 10px; pointer-events: none; display: flex; flex-direction: column; gap: 10px; background: linear-gradient(rgba(236,227,207,.96), rgba(236,227,207,.85) 70%, rgba(236,227,207,0)); }
+html, body { margin: 0; height: 100%; background: #04060c; color: var(--ink); font-family: var(--sans); overflow: hidden; -webkit-tap-highlight-color: transparent; }
+#map { position: fixed; inset: 0; }
+/* starfield behind the globe */
+#map .maplibregl-canvas-container { background: radial-gradient(ellipse at 50% 45%, #18243f 0%, #070b16 55%, #020308 100%); }
+.top { position: fixed; left: 0; right: 0; top: 0; z-index: 3; padding: max(14px, env(safe-area-inset-top)) 16px 26px; pointer-events: none; display: flex; flex-direction: column; gap: 10px; background: linear-gradient(rgba(4,6,12,.85), rgba(4,6,12,.55) 60%, rgba(4,6,12,0)); color: #fff; }
 .top > * { pointer-events: auto; }
 .brand { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-.brand h1 { margin: 0; font: 400 clamp(24px, 4vw, 36px)/1 "Abril Fatface", Georgia, serif; }
-.brand .kick { font: 700 11px/1 var(--sans); letter-spacing: .24em; color: var(--red); text-transform: uppercase; }
-.brand .count { font: 500 14px/1.2 var(--sans); color: var(--mute); }
-.bar { display: flex; gap: 8px; align-items: center; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.brand h1 { margin: 0; font: 400 clamp(24px, 4vw, 36px)/1 "Abril Fatface", Georgia, serif; color: #fff; }
+.brand .kick { font: 700 11px/1 var(--sans); letter-spacing: .24em; color: #ff6b6f; text-transform: uppercase; }
+.brand .count { font: 500 14px/1.2 var(--sans); color: rgba(255,255,255,.75); }
+.bar { display: flex; gap: 8px; align-items: center; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
 .bar::-webkit-scrollbar { display: none; }
-.chip { flex: none; border: 1.5px solid var(--ink); background: rgba(255,255,255,.85); color: var(--ink); border-radius: 999px; padding: 8px 13px 7px; font: 700 12px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
-.chip[aria-pressed="true"] { background: var(--ink); color: #fff; }
-.chip.au { border-color: var(--red); color: var(--red); }
-.chip.au[aria-pressed="true"] { background: var(--red); color: #fff; }
-.search { flex: none; width: 190px; border: 1.5px solid var(--ink); border-radius: 999px; padding: 8px 14px 7px; font: 600 13px/1 var(--sans); background: rgba(255,255,255,.9); color: var(--ink); }
-/* zoom buttons */
-.zoom { position: fixed; right: 16px; bottom: max(18px, env(safe-area-inset-bottom)); display: grid; gap: 8px; z-index: 3; }
-.zoom button { width: 44px; height: 44px; border-radius: 50%; border: 0; background: #fff; color: var(--ink); font: 700 20px/1 var(--sans); box-shadow: 0 6px 18px -6px rgba(28,34,54,.45); cursor: pointer; }
-.zoom button.txt { font-size: 10px; letter-spacing: .06em; }
+.chip { flex: none; border: 1.5px solid rgba(255,255,255,.7); background: rgba(10,14,26,.55); color: #fff; border-radius: 999px; padding: 8px 13px 7px; font: 700 12px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.chip[aria-pressed="true"] { background: #fff; color: var(--ink); border-color: #fff; }
+.chip.au { border-color: var(--red); background: rgba(213,31,36,.35); }
+.chip.au[aria-pressed="true"] { background: var(--red); color: #fff; border-color: var(--red); }
+.search { flex: none; width: 200px; border: 1.5px solid rgba(255,255,255,.7); border-radius: 999px; padding: 8px 14px 7px; font: 600 13px/1 var(--sans); background: rgba(255,255,255,.95); color: var(--ink); }
+.tools { position: fixed; right: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); display: grid; gap: 8px; z-index: 3; }
+.tools button { width: 46px; height: 46px; border-radius: 50%; border: 0; background: rgba(255,255,255,.95); color: var(--ink); font: 700 10px/1.1 var(--sans); letter-spacing: .05em; box-shadow: 0 6px 18px -6px rgba(0,0,0,.6); cursor: pointer; }
+/* pins */
+.pin { width: 34px; height: 44px; cursor: pointer; filter: drop-shadow(0 3px 4px rgba(0,0,0,.55)); transition: transform .15s; transform-origin: 50% 100%; }
+.pin:hover, .pin.on { transform: scale(1.25); }
+.pin svg { width: 100%; height: 100%; display: block; }
+.clu { min-width: 38px; height: 38px; padding: 0 8px; border-radius: 19px; background: var(--ink); color: #fff; border: 3px solid #fff; display: grid; place-items: center; font: 700 14px/1 var(--sans); cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.55); }
+.clu.big { min-width: 48px; height: 48px; border-radius: 24px; font-size: 16px; }
+.clu.au { background: var(--red); }
 /* project card */
-.card { position: fixed; z-index: 5; background: #fbf9f4; box-shadow: 0 20px 60px rgba(28,34,54,.35); display: flex; flex-direction: column; overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s; }
+.card { position: fixed; z-index: 5; background: #fbf9f4; box-shadow: 0 20px 60px rgba(0,0,0,.5); display: flex; flex-direction: column; overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s; }
 .card[hidden] { display: flex; opacity: 0; pointer-events: none; }
-@media (min-width: 761px) { .card { top: 16px; bottom: 16px; right: 16px; width: 400px; border-radius: 18px; } .card[hidden] { transform: translateX(30px); } .zoom { right: 432px; } body.nocard .zoom { right: 16px; } }
-@media (max-width: 760px) { .card { left: 0; right: 0; bottom: 0; max-height: 60vh; border-radius: 20px 20px 0 0; } .card[hidden] { transform: translateY(40px); } .card .ph { aspect-ratio: 16 / 8; } .card h2 { font-size: 24px; } .card .body { padding: 14px 18px 18px; }
-  .brand .kick { display: none; } .brand h1 { font-size: 24px; } .brand { gap: 10px; } .top { gap: 8px; padding-bottom: 6px; } .search { width: 150px; } body:not(.nocard) .zoom { display: none; } }
+@media (min-width: 761px) { .card { top: 16px; bottom: 16px; right: 16px; width: 400px; border-radius: 18px; } .card[hidden] { transform: translateX(30px); } body:not(.nocard) .tools { right: 432px; } }
+@media (max-width: 760px) { .card { left: 0; right: 0; bottom: 0; max-height: 58vh; border-radius: 20px 20px 0 0; } .card[hidden] { transform: translateY(40px); } .card .ph { aspect-ratio: 16 / 8 !important; } .card h2 { font-size: 24px !important; } .card .body { padding: 14px 18px 18px !important; }
+  .brand .kick { display: none; } .brand h1 { font-size: 24px; } .search { width: 150px; } body:not(.nocard) .tools { display: none; } }
 .card .ph { position: relative; background: #ddd2bb; aspect-ratio: 3 / 2; flex: none; }
 .card .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .card .ph .noimg { position: absolute; inset: 0; display: grid; place-items: center; font: italic 500 17px var(--serif); color: #8a7f68; }
@@ -52,18 +58,20 @@ html, body { margin: 0; height: 100%; background: #ece3cf; color: var(--ink); fo
 .card dd { margin: 0; }
 .card dd.prod { font-weight: 700; color: var(--red); }
 .card .story { font-size: 15px; line-height: 1.55; color: #33384a; margin: 10px 0 0; }
+.card .approx { font: 600 12px/1.4 var(--sans); color: #8a6d1d; background: #fbf1d3; border-radius: 8px; padding: 7px 10px; margin-top: 12px; }
 .card .more { display: inline-block; margin-top: 14px; font: 700 12px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--red); text-decoration: none; border-bottom: 2px solid var(--red); padding-bottom: 3px; }
-.card .nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #e3dccd; }
+.card .nav { display: flex; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #e3dccd; }
 .card .nav button { flex: 1; border: 1.5px solid var(--ink); background: #fff; border-radius: 12px; padding: 10px 8px 9px; font: 700 11px/1.2 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); cursor: pointer; }
+.card .nav button.solid { background: var(--ink); color: #fff; }
 .src { font: 500 11px/1.3 var(--sans); color: #9a937f; margin-top: 12px; }
-/* hint + list */
-.hint { position: fixed; left: 50%; bottom: max(22px, env(safe-area-inset-bottom)); max-width: calc(100% - 100px); white-space: normal; text-align: center; transform: translateX(-50%); background: rgba(28,34,54,.88); color: #fff; font: 600 13px/1.2 var(--sans); padding: 10px 16px 9px; border-radius: 999px; pointer-events: none; transition: opacity .6s; }
-@media (max-width: 760px) { .hint { left: 16px; transform: none; max-width: calc(100% - 92px); border-radius: 16px; } }
-.tip { position: fixed; pointer-events: none; background: #fff; color: var(--ink); font: 700 12px/1.2 var(--sans); padding: 6px 10px 5px; border-radius: 8px; box-shadow: 0 4px 14px rgba(0,0,0,.25); transform: translate(-50%, -150%); white-space: nowrap; display: none; z-index: 4; }
+.hint { position: fixed; left: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); z-index: 3; background: rgba(255,255,255,.95); color: var(--ink); font: 600 13px/1.3 var(--sans); padding: 10px 16px 9px; border-radius: 16px; max-width: calc(100% - 100px); pointer-events: none; transition: opacity .6s; box-shadow: 0 6px 18px -6px rgba(0,0,0,.6); }
+.maplibregl-ctrl-attrib { font-size: 10px; }
+.maplibregl-ctrl-top-right { top: 108px; }
+@media (max-width: 760px) { .maplibregl-ctrl-top-right { top: 118px; } .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-in, .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-out { display: none; } }
 </style>
 </head>
 <body class="nocard">
-<canvas id="map" aria-label="World map of KEIM projects"></canvas>
+<div id="map"></div>
 <header class="top">
   <div class="brand"><span class="kick">KEIM mineral paints</span><h1>KEIM around the world</h1><span class="count" id="count"></span></div>
   <div class="bar" id="bar">
@@ -71,9 +79,8 @@ html, body { margin: 0; height: 100%; background: #ece3cf; color: var(--ink); fo
     <button class="chip au" id="fAU" type="button" aria-pressed="false">Australia</button>
   </div>
 </header>
-<div class="zoom"><button id="zIn" type="button" aria-label="Zoom in">+</button><button id="zOut" type="button" aria-label="Zoom out">−</button><button id="zWorld" class="txt" type="button" aria-label="Show the whole world">WORLD</button></div>
-<div class="tip" id="tip"></div>
-<div class="hint" id="hint">Drag to explore · tap a pin to read its story</div>
+<div class="tools"><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button></div>
+<div class="hint" id="hint">Spin the globe, zoom in, and tap a pin to fly to the project</div>
 <aside class="card" id="card" hidden aria-live="polite">
   <div class="ph" id="cPh"></div>
   <button class="x" id="cX" type="button" aria-label="Close">✕</button>
@@ -83,168 +90,114 @@ html, body { margin: 0; height: 100%; background: #ece3cf; color: var(--ink); fo
     <p class="sub" id="cSub"></p>
     <dl id="cFacts"></dl>
     <p class="story" id="cStory"></p>
+    <div class="approx" id="cApprox">Pin shows the suburb or city — the exact building isn’t marked yet.</div>
     <a class="more" id="cMore" target="_blank" rel="noopener">Read the full case study</a>
     <div class="src" id="cSrc"></div>
-    <div class="nav"><button id="cPrev" type="button">‹ Nearby</button><button id="cNext" type="button">Nearby ›</button></div>
+    <div class="nav"><button id="cBack" type="button">‹ Back</button><button id="cNext" class="solid" type="button">Next nearby ›</button></div>
   </div>
 </aside>
+<script src="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
 <script>
 'use strict';
-const cvs = document.getElementById('map'), ctx = cvs.getContext('2d');
-let W = 0, H = 0, DPR = 1, P = [], LAND = null;
-// view: centre in world units (Web Mercator, 0..1) and zoom in px per world width
-const V = { x: 0.5, y: 0.42, z: 1200 }, T = { x: 0.5, y: 0.42, z: 1200 };
-const merc = (lon, lat) => { const s = Math.sin(Math.max(-82, Math.min(82, lat)) * Math.PI / 180); return [lon / 360 + 0.5, 0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)]; };
+const $ = id => document.getElementById(id), esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const TYPES = ['Heritage', 'Culture', 'Education', 'Health', 'Residential', 'Commercial', 'Transport', 'Hospitality', 'Civic', 'Mural'];
 const LABEL = { Heritage: 'Heritage', Culture: 'Culture', Education: 'Education', Health: 'Health', Residential: 'Homes', Commercial: 'Commercial', Transport: 'Transport', Hospitality: 'Hotels', Civic: 'Civic', Mural: 'Murals', Community: 'Community' };
-let fType = null, fAU = false, fQ = '', sel = null, vis = [];
+let P = [], vis = [], fType = null, fAU = false, fQ = '', sel = null, spinning = true, touring = false;
+const hist = [];
 
-function resize() { DPR = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; cvs.width = W * DPR; cvs.height = H * DPR; dirty = true; }
-addEventListener('resize', resize);
-
-// ---- coastline: rings of [lon, lat] pairs, packed as Int16 (x100)
-function unpack(b64) {
-  const b = atob(b64), n = b.length / 2, a = new Int16Array(n); for (let i = 0; i < n; i++) { let v = b.charCodeAt(i * 2) | (b.charCodeAt(i * 2 + 1) << 8); if (v > 32767) v -= 65536; a[i] = v; }
-  const path = new Path2D(); let p = 1; const RN = a[0];
-  for (let r = 0; r < RN; r++) { const len = a[p++]; let sl = 0; const pts = [];
-    let plo = null; for (let i = 0; i < len; i++) { let lo = a[p++] / 100; const la = a[p++] / 100; if (plo !== null) { while (lo - plo > 180) lo -= 360; while (lo - plo < -180) lo += 360; } plo = lo; sl += la; pts.push(merc(lo, la)); }
-    if (sl / len < -60) continue; let mx = 0; pts.forEach(q => mx += q[0]); const sh = -Math.floor(mx / pts.length); // keep each ring centred inside the 0..1 world
-    pts.forEach(([x, y], i) => i ? path.lineTo(x + sh, y) : path.moveTo(x + sh, y)); path.closePath(); }
-  return path;
-}
-// mottled paper / red paint textures
-function mottle(size, base, blobs, seed) { const c = document.createElement('canvas'); c.width = c.height = size; const g = c.getContext('2d'); g.fillStyle = base; g.fillRect(0, 0, size, size); let s = seed;
-  const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
-  for (let i = 0; i < 260; i++) { const [r, gg, b, a] = blobs[i % blobs.length], x = rnd() * size, y = rnd() * size, rad = 6 + rnd() * 40, gr = g.createRadialGradient(x, y, 0, x, y, rad); gr.addColorStop(0, `rgba(${r},${gg},${b},${a})`); gr.addColorStop(1, `rgba(${r},${gg},${b},0)`); g.fillStyle = gr;
-    for (const ox of [-size, 0, size]) for (const oy of [-size, 0, size]) { g.save(); g.translate(ox, oy); g.fillRect(x - rad, y - rad, rad * 2, rad * 2); g.restore(); } }
-  for (let i = 0; i < 1400; i++) { g.fillStyle = `rgba(80,60,30,${0.05 * rnd()})`; g.fillRect(rnd() * size, rnd() * size, 1.2, 1.2); }
-  return c; }
-const SEA = mottle(320, '#ece3cf', [[255, 252, 240, .35], [190, 170, 130, .12]], 611), RED = mottle(300, '#d4232a', [[236, 70, 66, .3], [170, 20, 26, .18], [255, 130, 120, .1]], 612);
-let seaP, redP;
-
-// ---- drawing
-let dirty = true;
-function toScreen(wx, wy) { return [(wx - V.x) * V.z + W / 2, (wy - V.y) * V.z + H / 2]; }
-function draw() {
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  if (!seaP) { seaP = ctx.createPattern(SEA, 'repeat'); redP = ctx.createPattern(RED, 'repeat'); }
-  ctx.fillStyle = seaP; ctx.fillRect(0, 0, W, H);
-  // graticule
-  ctx.strokeStyle = 'rgba(28,34,54,0.09)'; ctx.lineWidth = 1; ctx.beginPath();
-  const step = V.z > 9000 ? 5 : V.z > 3000 ? 10 : 20;
-  for (let lo = -180; lo <= 180; lo += step) for (let k = -1; k <= 1; k++) { const [x] = toScreen(merc(lo, 0)[0] + k, 0); ctx.moveTo(x, 0); ctx.lineTo(x, H); }
-  for (let la = -80; la <= 80; la += step) { const [, y] = toScreen(0, merc(0, la)[1]); ctx.moveTo(0, y); ctx.lineTo(W, y); }
-  ctx.stroke();
-  if (LAND) for (let k = -1; k <= 1; k++) {
-    const ox = (k - V.x) * V.z + W / 2, oy = -V.y * V.z + H / 2;
-    if (ox - V.z * 0.6 > W || ox + V.z * 1.6 < 0) continue;
-    ctx.setTransform(DPR * V.z, 0, 0, DPR * V.z, DPR * ox, DPR * oy);
-    const m = new DOMMatrix([1 / V.z, 0, 0, 1 / V.z, -ox / V.z, -oy / V.z]); redP.setTransform(m);
-    ctx.fillStyle = redP; ctx.fill(LAND); ctx.strokeStyle = '#8f1418'; ctx.lineWidth = 1.2 / V.z; ctx.stroke(LAND);
-  }
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  drawPins();
-}
-// cluster visible projects in screen space
-let groups = [];
-function drawPins() {
-  const R = 22; groups = [];
-  for (const p of vis) { for (let k = -1; k <= 1; k++) { const [x, y] = toScreen(p.wx + k, p.wy); if (x < -30 || x > W + 30 || y < -30 || y > H + 30) continue;
-      let g = groups.find(g => Math.abs(g.x - x) < R * 1.6 && Math.abs(g.y - y) < R * 1.6);
-      if (g) { g.items.push(p); } else groups.push({ x, y, items: [p] }); } }
-  for (const g of groups) {
-    if (g.items.length > 1) { const n = g.items.length, r = 14 + Math.min(14, Math.sqrt(n) * 3);
-      ctx.fillStyle = 'rgba(28,34,54,0.18)'; ctx.beginPath(); ctx.arc(g.x, g.y + 3, r + 2, 0, 7); ctx.fill();
-      ctx.fillStyle = '#1c2236'; ctx.beginPath(); ctx.arc(g.x, g.y, r, 0, 7); ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.stroke();
-      ctx.fillStyle = '#fff'; ctx.font = '700 ' + (n > 99 ? 12 : 14) + 'px "Josefin Sans", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(n, g.x, g.y + 1); g.r = r;
-    } else { const p = g.items[0], on = p === sel; pin(g.x, g.y, on, p.country === 'Australia'); g.r = 18; }
-  }
-}
-function pin(x, y, on, au) { const s = on ? 1.25 : 1; ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
-  ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(0, 0, 8, 3, 0, 0, 7); ctx.fill();
-  ctx.fillStyle = on ? '#D51F24' : '#1c2236'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(-9, -13, -14, -19, -14, -26); ctx.arc(0, -26, 14, Math.PI, 0); ctx.bezierCurveTo(14, -19, 9, -13, 0, 0); ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.stroke();
-  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(0, -26, 5.5, 0, 7); ctx.fill(); if (au && !on) { ctx.fillStyle = '#D51F24'; ctx.beginPath(); ctx.arc(0, -26, 3, 0, 7); ctx.fill(); }
-  ctx.restore(); }
-
-// ---- animation loop: ease view toward target
-function loop() { const k = 0.18; let moving = false;
-  for (const f of ['x', 'y']) { const d = T[f] - V[f]; if (Math.abs(d) * V.z > 0.3) { V[f] += d * k; moving = true; } else V[f] = T[f]; }
-  const dz = Math.log(T.z / V.z); if (Math.abs(dz) > 0.002) { V.z *= Math.exp(dz * k); moving = true; } else V.z = T.z;
-  if (moving || dirty) { draw(); dirty = false; } requestAnimationFrame(loop); }
-const ZMIN = () => Math.max(W, 520) * 1.0, ZMAX = 260000;
-function clampT() { T.z = Math.max(ZMIN(), Math.min(ZMAX, T.z)); T.y = Math.max(0.12, Math.min(0.86, T.y)); T.x = ((T.x % 1) + 1) % 1; if (Math.abs(T.x - V.x) > 0.5) V.x += Math.round(T.x - V.x); }
-function zoomAt(f, sx, sy) { const wx = V.x + (sx - W / 2) / V.z, wy = V.y + (sy - H / 2) / V.z; T.z = Math.max(ZMIN(), Math.min(ZMAX, T.z * f)); T.x = wx - (sx - W / 2) / T.z; T.y = wy - (sy - H / 2) / T.z; clampT(); hideHint(); }
-function flyTo(wx, wy, z) { T.x = wx; T.y = wy; T.z = z; clampT(); }
-
-// ---- input: drag, wheel, pinch, tap
-const ptrs = new Map(); let dragMoved = false, pinchD = 0, last = null;
-cvs.addEventListener('pointerdown', e => { cvs.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, [e.clientX, e.clientY]); dragMoved = false; last = [e.clientX, e.clientY]; if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinchD = Math.hypot(a[0] - b[0], a[1] - b[1]); } });
-cvs.addEventListener('pointermove', e => {
-  if (!ptrs.has(e.pointerId)) { hover(e.clientX, e.clientY); return; }
-  const prev = ptrs.get(e.pointerId); ptrs.set(e.pointerId, [e.clientX, e.clientY]);
-  if (ptrs.size === 2) { const [a, b] = [...ptrs.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]); if (pinchD) zoomAt(d / pinchD, (a[0] + b[0]) / 2, (a[1] + b[1]) / 2); pinchD = d; Object.assign(V, T); dragMoved = true; dirty = true; return; }
-  const dx = e.clientX - prev[0], dy = e.clientY - prev[1]; if (Math.abs(e.clientX - last[0]) + Math.abs(e.clientY - last[1]) > 6) { dragMoved = true; cvs.classList.add('drag'); hideHint(); }
-  T.x -= dx / V.z; T.y -= dy / V.z; V.x = T.x; V.y = T.y; clampT(); V.x = T.x; dirty = true;
+// satellite imagery + place names, on a 3D globe
+const map = new maplibregl.Map({
+  container: 'map', center: innerWidth < 700 ? [100, 0] : [60, 15], zoom: innerWidth < 700 ? 0.9 : 1.9, maxPitch: 75, attributionControl: { compact: true },
+  style: { version: 8, projection: { type: 'globe' },
+    sources: {
+      sat: { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], attribution: 'Imagery © Esri, Maxar, Earthstar Geographics, and the GIS User Community' },
+      names: { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'] } },
+    layers: [{ id: 'sat', type: 'raster', source: 'sat' }, { id: 'names', type: 'raster', source: 'names', paint: { 'raster-opacity': 0.85 } }],
+    sky: { 'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 5, 1, 7, 0] } }
 });
-const up = e => { const wasTap = !dragMoved && ptrs.size === 1; ptrs.delete(e.pointerId); if (ptrs.size < 2) pinchD = 0; cvs.classList.remove('drag'); if (wasTap) tap(e.clientX, e.clientY); };
-cvs.addEventListener('pointerup', up); cvs.addEventListener('pointercancel', e => { ptrs.delete(e.pointerId); pinchD = 0; });
-cvs.addEventListener('wheel', e => { e.preventDefault(); zoomAt(Math.exp(-e.deltaY * 0.0022), e.clientX, e.clientY); }, { passive: false });
-function hit(x, y) { let best = null, bd = 1e9; for (const g of groups) { const cy = g.items.length > 1 ? g.y : g.y - 26, d = Math.hypot(g.x - x, cy - y); if (d < (g.r || 18) + 8 && d < bd) { bd = d; best = g; } } return best; }
-function tap(x, y) { const g = hit(x, y); if (!g) return;
-  if (g.items.length > 1) { const xs = g.items.map(p => p.wx), ys = g.items.map(p => p.wy), w = Math.max(...xs) - Math.min(...xs), h = Math.max(...ys) - Math.min(...ys);
-    const z = Math.min(ZMAX, Math.max(V.z * 2.2, Math.min(W / (w * 1.8 + 1e-6), H / (h * 1.8 + 1e-6)))); const wx = V.x + (g.x - W / 2) / V.z, wy = V.y + (g.y - H / 2) / V.z;
-    if (z <= V.z * 1.05 || V.z >= ZMAX * 0.9) open(g.items[0]); else flyTo(wx, wy, z); return; }
-  open(g.items[0]); }
-function hover(x, y) { const g = hit(x, y), tip = document.getElementById('tip'); cvs.style.cursor = g ? 'pointer' : ''; if (g) { tip.style.display = 'block'; tip.style.left = g.x + 'px'; tip.style.top = (g.items.length > 1 ? g.y - 14 : g.y - 40) + 'px'; tip.textContent = g.items.length > 1 ? g.items.length + ' projects · tap to zoom' : g.items[0].name; } else tip.style.display = 'none'; }
-document.getElementById('zIn').onclick = () => zoomAt(1.8, W / 2, H / 2);
-document.getElementById('zOut').onclick = () => zoomAt(1 / 1.8, W / 2, H / 2);
-document.getElementById('zWorld').onclick = () => { fAU = false; syncChips(); refilter(); flyTo(0.5, 0.42, ZMIN()); };
-let hintGone = false; function hideHint() { if (!hintGone) { hintGone = true; document.getElementById('hint').style.opacity = 0; } }
+map.addControl(new maplibregl.NavigationControl({ visualizePitch: true, showCompass: true }), 'top-right');
+map.on('load', () => { try { map.setSky({ 'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 5, 1, 7, 0] }); } catch (e) {} });
 
-// ---- project card
-const $ = id => document.getElementById(id), esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-function open(p) {
-  sel = p; dirty = true; hideHint(); document.body.classList.remove('nocard');
+// slow spin of the globe until someone touches it
+function spin() { if (!spinning || map.isMoving() || map.getZoom() > 3) return; const c = map.getCenter(); c.lng -= 2.2; map.easeTo({ center: c, duration: 1000, easing: n => n }); }
+map.on('moveend', spin);
+['mousedown', 'touchstart', 'wheel', 'dragstart'].forEach(ev => map.on(ev, () => { spinning = false; touring = false; hideHint(); }));
+let hintGone = false; function hideHint() { if (!hintGone) { hintGone = true; $('hint').style.opacity = 0; } }
+setTimeout(hideHint, 10000);
+
+// pins and clusters as HTML markers, rebuilt as you move
+const PIN = (au, on) => `<svg viewBox="0 0 34 44"><path d="M17 43C7 29 2 22 2 15a15 15 0 0 1 30 0c0 7-5 14-15 28z" fill="${on ? '#D51F24' : '#1c2236'}" stroke="#fff" stroke-width="2.5"/><circle cx="17" cy="15" r="6" fill="#fff"/>${au && !on ? '<circle cx="17" cy="15" r="3.2" fill="#D51F24"/>' : ''}</svg>`;
+let markers = new Map();
+function geo() { return { type: 'FeatureCollection', features: vis.map((p, i) => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
+map.on('load', () => {
+  map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 46, clusterMaxZoom: 15, clusterProperties: { au: ['+', ['get', 'au']] } });
+  map.addLayer({ id: 'pts-hit', type: 'circle', source: 'pts', paint: { 'circle-radius': 1, 'circle-opacity': 0 } });
+  map.on('render', () => { if (map.isSourceLoaded('pts')) drawMarkers(); });
+});
+function drawMarkers() {
+  const feats = map.querySourceFeatures('pts'), seen = new Set(), keep = new Map();
+  for (const f of feats) {
+    const pr = f.properties, key = pr.cluster ? 'c' + pr.cluster_id : 'p' + pr.i; if (seen.has(key)) continue; seen.add(key);
+    let m = markers.get(key);
+    if (!m) { const el = document.createElement('div');
+      if (pr.cluster) { const n = pr.point_count; el.className = 'clu' + (n > 20 ? ' big' : '') + (pr.au === n ? ' au' : ''); el.textContent = n;
+        el.onclick = e => { e.stopPropagation(); spinning = false; hideHint(); map.getSource('pts').getClusterExpansionZoom(pr.cluster_id).then(z => map.easeTo({ center: f.geometry.coordinates, zoom: Math.min(z + 0.5, 16), duration: 900 })); };
+        m = new maplibregl.Marker({ element: el, opacityWhenCovered: '0' }).setLngLat(f.geometry.coordinates);
+      } else { const p = P[pr.i]; el.className = 'pin'; el.title = p.name; el.innerHTML = PIN(pr.au, p === sel); el.onclick = e => { e.stopPropagation(); open(p, true); };
+        m = new maplibregl.Marker({ element: el, anchor: 'bottom', opacityWhenCovered: '0' }).setLngLat([p.lon, p.lat]); m._p = p; }
+      m.addTo(map); }
+    keep.set(key, m); }
+  for (const [k, m] of markers) if (!keep.has(k)) m.remove();
+  markers = keep;
+}
+function repaintPins() { for (const [k, m] of markers) if (m._p) { m.getElement().innerHTML = PIN(m._p.country === 'Australia', m._p === sel); m.getElement().classList.toggle('on', m._p === sel); } }
+
+// project card + fly-to
+function open(p, fly) {
+  spinning = false; hideHint(); if (sel && sel !== p && fly !== 'back') hist.push(sel); sel = p; repaintPins(); document.body.classList.remove('nocard');
   $('cPh').innerHTML = (p.img ? `<img src="img/${esc(p.img)}" alt="${esc(p.name)}">` : `<div class="noimg">Photo coming soon</div>`) + (p.credit ? `<span class="credit">Photo: ${esc(p.credit)}</span>` : '') + (p.render ? `<span class="tag">Artist’s impression</span>` : '');
-  $('cKick').textContent = [LABEL[p.type] || p.type, [p.place, p.region || '', p.country].filter((v, i, a) => v && a.indexOf(v) === i).join(', ')].filter(Boolean).join(' · ');
+  $('cKick').textContent = [LABEL[p.type] || p.type, [p.place, p.region, p.country].filter((v, i, a) => v && a.indexOf(v) === i).join(', ')].filter(Boolean).join(' · ');
   $('cName').textContent = p.name; $('cSub').textContent = p.sub || ''; $('cSub').hidden = !p.sub;
-  const art = /^Artists?:/.test(p.architect || ''); const rows = [['KEIM', p.products, 'prod'], ['Colours', p.colours], [art ? 'Artist' : 'Architect', art ? p.architect.replace(/^Artists?:\s*/, '') : p.architect], ['Builder', p.builder], ['Applicator', p.applicator], ['Area', p.area], ['Status', p.status]].filter(r => r[1]);
+  const art = /^Artists?:/.test(p.architect || '');
+  const rows = [['KEIM', p.products, 'prod'], ['Colours', p.colours], [art ? 'Artist' : 'Architect', art ? p.architect.replace(/^Artists?:\s*/, '') : p.architect], ['Builder', p.builder], ['Applicator', p.applicator], ['Area', p.area], ['Status', p.status]].filter(r => r[1]);
   $('cFacts').innerHTML = rows.map(([k, v, c]) => `<dt>${k}</dt><dd${c ? ' class="' + c + '"' : ''}>${esc(v)}</dd>`).join('');
   $('cStory').textContent = [p.story, p.notes].filter(Boolean).join(' '); $('cStory').hidden = !(p.story || p.notes);
+  $('cApprox').hidden = !!p.exact;
   $('cMore').hidden = !p.link; if (p.link) $('cMore').href = p.link;
   $('cSrc').textContent = 'Source: ' + (p.src || 'KEIM');
-  $('card').hidden = false; $('card').querySelector('.body').scrollTop = 0;
-  // centre the pin in the visible part of the map
-  const wide = innerWidth > 760, offX = wide ? -216 : 0, offY = wide ? 0 : -innerHeight * 0.3, z = Math.max(V.z, 5200);
-  flyTo(p.wx - offX / z, p.wy - offY / z, z);
+  $('card').hidden = false; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
+  if (fly) { const wide = innerWidth > 760;
+    map.flyTo({ center: [p.lon, p.lat], zoom: p.exact ? 16.6 : 12.5, pitch: p.exact ? 58 : 35, bearing: (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
+      padding: wide ? { right: 420, top: 60, left: 0, bottom: 0 } : { bottom: innerHeight * 0.55, top: 80, left: 0, right: 0 } }); }
+  try { history.replaceState(null, '', '#' + p.id); } catch (e) {}
 }
-function nearby(dir) { if (!sel) return; const list = vis.slice().sort((a, b) => Math.hypot(a.wx - sel.wx, a.wy - sel.wy) - Math.hypot(b.wx - sel.wx, b.wy - sel.wy)); const order = list.slice(1, 9); if (!order.length) return;
-  // walk outward: "next" goes to the nearest unseen, "previous" back through history
-  if (dir > 0) { const n = order.find(p => !hist.includes(p)) || order[0]; hist.push(sel); open(n); } else if (hist.length) open(hist.pop()); }
-const hist = [];
-$('cNext').onclick = () => nearby(1); $('cPrev').onclick = () => nearby(-1);
-$('cX').onclick = () => { $('card').hidden = true; sel = null; dirty = true; document.body.classList.add('nocard'); };
-addEventListener('keydown', e => { if (e.key === 'Escape') $('cX').click(); });
+function close() { $('card').hidden = true; sel = null; repaintPins(); document.body.classList.add('nocard'); touring = false; try { history.replaceState(null, '', location.pathname); } catch (e) {} }
+$('cX').onclick = close; addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+function nextNearby() { if (!sel) return; const d = p => (p.lat - sel.lat) ** 2 + ((p.lon - sel.lon) * Math.cos(sel.lat * Math.PI / 180)) ** 2;
+  const n = vis.filter(p => p !== sel && !hist.includes(p)).sort((a, b) => d(a) - d(b))[0]; if (n) open(n, true); }
+$('cNext').onclick = () => { touring = false; nextNearby(); };
+$('cBack').onclick = () => { if (hist.length) open(hist.pop(), 'back'); };
+$('tWorld').onclick = () => { close(); hist.length = 0; map.flyTo({ center: [map.getCenter().lng, 15], zoom: innerWidth < 700 ? 0.9 : 1.9, pitch: 0, bearing: 0, speed: 1.2 }); spinning = true; };
+// a little guided flight through highlights with photos
+$('tTour').onclick = () => { const pool = vis.filter(p => p.img && p.exact); if (!pool.length) return; touring = true; let k = 0; const step = () => { if (!touring) return; open(pool[k++ % pool.length], true); setTimeout(() => map.once('moveend', () => setTimeout(step, 4500)), 400); }; step(); };
 
-// ---- filters
+// filters + search
 function syncChips() { document.querySelectorAll('#bar .chip[data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === fType ? 'true' : 'false')); $('fAU').setAttribute('aria-pressed', fAU ? 'true' : 'false'); }
 function refilter() { const q = fQ.toLowerCase();
-  vis = P.filter(p => (!fType || p.type === fType) && (!fAU || p.country === 'Australia') && (!q || (p.name + ' ' + p.place + ' ' + p.country + ' ' + p.region + ' ' + p.products + ' ' + p.architect).toLowerCase().includes(q)));
-  const nc = new Set(vis.map(p => p.country)).size; $('count').textContent = vis.length + ' projects · ' + nc + (nc === 1 ? ' country' : ' countries'); dirty = true; }
-$('fAU').onclick = () => { fAU = !fAU; syncChips(); refilter(); if (fAU) { const [x, y] = merc(134, -27); flyTo(x, y, Math.min(W / 0.11, H / 0.11)); } };
-$('q').addEventListener('input', e => { fQ = e.target.value.trim(); refilter(); if (fQ && vis.length && vis.length <= 3) open(vis[0]); });
+  vis = P.filter(p => (!fType || p.type === fType) && (!fAU || p.country === 'Australia') && (!q || (p.name + ' ' + p.place + ' ' + p.country + ' ' + (p.region || '') + ' ' + p.products + ' ' + p.architect).toLowerCase().includes(q)));
+  const nc = new Set(vis.map(p => p.country)).size; $('count').textContent = vis.length + ' projects · ' + nc + (nc === 1 ? ' country' : ' countries');
+  const s = map.getSource && map.getSource('pts'); if (s) s.setData(geo()); }
+$('fAU').onclick = () => { fAU = !fAU; syncChips(); refilter(); spinning = false; hideHint(); if (fAU) map.flyTo({ center: [134, -28], zoom: innerWidth < 700 ? 2.6 : 3.4, pitch: 0, bearing: 0, speed: 1.1 }); };
+$('q').addEventListener('input', e => { fQ = e.target.value.trim(); refilter(); if (fQ && vis.length === 1) open(vis[0], true); });
+$('q').addEventListener('keydown', e => { if (e.key === 'Enter' && vis.length) open(vis[0], true); });
 
-// ---- load
-resize(); requestAnimationFrame(loop);
 fetch('projects.json').then(r => r.json()).then(list => {
-  P = list.filter(p => p.lat != null).map(p => { const [wx, wy] = merc(p.lon, p.lat); return Object.assign(p, { wx, wy }); });
-  const used = TYPES.filter(t => P.some(p => p.type === t)), bar = $('bar');
-  used.forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = LABEL[t]; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { fType = fType === t ? null : t; syncChips(); refilter(); }; bar.appendChild(b); });
-  refilter(); if (W < 700) { const [x, y] = merc(80, 8); flyTo(x, y, ZMIN()); } else flyTo(0.5, 0.42, ZMIN()); Object.assign(V, T); // phones open between Europe and Australia
-  const deep = decodeURIComponent(location.hash.slice(1)); if (deep) { const p = P.find(p => p.id === deep); if (p) open(p); }
+  P = list.filter(p => p.lat != null);
+  TYPES.filter(t => P.some(p => p.type === t)).forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = LABEL[t]; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { fType = fType === t ? null : t; syncChips(); refilter(); }; $('bar').appendChild(b); });
+  refilter();
+  const go = () => { const deep = decodeURIComponent(location.hash.slice(1)), p = deep && P.find(p => p.id === deep); if (p) open(p, true); else spin(); };
+  if (map.loaded()) go(); else map.once('load', go);
 });
-fetch('land50.b64').then(r => r.text()).then(t => { LAND = unpack(t.trim()); dirty = true; });
-setTimeout(hideHint, 9000);
 </script>
 </body>
 </html>
