@@ -31,12 +31,6 @@ html, body { margin: 0; height: 100%; background: #04060c; color: var(--ink); fo
 .tools { position: fixed; right: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); display: grid; gap: 8px; z-index: 3; }
 .tools button { width: 46px; height: 46px; border-radius: 50%; border: 0; background: rgba(255,255,255,.95); color: var(--ink); font: 700 10px/1.1 var(--sans); letter-spacing: .05em; box-shadow: 0 6px 18px -6px rgba(0,0,0,.6); cursor: pointer; }
 /* pins */
-.pin { width: 34px; height: 44px; cursor: pointer; filter: drop-shadow(0 3px 4px rgba(0,0,0,.55)); transition: transform .15s; transform-origin: 50% 100%; }
-.pin:hover, .pin.on { transform: scale(1.25); }
-.pin svg { width: 100%; height: 100%; display: block; }
-.clu { min-width: 38px; height: 38px; padding: 0 8px; border-radius: 19px; background: var(--ink); color: #fff; border: 3px solid #fff; display: grid; place-items: center; font: 700 14px/1 var(--sans); cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.55); }
-.clu.big { min-width: 48px; height: 48px; border-radius: 24px; font-size: 16px; }
-.clu.au { background: var(--red); }
 /* project card */
 .card { position: fixed; z-index: 5; background: #fbf9f4; box-shadow: 0 20px 60px rgba(0,0,0,.5); display: flex; flex-direction: column; overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s; }
 .card[hidden] { display: flex; opacity: 0; pointer-events: none; }
@@ -79,7 +73,7 @@ html, body { margin: 0; height: 100%; background: #04060c; color: var(--ink); fo
     <button class="chip au" id="fAU" type="button" aria-pressed="false">Australia</button>
   </div>
 </header>
-<div class="tools"><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button></div>
+<div class="tools"><button id="tMap" type="button" aria-label="Switch between street map and satellite">MAP</button><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button></div>
 <div class="hint" id="hint">Spin the globe, zoom in, and tap a pin to fly to the project</div>
 <aside class="card" id="card" hidden aria-live="polite">
   <div class="ph" id="cPh"></div>
@@ -125,32 +119,48 @@ map.on('moveend', spin);
 let hintGone = false; function hideHint() { if (!hintGone) { hintGone = true; $('hint').style.opacity = 0; } }
 setTimeout(hideHint, 10000);
 
-// pins and clusters as HTML markers, rebuilt as you move
-const PIN = (au, on) => `<svg viewBox="0 0 34 44"><path d="M17 43C7 29 2 22 2 15a15 15 0 0 1 30 0c0 7-5 14-15 28z" fill="${on ? '#D51F24' : '#1c2236'}" stroke="#fff" stroke-width="2.5"/><circle cx="17" cy="15" r="6" fill="#fff"/>${au && !on ? '<circle cx="17" cy="15" r="3.2" fill="#D51F24"/>' : ''}</svg>`;
-let markers = new Map();
-function geo() { return { type: 'FeatureCollection', features: vis.map((p, i) => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
-map.on('load', () => {
-  map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 46, clusterMaxZoom: 15, clusterProperties: { au: ['+', ['get', 'au']] } });
-  map.addLayer({ id: 'pts-hit', type: 'circle', source: 'pts', paint: { 'circle-radius': 1, 'circle-opacity': 0 } });
-  map.on('render', () => { if (map.isSourceLoaded('pts')) drawMarkers(); });
+// pins and clusters drawn inside the map itself (WebGL), so they stay glued to the ground while you move
+const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" height="96" viewBox="-2 -2 38 48"><path d="M17 43C7 29 2 22 2 15a15 15 0 0 1 30 0c0 7-5 14-15 28z" fill="${on ? '#D51F24' : '#1c2236'}" stroke="#fff" stroke-width="2.5"/><circle cx="17" cy="15" r="6" fill="#fff"/>${au && !on ? '<circle cx="17" cy="15" r="3.2" fill="#D51F24"/>' : ''}</svg>`;
+function svgImg(svg) { return new Promise((res, rej) => { const im = new Image(76, 96); im.onload = () => res(im); im.onerror = rej; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }); }
+// cluster bubbles are drawn on demand, one image per count
+map.on('styleimagemissing', e => {
+  const m = /^clu-(au|w)-(\d+)$/.exec(e.id); if (!m) return;
+  const n = m[2], big = +n > 20, r = big ? 24 : 19, pad = 4, w = Math.max(2 * r, 22 + n.length * 18), W = (w + 2 * pad) * 2, H = (2 * r + 2 * pad) * 2;
+  const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.scale(2, 2);
+  const cw = w, ch = 2 * r; x.beginPath(); x.roundRect(pad, pad, cw, ch, r); x.fillStyle = m[1] === 'au' ? '#D51F24' : '#1c2236'; x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = 6; x.shadowOffsetY = 2; x.fill();
+  x.shadowColor = 'transparent'; x.lineWidth = 3; x.strokeStyle = '#fff'; x.stroke();
+  x.fillStyle = '#fff'; x.font = `700 ${big ? 16 : 14}px "Josefin Sans", system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(n, pad + cw / 2, pad + r + 1);
+  map.addImage(e.id, { width: W, height: H, data: x.getImageData(0, 0, W, H).data }, { pixelRatio: 2 });
 });
-function drawMarkers() {
-  const feats = map.querySourceFeatures('pts'), seen = new Set(), keep = new Map();
-  for (const f of feats) {
-    const pr = f.properties, key = pr.cluster ? 'c' + pr.cluster_id : 'p' + pr.i; if (seen.has(key)) continue; seen.add(key);
-    let m = markers.get(key);
-    if (!m) { const el = document.createElement('div');
-      if (pr.cluster) { const n = pr.point_count; el.className = 'clu' + (n > 20 ? ' big' : '') + (pr.au === n ? ' au' : ''); el.textContent = n;
-        el.onclick = e => { e.stopPropagation(); spinning = false; hideHint(); map.getSource('pts').getClusterExpansionZoom(pr.cluster_id).then(z => map.easeTo({ center: f.geometry.coordinates, zoom: Math.min(z + 0.5, 16), duration: 900 })); };
-        m = new maplibregl.Marker({ element: el, opacityWhenCovered: '0' }).setLngLat(f.geometry.coordinates);
-      } else { const p = P[pr.i]; el.className = 'pin'; el.title = p.name; el.innerHTML = PIN(pr.au, p === sel); el.onclick = e => { e.stopPropagation(); open(p, true); };
-        m = new maplibregl.Marker({ element: el, anchor: 'bottom', opacityWhenCovered: '0' }).setLngLat([p.lon, p.lat]); m._p = p; }
-      m.addTo(map); }
-    keep.set(key, m); }
-  for (const [k, m] of markers) if (!keep.has(k)) m.remove();
-  markers = keep;
-}
-function repaintPins() { for (const [k, m] of markers) if (m._p) { m.getElement().innerHTML = PIN(m._p.country === 'Australia', m._p === sel); m.getElement().classList.toggle('on', m._p === sel); } }
+function geo() { return { type: 'FeatureCollection', features: vis.map(p => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
+function selGeo() { return { type: 'FeatureCollection', features: sel ? [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [sel.lon, sel.lat] } }] : [] }; }
+let layersReady = false;
+map.on('load', async () => {
+  const [pw, pa, po] = await Promise.all([svgImg(PIN(0, 0)), svgImg(PIN(1, 0)), svgImg(PIN(0, 1))]);
+  map.addImage('pin-w', pw, { pixelRatio: 2 }); map.addImage('pin-au', pa, { pixelRatio: 2 }); map.addImage('pin-on', po, { pixelRatio: 2 });
+  map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 46, clusterMaxZoom: 15, clusterProperties: { au: ['+', ['get', 'au']] } });
+  map.addSource('sel', { type: 'geojson', data: selGeo() });
+  const common = { 'icon-allow-overlap': true, 'icon-ignore-placement': true, 'icon-pitch-alignment': 'viewport', 'icon-rotation-alignment': 'viewport' };
+  map.addLayer({ id: 'clu', type: 'symbol', source: 'pts', filter: ['has', 'point_count'],
+    layout: { ...common, 'icon-image': ['concat', 'clu-', ['case', ['==', ['get', 'au'], ['get', 'point_count']], 'au', 'w'], '-', ['to-string', ['get', 'point_count']]] } });
+  map.addLayer({ id: 'pins', type: 'symbol', source: 'pts', filter: ['!', ['has', 'point_count']],
+    layout: { ...common, 'icon-image': ['case', ['==', ['get', 'au'], 1], 'pin-au', 'pin-w'], 'icon-anchor': 'bottom', 'symbol-sort-key': ['-', 0, ['get', 'i']] } });
+  map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': 'pin-on', 'icon-anchor': 'bottom', 'icon-size': 1.25 } });
+  layersReady = true;
+  map.on('click', 'clu', e => { const f = e.features[0]; spinning = false; hideHint();
+    map.getSource('pts').getClusterExpansionZoom(f.properties.cluster_id).then(z => map.easeTo({ center: f.geometry.coordinates, zoom: Math.min(z + 0.5, 16), duration: 900 })); });
+  map.on('click', 'pins', e => { const p = P[e.features[0].properties.i]; if (p) open(p, true); });
+  for (const id of ['clu', 'pins']) { map.on('mouseenter', id, () => map.getCanvas().style.cursor = 'pointer'); map.on('mouseleave', id, () => map.getCanvas().style.cursor = ''); }
+});
+function repaintPins() { const s = layersReady && map.getSource('sel'); if (s) s.setData(selGeo()); }
+
+// satellite or street map
+let street = false;
+map.on('load', () => {
+  map.addSource('street', { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'], attribution: 'Map © Esri, HERE, Garmin, OpenStreetMap contributors' });
+  map.addLayer({ id: 'street', type: 'raster', source: 'street', layout: { visibility: 'none' } }, 'names');
+});
+$('tMap').onclick = () => { street = !street; map.setLayoutProperty('street', 'visibility', street ? 'visible' : 'none'); map.setLayoutProperty('names', 'visibility', street ? 'none' : 'visible'); $('tMap').textContent = street ? 'SAT' : 'MAP'; };
 
 // project card + fly-to
 function open(p, fly) {

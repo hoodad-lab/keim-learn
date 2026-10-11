@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KEIM CPD Certificate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&family=Mrs+Saint+Delafield&display=swap">
+<style>
+:root { --red: #D51F24; --ink: #1d1d1b; --mute: #6c6f6a; --paper: #EEF3EF; --card: #ffffff; --line: #d9e0da; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #c9cfca; font-family: "Work Sans", system-ui, sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.stage { min-height: 100vh; display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 24px 16px 40px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.actions button { border: 0; border-radius: 999px; padding: 12px 22px 11px; font: 600 14px/1 "Work Sans", sans-serif; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; background: var(--red); color: #fff; box-shadow: 0 6px 16px -8px rgba(0,0,0,.5); }
+.actions button.ghost { background: #fff; color: var(--ink); }
+.fit { width: min(100%, 1123px); }
+.fit-inner { transform-origin: top left; }
+
+/* the certificate: A4 landscape */
+.cert { width: 297mm; height: 210mm; background: var(--paper); position: relative; overflow: hidden; display: grid; grid-template-columns: 34mm 1fr; box-shadow: 0 20px 50px -20px rgba(0,0,0,.45); }
+.bar { background: var(--red); color: #fff; position: relative; }
+.bar .logo { position: absolute; top: 11mm; left: 6.5mm; width: 21mm; color: #fff; }
+.bar .logo svg { width: 100%; height: auto; display: block; }
+.bar .vert { position: absolute; left: 50%; top: 52mm; transform: translateX(-50%) rotate(180deg); writing-mode: vertical-rl; font: 400 8.6mm/1 "Work Sans", sans-serif; letter-spacing: .14em; white-space: nowrap; }
+.bar .est { position: absolute; bottom: 10mm; left: 0; right: 0; text-align: center; font: 500 2.6mm/1.5 "Work Sans", sans-serif; letter-spacing: .2em; }
+
+.main { position: relative; padding: 13mm 16mm 0 15mm; display: flex; flex-direction: column; }
+.kick { font: 600 2.9mm/1 "Work Sans", sans-serif; letter-spacing: .22em; color: var(--red); text-transform: uppercase; }
+h1 { margin: 3mm 0 0; font: 400 12.5mm/1.02 "Work Sans", sans-serif; color: var(--red); letter-spacing: -.01em; }
+.lead { margin: 6mm 0 0; font: 400 3.9mm/1.5 "Work Sans", sans-serif; color: #33362f; max-width: 160mm; }
+.name { margin: 2.2mm 0 0; font: 600 9.4mm/1.05 "Work Sans", sans-serif; color: var(--ink); letter-spacing: -.01em; border-bottom: .35mm solid var(--ink); padding-bottom: 2.6mm; max-width: 150mm; }
+.reg { margin-top: 2.2mm; font: 500 3.3mm/1.4 "Work Sans", sans-serif; color: var(--mute); }
+.what { margin: 5mm 0 0; font: 400 3.8mm/1.5 "Work Sans", sans-serif; color: #33362f; max-width: 158mm; }
+.what b { color: var(--red); font-weight: 600; }
+
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin-top: 7mm; width: 160mm; }
+.card { background: var(--card); padding: 3.8mm 3.6mm 3.6mm; min-height: 22mm; }
+.card::before { content: ""; display: block; width: 7mm; height: .55mm; background: var(--red); margin-bottom: 2.6mm; }
+.card .k { font: 600 2.4mm/1.2 "Work Sans", sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+.card .v { margin-top: 1.4mm; font: 500 4.1mm/1.15 "Work Sans", sans-serif; color: var(--red); }
+.card .s { margin-top: .9mm; font: 400 2.7mm/1.3 "Work Sans", sans-serif; color: #4a4d47; }
+.comp { width: 160mm; margin-top: 3mm; background: var(--card); padding: 3.6mm 3.6mm; display: grid; grid-template-columns: 38mm 1fr 1fr; gap: 5mm; align-items: center; }
+.comp .k { font: 600 2.4mm/1.35 "Work Sans", sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+.comp .d { font: 400 2.7mm/1.35 "Work Sans", sans-serif; color: #33362f; }
+.comp .d b { display: block; color: var(--red); font-weight: 600; font-size: 3.6mm; margin-top: .6mm; }
+
+/* fan deck of mineral pigments, top right */
+.fan { position: absolute; right: -10mm; top: -14mm; width: 84mm; height: 84mm; pointer-events: none; }
+.chip { position: absolute; left: 50%; bottom: 8mm; width: 13mm; height: 64mm; margin-left: -6.5mm; transform-origin: 50% calc(100% - 6.5mm); border-radius: 1.4mm; box-shadow: 0 .6mm 1.6mm rgba(0,0,0,.18); display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; background: #fff; }
+.chip i { display: block; height: 50mm; }
+.chip span { display: block; padding: 1.6mm 1.2mm 0; font: 600 1.85mm/1.15 "Work Sans", sans-serif; letter-spacing: .06em; color: #3a3d37; text-transform: uppercase; writing-mode: horizontal-tb; }
+.pivot { position: absolute; left: 50%; bottom: 12.5mm; width: 4mm; height: 4mm; margin-left: -2mm; border-radius: 50%; background: var(--red); border: .7mm solid #fff; box-shadow: 0 .4mm 1mm rgba(0,0,0,.3); }
+
+/* right column: outcomes + signature + ID */
+.side { position: absolute; right: 16mm; top: 80mm; width: 52mm; }
+.side h3 { margin: 0 0 2.4mm; font: 600 2.4mm/1.2 "Work Sans", sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
+.side ol { margin: 0; padding: 0 0 0 4mm; font: 400 2.75mm/1.42 "Work Sans", sans-serif; color: #33362f; }
+.side li { margin-bottom: .9mm; padding-left: .6mm; }
+.side li::marker { color: var(--red); font-weight: 600; }
+
+.sign { position: absolute; right: 16mm; bottom: 21mm; width: 58mm; }
+.sign .sig { font: 400 11mm/1 "Mrs Saint Delafield", cursive; color: #1f2a55; height: 9mm; margin-left: 2mm; }
+.sign .sig img { height: 15mm; margin-top: -5mm; }
+.sign .who { border-top: .3mm solid var(--ink); padding-top: 1.8mm; font: 600 3mm/1.3 "Work Sans", sans-serif; }
+.sign .who span { display: block; font-weight: 400; color: var(--mute); font-size: 2.6mm; }
+
+.idrow { position: absolute; left: 15mm; bottom: 19.5mm; display: flex; gap: 4mm; align-items: center; }
+.qr { width: 17mm; height: 17mm; background: #fff; padding: 1.2mm; }
+.qr svg { width: 100%; height: 100%; display: block; }
+.idrow .t { font: 400 2.55mm/1.45 "Work Sans", sans-serif; color: var(--mute); }
+.idrow .t b { display: block; font: 600 3.2mm/1.3 "Work Sans", sans-serif; color: var(--ink); letter-spacing: .04em; }
+
+.foot { position: absolute; left: 15mm; right: 16mm; bottom: 0; height: 14mm; border-top: .3mm solid var(--ink); display: flex; align-items: center; justify-content: center; gap: 5mm; font: 400 2.9mm/1 "Work Sans", sans-serif; letter-spacing: .05em; color: var(--red); text-transform: uppercase; }
+
+@page { size: A4 landscape; margin: 0; }
+@media print {
+  html, body { background: none; }
+  .actions, .note { display: none !important; }
+  .stage { padding: 0; display: block; min-height: 0; }
+  .fit, .fit-inner { width: auto !important; height: auto !important; transform: none !important; }
+  .cert { box-shadow: none; }
+}
+.note { max-width: 760px; text-align: center; font: 400 14px/1.5 "Work Sans", sans-serif; color: #3b3e39; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="actions"><button id="pdf" type="button">Download PDF</button><button id="share" class="ghost" type="button">Copy certificate link</button></div>
+  <div class="fit" id="fit"><div class="fit-inner" id="fitIn">
+  <article class="cert" id="cert" aria-label="CPD certificate">
+    <aside class="bar">
+      <div class="logo" id="logo" aria-label="KEIM"></div>
+      <div class="vert">CPD CERTIFICATE</div>
+      <div class="est">EST. 1878</div>
+    </aside>
+    <section class="main">
+      <div class="fan" aria-hidden="true" id="fan"></div>
+      <div class="kick">Formal CPD · KEIM Australia</div>
+      <h1>Certificate of completion.</h1>
+      <p class="lead">This certifies that</p>
+      <div class="name" id="cName">Your Name</div>
+      <div class="reg" id="cReg"></div>
+      <p class="what">has completed the Formal CPD activity <b>Breathable Coating Systems</b>, presented by KEIM Australia, and passed its structured assessment.</p>
+      <div class="cards">
+        <div class="card"><div class="k">Completed</div><div class="v" id="cDate">—</div><div class="s">Online, narrated</div></div>
+        <div class="card"><div class="k">Category</div><div class="v">Formal CPD</div><div class="s">Structured, assessed learning</div></div>
+        <div class="card"><div class="k">Points · Hours</div><div class="v">1 point</div><div class="s">1 hour of learning</div></div>
+        <div class="card"><div class="k">Assessment</div><div class="v" id="cScore">Passed</div><div class="s">Pass mark 80%</div></div>
+      </div>
+      <div class="comp">
+        <div class="k">2021 National Standard of Competency for Architects</div>
+        <div class="d">Project Initiation and Conceptual Design<b>PC24 · PC28</b></div>
+        <div class="d">Detailed Design and Construction Documentation<b>PC39</b></div>
+      </div>
+      <div class="side">
+        <h3>Learning outcomes</h3>
+        <ol>
+          <li>Identify how moisture gets trapped in buildings.</li>
+          <li>Describe the issues caused by trapped moisture.</li>
+          <li>Define what breathable coatings are.</li>
+          <li>Identify the components of mineral paints.</li>
+          <li>Explain the benefits of mineral paints.</li>
+          <li>Identify where mineral paint can be used on your next project.</li>
+        </ol>
+      </div>
+      <div class="sign">
+        <div class="sig" id="sig">Hoodad Mehrbod</div>
+        <div class="who">Hoodad Mehrbod<span>Presenter · Managing Director, KEIM Australia</span></div>
+      </div>
+      <div class="idrow">
+        <div class="qr" id="qr"></div>
+        <div class="t"><b id="cId">KEIM-CPD-0000-0000</b>Certificate ID · scan to view or re-download.<br>Records held by KEIM Australia · info@keim.com.au</div>
+      </div>
+      <div class="foot"><span>keim.com.au</span><span>|</span><span>7/19 McCauley St Matraville NSW 2036</span><span>|</span><span>info@keim.com.au</span><span>|</span><span>(02) 9748 7160</span></div>
+    </section>
+  </article>
+  </div></div>
+  <p class="note" id="note">Keep this certificate for your CPD records. Choose “Save as PDF” in the print window.</p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+'use strict';
+// The certificate details travel in the link's #hash (never sent to a server):
+// certificate.html#<base64url JSON {n,r,s,d,sc,id}>
+const $ = id => document.getElementById(id);
+fetch('keim-logo.svg').then(r => r.text()).then(t => $('logo').innerHTML = t).catch(() => {});
+function b64d(s) { s = s.replace(/-/g, '+').replace(/_/g, '/'); while (s.length % 4) s += '='; return decodeURIComponent(escape(atob(s))); }
+function b64e(s) { return btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+let C = { n: 'Jane Citizen', r: '12345', s: 'NSW', d: new Date().toISOString().slice(0, 10), sc: 90, id: 'KEIM-CPD-2026-DEMO' };
+try { if (location.hash.length > 2) C = JSON.parse(b64d(location.hash.slice(1))); } catch (e) {}
+const fmt = d => { try { return new Date(d + 'T12:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return d; } };
+$('cName').textContent = C.n || '';
+$('cReg').textContent = C.r ? `Architect registration ${C.s ? C.s + ' ' : ''}${C.r}` : '';
+$('cDate').textContent = fmt(C.d);
+$('cScore').textContent = C.sc ? `Passed · ${C.sc}%` : 'Passed';
+$('cId').textContent = C.id;
+document.title = `KEIM CPD Certificate — ${C.n || ''}`;
+// shrink long names so they stay on one line
+(function () { const el = $('cName'); let s = 10; while (el.scrollWidth > el.clientWidth + 2 && s > 6) { s -= .25; el.style.fontSize = s + 'mm'; } })();
+
+// fan deck of historic mineral pigments
+const PIG = [['#8a3324', 'Burnt sienna'], ['#b5532c', 'Oxide red'], ['#c98a2e', 'Yellow ochre'], ['#6f5a3c', 'Raw umber'], ['#4b6b4a', 'Green earth'], ['#2f4f8f', 'Ultramarine'], ['#e9e4d6', 'Lime white']];
+$('fan').innerHTML = PIG.map(([c, n], i) => `<div class="chip" title="${n}" style="transform:rotate(${-60 + i * 13}deg)"><i style="background:${c}"></i></div>`).join('') + '<div class="pivot"></div>';
+
+// QR to this exact certificate
+try { const q = qrcode(0, 'M'); q.addData(location.href.split('#')[0] + '#' + b64e(JSON.stringify(C))); q.make(); $('qr').innerHTML = q.createSvgTag({ cellSize: 2, margin: 0, scalable: true }); } catch (e) {}
+
+// scale the A4 sheet to the screen
+function fit() { const w = $('fit').clientWidth, cw = $('cert').offsetWidth, k = Math.min(1, w / cw); $('fitIn').style.transform = `scale(${k})`; $('fit').style.height = $('cert').offsetHeight * k + 'px'; }
+addEventListener('resize', fit); fit(); document.fonts && document.fonts.ready.then(fit);
+$('pdf').onclick = () => window.print();
+$('share').onclick = () => { const u = location.href.split('#')[0] + '#' + b64e(JSON.stringify(C)); (navigator.clipboard ? navigator.clipboard.writeText(u) : Promise.reject()).then(() => { $('share').textContent = 'Link copied'; }).catch(() => prompt('Copy this link', u)); };
+</script>
+</body>
+</html>
