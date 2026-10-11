@@ -46,11 +46,17 @@ h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; text-transform: upper
 .screen { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; box-shadow: 0 40px 90px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.06); }
 .screen img, .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
 .screen img { object-fit: cover; }
-.screen .play { position: absolute; inset: 0; display: grid; place-items: end center; background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 45%); border: 0; cursor: pointer; padding: 0 0 7.5%; }
+.screen .play { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 14px; flex-wrap: nowrap; background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 45%); padding: 0 16px 7.5%; }
+.screen .play button { border: 0; background: none; padding: 0; cursor: pointer; }
+.screen .play em { font-style: normal; opacity: .75; font-weight: 500; margin-left: 4px; }
+.screen .play .alt span { background: rgba(255,255,255,.94); color: #1c2236; }
+.screen .play .alt span::before { border-left-color: #1c2236; }
+.screen .play button:hover span, .screen .play button:focus-visible span { transform: translateY(-2px); }
 .screen .play span { display: inline-flex; align-items: center; gap: 14px; background: var(--red); color: #fff; padding: 20px 44px; border-radius: 2px; font: 600 14px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 14px 40px rgba(0,0,0,.5); }
 .screen .play span::before { content: ""; width: 0; height: 0; border-left: 14px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
 .screen .dur { position: absolute; right: 16px; bottom: 14px; font-size: 12.5px; letter-spacing: .06em; color: #fff; background: rgba(0,0,0,.55); padding: 6px 10px; border-radius: 2px; pointer-events: none; }
-.screen.on .play, .screen.on img, .screen.on .dur { display: none; }
+.screen.on .play, .screen.on img { display: none; }
+.screen:fullscreen { border-radius: 0; aspect-ratio: auto; }
 
 /* language chips: the viewer picks before pressing play */
 .langs { margin-top: 22px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -185,7 +191,9 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   .screen { border-radius: 0; aspect-ratio: 5 / 4; margin-inline: -16px; box-shadow: none; }
   .screen img { object-position: 52% 30%; }
   .screen .play { background: none; }
-  .screen .play span { padding: 12px 26px; font-size: 12px; gap: 9px; }
+  .screen .play span { padding: 12px 13px; font-size: 11px; gap: 7px; letter-spacing: .08em; white-space: nowrap; }
+  .screen .play { gap: 8px; padding: 0 10px 4%; }
+  .screen .play span::before { border-left-width: 10px; border-top-width: 6px; border-bottom-width: 6px; }
   .screen .play { padding-bottom: 3.5%; }
   .ftr .copy { grid-column: auto; }
   .cinema { padding-top: 64px; }
@@ -205,10 +213,8 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     </div>
     <div class="screen" id="screen">
       <img src="film-poster.jpg" alt="Title frame of the film: A brief history of Paint, sixty thousand years from cave walls to KEIM" width="1440" height="810">
-      <button class="play" id="playBtn" type="button" aria-label="Play the film From Ochre to KEIM"><span>Play</span></button>
-      <div class="dur">9 minutes, or the 3-minute highlights</div>
+      <div class="play" id="playBtn"><button type="button" data-m="full" aria-label="Play the full film, 9 minutes"><span>Full film <em>9 min</em></span></button><button type="button" data-m="hl" class="alt" aria-label="Play the highlights, 3 minutes"><span>Highlights <em>3 min</em></span></button></div>
     </div>
-    <p class="dur-m">9 minutes, or the 3-minute highlights</p>
     <div class="langs" id="langs" role="group" aria-label="Language of the film">
       <p>Watch in</p>
       <button type="button" data-l="en" aria-pressed="true">English</button><button type="button" data-l="de" lang="de">Deutsch</button><button type="button" data-l="es" lang="es">Español</button><button type="button" data-l="it" lang="it">Italiano</button><button type="button" data-l="fr" lang="fr">Français</button><button type="button" data-l="pt" lang="pt">Português</button><button type="button" data-l="fa" lang="fa">فارسی</button><button type="button" data-l="ar" lang="ar">العربية</button><button type="button" data-l="hi" lang="hi">हिन्दी</button><button type="button" data-l="zh" lang="zh">简体中文</button><button type="button" data-l="tw" lang="zh-Hant">繁體中文</button><button type="button" data-l="da" lang="da">Dansk</button><button type="button" data-l="sv" lang="sv">Svenska</button><button type="button" data-l="no" lang="no">Norsk</button><button type="button" data-l="fi" lang="fi">Suomi</button><button type="button" data-l="nl" lang="nl">Nederlands</button><button type="button" data-l="pl" lang="pl">Polski</button><button type="button" data-l="ja" lang="ja">日本語</button><button type="button" data-l="ko" lang="ko">한국어</button><button type="button" data-l="cs" lang="cs">Čeština</button>
@@ -374,7 +380,8 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   const FILM = new URL('../film/', location.href).href;
   let lang = 'en';
   const screen = document.getElementById('screen'), play = document.getElementById('playBtn');
-  const url = (ch) => FILM + '?v=41&lang=' + lang + (ch ? '#' + ch : '');
+  let mode = 'full';
+  const url = (ch) => FILM + '?v=41&lang=' + lang + (ch ? '#' + ch : '&mode=' + mode);
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
   function start(ch) {
     if (PHONE) { const w = window.open(url(ch), '_blank'); if (w) { try { w.opener = null; } catch (e) {} return; } }
@@ -382,7 +389,12 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     if (!f) { f = document.createElement('iframe'); f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = 'From Ochre to KEIM, a brief history of paint'; screen.appendChild(f); }
     f.src = url(ch); screen.classList.add('on');
   }
-  play.addEventListener('click', () => start());
+  play.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    mode = b.dataset.m;
+    // big screens: go full screen straight away (the click allows it), then the film starts playing inside
+    if (!PHONE) { try { const fs = screen.requestFullscreen || screen.webkitRequestFullscreen; if (fs) fs.call(screen).catch(() => {}); } catch (e) {} }
+    start();
+  }));
   // phones: one compact dropdown instead of 20 buttons (keeps the page inside the height Wix gives it)
   (() => { const wrap = document.getElementById('langs'), sel = document.createElement('select'); sel.className = 'lang-sel'; sel.id = 'langSel'; sel.setAttribute('aria-label', 'Language of the film');
     wrap.querySelectorAll('button').forEach(b => { const o = document.createElement('option'); o.value = b.dataset.l; o.textContent = b.textContent; if (b.getAttribute('aria-pressed') === 'true') o.selected = true; sel.appendChild(o); });
