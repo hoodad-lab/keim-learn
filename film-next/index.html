@@ -61,9 +61,11 @@ body { margin: 0; background: #f3f0e8; color: #1c2236; overflow: hidden; font-fa
 .more.on { display: inline-flex; }
 .more i { font: italic 700 13px/1 var(--serif); width: 19px; height: 19px; border-radius: 50%; background: #D51F24; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-style: italic; }
 
-.tapgo { position: fixed; inset: 0; z-index: 9; border: 0; background: rgba(28,34,54,.55); display: grid; place-items: center; cursor: pointer; }
-.tapgo span { display: inline-flex; align-items: center; gap: 14px; background: #D51F24; color: #fff; padding: 20px 40px; font: 700 15px/1 "Josefin Sans", sans-serif; letter-spacing: .14em; text-transform: uppercase; box-shadow: 0 14px 40px rgba(0,0,0,.5); }
-.tapgo span::before { content: ""; border-left: 14px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+.tapgo { position: fixed; inset: 0; z-index: 9; border: 0; background: rgba(28,34,54,.5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; cursor: pointer; }
+.tapgo .pb { width: 104px; height: 104px; border-radius: 50%; background: #D51F24; display: grid; place-items: center; box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 0 10px rgba(255,255,255,.14); animation: tgpulse 2.2s ease-in-out infinite; }
+.tapgo .pb::before { content: ""; border-left: 32px solid #fff; border-top: 20px solid transparent; border-bottom: 20px solid transparent; margin-left: 8px; }
+.tapgo em { font: 600 13px/1 "Josefin Sans", sans-serif; font-style: normal; letter-spacing: .2em; text-transform: uppercase; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
+@keyframes tgpulse { 0%, 100% { box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 0 10px rgba(255,255,255,.14); } 50% { box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 0 18px rgba(255,255,255,.06); } }
 .chooser { position: fixed; inset: 0; z-index: 7; display: flex; align-items: center; justify-content: center; background: rgba(28,34,54,0.45); padding: 20px; }
 .chooser[hidden] { display: none; }
 #speedBtn[hidden] { display: none !important; }
@@ -325,7 +327,7 @@ body:not(.cine) .ui::before { content: ''; position: absolute; inset: -46px 0 0 
 
 // ---------- languages (EN · DE · ES · IT · FR) ----------
 const I18N = {};
-const I18N_V = 16;
+const I18N_V = 17;
 const LANG_NAMES = { en: 'English', de: 'Deutsch', es: 'Español', it: 'Italiano', fr: 'Français', pt: 'Português', fa: 'فارسی', ar: 'العربية', hi: 'हिन्दी', zh: '简体中文', da: 'Dansk', sv: 'Svenska', no: 'Norsk', fi: 'Suomi', nl: 'Nederlands', pl: 'Polski', tw: '繁體中文', ja: '日本語', ko: '한국어', cs: 'Čeština' };
 const LITE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
 const AR = /[\u0600-\u06FF]/, DEV = /[\u0900-\u097F]/, HAN = /[\u3000-\u9FFF\uFF00-\uFFEF]/, HANGUL = /[\u1100-\u11FF\u3130-\u318F\uAC00-\uD7AF]/;
@@ -3668,6 +3670,17 @@ function startJump(k) {
   if (!modeChosen) { HL = false; modeChosen = true; }
   jump = { s: performance.now(), k, from, origin, Tto }; T = Tto; sfx('whoosh'); if (AU.on) audioUnlock(); setPlaying(true);
 }
+// highlights: a soft dissolve from the end of one key moment into the next, so they play like consecutive slides
+let XF = null; const XF_DUR = 1.1;
+function hlCut(j) {
+  try { const snap = document.createElement('canvas'); snap.width = cv.width; snap.height = cv.height; snap.getContext('2d').drawImage(cv, 0, 0); XF = { s: performance.now(), img: snap }; } catch (e) { XF = null; }
+  T = startOf(j) + HL_IN; dirty = true;
+}
+const HL_IN = 0;
+function drawXF() {
+  if (!XF) return; const e = (performance.now() - XF.s) / 1000 / XF_DUR; if (e >= 1) { XF = null; return; }
+  const a = 1 - e * e * (3 - 2 * e); c.save(); c.setTransform(1, 0, 0, 1, 0, 0); c.globalAlpha = a; c.drawImage(XF.img, 0, 0); c.restore(); dirty = true;
+}
 function jumpProgress() { if (!jump) return 1; const e = (performance.now() - jump.s) / 1000 / JUMP_DUR; if (e >= 1) { jump = null; return 1; } return e; }
 function hitPoster(sx, sy) {
   if (posterness(T) < 0.5) return -1;
@@ -3755,7 +3768,7 @@ function render() {
  setCaption(dom); syncSlug(dom); document.getElementById('cta').classList.toggle('on', dom === N - 1);
   nowEl.textContent = pn > 0.5 ? 'The poster' : PL[dom].lab;
   if (document.activeElement !== scrub) scrub.value = T;
-  dirty = false;
+  dirty = false; drawXF();
 }
 const TRAILC = PL.map(p => p.trail);
 const LINES = [
@@ -3809,7 +3822,12 @@ function loop(ts) {
     vtoolsEl.classList.toggle('on', !!want); if (want) showHint(); }
   if (playing && started && !jump) {
     // highlights: when a key moment ends, fly the camera straight to the next one instead of fast-forwarding through the slides between
-    const k0 = chapterAt(T); if (HL && !jump && T > C0 + D * 0.5 && T < CL - D * 0.5 && !HL_SET.includes(k0)) { const j = HL_SET.find(x => x > k0); if (j != null && j < N - 1) startJump(j); }
+    const k0 = chapterAt(T);
+    if (HL && !jump && T > C0 + D * 0.5 && T < CL - D * 0.5) {
+      // leave a key moment just before the camera would glide on to a plate that isn't in the highlights
+      const leave = HL_SET.includes(k0) && !HL_SET.includes(k0 + 1) && T >= Cent(k0) + 4.7, stray = !HL_SET.includes(k0);
+      if (leave || stray) { const j = HL_SET.find(x => x > k0); if (j != null && j < N - 1) hlCut(j); }
+    }
     const prev = T, k = chapterAt(T), warp = false; warping = false;
     const hold = narrTick();
     if (hold) T = Math.max(prev, Math.min(T, narrHold(NR.slide) - 0.02)); else T += dt * SPEED * (warp ? 12 : Math.min(narrRate(), slowAt(T)));
@@ -4131,7 +4149,7 @@ function start() { if (started) return; started = true; buildThumbs(); document.
   if (md === 'full' || md === 'hl') { setMode(md === 'hl');
     if (window.self !== window.top || !matchMedia('(pointer: coarse)').matches) setTimeout(() => setPlaying(true), 400);
     else { // phones opened in a new tab need one tap to allow sound and full screen
-      const g = document.createElement('button'); g.type = 'button'; g.className = 'tapgo'; g.innerHTML = '<span>' + tr(md === 'hl' ? 'Play the highlights' : 'Play the film') + '</span>';
+      const g = document.createElement('button'); g.type = 'button'; g.className = 'tapgo'; g.setAttribute('aria-label', tr(md === 'hl' ? 'Play the highlights' : 'Play the film')); g.innerHTML = '<span class="pb"></span><em>' + (md === 'hl' ? tr('Highlights') + ' · 3 min' : tr('Full film') + ' · 9 min') + '</em>';
       g.addEventListener('click', () => { g.remove(); setPlaying(true); }); document.body.appendChild(g); } } }
 Promise.all([
   document.fonts.load('700 40px "Josefin Sans"'), document.fonts.load('600 30px "Josefin Sans"'), document.fonts.load('130px "Abril Fatface"'),
