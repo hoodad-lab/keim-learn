@@ -242,7 +242,9 @@ button { font: inherit; cursor: pointer; }
 <script>
 'use strict';
 // ---- settings: fill in once the HubSpot form exists (portal id + form guid). Empty = no submission.
-const HUBSPOT = { portalId: '47417993', formId: '88cc0e4d-1434-414f-aeb3-9761aee13b0c' };
+const HUBSPOT = { portalId: '47417993', formId: '88cc0e4d-1434-414f-aeb3-9761aee13b0c', routeOwners: false };
+// CPD finishers go to the rep for their state: QLD/VIC → Steve Gibson, everyone else → Carla Galhardi (HubSpot owner IDs)
+const OWNER_BY_STATE = st => (st === 'QLD' || st === 'VIC') ? '81600554' : '95769183';
 const C = window.COURSE, N = C.titles.length, $ = id => document.getElementById(id);
 fetch('keim-logo.svg').then(r => r.text()).then(t => $('logo').innerHTML = t).catch(() => {});
 const KEY = 'keimCpdBreathable.v1';
@@ -379,7 +381,7 @@ $('fSubmit').onclick = async () => {
   if (HUBSPOT.portalId && HUBSPOT.formId) {
     try {
       await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT.portalId}/${HUBSPOT.formId}`, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fields: [['firstname', first], ['lastname', last], ['email', email], ['company', v('fCompany')], ['cpd_registration_state', $('fState').value], ['cpd_registration_number', v('fReg')], ['cpd_certificate_id', id], ['cpd_certificate_link', link], ['cpd_score', String(S.score)], ['cpd_course', 'Breathable Coating Systems'], ['cpd_marketing_opt_in', $('fNews').checked ? 'true' : 'false']].map(([name, value]) => ({ name, value })),
+        body: JSON.stringify({ fields: [['firstname', first], ['lastname', last], ['email', email], ['company', v('fCompany')], ['cpd_registration_state', $('fState').value], ['cpd_registration_number', v('fReg')], ['cpd_certificate_id', id], ['cpd_certificate_link', link], ['cpd_score', String(S.score)], ['cpd_course', 'Breathable Coating Systems'], ['cpd_marketing_opt_in', $('fNews').checked ? 'true' : 'false'], ...(HUBSPOT.routeOwners ? [['hubspot_owner_id', OWNER_BY_STATE($('fState').value)]] : [])].map(([name, value]) => ({ name, value })),
           context: { pageUri: location.href, pageName: 'KEIM CPD · Breathable Coating Systems' } }) });
     } catch (e) {}
   }
