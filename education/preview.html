@@ -46,7 +46,7 @@ h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; text-transform: upper
 .screen { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; box-shadow: 0 40px 90px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.06); }
 .screen img, .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
 .screen img { object-fit: cover; }
-.screen .play { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 14px; flex-wrap: nowrap; background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 45%); padding: 0 16px 7.5%; }
+.screen .play { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 14px; flex-wrap: wrap; row-gap: 10px; background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 45%); padding: 0 16px 7.5%; }
 .screen .play button { border: 0; background: none; padding: 0; cursor: pointer; }
 .screen .play em { font-style: normal; opacity: .75; font-weight: 500; margin-left: 4px; }
 .screen .play .alt span { background: rgba(255,255,255,.94); color: #1c2236; }
