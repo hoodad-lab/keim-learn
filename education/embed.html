@@ -46,20 +46,22 @@ h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; text-transform: upper
 .screen { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; box-shadow: 0 40px 90px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.06); }
 .screen img, .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
 .screen img { object-fit: cover; }
-.screen .play { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 14px; flex-wrap: wrap; row-gap: 10px; background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 45%); padding: 0 16px 7.5%; }
-.screen .play button { border: 0; background: none; padding: 0; cursor: pointer; }
-.screen .play em { font-style: normal; opacity: .75; font-weight: 500; margin-left: 4px; }
-.screen .play .alt span { background: rgba(255,255,255,.94); color: #1c2236; }
-.screen .play .alt span::before { border-left-color: #1c2236; }
-.screen .play button:hover span, .screen .play button:focus-visible span { transform: translateY(-2px); }
-.screen .play span { display: inline-flex; align-items: center; gap: 14px; background: var(--red); color: #fff; padding: 20px 44px; border-radius: 2px; font: 600 14px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; box-shadow: 0 14px 40px rgba(0,0,0,.5); }
-.screen .play span::before { content: ""; width: 0; height: 0; border-left: 14px solid #fff; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+.screen .bigplay { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; cursor: pointer; }
+.screen.on .bigplay { display: none; }
+.versions { margin: 22px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); max-width: 720px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; padding: 5px; gap: 5px; background: rgba(255,255,255,.03); }
+.versions button { display: flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 999px; padding: 13px 14px; cursor: pointer; background: transparent; color: #f1ede4; font: 600 13px/1.1 var(--sans); letter-spacing: .1em; text-transform: uppercase; transition: background .2s, color .2s; }
+.versions button::before { content: ""; flex: none; border-left: 9px solid currentColor; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+.versions button em { font-style: normal; font-weight: 500; opacity: .6; letter-spacing: .06em; }
+.versions button:hover, .versions button:focus-visible { background: rgba(255,255,255,.1); }
+.versions button.main { background: var(--red); color: #fff; }
+.versions button.main:hover { background: #e2282d; }
+@media (max-width: 600px) { .versions { border-radius: 14px; } .versions button { flex-direction: column; gap: 5px; border-radius: 10px; padding: 11px 6px; font-size: 11.5px; letter-spacing: .08em; } .versions button::before { display: none; } }
 .screen .dur { position: absolute; right: 16px; bottom: 14px; font-size: 12.5px; letter-spacing: .06em; color: #fff; background: rgba(0,0,0,.55); padding: 6px 10px; border-radius: 2px; pointer-events: none; }
-.screen.on .play, .screen.on img { display: none; }
+.screen.on img { display: none; }
 .screen:fullscreen { border-radius: 0; aspect-ratio: auto; }
 
 /* language chips: the viewer picks before pressing play */
-.langs { margin-top: 22px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.langs { margin-top: 18px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .langs p { margin: 0 10px 0 0; font-size: 14px; color: #cfc9bd; }
 .langs button { font: 500 13.5px/1 var(--sans); color: #f1ede4; background: transparent; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; padding: 8px 13px; cursor: pointer; }
 .langs button[aria-pressed="true"] { background: #fff; color: var(--night); border-color: #fff; font-weight: 600; }
@@ -213,8 +215,9 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     </div>
     <div class="screen" id="screen">
       <img src="film-poster.jpg" alt="Title frame of the film: A brief history of Paint, sixty thousand years from cave walls to KEIM" width="1440" height="810">
-      <div class="play" id="playBtn"><button type="button" data-m="full" aria-label="Play the full film, 9 minutes"><span>Full film <em>9 min</em></span></button><button type="button" data-m="md" class="alt" aria-label="Play the medium version, 6 minutes"><span>Medium <em>6 min</em></span></button><button type="button" data-m="hl" class="alt" aria-label="Play the highlights, 3 minutes"><span>Highlights <em>3 min</em></span></button></div>
+      <button type="button" class="bigplay" id="bigPlay" aria-label="Play the full film, 9 minutes"></button>
     </div>
+    <div class="versions" id="playBtn" role="group" aria-label="Choose a version of the film"><button type="button" data-m="full" class="main" aria-label="Play the full film, 9 minutes">Full film <em>9 min</em></button><button type="button" data-m="md" aria-label="Play the medium version, 6 minutes">Medium <em>6 min</em></button><button type="button" data-m="hl" aria-label="Play the highlights, 3 minutes">Highlights <em>3 min</em></button></div>
     <div class="langs" id="langs" role="group" aria-label="Language of the film">
       <p>Watch in</p>
       <button type="button" data-l="en" aria-pressed="true">English</button><button type="button" data-l="de" lang="de">Deutsch</button><button type="button" data-l="es" lang="es">Español</button><button type="button" data-l="it" lang="it">Italiano</button><button type="button" data-l="fr" lang="fr">Français</button><button type="button" data-l="pt" lang="pt">Português</button><button type="button" data-l="fa" lang="fa">فارسی</button><button type="button" data-l="ar" lang="ar">العربية</button><button type="button" data-l="hi" lang="hi">हिन्दी</button><button type="button" data-l="zh" lang="zh">简体中文</button><button type="button" data-l="tw" lang="zh-Hant">繁體中文</button><button type="button" data-l="da" lang="da">Dansk</button><button type="button" data-l="sv" lang="sv">Svenska</button><button type="button" data-l="no" lang="no">Norsk</button><button type="button" data-l="fi" lang="fi">Suomi</button><button type="button" data-l="nl" lang="nl">Nederlands</button><button type="button" data-l="pl" lang="pl">Polski</button><button type="button" data-l="ja" lang="ja">日本語</button><button type="button" data-l="ko" lang="ko">한국어</button><button type="button" data-l="cs" lang="cs">Čeština</button>
@@ -389,6 +392,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     if (!f) { f = document.createElement('iframe'); f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = 'From Ochre to KEIM, a brief history of paint'; screen.appendChild(f); }
     f.src = url(ch); screen.classList.add('on');
   }
+  document.getElementById('bigPlay').addEventListener('click', () => play.querySelector('[data-m="full"]').click());
   play.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
     mode = b.dataset.m;
     // big screens: go full screen straight away (the click allows it), then the film starts playing inside
