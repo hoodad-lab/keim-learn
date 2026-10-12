@@ -46,7 +46,7 @@ h2 { font-size: clamp(26px, 3vw, 36px); line-height: 1.15; text-transform: upper
 .screen { position: relative; aspect-ratio: 16 / 9; border-radius: 10px; overflow: hidden; background: #000; box-shadow: 0 40px 90px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(255,255,255,.06); }
 .screen img, .screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
 .screen img { object-fit: cover; }
-.screen .play { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 14px; flex-wrap: nowrap; background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 45%); padding: 0 16px 7.5%; }
+.screen .play { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 14px; flex-wrap: wrap; row-gap: 10px; background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,0) 45%); padding: 0 16px 7.5%; }
 .screen .play button { border: 0; background: none; padding: 0; cursor: pointer; }
 .screen .play em { font-style: normal; opacity: .75; font-weight: 500; margin-left: 4px; }
 .screen .play .alt span { background: rgba(255,255,255,.94); color: #1c2236; }
@@ -213,7 +213,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     </div>
     <div class="screen" id="screen">
       <img src="film-poster.jpg" alt="Title frame of the film: A brief history of Paint, sixty thousand years from cave walls to KEIM" width="1440" height="810">
-      <div class="play" id="playBtn"><button type="button" data-m="full" aria-label="Play the full film, 9 minutes"><span>Full film <em>9 min</em></span></button><button type="button" data-m="hl" class="alt" aria-label="Play the highlights, 3 minutes"><span>Highlights <em>3 min</em></span></button></div>
+      <div class="play" id="playBtn"><button type="button" data-m="full" aria-label="Play the full film, 9 minutes"><span>Full film <em>9 min</em></span></button><button type="button" data-m="md" class="alt" aria-label="Play the medium version, 6 minutes"><span>Medium <em>6 min</em></span></button><button type="button" data-m="hl" class="alt" aria-label="Play the highlights, 3 minutes"><span>Highlights <em>3 min</em></span></button></div>
     </div>
     <div class="langs" id="langs" role="group" aria-label="Language of the film">
       <p>Watch in</p>
@@ -381,7 +381,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   let lang = 'en';
   const screen = document.getElementById('screen'), play = document.getElementById('playBtn');
   let mode = 'full';
-  const url = (ch) => FILM + '?v=43&lang=' + lang + (ch ? '#' + ch : '&mode=' + mode);
+  const url = (ch) => FILM + '?v=44&lang=' + lang + (ch ? '#' + ch : '&mode=' + mode);
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
   function start(ch) {
     if (PHONE) { const w = window.open(url(ch), '_blank'); if (w) { try { w.opener = null; } catch (e) {} return; } }

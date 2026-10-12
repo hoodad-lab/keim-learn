@@ -204,7 +204,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   .facts { gap: 18px; } .facts strong { font-size: 19px; }
 }
 .world-card { position: relative; display: block; border-radius: 10px; overflow: hidden; box-shadow: 0 30px 70px -30px rgba(0,0,0,.55); }
-.world-card img { width: 100%; height: auto; display: block; aspect-ratio: 16 / 9; object-fit: cover; }
+.world-card img, .world-card video { width: 100%; height: auto; display: block; aspect-ratio: 16 / 9; object-fit: cover; }
 .world-card .wc-btn { position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%); background: var(--red); color: #fff; padding: 16px 30px; font: 600 13px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; border-radius: 2px; box-shadow: 0 14px 34px rgba(0,0,0,.45); white-space: nowrap; }
 .world-card:hover .wc-btn { transform: translateX(-50%) translateY(-2px); }
 </style>
@@ -319,7 +319,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
       <p>Spin the globe and fly down to more than 200 KEIM projects, from Sydney Opera House and Albany's bridge art to Milan, Basel and Singapore.</p>
     </div>
     <a class="world-card" href="../world-next/" target="_blank" rel="noopener">
-      <img src="world-poster.jpg" alt="Satellite globe with KEIM project pins" width="1600" height="900" loading="lazy">
+      <video src="world-globe.mp4" poster="world-globe.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Spinning satellite globe with KEIM project pins" width="1280" height="720"></video>
       <span class="wc-btn">Explore the map</span>
     </a>
   </section>
