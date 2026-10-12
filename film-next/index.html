@@ -331,6 +331,7 @@ body.movie .ticks i, body.movie .ticks span { opacity: .5; }
 <div class="chooser" id="chooser" hidden><div class="ch-card" role="dialog" aria-label="Choose how to watch"><div class="ch-kick">FROM OCHRE TO KEIM</div><div class="ch-ttl">How would you like to watch?</div>
   <div class="ch-langs" id="chLangs" role="group" aria-label="Language"><button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="de" lang="de">DE</button><button type="button" data-l="es" lang="es">ES</button><button type="button" data-l="it" lang="it">IT</button><button type="button" data-l="fr" lang="fr">FR</button><button type="button" data-l="pt" lang="pt">PT</button><button type="button" data-l="fa" lang="fa">فا</button><button type="button" data-l="ar" lang="ar">عربي</button><button type="button" data-l="hi" lang="hi">हिं</button><button type="button" data-l="zh" lang="zh">简中</button><button type="button" data-l="da" lang="da">DA</button><button type="button" data-l="sv" lang="sv">SV</button><button type="button" data-l="no" lang="no">NO</button><button type="button" data-l="fi" lang="fi">FI</button><button type="button" data-l="nl" lang="nl">NL</button><button type="button" data-l="pl" lang="pl">PL</button><button type="button" data-l="tw" lang="zh-Hant">繁中</button><button type="button" data-l="ja" lang="ja">日本</button><button type="button" data-l="ko" lang="ko">한국</button><button type="button" data-l="cs" lang="cs">CS</button></div>
   <button class="ch-opt" id="mFull" type="button"><b>▶ Full film</b><span>About 6 minutes · every chapter, 60,000 years of paint</span></button>
+  <button class="ch-opt" id="mMd" type="button"><b>◐ Medium</b><span>About 6 minutes · the whole story, without the world tour</span></button>
   <button class="ch-opt" id="mHl" type="button"><b>⚡ Highlights</b><span>About 2 minutes · the 8 key moments</span></button>
   <div class="ch-note">You can pause any time to explore the details.</div></div></div>
 <div class="chooser" id="endCard" hidden><div class="ch-card" role="dialog" aria-label="What next"><button class="ch-x" id="eX" type="button" aria-label="Close">✕</button><div class="ch-kick">FROM OCHRE TO KEIM</div><div class="ch-ttl">Bring mineral paint to your next project</div>
@@ -3843,7 +3844,7 @@ function setCaption(i) {
   if (i === curShown) return;
   const first = curShown < 0; curShown = i; setChord(i);
   const apply = () => {
-    numEl.textContent = HL && HL_SET.includes(i) && i > 0 && i < N - 1 ? 'HIGHLIGHTS ' + HL_SET.indexOf(i) + ' / ' + (HL_SET.length - 2) : i > 0 && i < N - 1 ? String(i).padStart(2, '0') + ' / ' + String(N - 2).padStart(2, '0') : '';
+    numEl.textContent = HL && HL_SET.includes(i) && i > 0 && i < N - 1 ? 'HIGHLIGHTS ' + HL_SET.indexOf(i) + ' / ' + (HL_SET.length - 2) : MD && MD_SET.includes(i) && i > 0 ? String(MD_SET.indexOf(i)).padStart(2, '0') + ' / ' + String(MD_SET.length - 1).padStart(2, '0') : i > 0 && i < N - 1 ? String(i).padStart(2, '0') + ' / ' + String(N - 2).padStart(2, '0') : '';
 
     document.getElementById('loc').textContent = PL[i].loc ? '📍 ' + PL[i].loc : ''; kickEl.textContent = PL[i].kick; ttlEl.textContent = PL[i].ttl; txtEl.textContent = PL[i].txt;
     { const nS = (SPOTS[PL[i].lab] || []).length; document.getElementById('moreBtn').classList.toggle('on', nS > 0); document.getElementById('moreN').textContent = 'More info · ' + nS; }
@@ -3863,10 +3864,11 @@ function loop(ts) {
   if (playing && started && !jump) {
     // highlights: when a key moment ends, fly the camera straight to the next one instead of fast-forwarding through the slides between
     const k0 = chapterAt(T);
-    if (HL && !jump && T > C0 + D * 0.5 && T < CL - D * 0.5) {
-      // leave a key moment just before the camera would glide on to a plate that isn't in the highlights
-      const leave = HL_SET.includes(k0) && !HL_SET.includes(k0 + 1) && T >= Cent(k0) + 4.7, stray = !HL_SET.includes(k0);
-      if (leave || stray) { const j = HL_SET.find(x => x > k0); if (j != null && j < N - 1) hlCut(j); }
+    const SET = CUT_SET();
+    if (SET && !jump && T > C0 + D * 0.5 && T < CL - D * 0.5) {
+      // leave a plate just before the camera would glide on to one that isn't in this version
+      const leave = SET.includes(k0) && !SET.includes(k0 + 1) && T >= Cent(k0) + 4.7, stray = !SET.includes(k0);
+      if (leave || stray) { const j = SET.find(x => x > k0); if (j != null && j < N - 1) hlCut(j); else if (MD && !(NR.src)) { setPlaying(false); showEnd(); } }
     }
     const prev = T, k = chapterAt(T), warp = false; warping = false;
     const hold = narrTick();
@@ -3907,7 +3909,7 @@ let hideTimer = 0;
 function poke() { uiEl.classList.remove('hide'); document.body.classList.add('uion'); clearTimeout(hideTimer); if (playing) hideTimer = setTimeout(() => { uiEl.classList.add('hide'); document.body.classList.remove('uion'); }, 2800); }
 function showChooserAgain() {
   modeChosen = false; const tt = chooserEl.querySelector('.ch-ttl'); if (tt) tt.textContent = 'Watch again — which version?';
-  ['mFull', 'mHl'].forEach(id => { const el = document.getElementById(id); el.classList.toggle('watched', (id === 'mHl') === HL); });
+  ['mFull', 'mMd', 'mHl'].forEach(id => { const el = document.getElementById(id); el.classList.toggle('watched', id === (HL ? 'mHl' : MD ? 'mMd' : 'mFull')); });
   playing = false; playBtn.textContent = 'Play'; chooserEl.hidden = false; poke();
 }
 const ROT = { el: document.getElementById('rot'), off: false }; const progEl = document.getElementById('prog');
@@ -3973,8 +3975,8 @@ function narrBuf(k) {
   const bad = () => { if (lang0 !== LANG) return; delete NR.pend[k]; NR.fail[k] = 1; };
   fetch(narrURL(k)).then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); }).then(ab => { if (lang0 !== LANG) return; const pr = AU.ac.decodeAudioData(ab, b => { if (lang0 === LANG) ok(b); }, bad); if (pr && pr.catch) pr.catch(bad); }).catch(bad);
 }
-const narrates = k => NR.on && AU.on && (!HL || HL_SET.includes(k));
-function nextNarrSlide(k) { for (let j = k + 1; j < N; j++) if (!HL || HL_SET.includes(j)) return j; return -1; }
+const narrates = k => NR.on && AU.on && (!CUT_SET() || CUT_SET().includes(k));
+function nextNarrSlide(k) { const S = CUT_SET(); for (let j = k + 1; j < N; j++) if (!S || S.includes(j)) return j; return -1; }
 function narrSlideAt(t) { if (t < startOf(1)) return 0; for (let k = N - 1; k >= 1; k--) if (t >= startOf(k)) return k; return 0; }
 // the moment slide k starts to leave; narration holds the film here until the voice has finished
 const narrHold = k => k === N - 1 ? F0 - 0.3 : (k === 0 ? C0 : Cent(k)) + D * (0.5 - FLY / 2) - 0.3;
@@ -4024,7 +4026,9 @@ function narrUI() {
   if (hs) hs.textContent = (NR.on ? 'About 3 minutes · narrated' : 'About 2 minutes') + ' · the 8 key moments';
 }
 function slowAt(T) { const k = narrSlideAt(T), p = PL[k]; return p && p.slow && T >= startOf(k) && T < narrHold(k) ? p.slow : 1; }
-const HL_SET = ['prologue', 'cave', 'pompeii', 'keim', '1891', 'acrylic', 'plastic-skin', 'verdict', 'world', 'visit'].map(slideIx); let HL = false, warping = false; setTimeout(narrUI, 0);
+const HL_SET = ['prologue', 'cave', 'pompeii', 'keim', '1891', 'acrylic', 'plastic-skin', 'verdict', 'world', 'visit'].map(slideIx); let HL = false, MD = false, warping = false;
+const MD_SET = SLUGS.map((_, i) => i).filter(i => !['europe', 'world', 'australia', 'visit'].includes(SLUGS[i]));
+const CUT_SET = () => HL ? HL_SET : MD ? MD_SET : null; setTimeout(narrUI, 0);
 let modeChosen = false; const chooserEl = document.getElementById('chooser');
 // ---------- end card: after the last slide, offer the two next steps ----------
 const endEl = document.getElementById('endCard');
@@ -4041,7 +4045,7 @@ document.getElementById('eCpd').addEventListener('click', () => {
   location.href = 'https://learn.keim.com.au/education/embed.html#cpd';
 });
 
-function setMode(h) { NR.slide = -1; HL = h; modeChosen = true; chooserEl.hidden = true; curShown = -1; dirty = true; }
+function setMode(h, md) { NR.slide = -1; HL = !!h; MD = !h && !!md; modeChosen = true; chooserEl.hidden = true; curShown = -1; dirty = true; }
 function chapterAt(t) { return t < C0 ? 0 : Math.max(0, Math.min(N - 1, Math.round((t - C0) / D))); }
 function go(i) { i = Math.max(0, Math.min(N - 1, i)); T = i === 0 ? (chapterAt(T) === 0 ? 0 : C0 - 0.5) : Cent(i) - LEAD; dirty = true; poke(); }
 const storyEl = document.getElementById('story'), tlEl = document.getElementById('tl');
@@ -4090,6 +4094,7 @@ function tourSpot(i, k) {
 }
 function startTour(i) { if (!SPOTS[PL[i].lab]) return; setPlaying(false); tourSpot(i, 0); }
 document.getElementById('mFull').addEventListener('click', () => { setMode(false); if (window.autoFullscreen) window.autoFullscreen(); setPlaying(true); });
+document.getElementById('mMd').addEventListener('click', () => { setMode(false, true); if (window.autoFullscreen) window.autoFullscreen(); setPlaying(true); });
 document.getElementById('mHl').addEventListener('click', () => { setMode(true); if (window.autoFullscreen) window.autoFullscreen(); setPlaying(true); });
 chooserEl.addEventListener('click', e => { if (e.target === chooserEl) chooserEl.hidden = true; });
 
@@ -4188,7 +4193,7 @@ function start() { if (started) return; started = true; buildThumbs(); document.
   const k = linkedChapter(); if (k >= 0) { modeChosen = true; HL = false; T = k === 0 ? Z1 + 0.1 : startOf(k) + 0.01; lastSlug = SLUGS[k]; dirty = true; setTimeout(() => setPlaying(true), 400); return; }
   // ?mode=full or ?mode=hl: the version was already picked on the Learning Hub, so skip the chooser
   let md = ''; try { md = new URLSearchParams(location.search).get('mode') || ''; } catch (e) {}
-  if (md === 'full' || md === 'hl') { setMode(md === 'hl');
+  if (md === 'full' || md === 'hl' || md === 'md') { setMode(md === 'hl', md === 'md');
     if (window.self !== window.top || !matchMedia('(pointer: coarse)').matches) setTimeout(() => setPlaying(true), 400);
     else poke(); } } // phones: stay on the interactive grid; the pulsing Play starts the chosen version with sound
 Promise.all([

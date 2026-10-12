@@ -217,7 +217,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
     </div>
     <div class="screen" id="screen">
       <img src="film-poster.jpg" alt="Title frame of the film: A brief history of Paint, sixty thousand years from cave walls to KEIM" width="1440" height="810">
-      <div class="play" id="playBtn"><button type="button" data-m="full" aria-label="Play the full film, 9 minutes"><span>Full film <em>9 min</em></span></button><button type="button" data-m="hl" class="alt" aria-label="Play the highlights, 3 minutes"><span>Highlights <em>3 min</em></span></button></div>
+      <div class="play" id="playBtn"><button type="button" data-m="full" aria-label="Play the full film, 9 minutes"><span>Full film <em>9 min</em></span></button><button type="button" data-m="md" class="alt" aria-label="Play the medium version, 6 minutes"><span>Medium <em>6 min</em></span></button><button type="button" data-m="hl" class="alt" aria-label="Play the highlights, 3 minutes"><span>Highlights <em>3 min</em></span></button></div>
     </div>
     <div class="langs" id="langs" role="group" aria-label="Language of the film">
       <p>Watch in</p>
@@ -405,7 +405,7 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   let lang = 'en';
   const screen = document.getElementById('screen'), play = document.getElementById('playBtn');
   let mode = 'full';
-  const url = (ch) => FILM + '?v=43&lang=' + lang + (ch ? '#' + ch : '&mode=' + mode);
+  const url = (ch) => FILM.replace('/film/', '/film-next/') + '?v=44&lang=' + lang + (ch ? '#' + ch : '&mode=' + mode);
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
   function start(ch) {
     if (PHONE) { const w = window.open(url(ch), '_blank'); if (w) { try { w.opener = null; } catch (e) {} return; } }
