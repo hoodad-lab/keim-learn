@@ -414,7 +414,14 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   const url = (ch) => FILM.replace('/film/', '/film-next/') + '?v=44&lang=' + lang + (ch ? '#' + ch : '&mode=' + mode);
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
   function start(ch) {
-    if (PHONE) { const w = window.open(url(ch), '_blank'); if (w) { try { w.opener = null; } catch (e) {} return; } }
+    if (PHONE) {
+      // phones can't put an embedded frame full screen (iPhone has no fullscreen for frames, and in-app
+      // browsers like LinkedIn block pop-ups), so open the film as its own page instead
+      const u = url(ch);
+      try { window.top.location.href = u; return; } catch (e) {}
+      const w = window.open(u, '_blank'); if (w) { try { w.opener = null; } catch (e) {} return; }
+      location.href = u; return;
+    }
     let f = screen.querySelector('iframe');
     if (!f) { f = document.createElement('iframe'); f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = 'From Ochre to KEIM, a brief history of paint'; screen.appendChild(f); }
     f.src = url(ch); screen.classList.add('on');
