@@ -374,7 +374,7 @@ $('fSubmit').onclick = async () => {
   if (!first || !last) return $('fErr').textContent = 'Please enter your first and last name.';
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return $('fErr').textContent = 'Please enter a valid email address.';
   $('fErr').textContent = ''; $('fSubmit').disabled = true; $('fSubmit').textContent = 'Preparing…';
-  const id = S.cert && S.cert.id || certId(), d = new Date().toISOString().slice(0, 10);
+  const id = S.cert && S.cert.id || certId(), d = (n => n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0'))(new Date());
   const cert = { n: first + ' ' + last, r: v('fReg'), s: $('fState').value, d, sc: S.score, id };
   const link = new URL('certificate.html', location.href).href + '#' + b64e(JSON.stringify(cert));
   S.cert = { id, link }; save();
