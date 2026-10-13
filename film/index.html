@@ -152,6 +152,11 @@ body.big .txt { font-size: clamp(15.5px, 0.95vw, 18.5px); line-height: 1.5; }
 @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 /* phone held sideways: cinema mode — slide fills the height, captions become subtitles */
 #fsBtn { display: inline-block; font-size: 17px; line-height: 1; }
+.turnTip { position: fixed; left: 50%; top: calc(14px + env(safe-area-inset-top, 0px)); z-index: 8; transform: translate(-50%, -12px); opacity: 0; pointer-events: none;
+  display: flex; align-items: center; gap: 9px; white-space: nowrap; font: 600 13px/1 var(--sans); color: #fff; background: rgba(20,20,24,0.86); border: 1px solid rgba(255,255,255,0.18);
+  padding: 11px 16px 10px 12px; border-radius: 22px; box-shadow: 0 10px 28px rgba(0,0,0,0.35); transition: opacity 0.5s ease, transform 0.5s ease; }
+.turnTip span { display: inline-flex; line-height: 0; animation: rotHint 1.4s ease-in-out infinite alternate; }
+.turnTip.on { opacity: 1; transform: translate(-50%, 0); }
 .rot { position: fixed; inset: 0; z-index: 9; display: grid; place-items: center; background: rgba(10,10,12,0.78); padding: 24px; }
 .rot[hidden] { display: none; }
 .rot-card { background: #f6f1e7; color: #1c2236; border-radius: 14px; padding: 28px 24px 22px; text-align: center; max-width: 320px; display: grid; gap: 8px; justify-items: center; box-shadow: 0 30px 60px rgba(0,0,0,.5); }
@@ -202,6 +207,20 @@ body.cine .cta { grid-column: 1 / -1; justify-content: flex-start; margin-top: 4
 body.cine .maps { top: auto; }
 body.cine .ui { bottom: 0; padding-block: 0 calc(8px + env(safe-area-inset-bottom, 0px)); }
 body.cine.inflight .ui { bottom: var(--caph); }
+/* big screens and TVs in cinema: the phone-sideways layout, scaled to the screen height (--k) */
+body.cine.tv .cap { padding: calc(4px * var(--k)) calc(20px * var(--k)); }
+body.cine.tv .cap::before { height: calc(18px * var(--k)); }
+body.cine.tv .inner { max-width: calc(100vw - 60px * var(--k)); column-gap: calc(14px * var(--k)); }
+body.cine.tv .ttl { font-size: calc(13.5px * var(--k)); margin: 0 0 calc(2px * var(--k)); }
+body.cine.tv .txt { font-size: calc(11px * var(--k)); }
+body.cine.tv .more { font-size: calc(9px * var(--k)); padding: calc(3px * var(--k)) calc(9px * var(--k)) calc(2px * var(--k)) calc(3px * var(--k)); border-radius: calc(14px * var(--k)); }
+body.cine.tv .more { gap: calc(6px * var(--k)); border-width: calc(1px * var(--k)); } body.cine.tv .more i { width: calc(16px * var(--k)); height: calc(16px * var(--k)); font-size: calc(11px * var(--k)); }
+body.cine.tv .cta { margin-top: calc(4px * var(--k)); } body.cine.tv .cta a { font-size: calc(9.5px * var(--k)); padding: calc(7px * var(--k)) calc(11px * var(--k)) calc(6px * var(--k)); border-radius: calc(16px * var(--k)); }
+body.cine.tv #prog { height: calc(2px * var(--k)); }
+body.cine.tv .ui { zoom: calc(0.55 + 0.45 * var(--k)); padding-inline: 14px; padding-block: 0 10px; }
+body.cine.tv.inflight .ui { bottom: calc(var(--caph) / (0.55 + 0.45 * var(--k))); }
+body.cine.tv #speedBtn, body.cine.tv .now { display: revert; }
+body.cine.tv .chooser { zoom: calc(0.6 + 0.4 * var(--k)); }
 #vigL, #vigR { position: fixed; top: 0; bottom: var(--caph); width: calc(50vw - var(--sw) / 2 - 4px); z-index: 1; pointer-events: none; opacity: 0; transition: opacity 0.6s ease; display: none; }
 #vigL { left: 0; background: linear-gradient(to left, rgba(12,13,16,0.55), rgba(12,13,16,0.92) 70%); }
 #vigR { right: 0; background: linear-gradient(to right, rgba(12,13,16,0.55), rgba(12,13,16,0.92) 70%); }
@@ -327,6 +346,7 @@ body.movie .ticks i, body.movie .ticks span { opacity: .5; }
 </div>
 <div class="bubble" id="bubble" aria-live="polite"></div>
 <div id="prog" aria-hidden="true"></div><div id="vigL" aria-hidden="true"></div><div id="vigR" aria-hidden="true"></div>
+<div class="turnTip" id="turnTip" aria-live="polite"><span aria-hidden="true"><svg width="12" height="18" viewBox="0 0 12 18" fill="none" stroke="#fff" stroke-width="1.6"><rect x="1" y="1" width="10" height="16" rx="2.2"/><path d="M4.5 14.2h3" stroke-linecap="round"/></svg></span>Turn your phone sideways for the cinema view</div>
 <div class="rot" id="rot" hidden><div class="rot-card"><div class="rot-ico" aria-hidden="true">&#x1F4F1;</div><b>Turn your phone sideways</b><span>The film is made for landscape. Rotate your phone for the big-screen view, then press Play.</span><button type="button" id="rotOk">Watch upright instead</button></div></div>
 <div class="chooser" id="chooser" hidden><div class="ch-card" role="dialog" aria-label="Choose how to watch"><div class="ch-kick">FROM OCHRE TO KEIM</div><div class="ch-ttl">How would you like to watch?</div>
   <div class="ch-langs" id="chLangs" role="group" aria-label="Language"><button type="button" data-l="en" lang="en">EN</button><button type="button" data-l="de" lang="de">DE</button><button type="button" data-l="es" lang="es">ES</button><button type="button" data-l="it" lang="it">IT</button><button type="button" data-l="fr" lang="fr">FR</button><button type="button" data-l="pt" lang="pt">PT</button><button type="button" data-l="fa" lang="fa">فا</button><button type="button" data-l="ar" lang="ar">عربي</button><button type="button" data-l="hi" lang="hi">हिं</button><button type="button" data-l="zh" lang="zh">简中</button><button type="button" data-l="da" lang="da">DA</button><button type="button" data-l="sv" lang="sv">SV</button><button type="button" data-l="no" lang="no">NO</button><button type="button" data-l="fi" lang="fi">FI</button><button type="button" data-l="nl" lang="nl">NL</button><button type="button" data-l="pl" lang="pl">PL</button><button type="button" data-l="tw" lang="zh-Hant">繁中</button><button type="button" data-l="ja" lang="ja">日本</button><button type="button" data-l="ko" lang="ko">한국</button><button type="button" data-l="cs" lang="cs">CS</button></div>
@@ -3585,10 +3605,13 @@ function layout() {
   cv.width = Math.round(Wp * dpr); cv.height = Math.round(Hp * dpr);
   const land = Wp / Hp > 1.15; HEAD = land ? 780 : 980; cols = land ? bestCols([5, 6, 7, 8, 9, 10, 11, 12], 170) : (N % 4 === 0 ? 4 : N % 3 === 0 ? 3 : 4); rows = Math.ceil(N / cols);
   innerEl.style.width = ''; innerEl.style.marginLeft = '';
-  CINE = Hp <= 540 && Wp / Hp >= 1.3 && Wp <= 1100; document.body.classList.toggle('cine', CINE);
-  if (CINE) { innerEl.style.height = '';
-    // phone sideways: slide spotlit at full height, slim subtitle band below it (never over the picture)
-    const capH = Math.round(Math.min(62, Math.max(48, Hp * 0.16))); document.documentElement.style.setProperty('--caph', capH + 'px');
+  // cinema: phones held sideways, and laptops, big screens and TVs (same look, scaled up to the screen)
+  const TV = !PHONE && Wp >= 1000 && Wp / Hp >= 1.3;
+  CINE = (Hp <= 540 && Wp / Hp >= 1.3 && Wp <= 1100) || TV; document.body.classList.toggle('cine', CINE); document.body.classList.toggle('tv', CINE && TV);
+  if (CINE) { innerEl.style.height = ''; document.body.classList.remove('big');
+    // slide spotlit at full height, slim subtitle band below it (never over the picture)
+    const K = TV ? Math.min(2.8, Math.max(1, Hp / 412)) : 1; document.documentElement.style.setProperty('--k', K.toFixed(3));
+    const capH = TV ? Math.round(Hp * 0.15) : Math.round(Math.min(62, Math.max(48, Hp * 0.16))); document.documentElement.style.setProperty('--caph', capH + 'px');
     zF = Math.min((Hp - capH - 12) / 1000, (Wp - 40) / 1006); stageCy = (Hp - capH) / 2 + 1;
     document.documentElement.style.setProperty('--sw', Math.round(PW * zF) + 'px'); const g = gridPos(N - 1), s = stripPos(N - 1); OUTO = [s[0] - g[0], s[1] - g[1]]; dirty = true; return; }
   // phones upright: the slide fills the width, the caption sits right under it (not pinned to the bottom with a gap)
@@ -3914,8 +3937,17 @@ function showChooserAgain() {
 }
 const ROT = { el: document.getElementById('rot'), off: false }; const progEl = document.getElementById('prog');
 document.getElementById('rotOk').addEventListener('click', () => { ROT.off = true; ROT.el.hidden = true; });
+// iPhones can't turn the film sideways for you (Android does it on Full film), so suggest it once
+const TIP = { el: document.getElementById('turnTip'), done: false, t: 0 };
+function turnTip(show) {
+  if (!show) { TIP.el.classList.remove('on'); return; }
+  if (TIP.done) return; TIP.done = true; TIP.el.classList.add('on'); clearTimeout(TIP.t); TIP.t = setTimeout(() => TIP.el.classList.remove('on'), 5000);
+}
 function rotCheck() {
   ROT.el.hidden = true;
+  const ph = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
+  if (!ph || innerWidth > innerHeight) turnTip(false);
+  else if (playing && !(document.fullscreenElement || document.webkitFullscreenElement)) setTimeout(() => { if (playing && innerWidth < innerHeight) turnTip(true); }, 1200);
 }
 addEventListener('resize', rotCheck); addEventListener('orientationchange', rotCheck); setTimeout(rotCheck, 300);
 function setPlaying(p) {
