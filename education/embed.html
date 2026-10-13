@@ -389,14 +389,21 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   let mode = 'full';
   const url = (ch) => FILM + '?v=44&lang=' + lang + (ch ? '#' + ch : '&mode=' + mode);
   const PHONE = matchMedia('(pointer: coarse)').matches && Math.min(innerWidth, innerHeight) < 600;
+  let inlineOK = false;
   function start(ch) {
-    if (PHONE) {
+    if (PHONE && !inlineOK) {
       // phones can't put an embedded frame full screen (iPhone has no fullscreen for frames, and in-app
-      // browsers like LinkedIn block pop-ups), so open the film as its own page instead
+      // browsers like LinkedIn's block scripted pop-ups), so open the film as its own page with a real link
       const u = url(ch);
-      try { window.top.location.href = u; return; } catch (e) {}
-      const w = window.open(u, '_blank'); if (w) { try { w.opener = null; } catch (e) {} return; }
-      location.href = u; return;
+      let left = false; const mark = () => { left = true; };
+      addEventListener('pagehide', mark, { once: true }); document.addEventListener('visibilitychange', mark, { once: true });
+      try { window.top.location.href = u; } catch (e) {}
+      setTimeout(() => {
+        if (left) return;
+        const a = document.createElement('a'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => { if (!left) { inlineOK = true; start(ch); } }, 900);
+      }, 900);
+      return;
     }
     let f = screen.querySelector('iframe');
     if (!f) { f = document.createElement('iframe'); f.allow = 'autoplay; fullscreen'; f.allowFullscreen = true; f.title = 'From Ochre to KEIM, a brief history of paint'; screen.appendChild(f); }
