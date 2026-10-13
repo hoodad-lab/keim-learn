@@ -287,8 +287,9 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
           <label class="fl c6">Last name <input name="lastname" autocomplete="family-name" required></label>
           <label class="fl c6">Work email <input name="email" type="email" autocomplete="email" required></label>
           <label class="fl c6">Phone <input name="phone" type="tel" autocomplete="tel"></label>
-          <label class="fl c6">Practice or company <input name="company" autocomplete="organization" required></label>
-          <label class="fl c6">Suburb or city <input name="city" autocomplete="address-level2"></label>
+          <label class="fl c4">Practice or company <input name="company" autocomplete="organization" required></label>
+          <label class="fl c4">Suburb or city <input name="city" autocomplete="address-level2"></label>
+          <label class="fl c4">State <select name="state" required><option value="">Choose</option><option value="NSW">NSW</option><option value="VIC">VIC</option><option value="QLD">QLD</option><option value="WA">WA</option><option value="SA">SA</option><option value="TAS">TAS</option><option value="ACT">ACT</option><option value="NT">NT</option></select></label>
           <label class="fl c4">Preferred date <input name="pref_date" type="date"></label>
           <label class="fl c4">How many people <select name="people"><option value="">Choose</option><option>1 to 5</option><option>6 to 10</option><option>11 to 20</option><option>More than 20</option></select></label>
           <label class="fl c4">Format <select name="format"><option value="">Choose</option><option>In person, at our practice</option><option>Online</option><option>Either</option></select></label>
@@ -389,12 +390,14 @@ section.band { padding-block: 48px; border-top: 1px solid var(--line); }
   form.addEventListener('submit', async (e) => {
     e.preventDefault(); msg.className = 'f-msg'; msg.textContent = '';
     const fd = new FormData(form), v = (n) => (fd.get(n) || '').toString().trim(), all = (n) => fd.getAll(n).join(', ');
-    if (!v('firstname') || !v('lastname') || !v('company') || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email'))) { msg.className = 'f-msg err'; msg.textContent = 'Please add your name, practice and a valid email.'; return; }
-    const lines = ['CPD session request from the Learning Hub', 'Practice: ' + v('company'), 'Location: ' + (v('city') || '-'), 'Preferred date: ' + (v('pref_date') || 'flexible'), 'People: ' + (v('people') || '-'), 'Format: ' + (v('format') || '-'), 'Projects: ' + (all('area') || '-'), 'Products: ' + (all('products') || '-'), 'Notes: ' + (v('notes') || '-')];
-    const fields = [['firstname', v('firstname')], ['lastname', v('lastname')], ['email', v('email')], ['phone', v('phone')], ['message', lines.join('\n')]].filter(x => x[1]).map(([name, value]) => ({ objectTypeId: '0-1', name, value }));
+    if (!v('firstname') || !v('lastname') || !v('company') || !v('state') || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v('email'))) { msg.className = 'f-msg err'; msg.textContent = 'Please add your name, practice, state and a valid email.'; return; }
+    const lines = ['CPD session request from the Learning Hub', 'Practice: ' + v('company'), 'Location: ' + (v('city') || '-') + ', ' + v('state'), 'Preferred date: ' + (v('pref_date') || 'flexible'), 'People: ' + (v('people') || '-'), 'Format: ' + (v('format') || '-'), 'Projects: ' + (all('area') || '-'), 'Products: ' + (all('products') || '-'), 'Notes: ' + (v('notes') || '-')];
+    const fields = [['firstname', v('firstname')], ['lastname', v('lastname')], ['email', v('email')], ['phone', v('phone')], ['state', v('state')], ['company', v('company')], ['message', lines.join('\n')]].filter(x => x[1]).map(([name, value]) => ({ objectTypeId: '0-1', name, value }));
     const btn = form.querySelector('[type=submit]'); btn.disabled = true; msg.textContent = 'Sending...';
     try {
-      const r = await fetch(HS, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ submittedAt: Date.now(), fields, context: { pageUri: location.href, pageName: 'KEIM Learning Hub' } }) });
+      const send = (f) => fetch(HS, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ submittedAt: Date.now(), fields: f, context: { pageUri: location.href, pageName: 'KEIM Learning Hub' } }) });
+      let r = await send(fields);
+      if (!r.ok) r = await send(fields.filter(x => !['state', 'company'].includes(x.name)));
       if (!r.ok) throw new Error(await r.text());
       form.hidden = true; done.hidden = false; done.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (err) {
