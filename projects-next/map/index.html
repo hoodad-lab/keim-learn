@@ -171,7 +171,7 @@ function open(p, fly) {
   $('cKick').textContent = [LABEL[p.type] || p.type, [p.place, p.region, p.country].filter((v, i, a) => v && a.indexOf(v) === i).join(', ')].filter(Boolean).join(' · ');
   $('cName').textContent = p.name; $('cSub').textContent = p.sub || ''; $('cSub').hidden = !p.sub;
   const art = /^Artists?:/.test(p.architect || '');
-  const rows = [['KEIM', p.products, 'prod'], ['Colours', p.colours], [art ? 'Artist' : 'Architect', art ? p.architect.replace(/^Artists?:\s*/, '') : p.architect], ['Builder', p.builder], ['Applicator', p.applicator], ['Area', p.area], ['Status', p.status]].filter(r => r[1]);
+  const rows = [['KEIM', p.products, 'prod'], ['Year', p.year], ['Colours', p.colours], [art ? 'Artist' : 'Architect', art ? p.architect.replace(/^Artists?:\s*/, '') : p.architect], ['Builder', p.builder], ['Applicator', p.applicator], ['Area', p.area], ['Status', p.status]].filter(r => r[1]);
   $('cFacts').innerHTML = rows.map(([k, v, c]) => `<dt>${k}</dt><dd${c ? ' class="' + c + '"' : ''}>${esc(v)}</dd>`).join('');
   $('cStory').textContent = [p.story, p.notes].filter(Boolean).join(' '); $('cStory').hidden = !(p.story || p.notes);
   $('cApprox').hidden = !!p.exact;
