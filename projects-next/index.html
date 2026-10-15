@@ -149,14 +149,14 @@ select, .q { border: 1.5px solid var(--line); background: #fff; border-radius: 9
 
 <script>
 const $ = id => document.getElementById(id);
-const IMG = f => 'map/img/' + f;
+const IMG = f => /^https?:/.test(f) ? f : 'map/img/' + f;
 const FEATURED = ['Sydney Opera House', 'Parramatta Town Hall', 'Royal Hobart Hospital', 'State Library of Queensland', 'Nyaal Banyul Geelong Convention and Event Centre', 'WestConnex M8 tunnel', 'Shell House', 'Joan Kirner Women\'s & Children\'s Hospital', 'Castle Residences & Porter House', 'Wellington Dam mural "Reflections"', '25hours Hotel The Olympia', 'Australian National Maritime Museum'];
 const TYPE_LABEL = { Residential: 'Homes & apartments', Heritage: 'Heritage', Commercial: 'Commercial', Education: 'Education', Culture: 'Culture', Transport: 'Infrastructure', Health: 'Healthcare', Mural: 'Murals & art', Hospitality: 'Hotels', Civic: 'Civic', Community: 'Community' };
 function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
   if (la < -39.2) return 'TAS'; if (lo > 148.7 && lo < 149.45 && la < -35.1 && la > -35.95) return 'ACT';
   if (lo < 129) return 'WA'; if (lo < 138 && la > -26) return 'NT'; if (lo < 141 && la <= -26) return 'SA'; if (lo < 138) return 'NT';
   if (la > -29) return 'QLD'; if (la < -35.9 - (lo - 141) * 0.17) return 'VIC'; return 'NSW'; }
-function prods(p) { return p.products.replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(Boolean).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
+function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(Boolean).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
 let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
 fetch('map/projects.json').then(r => r.json()).then(list => {
   ALL = list.map(p => ({ ...p, au: p.country === 'Australia', st: p.country === 'Australia' ? auState(p) : '', pr: prods(p) }));
@@ -211,7 +211,8 @@ function openP(p) {
     '<div class="facts">' + f('Location', [p.place, p.au ? p.st : p.country].filter(Boolean).join(', ')) + f('Year painted / completed', p.year) + f('Sector', TYPE_LABEL[p.type] || p.type) + f('KEIM products', p.products, true) + f('Colours', p.colours, true) + f('Architect', p.architect) + f('Builder / client', p.builder) + f('Applicator', p.credit) + '</div>' +
     (p.story ? '<p class="story">' + esc(p.story) + '</p>' : '') +
     '<div class="acts"><a class="btn red" target="_top" href="mailto:info@keim.com.au?subject=' + subj + '&body=' + body + '">Ask about this project</a>' + (p.link ? '<a class="btn line" target="_blank" rel="noopener" href="' + esc(p.link) + '">Full case study ↗</a>' : '') + '<a class="btn line" target="_blank" rel="noopener" href="map/#' + esc(p.id) + '">Show on map ↗</a></div>' +
-    '<div class="src">Source: ' + esc(p.src || 'KEIM') + '</div>';
+    '<div class="src">Source: ' + esc(p.src || 'KEIM') + (/^c\.|^by /.test(p.year || '') ? ' · Year is approximate (c. = circa, by = listed by that year)' : '') + '</div>' +
+    (p.ipage ? '<div class="src">Photo: <a target="_blank" rel="noopener" href="' + esc(p.ipage) + '">' + esc(p.iby || 'Wikimedia Commons') + '</a>, ' + esc(p.ilic || '') + ', via Wikimedia Commons. General view of the building, not necessarily of the KEIM works.</div>' : '');
   $('drawer').classList.add('on'); $('dim').classList.add('on'); $('drawer').setAttribute('aria-hidden', 'false'); $('drawer').scrollTop = 0;
   try { history.replaceState(null, '', '#p=' + p.id); } catch (e) {}
 }

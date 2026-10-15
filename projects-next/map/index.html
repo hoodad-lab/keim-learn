@@ -167,7 +167,7 @@ $('tMap').onclick = () => { street = !street; map.setLayoutProperty('street', 'v
 // project card + fly-to
 function open(p, fly) {
   spinning = false; hideHint(); if (sel && sel !== p && fly !== 'back') hist.push(sel); sel = p; repaintPins(); document.body.classList.remove('nocard');
-  $('cPh').innerHTML = (p.img ? `<img src="img/${esc(p.img)}" alt="${esc(p.name)}">` : `<div class="noimg">Photo coming soon</div>`) + (p.credit ? `<span class="credit">Photo: ${esc(p.credit)}</span>` : '') + (p.render ? `<span class="tag">Artist’s impression</span>` : '');
+  $('cPh').innerHTML = (p.img ? `<img src="${/^https?:/.test(p.img) ? esc(p.img) : 'img/' + esc(p.img)}" alt="${esc(p.name)}">` : `<div class="noimg">Photo coming soon</div>`) + (p.ipage ? `<span class="credit">Photo: ${esc(p.iby || '')} · ${esc(p.ilic || '')} · Wikimedia Commons</span>` : p.credit ? `<span class="credit">Photo: ${esc(p.credit)}</span>` : '') + (p.render ? `<span class="tag">Artist’s impression</span>` : '');
   $('cKick').textContent = [LABEL[p.type] || p.type, [p.place, p.region, p.country].filter((v, i, a) => v && a.indexOf(v) === i).join(', ')].filter(Boolean).join(' · ');
   $('cName').textContent = p.name; $('cSub').textContent = p.sub || ''; $('cSub').hidden = !p.sub;
   const art = /^Artists?:/.test(p.architect || '');
