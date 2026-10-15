@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Stone Becomes Paint · KEIM Learning Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Josefin+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --paper:#f3f0e8; --ink:#1c2236; --red:#D51F24; --muted:#6b6a66; --serif:"Cormorant Garamond",Georgia,serif; --sans:"Josefin Sans","Avenir Next",system-ui,sans-serif; }
+* { box-sizing:border-box; }
+html,body { margin:0; height:100%; background:#0f1013; color:var(--ink); font-family:var(--sans); overflow:hidden; -webkit-tap-highlight-color:transparent; }
+#app { position:fixed; inset:0; display:grid; grid-template-rows:auto 1fr auto; }
+header { display:flex; align-items:center; gap:14px; padding:12px max(16px,env(safe-area-inset-left)) 10px; color:#f4f1ea; }
+header img { height:26px; }
+header .t { font:600 11px/1.2 var(--sans); letter-spacing:.2em; text-transform:uppercase; opacity:.7; }
+header h1 { margin:2px 0 0; font:600 22px/1.05 var(--serif); letter-spacing:.01em; }
+.dots { margin-left:auto; display:flex; gap:7px; }
+.dots i { width:9px; height:9px; border-radius:50%; background:rgba(255,255,255,.22); transition:background .4s, transform .4s; }
+.dots i.on { background:var(--red); transform:scale(1.25); }
+.dots i.done { background:#f4f1ea; }
+#stageWrap { position:relative; display:grid; place-items:center; min-height:0; }
+canvas { display:block; touch-action:none; border-radius:10px; box-shadow:0 30px 80px rgba(0,0,0,.45); }
+#prompt { position:absolute; left:50%; transform:translateX(-50%); bottom:18px; background:var(--red); color:#fff; font:700 13px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; padding:14px 20px 12px; border-radius:30px; box-shadow:0 10px 30px rgba(213,31,36,.45); opacity:0; pointer-events:none; transition:opacity .35s, transform .35s; white-space:nowrap; }
+#prompt.top { bottom:auto; top:18px; }
+#prompt.on { opacity:1; animation:pp 1.6s ease-in-out infinite; }
+@keyframes pp { 0%,100% { box-shadow:0 10px 30px rgba(213,31,36,.45), 0 0 0 0 rgba(213,31,36,.5); } 50% { box-shadow:0 10px 30px rgba(213,31,36,.45), 0 0 0 12px rgba(213,31,36,0); } }
+#cap { min-height:76px; padding:10px max(18px,env(safe-area-inset-left)) calc(14px + env(safe-area-inset-bottom)); text-align:center; color:rgba(244,241,234,.45); font:500 clamp(16px,2.1vw,22px)/1.4 var(--serif); }
+#cap span.on { color:#f4f1ea; transition:color .2s; }
+#cap .ctl { display:inline-flex; gap:10px; margin-top:6px; }
+.btn { font:700 11px/1 var(--sans); letter-spacing:.16em; text-transform:uppercase; padding:12px 16px 10px; border-radius:24px; border:1.5px solid rgba(244,241,234,.35); background:transparent; color:#f4f1ea; cursor:pointer; }
+.btn.red { background:var(--red); border-color:var(--red); }
+.btn.paper { background:var(--paper); color:var(--ink); border-color:var(--paper); }
+.ov { position:absolute; inset:0; display:grid; place-items:center; background:rgba(15,16,19,.72); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px); z-index:5; padding:18px; }
+.ov[hidden] { display:none; }
+.card { background:var(--paper); border-radius:18px; padding:30px 30px 24px; max-width:560px; width:100%; box-shadow:0 30px 80px rgba(0,0,0,.5); }
+.card .k { font:700 11px/1 var(--sans); letter-spacing:.24em; text-transform:uppercase; color:var(--red); }
+.card h2 { font:600 36px/1.05 var(--serif); margin:10px 0 10px; }
+.card p { font:400 15px/1.55 var(--sans); color:#3a3f50; margin:0 0 18px; }
+.card .row { display:flex; gap:10px; flex-wrap:wrap; }
+.card .btn { color:var(--ink); border-color:#c9c2b3; }
+.card .btn.red { color:#fff; border-color:var(--red); }
+.opt { display:block; width:100%; text-align:left; font:500 15px/1.35 var(--sans); padding:13px 16px 11px; margin:0 0 9px; border-radius:12px; border:1.5px solid #d8d2c4; background:#fff; color:var(--ink); cursor:pointer; }
+.opt.ok { border-color:#2f8f4e; background:#eaf6ee; }
+.opt.no { border-color:var(--red); background:#fbeaea; }
+.meta { font:600 12px/1.4 var(--sans); color:var(--muted); letter-spacing:.06em; margin-bottom:16px; }
+.badge { display:flex; align-items:center; gap:14px; margin:4px 0 18px; }
+.badge b { width:58px; height:58px; border-radius:50%; background:var(--red); color:#fff; display:grid; place-items:center; font:700 26px/1 var(--serif); box-shadow:0 8px 20px rgba(213,31,36,.35); }
+@media (max-height:520px) { header { padding-top:6px; padding-bottom:4px; } header .t { display:none; } header h1 { font-size:17px; } #cap { min-height:52px; padding-top:4px; font-size:15px; } .ov { align-items:start; overflow:auto; } .card { padding:16px 20px 14px; } .card h2 { font-size:24px; margin:6px 0; } .card p { font-size:13px; margin-bottom:10px; } .meta { margin-bottom:10px; } }
+@media (max-width:640px) { header h1 { font-size:18px; } header img { height:20px; } .card { padding:22px 20px 18px; } .card h2 { font-size:28px; } #cap { min-height:96px; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <img src="../../education/keim-logo.png" alt="KEIM">
+    <div><div class="t">Learning Hub · Science in 90 seconds</div><h1>Stone becomes paint</h1></div>
+    <div class="dots" id="dots"></div>
+  </header>
+  <div id="stageWrap">
+    <canvas id="cv"></canvas>
+    <div id="prompt"></div>
+    <div class="ov" id="ovStart"><div class="card">
+      <div class="k">Module 1 · The science</div>
+      <h2>Stone becomes paint</h2>
+      <p>How KEIM paint turns back into stone and becomes part of the wall. Watch, then play your part: mix it, paint it, speed up time and put it to the weather test.</p>
+      <div class="meta">About 2 minutes · narrated by Hoodad Mehrbod, KEIM Australia · 3 quick questions at the end</div>
+      <div class="row"><button class="btn red" id="go">Play the lesson</button></div>
+    </div></div>
+    <div class="ov" id="ovQuiz" hidden><div class="card" id="quizCard"></div></div>
+  </div>
+  <div id="cap"></div>
+</div>
+<script>
+'use strict';
+const CAP = [{"t": "Most paint just sits on a wall. KEIM paint becomes part of it. Let's see how.", "w": [[0.0, "Most"], [0.36, "paint"], [0.72, "just"], [1.02, "sits"], [1.24, "on"], [1.46, "a"], [1.56, "wall."], [2.54, "KEIM"], [2.76, "paint"], [3.22, "becomes"], [3.64, "part"], [4.1, "of"], [4.28, "it."], [5.06, "Let's"], [5.36, "see"], [5.5, "how."]]}, {"t": "It starts with two things. Pigments, ground from earth and stone, and a liquid mineral binder. Potassium silicate, also called water glass.", "w": [[0.0, "It"], [0.1, "starts"], [0.4, "with"], [0.7, "two"], [0.96, "things."], [1.88, "Pigments,"], [2.68, "ground"], [2.92, "from"], [3.18, "earth"], [3.48, "and"], [3.68, "stone,"], [4.48, "and"], [4.86, "a"], [5.08, "liquid"], [5.44, "mineral"], [5.88, "binder."], [6.84, "Potassium"], [7.36, "silicate,"], [8.26, "also"], [8.52, "called"], [8.92, "water"], [9.28, "glass."]]}, {"t": "Brush it onto a mineral render and the binder doesn't form a skin on top. It soaks deep into the pores.", "w": [[0.0, "Brush"], [0.2, "it"], [0.38, "onto"], [0.6, "a"], [0.8, "mineral"], [1.12, "render"], [1.56, "and"], [2.06, "the"], [2.18, "binder"], [2.48, "doesn't"], [2.98, "form"], [3.22, "a"], [3.38, "skin"], [3.64, "on"], [3.82, "top."], [4.5, "It"], [4.64, "soaks"], [5.0, "deep"], [5.34, "into"], [5.66, "the"], [5.82, "pores."]]}, {"t": "Then the magic happens. The water glass reacts with the minerals in the wall and with the carbon dioxide in the air and turns back into stone. Tiny silica crystals lock the paint and the wall together for good. We call it silicification.", "w": [[0.0, "Then"], [0.28, "the"], [0.42, "magic"], [0.72, "happens."], [1.9, "The"], [2.02, "water"], [2.26, "glass"], [2.68, "reacts"], [2.98, "with"], [3.32, "the"], [3.46, "minerals"], [3.76, "in"], [4.02, "the"], [4.12, "wall"], [4.46, "and"], [4.9, "with"], [5.14, "the"], [5.24, "carbon"], [5.52, "dioxide"], [5.98, "in"], [6.32, "the"], [6.44, "air"], [6.72, "and"], [7.44, "turns"], [7.72, "back"], [8.06, "into"], [8.32, "stone."], [9.26, "Tiny"], [9.64, "silica"], [10.16, "crystals"], [10.56, "lock"], [10.98, "the"], [11.2, "paint"], [11.44, "and"], [11.78, "the"], [11.92, "wall"], [12.1, "together"], [12.52, "for"], [13.12, "good."], [13.92, "We"], [14.02, "call"], [14.26, "it"], [14.5, "silicification."]]}, {"t": "Now compare it with acrylic paint. Acrylic is a plastic film. It traps moisture inside the wall until it blisters and peels. KEIM stays open to water vapour so the wall can breathe while the rain simply runs off.", "w": [[0.0, "Now"], [0.1, "compare"], [0.44, "it"], [0.68, "with"], [0.84, "acrylic"], [1.16, "paint."], [2.08, "Acrylic"], [2.38, "is"], [2.78, "a"], [2.92, "plastic"], [3.28, "film."], [4.26, "It"], [4.34, "traps"], [4.6, "moisture"], [5.2, "inside"], [5.66, "the"], [6.0, "wall"], [6.26, "until"], [6.56, "it"], [6.7, "blisters"], [7.16, "and"], [7.46, "peels."], [8.64, "KEIM"], [8.86, "stays"], [9.24, "open"], [9.66, "to"], [9.9, "water"], [10.1, "vapour"], [10.48, "so"], [10.88, "the"], [11.02, "wall"], [11.24, "can"], [11.44, "breathe"], [11.86, "while"], [12.4, "the"], [12.54, "rain"], [12.84, "simply"], [13.32, "runs"], [13.56, "off."]]}, {"t": "Stone becomes paint and paint becomes stone again. That's why KEIM facades painted in the 1890s are still standing today and why we can back every exterior with a 25-year warranty.", "w": [[0.0, "Stone"], [0.32, "becomes"], [0.78, "paint"], [1.22, "and"], [1.84, "paint"], [2.18, "becomes"], [2.7, "stone"], [3.04, "again."], [3.34, "That's"], [4.14, "why"], [4.3, "KEIM"], [4.66, "facades"], [5.2, "painted"], [5.46, "in"], [5.72, "the"], [5.82, "1890s"], [6.78, "are"], [7.08, "still"], [7.44, "standing"], [7.84, "today"], [8.28, "and"], [9.12, "why"], [9.32, "we"], [9.48, "can"], [9.64, "back"], [9.84, "every"], [10.32, "exterior"], [10.84, "with"], [11.18, "a"], [11.3, "25-year"], [12.26, "warranty."]]}];
+const cv = document.getElementById('cv'), cx = cv.getContext('2d');
+const W = 1200, H = 760; let S = 1, dpr = 1;
+function fit() {
+  const wrap = document.getElementById('stageWrap').getBoundingClientRect();
+  S = Math.min((wrap.width - 24) / W, (wrap.height - 16) / H); dpr = Math.min(2, devicePixelRatio || 1);
+  cv.style.width = W * S + 'px'; cv.style.height = H * S + 'px'; cv.width = Math.round(W * S * dpr); cv.height = Math.round(H * S * dpr);
+}
+addEventListener('resize', fit);
+const $ = id => document.getElementById(id), promptEl = $('prompt'), capEl = $('cap');
+const dots = $('dots'); for (let i = 0; i < 7; i++) dots.appendChild(document.createElement('i'));
+const lerp = (a, b, t) => a + (b - a) * t, clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), ease = t => t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+function rnd(seed) { let s = seed; return () => (s = (s * 16807) % 2147483647) / 2147483647; }
+
+// ---------- state ----------
+let scene = -1, tScene = 0, last = performance.now(), audio = null, narrDone = false, needAct = false, actDone = false;
+const st = { zoom: 0, pour: 0, flask: { x: 930, y: 300, drag: false }, painted: new Float32Array(60), seep: 0, grow: 0, hold: false, rain: 0, sun: 0, rainOn: false, sunOn: false, tapT: 0 };
+let ptr = { x: 0, y: 0, down: false };
+
+// render grains (cross-section)
+const R = rnd(7), grains = [];
+for (let y = 330; y < 760; y += 34) for (let x = -10; x < 1220; x += 40) grains.push({ x: x + (R() - .5) * 26 + ((y / 34) % 2) * 18, y: y + (R() - .5) * 18, r: 15 + R() * 9, c: ['#cfc4b0', '#d9cfbd', '#bfb39d', '#e2d9c8'][Math.floor(R() * 4)] });
+const pig = []; for (let i = 0; i < 70; i++) pig.push({ x: 20 + i * 17 + (R() - .5) * 8, y: 296 + (R() - .5) * 18, r: 5 + R() * 4, c: ['#b5562e', '#c98a2e', '#7a8a52', '#a8442c'][i % 4] });
+const crys = []; for (let i = 0; i < 160; i++) crys.push({ x: R() * 1200, y: 300 + R() * 120, a: R() * Math.PI, l: 10 + R() * 20, d: R() });
+const co2 = []; for (let i = 0; i < 26; i++) co2.push({ x: R() * 1200, y: R() * 240, v: .3 + R() * .6, p: R() * 6 });
+
+// ---------- drawing helpers ----------
+function sky(top = '#cfe0ea', bot = '#f3efe6') { const g = cx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, top); g.addColorStop(1, bot); cx.fillStyle = g; cx.fillRect(0, 0, W, H); }
+function label(txt, x, y, opts = {}) { cx.save(); cx.font = (opts.w || 700) + ' ' + (opts.s || 15) + 'px "Josefin Sans", sans-serif'; cx.letterSpacing = opts.ls || '2px'; cx.fillStyle = opts.c || '#1c2236'; cx.textAlign = opts.a || 'center'; cx.globalAlpha = opts.al == null ? 1 : opts.al; cx.fillText(opts.up === false ? txt : txt.toUpperCase(), x, y); cx.restore(); }
+function serif(txt, x, y, s = 40, c = '#1c2236', al = 1, a = 'center') { cx.save(); cx.font = '600 ' + s + 'px "Cormorant Garamond", serif'; cx.fillStyle = c; cx.globalAlpha = al; cx.textAlign = a; cx.fillText(txt, x, y); cx.restore(); }
+function facade(x, y, w, h, col, t) {
+  cx.fillStyle = col; cx.fillRect(x, y, w, h);
+  cx.fillStyle = 'rgba(0,0,0,.06)'; cx.fillRect(x, y, w, 10);
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 4; c++) { const wx = x + 40 + c * (w - 80) / 4 + 14, wy = y + 50 + r * (h - 90) / 3; cx.fillStyle = '#2b3448'; cx.fillRect(wx, wy, 52, 70); cx.fillStyle = '#e9e4d8'; cx.fillRect(wx - 6, wy + 70, 64, 7); cx.fillStyle = 'rgba(255,255,255,.18)'; cx.fillRect(wx + 4, wy + 4, 18, 62); }
+  cx.fillStyle = '#7a3d2a'; cx.beginPath(); cx.moveTo(x - 20, y); cx.lineTo(x + w / 2, y - 90); cx.lineTo(x + w + 20, y); cx.closePath(); cx.fill();
+}
+function crossSection(paint, seep, grow, opts = {}) {
+  // air
+  sky('#e6eef2', '#f6f2ea');
+  // render grains
+  cx.fillStyle = '#b9ad97'; cx.fillRect(0, 318, W, H - 318);
+  for (const g of grains) { cx.fillStyle = g.c; cx.beginPath(); cx.arc(g.x, g.y, g.r, 0, 7); cx.fill(); }
+  // seeping binder in pores
+  if (seep > 0) { cx.save(); cx.globalAlpha = .55 * clamp(seep); const d = 318 + seep * 260; const gr = cx.createLinearGradient(0, 318, 0, d); gr.addColorStop(0, 'rgba(120,170,215,.9)'); gr.addColorStop(1, 'rgba(120,170,215,0)'); cx.fillStyle = gr; for (let i = 0; i < 60; i++) { if (paint[i] < .5) continue; cx.fillRect(i * 20, 318, 20, d - 318); } cx.restore(); for (const g of grains) { if (g.y > 318 + seep * 260 || paint[clamp(Math.floor(g.x / 20), 0, 59)] < .5) continue; cx.fillStyle = g.c; cx.beginPath(); cx.arc(g.x, g.y, g.r * .82, 0, 7); cx.fill(); } }
+  // paint layer
+  for (let i = 0; i < 60; i++) if (paint[i] > 0) { cx.fillStyle = '#c4703a'; cx.globalAlpha = clamp(paint[i]); cx.fillRect(i * 20, 296, 21, 24); } cx.globalAlpha = 1;
+  for (const p of pig) { const i = clamp(Math.floor(p.x / 20), 0, 59); if (paint[i] < .5) continue; cx.fillStyle = p.c; cx.beginPath(); cx.arc(p.x, p.y + 10, p.r, 0, 7); cx.fill(); }
+  // crystals
+  if (grow > 0) { cx.save(); cx.strokeStyle = 'rgba(255,255,255,.95)'; cx.lineWidth = 2.2; cx.shadowColor = 'rgba(160,210,255,.9)'; cx.shadowBlur = 8; for (const k of crys) { const v = clamp((grow - k.d * .7) / .3); if (v <= 0) continue; const l = k.l * v; cx.beginPath(); for (let j = 0; j < 3; j++) { const a = k.a + j * Math.PI / 3; cx.moveTo(k.x - Math.cos(a) * l, k.y - Math.sin(a) * l); cx.lineTo(k.x + Math.cos(a) * l, k.y + Math.sin(a) * l); } cx.stroke(); } cx.restore(); }
+  if (opts.labels) { label('Air', 60, 60, { a: 'left', c: '#6b6a66' }); label('Mineral render · magnified', 60, H - 30, { a: 'left', c: '#fff', al: .9 }); }
+}
+function flaskDraw(x, y, tilt = 0, fill = 1) {
+  cx.save(); cx.translate(x, y); cx.rotate(tilt);
+  cx.fillStyle = 'rgba(255,255,255,.55)'; cx.strokeStyle = '#1c2236'; cx.lineWidth = 3;
+  cx.beginPath(); cx.moveTo(-18, -90); cx.lineTo(18, -90); cx.lineTo(18, -40); cx.lineTo(62, 50); cx.quadraticCurveTo(66, 70, 44, 70); cx.lineTo(-44, 70); cx.quadraticCurveTo(-66, 70, -62, 50); cx.lineTo(-18, -40); cx.closePath(); cx.fill(); cx.stroke();
+  cx.save(); cx.clip(); cx.fillStyle = 'rgba(110,165,215,.75)'; const lv = lerp(70, -10, fill); cx.fillRect(-70, lv, 140, 90); cx.restore();
+  cx.restore();
+}
+function moundDraw(x, y, c, w = 120) { cx.fillStyle = c; cx.beginPath(); cx.moveTo(x - w / 2, y); cx.quadraticCurveTo(x, y - w * .62, x + w / 2, y); cx.closePath(); cx.fill(); for (let i = 0; i < 14; i++) { cx.fillStyle = 'rgba(255,255,255,.12)'; cx.beginPath(); cx.arc(x - w * .3 + (i * 37 % w) * .6, y - 8 - (i * 13 % 30), 2, 0, 7); cx.fill(); } }
+function wallPanel(x, y, w, h, kind, rain, sun, t) {
+  cx.save(); cx.beginPath(); cx.rect(x, y, w, h); cx.clip();
+  sky('#cfe0ea', '#eef0ea'); cx.fillStyle = '#cdbfa6'; cx.fillRect(x, y + h * .42, w, h);
+  const top = y + h * .42;
+  for (const g of grains) { if (g.x < x - 20 || g.x > x + w + 20) continue; cx.fillStyle = g.c; cx.beginPath(); cx.arc(g.x, top + (g.y - 318) * .85 + 26, g.r * .85, 0, 7); cx.fill(); }
+  if (kind === 'acrylic') {
+    const bl = clamp(sun * 1.2); const bx = x + w * .5;
+    cx.fillStyle = '#2f5d8a'; cx.beginPath(); cx.moveTo(x, top); for (let px = x; px <= x + w; px += 8) { const d = Math.abs(px - bx); cx.lineTo(px, top - (d < 120 ? Math.cos(d / 120 * Math.PI / 2) * 70 * bl : 0)); } cx.lineTo(x + w, top + 14); cx.lineTo(x, top + 14); cx.closePath(); cx.fill();
+    cx.fillStyle = 'rgba(255,255,255,.35)'; cx.fillRect(x, top, w, 3);
+    if (bl > .2) { cx.fillStyle = 'rgba(140,190,235,.55)'; cx.beginPath(); cx.ellipse(bx, top - 12 * bl, 100 * bl, 34 * bl, 0, Math.PI, 0); cx.fill(); }
+    if (bl > .95) { cx.strokeStyle = '#1c2236'; cx.lineWidth = 2; cx.beginPath(); cx.moveTo(bx - 30, top - 62); cx.lineTo(bx - 8, top - 48); cx.lineTo(bx + 12, top - 66); cx.lineTo(bx + 30, top - 50); cx.stroke(); label('Blister · peeling', bx, top - 92, { c: '#D51F24' }); }
+    for (let i = 0; i < 12; i++) { const vy = top + 40 + ((t * 30 + i * 37) % 120) * -1 * 0 + 60 - ((t * 40 + i * 23) % 60) * sun; if (sun > 0) { cx.fillStyle = 'rgba(120,170,215,.7)'; cx.beginPath(); cx.arc(x + 40 + i * (w - 80) / 11, Math.max(top + 18, vy), 4, 0, 7); cx.fill(); } }
+  } else {
+    cx.fillStyle = '#c4703a'; cx.fillRect(x, top - 6, w, 14);
+    cx.save(); cx.strokeStyle = 'rgba(255,255,255,.9)'; cx.lineWidth = 1.6; for (let i = 0; i < 26; i++) { const kx = x + 10 + i * (w - 20) / 25, ky = top + 4 + (i % 3) * 5; cx.beginPath(); cx.moveTo(kx - 6, ky); cx.lineTo(kx + 6, ky); cx.moveTo(kx - 3, ky - 5); cx.lineTo(kx + 3, ky + 5); cx.stroke(); } cx.restore();
+    if (sun > 0) for (let i = 0; i < 14; i++) { const ph = (t * .6 + i * .37) % 1; const vy = lerp(top + 60, y + 30, ph); cx.fillStyle = 'rgba(150,190,230,' + (.75 * (1 - ph)) * clamp(sun * 2) + ')'; cx.beginPath(); cx.arc(x + 30 + (i * 53) % (w - 60), vy, 5 + ph * 6, 0, 7); cx.fill(); }
+    if (sun > .6) label('Vapour escapes · wall stays dry', x + w / 2, y + 74, { c: '#2f8f4e', s: 14 });
+  }
+  if (rain > 0) { cx.strokeStyle = 'rgba(70,110,160,.55)'; cx.lineWidth = 2; for (let i = 0; i < 40; i++) { const rx = x + ((i * 61) % w), ry = (t * 520 + i * 47) % (top - y + 40) + y - 40; if (ry > top - 14) { cx.fillStyle = 'rgba(70,110,160,.6)'; cx.beginPath(); cx.arc(rx + ((t * 80 + i * 13) % 40), top - 9, 3, 0, 7); cx.fill(); } else { cx.globalAlpha = clamp(rain); cx.beginPath(); cx.moveTo(rx, ry); cx.lineTo(rx - 4, ry + 16); cx.stroke(); cx.globalAlpha = 1; } } }
+  cx.restore();
+  cx.fillStyle = 'rgba(28,34,54,.85)'; cx.fillRect(x, y, w, 44); label(kind === 'acrylic' ? 'Acrylic · plastic film' : 'KEIM · mineral, silicified', x + w / 2, y + 28, { c: '#fff' });
+}
+
+// ---------- scenes ----------
+const SC = [
+  { // 1 facade
+    prompt: 'Tap the wall to look inside',
+    draw(t) {
+      const z = ease(clamp(st.zoom));
+      cx.save(); cx.translate(W / 2, H / 2); cx.scale(1 + z * 5, 1 + z * 5); cx.translate(-W / 2 - z * 30, -H / 2 + z * 40);
+      sky(); cx.fillStyle = '#a9b59a'; cx.fillRect(0, 640, W, 120);
+      facade(360, 290, 480, 350, '#e3b36a', t);
+      cx.restore();
+      if (z < .2) { serif('Most paint just sits on a wall.', W / 2, 92, 46, '#1c2236', clamp(t / 1.2) * (1 - z * 5)); serif('KEIM paint becomes part of it.', W / 2, 144, 46, '#D51F24', clamp((t - 2.4) / 1.2) * (1 - z * 5)); }
+      if (needAct && !actDone) { const p = (t * 1.4) % 1; cx.strokeStyle = 'rgba(213,31,36,' + (1 - p) + ')'; cx.lineWidth = 4; cx.beginPath(); cx.arc(600, 470, 40 + p * 50, 0, 7); cx.stroke(); }
+      if (actDone) { st.zoom += .016; if (st.zoom >= 1 && !st.zoomed) { st.zoomed = true; next(); } }
+      if (z > .6) { cx.fillStyle = 'rgba(243,240,232,' + (z - .6) * 2.5 + ')'; cx.fillRect(0, 0, W, H); }
+    },
+    down(x, y) { if (needAct && x > 360 && x < 840 && y > 200 && y < 640) actDone = true; }
+  },
+  { // 2 ingredients
+    prompt: 'Drag the water glass onto the pigments',
+    draw(t) {
+      cx.fillStyle = '#f3f0e8'; cx.fillRect(0, 0, W, H); cx.fillStyle = '#e4dccb'; cx.fillRect(0, 520, W, H);
+      const a1 = clamp(t / .8), a2 = clamp((t - 4.5) / .8);
+      cx.globalAlpha = a1; moundDraw(230, 520, '#b5562e'); moundDraw(370, 520, '#c98a2e'); moundDraw(300, 528, '#7a8a52', 110); cx.globalAlpha = 1;
+      label('Mineral pigments', 300, 580, { al: a1 * (1 - clamp(st.pour * 2)) }); label('Ground from earth and stone', 300, 606, { w: 400, s: 14, c: '#6b6a66', al: a1 * (1 - clamp(st.pour * 2)), up: false });
+      const f = st.flask; if (!f.drag && !actDone) { f.x = lerp(f.x, 930, .1); f.y = lerp(f.y, 430, .1); }
+      cx.globalAlpha = a2; flaskDraw(f.x, f.y, actDone ? -1.2 * clamp(st.pour * 3) : 0, 1 - st.pour);
+      label('Water glass', 930, 580, { al: a2 * (actDone ? 0 : 1) }); label('Potassium silicate · liquid mineral binder', 930, 606, { w: 400, s: 14, c: '#6b6a66', al: a2 * (actDone ? 0 : 1), up: false }); cx.globalAlpha = 1;
+      if (actDone) {
+        st.pour = Math.min(1, st.pour + .006);
+        if (st.pour < .8) { cx.strokeStyle = 'rgba(110,165,215,.8)'; cx.lineWidth = 8; cx.beginPath(); cx.moveTo(f.x - 60, f.y - 60); cx.quadraticCurveTo(f.x - 90, 420, 300, 470); cx.stroke(); }
+        cx.fillStyle = 'rgba(196,112,58,' + clamp(st.pour * 1.4) + ')'; cx.beginPath(); cx.ellipse(300, 500, 180 * clamp(st.pour * 1.5), 34, 0, 0, 7); cx.fill();
+        if (st.pour > .7) serif('Mineral paint', 300, 640, 44, '#1c2236', clamp((st.pour - .7) * 4));
+        if (st.pour >= 1 && !st.poured) { st.poured = true; next(); }
+      }
+      if (needAct && !actDone) { const p = (t * 1.2) % 1; cx.strokeStyle = 'rgba(213,31,36,' + (.8 - p * .8) + ')'; cx.setLineDash([10, 10]); cx.lineWidth = 3; cx.beginPath(); cx.arc(300, 470, 100 + p * 20, 0, 7); cx.stroke(); cx.setLineDash([]); }
+    },
+    down(x, y) { const f = st.flask; if (needAct && !actDone && Math.hypot(x - f.x, y - f.y) < 110) f.drag = true; },
+    move(x, y) { const f = st.flask; if (f.drag) { f.x = x; f.y = y; if (Math.hypot(x - 300, y - 470) < 150) { f.drag = false; f.x = 420; f.y = 360; actDone = true; } } },
+    up() { st.flask.drag = false; }
+  },
+  { // 3 painting / soak
+    prompt: 'Swipe across the wall to paint it',
+    draw(t) {
+      if (!needAct && !actDone) { const auto = clamp(t / 6) * 18; for (let i = 0; i < auto; i++) st.painted[i] = Math.min(1, st.painted[i] + .05); }
+      let cov = 0; for (const v of st.painted) cov += v > .5 ? 1 : 0;
+      st.seep = lerp(st.seep, cov / 60, .03);
+      crossSection(st.painted, st.seep, 0, { labels: true });
+      label('Paint layer', 1140, 286, { a: 'right', c: '#7a3d2a', al: cov > 3 ? 1 : 0 });
+      if (st.seep > .15) label('Binder soaks into the pores', 600, 560, { c: '#fff', s: 18 });
+      label('No skin on top', 600, 250, { c: '#1c2236', al: clamp((t - 2) / 1) * (cov > 3 ? 1 : 0) });
+      if (needAct && !actDone) { const bx = 100 + ((t * 300) % 1000); cx.fillStyle = 'rgba(213,31,36,.8)'; cx.beginPath(); cx.arc(bx, 260, 14, 0, 7); cx.fill(); label('→', bx + 30, 266, { c: '#D51F24', s: 22 }); }
+      if (needAct && !actDone && cov >= 54) { actDone = true; setTimeout(next, 900); }
+    },
+    paint(x, y) { if (y > 200 && y < 400) { const i = clamp(Math.floor(x / 20), 0, 59); for (let k = -2; k <= 2; k++) { const j = i + k; if (j >= 0 && j < 60) st.painted[j] = 1; } } },
+    down(x, y) { this.paint(x, y); }, move(x, y) { if (ptr.down) this.paint(x, y); }
+  },
+  { // 4 silicification
+    prompt: 'Press and hold to fast-forward time',
+    draw(t, dt) {
+      st.painted.fill(1); st.seep = Math.max(st.seep, .9);
+      const speed = st.hold ? 0.35 : (needAct ? 0 : 0.035);
+      st.grow = Math.min(1, st.grow + speed * dt);
+      crossSection(st.painted, st.seep, st.grow, { labels: true });
+      for (const m of co2) { m.y += m.v * (st.hold ? 6 : 1); if (m.y > 300) { m.y = 0; m.x = Math.random() * W; } cx.save(); cx.translate(m.x, m.y); cx.fillStyle = '#4a5363'; cx.beginPath(); cx.arc(0, 0, 6, 0, 7); cx.fill(); cx.fillStyle = '#D51F24'; cx.beginPath(); cx.arc(-12, 0, 5, 0, 7); cx.arc(12, 0, 5, 0, 7); cx.fill(); cx.restore(); }
+      label('CO₂ from the air', 1140, 60, { a: 'right', c: '#4a5363' });
+      if (st.grow > .15) label('Silica crystals form', 600, 250, { c: '#1c2236', s: 18 });
+      if (st.grow > .98) { serif('Silicification', 600, 190, 58, '#D51F24'); label('Paint and wall become one mineral', 600, 226, { c: '#1c2236' }); }
+      // hold ring
+      if (needAct && !actDone) { cx.save(); cx.fillStyle = st.hold ? '#D51F24' : 'rgba(28,34,54,.82)'; cx.beginPath(); cx.arc(600, 470, 64, 0, 7); cx.fill(); cx.strokeStyle = '#fff'; cx.lineWidth = 6; cx.beginPath(); cx.arc(600, 470, 64, -Math.PI / 2, -Math.PI / 2 + st.grow * Math.PI * 2); cx.stroke(); label(st.hold ? 'Years pass…' : 'Hold', 600, 476, { c: '#fff', s: 15 }); cx.restore(); }
+      if (needAct && st.grow >= 1 && !actDone) { actDone = true; setTimeout(next, 1600); }
+    },
+    down(x, y) { if (needAct) st.hold = true; }, up() { st.hold = false; }
+  },
+  { // 5 weather test
+    prompt: 'Tap Rain, then Sun', top: true,
+    draw(t, dt) {
+      if (!needAct) { st.rainOn = t > 7 && t < 11; }
+      st.rain = lerp(st.rain, st.rainOn ? 1 : 0, .05); st.sun = clamp(st.sun + (st.sunOn ? dt * .25 : 0));
+      cx.fillStyle = '#0f1013'; cx.fillRect(0, 0, W, H);
+      wallPanel(20, 20, 570, 640, 'acrylic', st.rain, st.sun, t); wallPanel(610, 20, 570, 640, 'keim', st.rain, st.sun, t);
+      // buttons
+      const bs = [{ x: 470, l: 'Rain', on: st.rainOn }, { x: 730, l: 'Sun', on: st.sunOn }];
+      for (const b of bs) { cx.fillStyle = b.on ? '#D51F24' : '#f3f0e8'; cx.beginPath(); cx.roundRect(b.x - 90, 682, 180, 56, 28); cx.fill(); label(b.l, b.x, 717, { c: b.on ? '#fff' : '#1c2236', s: 16 }); }
+      if (needAct && st.sun >= 1 && st.rainDone && !actDone) { actDone = true; setTimeout(next, 1800); }
+    },
+    down(x, y) { if (y > 676 && y < 744) { if (x > 380 && x < 560) { st.rainOn = !st.rainOn; if (st.rainOn) st.rainDone = true; } if (x > 640 && x < 820 && (st.rainDone || !needAct)) { st.sunOn = true; st.rainOn = false; } } }
+  },
+  { // 6 finale
+    prompt: null,
+    draw(t) {
+      sky('#cfe0ea', '#f3efe6'); cx.fillStyle = '#a9b59a'; cx.fillRect(0, 640, W, 120);
+      facade(360, 290, 480, 350, '#e3b36a', t);
+      // mural band
+      cx.save(); cx.globalAlpha = clamp(t / 1.5); cx.fillStyle = '#c4703a'; cx.fillRect(385, 556, 430, 74); for (let i = 0; i < 6; i++) { cx.fillStyle = ['#7a8a52', '#2f5d8a', '#e9e4d8', '#a8442c', '#c98a2e', '#1c2236'][i]; cx.beginPath(); cx.arc(425 + i * 70, 593, 22, 0, 7); cx.fill(); } cx.restore();
+      serif('Stone becomes paint…', W / 2, 90, 50, '#1c2236', clamp(t / 1)); serif('…and paint becomes stone again.', W / 2, 142, 50, '#D51F24', clamp((t - 2) / 1));
+      if (t > 7.5) { const a = clamp((t - 7.5) / .6); cx.save(); cx.globalAlpha = a; cx.translate(1010, 380); cx.fillStyle = '#D51F24'; cx.beginPath(); cx.arc(0, 0, 86, 0, 7); cx.fill(); cx.strokeStyle = '#fff'; cx.lineWidth = 3; cx.beginPath(); cx.arc(0, 0, 74, 0, 7); cx.stroke(); serif('25', 0, 14, 64, '#fff'); label('year exterior', 0, 40, { c: '#fff', s: 11 }); label('warranty', 0, 56, { c: '#fff', s: 11 }); cx.restore(); }
+      if (t > 4) label('Painted with KEIM in the 1890s · still standing', W / 2, 700, { c: '#1c2236', al: clamp((t - 4) / 1) });
+    }
+  }
+];
+
+// ---------- quiz ----------
+const QZ = [
+  { q: 'What binds KEIM mineral paint?', o: ['Acrylic resin', 'Potassium silicate (water glass)', 'Linseed oil'], a: 1, why: 'A liquid mineral binder – the same family as the stone it bonds to.' },
+  { q: 'What happens during silicification?', o: ['The binder turns into silica crystals that lock paint and wall together', 'The paint dries into a plastic film', 'The pigments slowly evaporate'], a: 0, why: 'The water glass reacts with the wall and CO₂ and turns back into stone.' },
+  { q: 'Why does a KEIM wall stay dry inside?', o: ['It is thicker than acrylic', 'It stays open to water vapour while rain runs off', 'It has tiny holes drilled in it'], a: 1, why: 'Moisture can escape as vapour, so nothing gets trapped to blister and peel.' }
+];
+let qi = 0, score = 0;
+function showQuiz() {
+  const c = $('quizCard'); $('ovQuiz').hidden = false; setDot(6);
+  if (qi >= QZ.length) {
+    try { localStorage.setItem('keimLearn.silicification', JSON.stringify({ done: 1, score, t: Date.now() })); } catch (e) {}
+    c.innerHTML = `<div class="k">Module complete</div><div class="badge"><b>${score}/3</b><div><h2 style="margin:0">Stone becomes paint</h2><div class="meta" style="margin:4px 0 0">You now know how KEIM silicifies.</div></div></div>
+      <p>Next up: the product that turns this science into colour on concrete.</p>
+      <div class="row"><a class="btn red" href="../../film/" target="_top" style="text-decoration:none">Watch the full film</a><button class="btn" disabled style="opacity:.55">Next: Concretal-Lasur · soon</button><button class="btn" id="again">Replay</button></div>`;
+    $('again').onclick = () => location.reload(); return;
+  }
+  const Q = QZ[qi];
+  c.innerHTML = `<div class="k">Question ${qi + 1} of ${QZ.length}</div><h2 style="font-size:30px">${Q.q}</h2>` + Q.o.map((o, i) => `<button class="opt" data-i="${i}">${o}</button>`).join('') + `<p id="why" style="margin:10px 0 0;min-height:22px"></p>`;
+  c.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    const i = +b.dataset.i; c.querySelectorAll('.opt').forEach(x => x.disabled = true);
+    b.classList.add(i === Q.a ? 'ok' : 'no'); c.querySelectorAll('.opt')[Q.a].classList.add('ok'); if (i === Q.a) score++;
+    $('why').textContent = (i === Q.a ? 'Correct. ' : 'Not quite. ') + Q.why;
+    setTimeout(() => { qi++; showQuiz(); }, 1900);
+  });
+}
+
+// ---------- flow ----------
+function setDot(k) { [...dots.children].forEach((d, i) => { d.className = i < k ? 'done' : i === k ? 'on' : ''; }); }
+function renderCap(k, time) {
+  const C = CAP[k]; if (!C) { capEl.innerHTML = ''; return; }
+  capEl.innerHTML = C.w.map(w => `<span class="${time >= w[0] ? 'on' : ''}">${w[1]}</span>`).join(' ');
+}
+function next() {
+  scene++; tScene = 0; narrDone = false; needAct = false; actDone = false; promptEl.className = ''; st.hold = false;
+  if (scene >= SC.length) { capEl.innerHTML = ''; showQuiz(); return; }
+  setDot(scene);
+  if (audio) audio.pause();
+  const me = scene, a = new Audio('n' + (scene + 1) + '.mp3'); audio = a; a.preload = 'auto';
+  const done = () => { if (me !== scene || narrDone) return; narrDone = true; if (SC[me].prompt) { needAct = true; promptEl.textContent = SC[me].prompt; promptEl.className = 'on' + (SC[me].top ? ' top' : ''); } else setTimeout(() => { if (me === scene) next(); }, 1200); };
+  a.onended = done;
+  a.play().catch(() => setTimeout(done, (CAP[me] ? CAP[me].w[CAP[me].w.length - 1][0] + 1 : 3) * 1000));
+}
+function xy(e) { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / S, (e.clientY - r.top) / S]; }
+cv.addEventListener('pointerdown', e => { ptr.down = true; cv.setPointerCapture(e.pointerId); const [x, y] = xy(e); const s = SC[scene]; s && s.down && s.down(x, y); });
+cv.addEventListener('pointermove', e => { const [x, y] = xy(e); const s = SC[scene]; s && s.move && s.move(x, y); });
+addEventListener('pointerup', () => { ptr.down = false; const s = SC[scene]; s && s.up && s.up(); });
+function loop(now) {
+  const dt = Math.min(.05, (now - last) / 1000); last = now; tScene += dt;
+  cx.setTransform(S * dpr, 0, 0, S * dpr, 0, 0); cx.clearRect(0, 0, W, H);
+  const s = SC[Math.max(0, Math.min(scene, SC.length - 1))];
+  if (scene < 0) { SC[0].draw(0); } else s.draw(tScene, dt);
+  if (audio && scene >= 0 && scene < SC.length) renderCap(scene, audio.currentTime);
+  requestAnimationFrame(loop);
+}
+$('go').onclick = () => { $('ovStart').hidden = true; next(); };
+fit(); requestAnimationFrame(loop);
+</script>
+</body>
+</html>
