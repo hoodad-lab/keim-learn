@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Projects built with KEIM — references</title>
+<meta name="description" content="KEIM mineral paint projects in Australia and around the world: hospitals, schools, heritage, landmarks and homes. Filter by sector, product and state.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Josefin+Sans:wght@400;600;700&display=swap">
+<style>
+:root { --red: #D51F24; --ink: #1c2236; --mute: #6b6a66; --paper: #f4f1ea; --line: #ddd6c8; --sans: "Josefin Sans", "Futura", system-ui, sans-serif; --serif: "Cormorant Garamond", Georgia, serif; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+.kick { font: 700 12px/1 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--red); }
+h1, h2 { font-family: "Abril Fatface", Georgia, serif; font-weight: 400; margin: 0; }
+/* hero with the globe */
+.hero { position: relative; height: min(86vh, 820px); min-height: 560px; background: #04060c; overflow: hidden; }
+.hero iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.hero .shade { position: absolute; left: 0; right: 0; bottom: 0; height: 46%; background: linear-gradient(rgba(4,6,12,0), rgba(4,6,12,.92)); pointer-events: none; }
+.hero .over { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 96px 34px 20px; color: #fff; pointer-events: none; }
+.hero .over .wrap { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; padding: 0; }
+.hero h1 { font-size: clamp(40px, 7vw, 88px); line-height: .95; }
+.hero p { font: italic 500 clamp(18px, 2.2vw, 24px)/1.35 var(--serif); color: rgba(255,255,255,.85); margin: 12px 0 0; max-width: 34em; }
+.stats { display: flex; gap: 26px; pointer-events: auto; }
+.stat b { display: block; font: 400 clamp(34px, 4.4vw, 52px)/1 "Abril Fatface", Georgia, serif; color: #fff; }
+.stat span { font: 700 11px/1.3 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.7); }
+.fullmap { position: absolute; top: 18px; right: 18px; pointer-events: auto; background: #fff; color: var(--ink); text-decoration: none; font: 700 11px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: 12px 16px 10px; border-radius: 999px; box-shadow: 0 6px 20px rgba(0,0,0,.3); }
+/* featured strip */
+section { padding: 64px 0 0; }
+.shead { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
+.shead h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1; margin-top: 10px; }
+.shead p { font: italic 500 20px/1.4 var(--serif); color: #4a4a52; margin: 6px 0 0; max-width: 36em; }
+.feat { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(300px, 34%); gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 14px; scrollbar-width: thin; }
+.fcard { scroll-snap-align: start; position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 4/5; background: #222; cursor: pointer; color: #fff; border: 0; padding: 0; text-align: left; font: inherit; }
+.fcard img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s; }
+.fcard:hover img { transform: scale(1.05); }
+.fcard .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 60px 20px 20px; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.82)); }
+.fcard .cap small { font: 700 11px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: #ffb3b5; }
+.fcard .cap b { display: block; font: 400 26px/1.05 "Abril Fatface", Georgia, serif; margin: 8px 0 6px; }
+.fcard .cap span { font: italic 500 18px/1.3 var(--serif); color: rgba(255,255,255,.85); }
+/* sector tiles */
+.sectors { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.sec { border: 0; border-radius: 14px; background: #fff; padding: 16px 14px; text-align: left; cursor: pointer; font: inherit; color: var(--ink); box-shadow: 0 1px 0 var(--line); transition: transform .15s, box-shadow .15s; }
+.sec:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(28,34,54,.08); }
+.sec b { display: block; font: 400 30px/1 "Abril Fatface", Georgia, serif; color: var(--red); }
+.sec span { font: 700 12px/1.2 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+/* browser */
+.filters { position: sticky; top: 0; z-index: 5; background: rgba(244,241,234,.94); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 12px 0; border-bottom: 1px solid var(--line); }
+.frow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.frow + .frow { margin-top: 8px; }
+.seg { display: inline-flex; background: #fff; border-radius: 999px; padding: 3px; box-shadow: inset 0 0 0 1.5px var(--line); }
+.seg button { border: 0; background: transparent; border-radius: 999px; padding: 9px 14px 7px; font: 700 12px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; color: var(--ink); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+select, .q { border: 1.5px solid var(--line); background: #fff; border-radius: 999px; padding: 9px 14px 8px; font: 600 13px/1 var(--sans); color: var(--ink); }
+.q { flex: 1; min-width: 180px; }
+.chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 1.5px solid var(--line); background: #fff; border-radius: 999px; padding: 8px 12px 6px; font: 700 11.5px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--red); color: #fff; border-color: var(--red); }
+.count { font: 600 13px/1 var(--sans); color: var(--mute); margin-left: auto; white-space: nowrap; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; padding: 22px 0 10px; }
+.card { background: #fff; border-radius: 14px; overflow: hidden; cursor: pointer; border: 0; padding: 0; text-align: left; font: inherit; color: inherit; box-shadow: 0 1px 0 var(--line); transition: transform .15s, box-shadow .15s; display: flex; flex-direction: column; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(28,34,54,.1); }
+.card .ph { aspect-ratio: 3/2; background: #ddd center/cover no-repeat; position: relative; }
+.card .ph.none { display: grid; place-items: center; background: linear-gradient(135deg, #e9e3d6, #d8cfbd); }
+.card .ph.none i { font: 400 40px/1 "Abril Fatface", Georgia, serif; color: rgba(28,34,54,.25); font-style: normal; }
+.card .tag { position: absolute; left: 10px; top: 10px; background: rgba(255,255,255,.92); border-radius: 999px; padding: 6px 10px 4px; font: 700 10.5px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; }
+.card .tag.au { background: var(--red); color: #fff; }
+.card .bd { padding: 14px 16px 16px; }
+.card h3 { font: 600 22px/1.15 var(--serif); margin: 0 0 4px; }
+.card .pl { font: 600 12.5px/1.3 var(--sans); color: var(--mute); }
+.card .pr { margin-top: 10px; font: 700 11px/1.3 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
+.more { display: block; margin: 8px auto 0; }
+.btn { display: inline-block; border: 0; border-radius: 999px; padding: 15px 22px 13px; font: 700 12.5px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; text-decoration: none; text-align: center; }
+.btn.red { background: var(--red); color: #fff; } .btn.ink { background: var(--ink); color: #fff; } .btn.line { background: #fff; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+/* drawer */
+.dim { position: fixed; inset: 0; background: rgba(10,12,18,.5); z-index: 20; opacity: 0; pointer-events: none; transition: opacity .25s; }
+.dim.on { opacity: 1; pointer-events: auto; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 100%); background: #fbf9f4; z-index: 21; transform: translateX(102%); transition: transform .32s cubic-bezier(.2,.8,.2,1); overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,.25); }
+.drawer.on { transform: none; }
+.drawer .ph { aspect-ratio: 4/3; background: #ccc center/cover no-repeat; position: relative; }
+.drawer .x { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(255,255,255,.95); font: 700 18px/1 var(--sans); cursor: pointer; }
+.drawer .in { padding: 22px 24px 40px; }
+.drawer h2 { font-size: 36px; line-height: 1.02; margin: 10px 0 6px; }
+.drawer .sub { font: italic 500 21px/1.35 var(--serif); color: #4a4a52; margin: 0 0 16px; }
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 18px; }
+.fact { background: #fff; border-radius: 12px; padding: 12px 14px; }
+.fact small { display: block; font: 700 10.5px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--mute); margin-bottom: 6px; }
+.fact div { font: 600 15px/1.3 var(--sans); }
+.fact.wide { grid-column: 1 / -1; }
+.story { font: 400 16px/1.65 var(--sans); color: #34384a; margin: 0 0 20px; }
+.acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.src { font: 500 12px/1.4 var(--sans); color: var(--mute); margin-top: 18px; }
+/* cta */
+.cta { margin: 70px 0 0; background: var(--ink); color: #fff; padding: 56px 0; }
+.cta .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; align-items: center; }
+.cta h2 { font-size: clamp(30px, 4vw, 46px); line-height: 1.02; margin-top: 10px; }
+.cta p { font: italic 500 20px/1.4 var(--serif); color: rgba(255,255,255,.8); }
+.cta .acts { justify-content: flex-end; }
+.foot { padding: 20px 0 30px; font: 500 12px/1.5 var(--sans); color: var(--mute); }
+@media (max-width: 760px) { .hero { height: auto; min-height: 0; } .hero iframe { position: relative; display: block; height: 62vh; } .hero .shade { display: none; } .hero .over { position: relative; padding: 18px 20px 28px; } .stats { margin-top: 6px; } .cta .wrap { grid-template-columns: 1fr; } .cta .acts { justify-content: flex-start; } .feat { grid-auto-columns: 82%; } .stats { gap: 18px; } .hero { height: 78vh; } .count { width: 100%; margin: 4px 0 0; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <iframe src="map/?embed=1" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen"></iframe>
+  <div class="shade"></div>
+  <a class="fullmap" href="map/" target="_blank" rel="noopener">Open the full map ↗</a>
+  <div class="over"><div class="wrap">
+    <div><div class="kick" style="color:#ff7a7e">KEIM mineral paints · references</div><h1>Built with KEIM</h1><p>From the Sydney Opera House to hospitals, schools and heritage town halls: mineral paint that becomes part of the building.</p></div>
+    <div class="stats"><div class="stat"><b id="sTot">–</b><span>projects</span></div><div class="stat"><b id="sAu">–</b><span>in Australia</span></div><div class="stat"><b id="sCo">–</b><span>countries</span></div></div>
+  </div></div>
+</header>
+
+<section><div class="wrap">
+  <div class="shead"><div><div class="kick">Australian landmarks</div><h2>Icons in mineral paint</h2><p>A few of the buildings Australians walk past every day.</p></div></div>
+  <div class="feat" id="feat"></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="shead"><div><div class="kick">Browse by sector</div><h2>Find projects like yours</h2></div></div>
+  <div class="sectors" id="sectors"></div>
+</div></section>
+
+<section id="browse" style="padding-top:56px">
+  <div class="filters"><div class="wrap">
+    <div class="frow">
+      <div class="seg" id="region"><button type="button" data-r="au" aria-pressed="true">Australia</button><button type="button" data-r="world" aria-pressed="false">Worldwide</button><button type="button" data-r="all" aria-pressed="false">All</button></div>
+      <select id="state" aria-label="State"><option value="">All states</option></select>
+      <select id="prod" aria-label="Product"><option value="">All products</option></select>
+      <input class="q" id="q" type="search" placeholder="Search a project, city or architect" aria-label="Search">
+    </div>
+    <div class="frow"><div class="chips" id="types"></div><span class="count" id="count"></span></div>
+  </div></div>
+  <div class="wrap"><div class="grid" id="grid"></div><button class="btn line more" id="moreB" type="button" hidden>Show more projects</button></div>
+</section>
+
+<div class="cta"><div class="wrap">
+  <div><div class="kick" style="color:#ff7a7e">Planning a project?</div><h2>Specify with confidence</h2><p>Ask for a reference pack for your sector, see the colours in our Matraville showroom, or book a CPD session for your practice.</p></div>
+  <div class="acts"><a class="btn red" id="ctaAsk" href="mailto:info@keim.com.au?subject=Project%20reference%20request" target="_top">Request a reference pack</a><a class="btn line" style="background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px #fff" href="https://learn.keim.com.au/education/embed.html#cpd" target="_top">Book a CPD</a></div>
+</div></div>
+<div class="wrap foot">Project information from KEIM Australia records and keim.com references. Private homes are shown by suburb only. Photos © their owners and KEIMFARBEN; used with permission for KEIM references. Map imagery © Esri, Maxar, Earthstar Geographics.</div>
+
+<div class="dim" id="dim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"><div class="ph" id="dPh"><button class="x" id="dX" type="button" aria-label="Close">✕</button></div><div class="in" id="dIn"></div></aside>
+
+<script>
+const $ = id => document.getElementById(id);
+const IMG = f => 'map/img/' + f;
+const FEATURED = ['Sydney Opera House', 'Parramatta Town Hall', 'Royal Hobart Hospital', 'State Library of Queensland', 'Nyaal Banyul Geelong Convention and Event Centre', 'WestConnex M8 tunnel', 'Shell House', 'Joan Kirner Women\'s & Children\'s Hospital', 'Castle Residences & Porter House', 'Wellington Dam mural "Reflections"', '25hours Hotel The Olympia', 'Australian National Maritime Museum'];
+const TYPE_LABEL = { Residential: 'Homes & apartments', Heritage: 'Heritage', Commercial: 'Commercial', Education: 'Education', Culture: 'Culture', Transport: 'Infrastructure', Health: 'Healthcare', Mural: 'Murals & art', Hospitality: 'Hotels', Civic: 'Civic', Community: 'Community' };
+function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
+  if (la < -39.2) return 'TAS'; if (lo > 148.7 && lo < 149.45 && la < -35.1 && la > -35.95) return 'ACT';
+  if (lo < 129) return 'WA'; if (lo < 138 && la > -26) return 'NT'; if (lo < 141 && la <= -26) return 'SA'; if (lo < 138) return 'NT';
+  if (la > -29) return 'QLD'; if (la < -35.9 - (lo - 141) * 0.17) return 'VIC'; return 'NSW'; }
+function prods(p) { return p.products.replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(Boolean).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
+let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
+fetch('map/projects.json').then(r => r.json()).then(list => {
+  ALL = list.map(p => ({ ...p, au: p.country === 'Australia', st: p.country === 'Australia' ? auState(p) : '', pr: prods(p) }));
+  $('sTot').textContent = ALL.length; $('sAu').textContent = ALL.filter(p => p.au).length; $('sCo').textContent = new Set(ALL.map(p => p.country)).size;
+  // featured
+  FEATURED.map(n => ALL.find(p => p.name === n)).filter(p => p && p.img).forEach(p => { const b = document.createElement('button'); b.className = 'fcard'; b.type = 'button';
+    b.innerHTML = '<img loading="lazy" alt=""><div class="cap"><small></small><b></b><span></span></div>'; b.querySelector('img').src = IMG(p.img); b.querySelector('img').alt = p.name;
+    b.querySelector('small').textContent = (TYPE_LABEL[p.type] || p.type) + ' · ' + (p.place || p.country); b.querySelector('b').textContent = p.name; b.querySelector('span').textContent = p.pr.slice(0, 2).join(' + ');
+    b.addEventListener('click', () => openP(p)); $('feat').appendChild(b); });
+  // sectors
+  const tc = {}; ALL.forEach(p => tc[p.type] = (tc[p.type] || 0) + 1);
+  Object.entries(tc).sort((a, b) => b[1] - a[1]).forEach(([t, n]) => { const b = document.createElement('button'); b.className = 'sec'; b.type = 'button'; b.innerHTML = '<b></b><span></span>'; b.querySelector('b').textContent = n; b.querySelector('span').textContent = TYPE_LABEL[t] || t;
+    b.addEventListener('click', () => { st.type = t; st.r = 'all'; syncUI(); render(); $('browse').scrollIntoView(); }); $('sectors').appendChild(b); });
+  // type chips
+  const all = document.createElement('button'); all.className = 'chip'; all.type = 'button'; all.dataset.t = ''; all.textContent = 'All sectors'; $('types').appendChild(all);
+  Object.keys(tc).sort((a, b) => tc[b] - tc[a]).forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = TYPE_LABEL[t] || t; $('types').appendChild(b); });
+  $('types').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; st.type = b.dataset.t; shown = 24; syncUI(); render(); });
+  // states + products
+  ['NSW', 'VIC', 'QLD', 'WA', 'SA', 'TAS', 'NT', 'ACT'].filter(s => ALL.some(p => p.st === s)).forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s + ' (' + ALL.filter(p => p.st === s).length + ')'; $('state').appendChild(o); });
+  const pc = {}; ALL.forEach(p => p.pr.forEach(x => pc[x] = (pc[x] || 0) + 1));
+  Object.entries(pc).filter(([, n]) => n >= 2).sort((a, b) => b[1] - a[1]).forEach(([x, n]) => { const o = document.createElement('option'); o.value = x; o.textContent = 'KEIM ' + x + ' (' + n + ')'; $('prod').appendChild(o); });
+  // deep link: #p=<id>
+  const m = location.hash.match(/p=([\w-]+)/); if (m) { const p = ALL.find(x => x.id === m[1]); if (p) openP(p); }
+  syncUI(); render();
+});
+function syncUI() { document.querySelectorAll('#region button').forEach(b => b.setAttribute('aria-pressed', b.dataset.r === st.r)); document.querySelectorAll('#types .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === st.type)); $('state').disabled = st.r === 'world'; $('state').value = st.r === 'world' ? '' : st.state; $('prod').value = st.prod; }
+function match(p) { if (st.r === 'au' && !p.au) return false; if (st.r === 'world' && p.au) return false; if (st.state && p.st !== st.state) return false; if (st.prod && !p.pr.includes(st.prod)) return false; if (st.type && p.type !== st.type) return false;
+  if (st.q) { const h = (p.name + ' ' + p.place + ' ' + p.country + ' ' + p.architect + ' ' + p.builder + ' ' + p.products).toLowerCase(); if (!st.q.toLowerCase().split(/\s+/).every(w => h.includes(w))) return false; } return true; }
+function render() {
+  const L = ALL.filter(match).sort((a, b) => (!!b.img - !!a.img) || (b.au - a.au) || a.name.localeCompare(b.name));
+  $('count').textContent = L.length + (L.length === 1 ? ' project' : ' projects'); const g = $('grid'); g.innerHTML = '';
+  L.slice(0, shown).forEach(p => { const b = document.createElement('button'); b.className = 'card'; b.type = 'button';
+    b.innerHTML = '<div class="ph"><span class="tag"></span></div><div class="bd"><h3></h3><div class="pl"></div><div class="pr"></div></div>';
+    const ph = b.querySelector('.ph'); if (p.img) ph.style.backgroundImage = 'url("' + IMG(p.img) + '")'; else { ph.classList.add('none'); ph.insertAdjacentHTML('beforeend', '<i>K</i>'); }
+    const tg = b.querySelector('.tag'); tg.textContent = TYPE_LABEL[p.type] || p.type; if (p.au) tg.classList.add('au');
+    b.querySelector('h3').textContent = p.name; b.querySelector('.pl').textContent = [p.place, p.au ? p.st : p.country].filter(Boolean).join(', '); b.querySelector('.pr').textContent = p.pr.slice(0, 2).map(x => 'KEIM ' + x).join(' · ');
+    b.addEventListener('click', () => openP(p)); g.appendChild(b); });
+  if (!L.length) g.innerHTML = '<p style="font:italic 500 22px var(--serif);color:#6b6a66">No projects match those filters yet.</p>';
+  $('moreB').hidden = L.length <= shown;
+}
+$('moreB').addEventListener('click', () => { shown += 24; render(); });
+$('region').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.r = b.dataset.r; if (st.r === 'world') st.state = ''; shown = 24; syncUI(); render(); });
+$('state').addEventListener('change', e => { st.state = e.target.value; if (st.state) st.r = 'au'; shown = 24; syncUI(); render(); });
+$('prod').addEventListener('change', e => { st.prod = e.target.value; shown = 24; render(); });
+let qt; $('q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { st.q = e.target.value.trim(); shown = 24; render(); }, 150); });
+// drawer
+function openP(p) {
+  const ph = $('dPh'); ph.style.backgroundImage = p.img ? 'url("' + IMG(p.img) + '")' : 'linear-gradient(135deg,#e9e3d6,#d8cfbd)';
+  const f = (k, v, wide) => v ? '<div class="fact' + (wide ? ' wide' : '') + '"><small>' + k + '</small><div>' + esc(v) + '</div></div>' : '';
+  const subj = encodeURIComponent('Project enquiry: ' + p.name), body = encodeURIComponent('Hi KEIM Australia,\n\nI saw ' + p.name + ' on your projects page and would like to know more about the system used.\n\n');
+  $('dIn').innerHTML = '<div class="kick">' + esc((TYPE_LABEL[p.type] || p.type) + (p.au ? ' · Australia' : ' · ' + p.country)) + '</div><h2>' + esc(p.name) + '</h2>' + (p.sub ? '<p class="sub">' + esc(p.sub) + '</p>' : '') +
+    '<div class="facts">' + f('Location', [p.place, p.au ? p.st : p.country].filter(Boolean).join(', ')) + f('Sector', TYPE_LABEL[p.type] || p.type) + f('KEIM products', p.products, true) + f('Colours', p.colours, true) + f('Architect', p.architect) + f('Builder / client', p.builder) + f('Applicator', p.credit) + '</div>' +
+    (p.story ? '<p class="story">' + esc(p.story) + '</p>' : '') +
+    '<div class="acts"><a class="btn red" target="_top" href="mailto:info@keim.com.au?subject=' + subj + '&body=' + body + '">Ask about this project</a>' + (p.link ? '<a class="btn line" target="_blank" rel="noopener" href="' + esc(p.link) + '">Full case study ↗</a>' : '') + '<a class="btn line" target="_blank" rel="noopener" href="map/#' + esc(p.id) + '">Show on map ↗</a></div>' +
+    '<div class="src">Source: ' + esc(p.src || 'KEIM') + '</div>';
+  $('drawer').classList.add('on'); $('dim').classList.add('on'); $('drawer').setAttribute('aria-hidden', 'false'); $('drawer').scrollTop = 0;
+  try { history.replaceState(null, '', '#p=' + p.id); } catch (e) {}
+}
+function closeP() { $('drawer').classList.remove('on'); $('dim').classList.remove('on'); $('drawer').setAttribute('aria-hidden', 'true'); try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+$('dX').addEventListener('click', closeP); $('dim').addEventListener('click', closeP); addEventListener('keydown', e => { if (e.key === 'Escape') closeP(); });
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
+</script>
+</body>
+</html>
