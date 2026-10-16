@@ -97,6 +97,21 @@ body:not(.nocard) .under { padding-right: 446px; }
 @media (max-width: 760px) { .list { left: 0; right: 0; width: auto; top: auto; bottom: 0; height: 60vh; border-radius: 3px 3px 0 0; } .list[hidden] { transform: translateY(30px); } }
 .maplibregl-ctrl-top-right { top: 150px; }
 @media (max-width: 760px) { .maplibregl-ctrl-top-right { top: 160px; } .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-in, .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-out { display: none; } .legend { display: none; } }
+
+/* phone: bottom sheet */
+.card .grab { display: none; }
+.card .stick { position: sticky; top: 0; height: 0; z-index: 4; flex: none; }
+@media (max-width: 760px) {
+  .under { transition: transform .3s ease, opacity .25s; }
+  body:not(.nocard) .under { transform: translateY(-40px); opacity: 0; pointer-events: none; }
+  body:not(.nocard) .maplibregl-ctrl-top-right { display: none; }
+  .card { height: 52dvh; max-height: none; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; transition: height .3s cubic-bezier(.2,.8,.2,1), transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s; box-shadow: 0 -10px 40px rgba(0,0,0,.35); }
+  .card.full { height: calc(100dvh - 64px - env(safe-area-inset-top)); }
+  .card .body { overflow: visible; padding-bottom: calc(22px + env(safe-area-inset-bottom)) !important; }
+  .card .ph { aspect-ratio: auto !important; height: 44vw; max-height: 210px; }
+  .card .grab { display: block; position: absolute; left: 0; top: 0; height: 26px; border: 0; padding: 0; background: none; width: 100%; cursor: pointer; }
+  .card .grab::before { content: ""; position: absolute; left: 50%; top: 7px; width: 44px; height: 5px; margin-left: -22px; border-radius: 3px; background: rgba(255,255,255,.95); box-shadow: 0 1px 4px rgba(0,0,0,.45); }
+}
 </style>
 </head>
 <body class="nocard">
@@ -116,8 +131,8 @@ body:not(.nocard) .under { padding-right: 446px; }
 <aside class="list" id="list" hidden><div class="lh"><div><b>Projects in view</b><br><span id="lCount"></span></div><button id="lX" type="button" aria-label="Close list">✕</button></div><div class="sort" id="lSort"><button type="button" data-s="name" aria-pressed="true">A–Z</button><button type="button" data-s="year" aria-pressed="false">Newest</button><button type="button" data-s="country" aria-pressed="false">Country</button></div><ol id="lOl"></ol></aside>
 <div class="hint" id="hint">Spin the globe, zoom in and tap a KEIM wedge to fly to the project</div>
 <aside class="card" id="card" hidden aria-live="polite">
+  <div class="stick"><button class="grab" id="cGrab" type="button" aria-label="Expand"></button><button class="x" id="cX" type="button" aria-label="Close">✕</button></div>
   <div class="ph" id="cPh"></div>
-  <button class="x" id="cX" type="button" aria-label="Close">✕</button>
   <div class="body">
     <div class="kick" id="cKick"></div>
     <h2 id="cName"></h2>
@@ -222,14 +237,14 @@ function open(p, fly) {
   $('cApprox').hidden = !!p.exact;
   $('cMore').hidden = !p.link; if (p.link) $('cMore').href = p.link; $('cSv').hidden = !canSV(p); if (canSV(p)) $('cSv').href = SV(p); $('cPp').hidden = !p.ppage; if (p.ppage) { $('cPp').href = p.ppage; $('cPp').textContent = 'See photos · ' + (p.powner || 'source') + ' ↗'; }
   $('cSrc').innerHTML = 'Source: ' + esc(p.src || 'KEIM') + (p.year_src && p.year ? '<br>Year source: ' + (/^https?:/.test(p.year_src) ? '<a href="' + esc(p.year_src) + '" target="_blank" rel="noopener">' + esc(p.year_src.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]) + '</a>' : esc(p.year_src)) : '') + (p.ipage ? `<br>Photo: <a href="${esc(p.ipage)}" target="_blank" rel="noopener">${esc(p.iby || 'Wikimedia Commons')}</a>, ${esc(p.ilic || '')}, via Wikimedia Commons (general view of the building)` : '');
-  $('card').hidden = false; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
+  $('card').classList.remove('full'); $('card').hidden = false; $('card').scrollTop = 0; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
   if (fly) { const wide = innerWidth > 760;
     map.flyTo({ center: [p.lon, p.lat], zoom: p.exact ? 16.6 : 12.5, pitch: p.exact ? 58 : 35, bearing: (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
-      padding: wide ? { right: 430, top: 150, left: 0, bottom: 0 } : { bottom: innerHeight * 0.55, top: 80, left: 0, right: 0 } }); }
+      padding: wide ? { right: 430, top: 150, left: 0, bottom: 0 } : { bottom: innerHeight * 0.52, top: 70, left: 0, right: 0 } }); }
   try { history.replaceState(null, '', '#' + p.id); } catch (e) {}
 }
 function close() { $('card').hidden = true; sel = null; repaintPins(); document.body.classList.add('nocard'); touring = false; try { history.replaceState(null, '', location.pathname); } catch (e) {} }
-$('cX').onclick = close; addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+$('cX').onclick = close; $('cGrab').onclick = () => $('card').classList.toggle('full'); $('card').addEventListener('scroll', () => { if (innerWidth <= 760 && $('card').scrollTop > 24) $('card').classList.add('full'); }, { passive: true }); addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 function nextNearby() { if (!sel) return; const d = p => (p.lat - sel.lat) ** 2 + ((p.lon - sel.lon) * Math.cos(sel.lat * Math.PI / 180)) ** 2;
   const n = vis.filter(p => p !== sel && !hist.includes(p)).sort((a, b) => d(a) - d(b))[0]; if (n) open(n, true); }
 $('cNext').onclick = () => { touring = false; nextNearby(); };
