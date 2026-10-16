@@ -3,78 +3,117 @@
 <head>
 <meta charset="utf-8"><meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>KEIM around the world</title>
+<title>KEIM References Map</title>
 <meta name="description" content="Fly around the globe to KEIM mineral paint projects: heritage, hospitals, schools, murals and landmarks.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Josefin+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css">
 <style>
-:root { --red: #D51F24; --ink: #1c2236; --mute: #6b6a66; --sans: "Josefin Sans", "Futura", "Avenir Next", system-ui, sans-serif; --serif: "Cormorant Garamond", Georgia, serif; }
+/* KEIM corporate design: KEIM Red, KEIM Anthracite, white; Futura (Jost as web stand-in); one secondary colour (Umbra) for headlines */
+:root { --red: #D62025; --red2: #D10612; --anth: #36393C; --grey: #A3AAAE; --grey2: #D5D9DB; --umbra: #957F68; --ink: #1d1e20; --mute: #6c7174; --sans: "Jost", "Futura", "Futura PT", "Century Gothic", system-ui, sans-serif; }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: #04060c; color: var(--ink); font-family: var(--sans); overflow: hidden; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; background: #e4e7e9; color: var(--ink); font-family: var(--sans); overflow: hidden; -webkit-tap-highlight-color: transparent; }
 #map { position: fixed; inset: 0; }
-/* starfield behind the globe */
-#map .maplibregl-canvas-container { background: radial-gradient(ellipse at 50% 45%, #18243f 0%, #070b16 55%, #020308 100%); }
-.top { position: fixed; left: 0; right: 0; top: 0; z-index: 3; padding: max(14px, env(safe-area-inset-top)) 16px 26px; pointer-events: none; display: flex; flex-direction: column; gap: 10px; background: linear-gradient(rgba(4,6,12,.85), rgba(4,6,12,.55) 60%, rgba(4,6,12,0)); color: #fff; }
+#map .maplibregl-canvas-container { background: radial-gradient(ellipse at 50% 50%, #ffffff 0%, #eef0f1 45%, #c9ced1 100%); }
+/* the 'panel': anthracite bar with the logo centred, wedge reaching below */
+.top { position: fixed; left: 0; right: 0; top: 0; z-index: 3; pointer-events: none; color: #fff; }
 .top > * { pointer-events: auto; }
-.brand { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
-.brand h1 { margin: 0; font: 400 clamp(24px, 4vw, 36px)/1 "Abril Fatface", Georgia, serif; color: #fff; }
-.brand .kick { font: 700 11px/1 var(--sans); letter-spacing: .24em; color: #ff6b6f; text-transform: uppercase; }
-.brand .count { font: 500 14px/1.2 var(--sans); color: rgba(255,255,255,.75); }
-.bar { display: flex; gap: 8px; align-items: center; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.panel { position: relative; height: calc(64px + env(safe-area-inset-top)); background: var(--anth); }
+.panel .logo { position: absolute; left: 50%; bottom: -38px; transform: translateX(-50%); width: 92px; display: block; line-height: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
+.panel .logo img { width: 100%; height: auto; }
+.panel .home { position: absolute; left: 16px; bottom: 20px; font: 500 12px/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: #fff; text-decoration: none; opacity: .85; }
+.panel .home:hover { opacity: 1; }
+.under { padding: 14px 16px 34px; display: flex; flex-direction: column; gap: 10px; background: linear-gradient(rgba(255,255,255,.96), rgba(255,255,255,.82) 60%, rgba(255,255,255,0)); color: var(--ink); }
+body:not(.nocard) .under { padding-right: 446px; }
+@media (max-width: 760px) { body:not(.nocard) .under { padding-right: 16px; } }
+.brand { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; padding-right: 120px; }
+.brand h1 { margin: 0; font: 500 clamp(20px, 2.6vw, 28px)/1.05 var(--sans); letter-spacing: .04em; text-transform: uppercase; color: var(--umbra); }
+.brand h1 b { font-weight: 500; color: var(--anth); }
+.brand .count { font: 300 15px/1.2 var(--sans); color: var(--mute); }
+.bar { display: flex; gap: 6px; align-items: center; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
 .bar::-webkit-scrollbar { display: none; }
-.chip { flex: none; border: 1.5px solid rgba(255,255,255,.7); background: rgba(10,14,26,.55); color: #fff; border-radius: 999px; padding: 8px 13px 7px; font: 700 12px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
-.chip[aria-pressed="true"] { background: #fff; color: var(--ink); border-color: #fff; }
-.chip.au { border-color: var(--red); background: rgba(213,31,36,.35); }
-.chip.au[aria-pressed="true"] { background: var(--red); color: #fff; border-color: var(--red); }
-.search { flex: none; width: 200px; border: 1.5px solid rgba(255,255,255,.7); border-radius: 999px; padding: 8px 14px 7px; font: 600 13px/1 var(--sans); background: rgba(255,255,255,.95); color: var(--ink); }
-.tools { position: fixed; right: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); display: grid; gap: 8px; z-index: 3; }
-.tools button { width: 46px; height: 46px; border-radius: 50%; border: 0; background: rgba(255,255,255,.95); color: var(--ink); font: 700 10px/1.1 var(--sans); letter-spacing: .05em; box-shadow: 0 6px 18px -6px rgba(0,0,0,.6); cursor: pointer; }
-/* pins */
+.chip { flex: none; border: 1px solid var(--anth); background: rgba(255,255,255,.9); color: var(--anth); border-radius: 2px; padding: 8px 12px 7px; font: 500 12px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.chip[aria-pressed="true"] { background: var(--anth); color: #fff; border-color: var(--anth); }
+.chip.au { border-color: var(--red2); color: var(--red2); }
+.chip.au[aria-pressed="true"] { background: var(--red2); color: #fff; border-color: var(--red2); }
+.search { flex: none; width: 210px; border: 1px solid var(--anth); border-radius: 2px; padding: 8px 12px 7px; font: 400 14px/1 var(--sans); background: #fff; color: var(--ink); }
+.tools { position: fixed; right: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); display: grid; gap: 6px; z-index: 3; }
+.tools button { width: 58px; height: 40px; border-radius: 2px; border: 0; background: var(--anth); color: #fff; font: 500 11px/1 var(--sans); letter-spacing: .14em; box-shadow: 0 6px 18px -6px rgba(0,0,0,.5); cursor: pointer; }
+.tools button:hover { background: var(--red2); }
 /* project card */
-.card { position: fixed; z-index: 5; background: #fbf9f4; box-shadow: 0 20px 60px rgba(0,0,0,.5); display: flex; flex-direction: column; overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s; }
+.card { position: fixed; z-index: 5; background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,.45); display: flex; flex-direction: column; overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s; }
 .card[hidden] { display: flex; opacity: 0; pointer-events: none; }
-@media (min-width: 761px) { .card { top: 16px; bottom: 16px; right: 16px; width: 400px; border-radius: 18px; } .card[hidden] { transform: translateX(30px); } body:not(.nocard) .tools { right: 432px; } }
-@media (max-width: 760px) { .card { left: 0; right: 0; bottom: 0; max-height: 58vh; border-radius: 20px 20px 0 0; } .card[hidden] { transform: translateY(40px); } .card .ph { aspect-ratio: 16 / 8 !important; } .card h2 { font-size: 24px !important; } .card .body { padding: 14px 18px 18px !important; }
-  .brand .kick { display: none; } .brand h1 { font-size: 24px; } .search { width: 150px; } body:not(.nocard) .tools { display: none; } }
-.card .ph { position: relative; background: #ddd2bb; aspect-ratio: 3 / 2; flex: none; }
+@media (min-width: 761px) { .card { top: 116px; bottom: 16px; right: 16px; width: 410px; border-radius: 3px; } .card[hidden] { transform: translateX(30px); } body:not(.nocard) .tools { right: 442px; } }
+@media (max-width: 760px) { .card { left: 0; right: 0; bottom: 0; max-height: 58vh; border-radius: 3px 3px 0 0; } .card[hidden] { transform: translateY(40px); } .card .ph { aspect-ratio: 16 / 8 !important; } .card h2 { font-size: 21px !important; } .card .body { padding: 14px 18px 18px !important; }
+  .under { padding-top: 46px; } .brand { padding-right: 0; } .brand .count { display: none; } .brand h1 { font-size: 18px; } .search { width: 150px; } .panel .home { display: none; } body:not(.nocard) .tools { display: none; } }
+.card .ph { position: relative; background: var(--grey2); aspect-ratio: 3 / 2; flex: none; }
 .card .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.card .ph .noimg { position: absolute; inset: 0; display: grid; place-items: center; font: italic 500 17px var(--serif); color: #8a7f68; }
-.card .credit { position: absolute; left: 10px; bottom: 8px; font: 500 11px/1.2 var(--sans); color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.7); }
-.card .tag { position: absolute; right: 10px; bottom: 8px; font: 700 10px/1 var(--sans); letter-spacing: .12em; color: #fff; background: rgba(28,34,54,.75); padding: 5px 8px 4px; border-radius: 999px; text-transform: uppercase; }
-.card .x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); color: var(--ink); font-size: 16px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
-.card .body { padding: 18px 20px 20px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-.card .kick { font: 700 11px/1.3 var(--sans); letter-spacing: .2em; color: var(--red); text-transform: uppercase; }
-.card h2 { font: 600 28px/1.1 var(--serif); margin: 6px 0 4px; }
-.card .sub { font: italic 500 17px/1.35 var(--serif); color: var(--mute); margin: 0 0 12px; }
-.card dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 12px 0; font-size: 14px; line-height: 1.35; }
-.card dt { font: 700 10.5px/1.6 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+.card .ph .noimg { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 10px; font: 300 15px var(--sans); letter-spacing: .08em; color: var(--mute); text-transform: uppercase; }
+.card .ph .noimg svg { width: 26px; height: 30px; }
+.card .credit { position: absolute; left: 10px; right: 60px; bottom: 8px; font: 400 11px/1.25 var(--sans); color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.8); }
+.card .tag { position: absolute; right: 10px; bottom: 8px; font: 500 10px/1 var(--sans); letter-spacing: .14em; color: #fff; background: rgba(54,57,60,.85); padding: 5px 8px 4px; text-transform: uppercase; }
+.card .x { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 2px; border: 0; background: var(--anth); color: #fff; font-size: 15px; cursor: pointer; }
+.card .body { padding: 18px 22px 22px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.card .kick { font: 500 11px/1.4 var(--sans); letter-spacing: .2em; color: var(--mute); text-transform: uppercase; }
+.card h2 { font: 500 25px/1.08 var(--sans); letter-spacing: .03em; text-transform: uppercase; color: var(--umbra); margin: 8px 0 0; }
+.card h2::after { content: ""; display: block; height: 8px; background: var(--umbra); margin-top: 10px; }
+.card .sub { font: 500 13px/1.4 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--umbra); margin: 10px 0 4px; }
+.card dl { display: grid; grid-template-columns: auto 1fr; gap: 7px 16px; margin: 16px 0 12px; font: 400 15px/1.35 var(--sans); }
+.card dt { font: 600 11px/1.7 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--ink); }
 .card dd { margin: 0; }
-.card dd.prod { font-weight: 700; color: var(--red); }
-.card .story { font-size: 15px; line-height: 1.55; color: #33384a; margin: 10px 0 0; }
-.card .approx { font: 600 12px/1.4 var(--sans); color: #8a6d1d; background: #fbf1d3; border-radius: 8px; padding: 7px 10px; margin-top: 12px; }
-.card .more { display: inline-block; margin-top: 14px; font: 700 12px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--red); text-decoration: none; border-bottom: 2px solid var(--red); padding-bottom: 3px; }
-.card .nav { display: flex; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #e3dccd; }
-.card .nav button { flex: 1; border: 1.5px solid var(--ink); background: #fff; border-radius: 12px; padding: 10px 8px 9px; font: 700 11px/1.2 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); cursor: pointer; }
-.card .nav button.solid { background: var(--ink); color: #fff; }
-.src { font: 500 11px/1.3 var(--sans); color: #9a937f; margin-top: 12px; }
-.hint { position: fixed; left: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); z-index: 3; background: rgba(255,255,255,.95); color: var(--ink); font: 600 13px/1.3 var(--sans); padding: 10px 16px 9px; border-radius: 16px; max-width: calc(100% - 100px); pointer-events: none; transition: opacity .6s; box-shadow: 0 6px 18px -6px rgba(0,0,0,.6); }
+.card dd.prod { font-weight: 500; color: var(--red); }
+.card .story { font: 400 15px/1.6 var(--sans); color: #2b2d30; margin: 10px 0 0; }
+.card .approx { font: 400 13px/1.4 var(--sans); color: var(--ink); background: #eef0f1; border-left: 3px solid var(--grey); padding: 8px 10px; margin-top: 12px; }
+.card .more { display: inline-block; margin-top: 16px; font: 500 12px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: #fff; background: var(--red2); text-decoration: none; padding: 11px 14px 10px; }
+.card .nav { display: flex; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--grey2); }
+.card .nav button { flex: 1; border: 1px solid var(--anth); background: #fff; border-radius: 2px; padding: 11px 8px 10px; font: 500 11.5px/1.2 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--anth); cursor: pointer; }
+.card .nav button.solid { background: var(--anth); color: #fff; }
+.card .nav button:disabled { opacity: .35; }
+.src { font: 400 11.5px/1.35 var(--sans); color: var(--mute); margin-top: 12px; }
+.src a { color: inherit; }
+.hint { position: fixed; left: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); z-index: 3; background: #fff; color: var(--ink); font: 400 14px/1.3 var(--sans); padding: 11px 16px 10px; border-left: 4px solid var(--red); max-width: calc(100% - 100px); pointer-events: none; transition: opacity .6s; box-shadow: 0 6px 18px -6px rgba(0,0,0,.6); }
+.legend { position: fixed; left: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); z-index: 2; display: flex; gap: 14px; background: #fff; box-shadow: 0 4px 14px -6px rgba(0,0,0,.4); padding: 8px 12px 7px; font: 500 11px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+.legend i { display: inline-block; width: 11px; height: 13px; margin-right: 6px; vertical-align: -2px; clip-path: polygon(0 0, 100% 0, 50% 100%); border-radius: 50% 50% 0 0 / 30% 30% 0 0; }
 .maplibregl-ctrl-attrib { font-size: 10px; }
-.maplibregl-ctrl-top-right { top: 108px; }
-@media (max-width: 760px) { .maplibregl-ctrl-top-right { top: 118px; } .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-in, .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-out { display: none; } }
+/* project list */
+.list { position: fixed; z-index: 4; left: 16px; top: 172px; bottom: 76px; width: 330px; background: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.35); display: flex; flex-direction: column; transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .2s; border-radius: 3px; }
+.list[hidden] { display: flex; opacity: 0; pointer-events: none; transform: translateX(-24px); }
+.list .lh { padding: 14px 16px 10px; border-bottom: 1px solid var(--grey2); display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.list .lh b { font: 500 15px/1.1 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--umbra); }
+.list .lh span { font: 400 12px/1.2 var(--sans); color: var(--mute); }
+.list .lh button { border: 0; background: none; font-size: 16px; cursor: pointer; color: var(--anth); }
+.list .sort { display: flex; gap: 4px; padding: 8px 16px; border-bottom: 1px solid var(--grey2); }
+.list .sort button { border: 1px solid var(--grey2); background: #fff; padding: 6px 9px 5px; font: 500 10.5px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--anth); cursor: pointer; }
+.list .sort button[aria-pressed="true"] { background: var(--anth); color: #fff; border-color: var(--anth); }
+.list ol { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; }
+.list li button { display: grid; grid-template-columns: 64px 1fr; gap: 10px; width: 100%; text-align: left; border: 0; border-bottom: 1px solid #eef0f1; background: #fff; padding: 9px 14px; cursor: pointer; font: inherit; color: var(--ink); }
+.list li button:hover { background: #f5f6f7; }
+.list li .th { width: 64px; height: 46px; background: var(--anth) center/cover no-repeat; position: relative; }
+.list li .th.none::after { content: ""; position: absolute; left: 50%; top: 50%; width: 16px; height: 19px; transform: translate(-50%,-50%); background: var(--red); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.list li b { display: block; font: 500 13px/1.2 var(--sans); text-transform: uppercase; letter-spacing: .03em; }
+.list li small { display: block; font: 400 12px/1.3 var(--sans); color: var(--mute); margin-top: 3px; }
+.list li small i { font-style: normal; color: var(--red); }
+@media (max-width: 760px) { .list { left: 0; right: 0; width: auto; top: auto; bottom: 0; height: 60vh; border-radius: 3px 3px 0 0; } .list[hidden] { transform: translateY(30px); } }
+.maplibregl-ctrl-top-right { top: 150px; }
+@media (max-width: 760px) { .maplibregl-ctrl-top-right { top: 160px; } .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-in, .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-out { display: none; } .legend { display: none; } }
 </style>
 </head>
 <body class="nocard">
 <div id="map"></div>
+<script>if (/[?&]embed=1/.test(location.search)) document.documentElement.classList.add("embed");</script>
+<style>.embed .top, .embed .hint, .embed .legend, .embed .list, .embed #tList { display: none !important; } .embed .maplibregl-ctrl-top-right { top: 16px !important; } .embed .card { top: 16px; }</style>
 <header class="top">
-  <div class="brand"><span class="kick">KEIM mineral paints</span><h1>KEIM around the world</h1><span class="count" id="count"></span></div>
+  <div class="panel"><a class="home" href="../projects-next/" target="_top">‹ All projects</a><a class="logo" href="../projects-next/" target="_top" aria-label="KEIM projects"><img src="keim-logo-neg.png" alt="KEIM" width="92" height="94"></a></div>
+  <div class="under"><div class="brand"><h1>KEIM references <b>worldwide</b></h1><span class="count" id="count"></span></div>
   <div class="bar" id="bar">
     <input class="search" id="q" type="search" placeholder="Search a project or city" aria-label="Search projects">
     <button class="chip au" id="fAU" type="button" aria-pressed="false">Australia</button>
-  </div>
+  </div></div>
 </header>
-<div class="tools"><button id="tMap" type="button" aria-label="Switch between street map and satellite">MAP</button><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button></div>
-<div class="hint" id="hint">Spin the globe, zoom in, and tap a pin to fly to the project</div>
+<div class="legend" id="legend"><span><i style="background:#D62025"></i>Australia</span><span><i style="background:#36393C;outline:1px solid #fff"></i>Worldwide</span></div>
+<div class="tools"><button id="tMap" type="button" aria-label="Switch between street map and satellite">MAP</button><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button><button id="tList" type="button" aria-label="Show project list">LIST</button></div>
+<aside class="list" id="list" hidden><div class="lh"><div><b>Projects in view</b><br><span id="lCount"></span></div><button id="lX" type="button" aria-label="Close list">✕</button></div><div class="sort" id="lSort"><button type="button" data-s="name" aria-pressed="true">A–Z</button><button type="button" data-s="year" aria-pressed="false">Newest</button><button type="button" data-s="country" aria-pressed="false">Country</button></div><ol id="lOl"></ol></aside>
+<div class="hint" id="hint">Spin the globe, zoom in and tap a KEIM wedge to fly to the project</div>
 <aside class="card" id="card" hidden aria-live="polite">
   <div class="ph" id="cPh"></div>
   <button class="x" id="cX" type="button" aria-label="Close">✕</button>
@@ -120,16 +159,18 @@ let hintGone = false; function hideHint() { if (!hintGone) { hintGone = true; $(
 setTimeout(hideHint, 10000);
 
 // pins and clusters drawn inside the map itself (WebGL), so they stay glued to the ground while you move
-const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" height="96" viewBox="-2 -2 38 48"><path d="M17 43C7 29 2 22 2 15a15 15 0 0 1 30 0c0 7-5 14-15 28z" fill="${on ? '#D51F24' : '#1c2236'}" stroke="#fff" stroke-width="2.5"/><circle cx="17" cy="15" r="6" fill="#fff"/>${au && !on ? '<circle cx="17" cy="15" r="3.2" fill="#D51F24"/>' : ''}</svg>`;
+// pins are the KEIM wedge (arch-shaped sector, point on the spot): KEIM Red for Australia, KEIM Anthracite worldwide
+const WEDGE = 'M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z';
+const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" height="96" viewBox="0 0 40 50.5">${on ? `<path d="${WEDGE}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="7" stroke-linejoin="round"/>` : ''}<path d="${WEDGE}" fill="${au || on ? '#D62025' : '#36393C'}" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg>`;
 function svgImg(svg) { return new Promise((res, rej) => { const im = new Image(76, 96); im.onload = () => res(im); im.onerror = rej; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }); }
 // cluster bubbles are drawn on demand, one image per count
 map.on('styleimagemissing', e => {
   const m = /^clu-(au|w)-(\d+)$/.exec(e.id); if (!m) return;
   const n = m[2], big = +n > 20, r = big ? 24 : 19, pad = 4, w = Math.max(2 * r, 22 + n.length * 18), W = (w + 2 * pad) * 2, H = (2 * r + 2 * pad) * 2;
   const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.scale(2, 2);
-  const cw = w, ch = 2 * r; x.beginPath(); x.roundRect(pad, pad, cw, ch, r); x.fillStyle = m[1] === 'au' ? '#D51F24' : '#1c2236'; x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = 6; x.shadowOffsetY = 2; x.fill();
+  const cw = w, ch = 2 * r; x.beginPath(); x.roundRect(pad, pad, cw, ch, 4); x.fillStyle = m[1] === 'au' ? '#D62025' : '#36393C'; x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = 6; x.shadowOffsetY = 2; x.fill();
   x.shadowColor = 'transparent'; x.lineWidth = 3; x.strokeStyle = '#fff'; x.stroke();
-  x.fillStyle = '#fff'; x.font = `700 ${big ? 16 : 14}px "Josefin Sans", system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(n, pad + cw / 2, pad + r + 1);
+  x.fillStyle = '#fff'; x.font = `500 ${big ? 16 : 14}px Jost, Futura, system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(n, pad + cw / 2, pad + r + 1);
   map.addImage(e.id, { width: W, height: H, data: x.getImageData(0, 0, W, H).data }, { pixelRatio: 2 });
 });
 function geo() { return { type: 'FeatureCollection', features: vis.map(p => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
@@ -138,6 +179,7 @@ let layersReady = false;
 map.on('load', async () => {
   const [pw, pa, po] = await Promise.all([svgImg(PIN(0, 0)), svgImg(PIN(1, 0)), svgImg(PIN(0, 1))]);
   map.addImage('pin-w', pw, { pixelRatio: 2 }); map.addImage('pin-au', pa, { pixelRatio: 2 }); map.addImage('pin-on', po, { pixelRatio: 2 });
+  try { await document.fonts.load('500 14px Jost'); } catch (e) {}
   map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 46, clusterMaxZoom: 15, clusterProperties: { au: ['+', ['get', 'au']] } });
   map.addSource('sel', { type: 'geojson', data: selGeo() });
   const common = { 'icon-allow-overlap': true, 'icon-ignore-placement': true, 'icon-pitch-alignment': 'viewport', 'icon-rotation-alignment': 'viewport' };
@@ -165,20 +207,20 @@ $('tMap').onclick = () => { street = !street; map.setLayoutProperty('street', 'v
 // project card + fly-to
 function open(p, fly) {
   spinning = false; hideHint(); if (sel && sel !== p && fly !== 'back') hist.push(sel); sel = p; repaintPins(); document.body.classList.remove('nocard');
-  $('cPh').innerHTML = (p.img ? `<img src="img/${esc(p.img)}" alt="${esc(p.name)}">` : `<div class="noimg">Photo coming soon</div>`) + (p.credit ? `<span class="credit">Photo: ${esc(p.credit)}</span>` : '') + (p.render ? `<span class="tag">Artist’s impression</span>` : '');
+  $('cPh').innerHTML = (p.img ? `<img src="${/^https?:/.test(p.img) ? esc(p.img) : 'img/' + esc(p.img)}" alt="${esc(p.name)}">` : `<div class="noimg"><svg viewBox="0 0 40 46"><path d="${WEDGE}" fill="#D62025"/></svg>Photo to come</div>`) + (p.ipage ? `<span class="credit">Photo: ${esc(p.iby || '')} · ${esc(p.ilic || '')} · Wikimedia Commons</span>` : p.credit ? `<span class="credit">Photo: ${esc(p.credit)}</span>` : '') + (p.render ? `<span class="tag">Artist’s impression</span>` : '');
   $('cKick').textContent = [LABEL[p.type] || p.type, [p.place, p.region, p.country].filter((v, i, a) => v && a.indexOf(v) === i).join(', ')].filter(Boolean).join(' · ');
   $('cName').textContent = p.name; $('cSub').textContent = p.sub || ''; $('cSub').hidden = !p.sub;
   const art = /^Artists?:/.test(p.architect || '');
-  const rows = [['KEIM', p.products, 'prod'], ['Colours', p.colours], [art ? 'Artist' : 'Architect', art ? p.architect.replace(/^Artists?:\s*/, '') : p.architect], ['Builder', p.builder], ['Applicator', p.applicator], ['Area', p.area], ['Status', p.status]].filter(r => r[1]);
+  const rows = [['KEIM', p.products, 'prod'], ['Year', p.year ? p.year + (/^c\.|^by /.test(p.year) ? ' (approx.)' : '') : ''], ['Colours', p.colours], [art ? 'Artist' : 'Architect', art ? p.architect.replace(/^Artists?:\s*/, '') : p.architect], ['Builder', p.builder], ['Applicator', p.applicator], ['Area', p.area], ['Status', p.status]].filter(r => r[1]);
   $('cFacts').innerHTML = rows.map(([k, v, c]) => `<dt>${k}</dt><dd${c ? ' class="' + c + '"' : ''}>${esc(v)}</dd>`).join('');
   $('cStory').textContent = [p.story, p.notes].filter(Boolean).join(' '); $('cStory').hidden = !(p.story || p.notes);
   $('cApprox').hidden = !!p.exact;
   $('cMore').hidden = !p.link; if (p.link) $('cMore').href = p.link;
-  $('cSrc').textContent = 'Source: ' + (p.src || 'KEIM');
+  $('cSrc').innerHTML = 'Source: ' + esc(p.src || 'KEIM') + (p.year_src && p.year ? '<br>Year: ' + esc(p.year_src) : '') + (p.ipage ? `<br>Photo: <a href="${esc(p.ipage)}" target="_blank" rel="noopener">${esc(p.iby || 'Wikimedia Commons')}</a>, ${esc(p.ilic || '')}, via Wikimedia Commons (general view of the building)` : '');
   $('card').hidden = false; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
   if (fly) { const wide = innerWidth > 760;
     map.flyTo({ center: [p.lon, p.lat], zoom: p.exact ? 16.6 : 12.5, pitch: p.exact ? 58 : 35, bearing: (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
-      padding: wide ? { right: 420, top: 60, left: 0, bottom: 0 } : { bottom: innerHeight * 0.55, top: 80, left: 0, right: 0 } }); }
+      padding: wide ? { right: 430, top: 150, left: 0, bottom: 0 } : { bottom: innerHeight * 0.55, top: 80, left: 0, right: 0 } }); }
   try { history.replaceState(null, '', '#' + p.id); } catch (e) {}
 }
 function close() { $('card').hidden = true; sel = null; repaintPins(); document.body.classList.add('nocard'); touring = false; try { history.replaceState(null, '', location.pathname); } catch (e) {} }
@@ -194,13 +236,26 @@ $('tTour').onclick = () => { const pool = vis.filter(p => p.img && p.exact); if 
 // filters + search
 function syncChips() { document.querySelectorAll('#bar .chip[data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === fType ? 'true' : 'false')); $('fAU').setAttribute('aria-pressed', fAU ? 'true' : 'false'); }
 function refilter() { const q = fQ.toLowerCase();
-  vis = P.filter(p => (!fType || p.type === fType) && (!fAU || p.country === 'Australia') && (!q || (p.name + ' ' + p.place + ' ' + p.country + ' ' + (p.region || '') + ' ' + p.products + ' ' + p.architect).toLowerCase().includes(q)));
+  vis = P.filter(p => (!fType || p.type === fType) && (!fAU || p.country === 'Australia') && (!q || (p.name + ' ' + p.place + ' ' + p.country + ' ' + (p.region || '') + ' ' + p.products + ' ' + p.architect + ' ' + (p.year || '')).toLowerCase().includes(q)));
   const nc = new Set(vis.map(p => p.country)).size; $('count').textContent = vis.length + ' projects · ' + nc + (nc === 1 ? ' country' : ' countries');
-  const s = map.getSource && map.getSource('pts'); if (s) s.setData(geo()); }
+  const s = map.getSource && map.getSource('pts'); if (s) s.setData(geo()); renderList(); }
 $('fAU').onclick = () => { fAU = !fAU; syncChips(); refilter(); spinning = false; hideHint(); if (fAU) map.flyTo({ center: [134, -28], zoom: innerWidth < 700 ? 2.6 : 3.4, pitch: 0, bearing: 0, speed: 1.1 }); };
 $('q').addEventListener('input', e => { fQ = e.target.value.trim(); refilter(); if (fQ && vis.length === 1) open(vis[0], true); });
 $('q').addEventListener('keydown', e => { if (e.key === 'Enter' && vis.length) open(vis[0], true); });
 
+// list of projects in view
+let lSort = 'name';
+const yr = p => { const m = /(\d{4})/.exec(p.year || ''); return m ? +m[1] : 0; };
+function renderList() { if ($('list').hidden) return;
+  let L = vis; try { const b = map.getBounds(); if (map.getZoom() > 2.5) L = vis.filter(p => b.contains([p.lon, p.lat])); } catch (e) {}
+  L = L.slice().sort(lSort === 'year' ? (a, b) => yr(b) - yr(a) || a.name.localeCompare(b.name) : lSort === 'country' ? (a, b) => a.country.localeCompare(b.country) || a.name.localeCompare(b.name) : (a, b) => a.name.localeCompare(b.name));
+  $('lCount').textContent = L.length + (L.length === 1 ? ' project' : ' projects') + (L.length !== vis.length ? ' of ' + vis.length : '');
+  $('lOl').innerHTML = L.map(p => `<li><button type="button" data-i="${P.indexOf(p)}"><span class="th${p.img ? '' : ' none'}" ${p.img ? `style="background-image:url('${/^https?:/.test(p.img) ? esc(p.img) : 'img/' + esc(p.img)}')"` : ''}></span><span><b>${esc(p.name)}</b><small>${esc([p.place, p.country].filter(Boolean).join(', '))}${p.year ? ' · ' + esc(p.year) : ''}</small><small><i>${esc((p.products || '').replace(/\s*\(.*?\)/g, ''))}</i></small></span></button></li>`).join(''); }
+$('lOl').addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) { open(P[+b.dataset.i], true); if (innerWidth <= 760) $('list').hidden = true; } });
+$('tList').onclick = () => { $('list').hidden = !$('list').hidden; renderList(); hideHint(); };
+$('lX').onclick = () => { $('list').hidden = true; };
+$('lSort').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; lSort = b.dataset.s; document.querySelectorAll('#lSort button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderList(); });
+map.on('moveend', renderList);
 fetch('projects.json').then(r => r.json()).then(list => {
   P = list.filter(p => p.lat != null);
   TYPES.filter(t => P.some(p => p.type === t)).forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = LABEL[t]; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { fType = fType === t ? null : t; syncChips(); refilter(); }; $('bar').appendChild(b); });

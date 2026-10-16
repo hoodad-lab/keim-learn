@@ -75,6 +75,25 @@ body:not(.nocard) .under { padding-right: 446px; }
 .legend { position: fixed; left: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); z-index: 2; display: flex; gap: 14px; background: #fff; box-shadow: 0 4px 14px -6px rgba(0,0,0,.4); padding: 8px 12px 7px; font: 500 11px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
 .legend i { display: inline-block; width: 11px; height: 13px; margin-right: 6px; vertical-align: -2px; clip-path: polygon(0 0, 100% 0, 50% 100%); border-radius: 50% 50% 0 0 / 30% 30% 0 0; }
 .maplibregl-ctrl-attrib { font-size: 10px; }
+/* project list */
+.list { position: fixed; z-index: 4; left: 16px; top: 172px; bottom: 76px; width: 330px; background: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.35); display: flex; flex-direction: column; transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .2s; border-radius: 3px; }
+.list[hidden] { display: flex; opacity: 0; pointer-events: none; transform: translateX(-24px); }
+.list .lh { padding: 14px 16px 10px; border-bottom: 1px solid var(--grey2); display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.list .lh b { font: 500 15px/1.1 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--umbra); }
+.list .lh span { font: 400 12px/1.2 var(--sans); color: var(--mute); }
+.list .lh button { border: 0; background: none; font-size: 16px; cursor: pointer; color: var(--anth); }
+.list .sort { display: flex; gap: 4px; padding: 8px 16px; border-bottom: 1px solid var(--grey2); }
+.list .sort button { border: 1px solid var(--grey2); background: #fff; padding: 6px 9px 5px; font: 500 10.5px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--anth); cursor: pointer; }
+.list .sort button[aria-pressed="true"] { background: var(--anth); color: #fff; border-color: var(--anth); }
+.list ol { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; }
+.list li button { display: grid; grid-template-columns: 64px 1fr; gap: 10px; width: 100%; text-align: left; border: 0; border-bottom: 1px solid #eef0f1; background: #fff; padding: 9px 14px; cursor: pointer; font: inherit; color: var(--ink); }
+.list li button:hover { background: #f5f6f7; }
+.list li .th { width: 64px; height: 46px; background: var(--anth) center/cover no-repeat; position: relative; }
+.list li .th.none::after { content: ""; position: absolute; left: 50%; top: 50%; width: 16px; height: 19px; transform: translate(-50%,-50%); background: var(--red); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.list li b { display: block; font: 500 13px/1.2 var(--sans); text-transform: uppercase; letter-spacing: .03em; }
+.list li small { display: block; font: 400 12px/1.3 var(--sans); color: var(--mute); margin-top: 3px; }
+.list li small i { font-style: normal; color: var(--red); }
+@media (max-width: 760px) { .list { left: 0; right: 0; width: auto; top: auto; bottom: 0; height: 60vh; border-radius: 3px 3px 0 0; } .list[hidden] { transform: translateY(30px); } }
 .maplibregl-ctrl-top-right { top: 150px; }
 @media (max-width: 760px) { .maplibregl-ctrl-top-right { top: 160px; } .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-in, .maplibregl-ctrl-group button.maplibregl-ctrl-zoom-out { display: none; } .legend { display: none; } }
 </style>
@@ -82,7 +101,7 @@ body:not(.nocard) .under { padding-right: 446px; }
 <body class="nocard">
 <div id="map"></div>
 <script>if (/[?&]embed=1/.test(location.search)) document.documentElement.classList.add("embed");</script>
-<style>.embed .top, .embed .hint, .embed .legend { display: none !important; } .embed .maplibregl-ctrl-top-right { top: 16px !important; } .embed .card { top: 16px; }</style>
+<style>.embed .top, .embed .hint, .embed .legend, .embed .list, .embed #tList { display: none !important; } .embed .maplibregl-ctrl-top-right { top: 16px !important; } .embed .card { top: 16px; }</style>
 <header class="top">
   <div class="panel"><a class="home" href="../" target="_top">‹ All projects</a><a class="logo" href="../" target="_top" aria-label="KEIM projects"><img src="../keim-logo-neg.png" alt="KEIM" width="92" height="94"></a></div>
   <div class="under"><div class="brand"><h1>KEIM references <b>worldwide</b></h1><span class="count" id="count"></span></div>
@@ -92,7 +111,8 @@ body:not(.nocard) .under { padding-right: 446px; }
   </div></div>
 </header>
 <div class="legend" id="legend"><span><i style="background:#D62025"></i>Australia</span><span><i style="background:#36393C;outline:1px solid #fff"></i>Worldwide</span></div>
-<div class="tools"><button id="tMap" type="button" aria-label="Switch between street map and satellite">MAP</button><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button></div>
+<div class="tools"><button id="tMap" type="button" aria-label="Switch between street map and satellite">MAP</button><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button><button id="tList" type="button" aria-label="Show project list">LIST</button></div>
+<aside class="list" id="list" hidden><div class="lh"><div><b>Projects in view</b><br><span id="lCount"></span></div><button id="lX" type="button" aria-label="Close list">✕</button></div><div class="sort" id="lSort"><button type="button" data-s="name" aria-pressed="true">A–Z</button><button type="button" data-s="year" aria-pressed="false">Newest</button><button type="button" data-s="country" aria-pressed="false">Country</button></div><ol id="lOl"></ol></aside>
 <div class="hint" id="hint">Spin the globe, zoom in and tap a KEIM wedge to fly to the project</div>
 <aside class="card" id="card" hidden aria-live="polite">
   <div class="ph" id="cPh"></div>
@@ -196,7 +216,7 @@ function open(p, fly) {
   $('cStory').textContent = [p.story, p.notes].filter(Boolean).join(' '); $('cStory').hidden = !(p.story || p.notes);
   $('cApprox').hidden = !!p.exact;
   $('cMore').hidden = !p.link; if (p.link) $('cMore').href = p.link;
-  $('cSrc').innerHTML = 'Source: ' + esc(p.src || 'KEIM') + (p.ipage ? `<br>Photo: <a href="${esc(p.ipage)}" target="_blank" rel="noopener">${esc(p.iby || 'Wikimedia Commons')}</a>, ${esc(p.ilic || '')}, via Wikimedia Commons (general view of the building)` : '');
+  $('cSrc').innerHTML = 'Source: ' + esc(p.src || 'KEIM') + (p.year_src && p.year ? '<br>Year: ' + esc(p.year_src) : '') + (p.ipage ? `<br>Photo: <a href="${esc(p.ipage)}" target="_blank" rel="noopener">${esc(p.iby || 'Wikimedia Commons')}</a>, ${esc(p.ilic || '')}, via Wikimedia Commons (general view of the building)` : '');
   $('card').hidden = false; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
   if (fly) { const wide = innerWidth > 760;
     map.flyTo({ center: [p.lon, p.lat], zoom: p.exact ? 16.6 : 12.5, pitch: p.exact ? 58 : 35, bearing: (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
@@ -216,13 +236,26 @@ $('tTour').onclick = () => { const pool = vis.filter(p => p.img && p.exact); if 
 // filters + search
 function syncChips() { document.querySelectorAll('#bar .chip[data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === fType ? 'true' : 'false')); $('fAU').setAttribute('aria-pressed', fAU ? 'true' : 'false'); }
 function refilter() { const q = fQ.toLowerCase();
-  vis = P.filter(p => (!fType || p.type === fType) && (!fAU || p.country === 'Australia') && (!q || (p.name + ' ' + p.place + ' ' + p.country + ' ' + (p.region || '') + ' ' + p.products + ' ' + p.architect).toLowerCase().includes(q)));
+  vis = P.filter(p => (!fType || p.type === fType) && (!fAU || p.country === 'Australia') && (!q || (p.name + ' ' + p.place + ' ' + p.country + ' ' + (p.region || '') + ' ' + p.products + ' ' + p.architect + ' ' + (p.year || '')).toLowerCase().includes(q)));
   const nc = new Set(vis.map(p => p.country)).size; $('count').textContent = vis.length + ' projects · ' + nc + (nc === 1 ? ' country' : ' countries');
-  const s = map.getSource && map.getSource('pts'); if (s) s.setData(geo()); }
+  const s = map.getSource && map.getSource('pts'); if (s) s.setData(geo()); renderList(); }
 $('fAU').onclick = () => { fAU = !fAU; syncChips(); refilter(); spinning = false; hideHint(); if (fAU) map.flyTo({ center: [134, -28], zoom: innerWidth < 700 ? 2.6 : 3.4, pitch: 0, bearing: 0, speed: 1.1 }); };
 $('q').addEventListener('input', e => { fQ = e.target.value.trim(); refilter(); if (fQ && vis.length === 1) open(vis[0], true); });
 $('q').addEventListener('keydown', e => { if (e.key === 'Enter' && vis.length) open(vis[0], true); });
 
+// list of projects in view
+let lSort = 'name';
+const yr = p => { const m = /(\d{4})/.exec(p.year || ''); return m ? +m[1] : 0; };
+function renderList() { if ($('list').hidden) return;
+  let L = vis; try { const b = map.getBounds(); if (map.getZoom() > 2.5) L = vis.filter(p => b.contains([p.lon, p.lat])); } catch (e) {}
+  L = L.slice().sort(lSort === 'year' ? (a, b) => yr(b) - yr(a) || a.name.localeCompare(b.name) : lSort === 'country' ? (a, b) => a.country.localeCompare(b.country) || a.name.localeCompare(b.name) : (a, b) => a.name.localeCompare(b.name));
+  $('lCount').textContent = L.length + (L.length === 1 ? ' project' : ' projects') + (L.length !== vis.length ? ' of ' + vis.length : '');
+  $('lOl').innerHTML = L.map(p => `<li><button type="button" data-i="${P.indexOf(p)}"><span class="th${p.img ? '' : ' none'}" ${p.img ? `style="background-image:url('${/^https?:/.test(p.img) ? esc(p.img) : 'img/' + esc(p.img)}')"` : ''}></span><span><b>${esc(p.name)}</b><small>${esc([p.place, p.country].filter(Boolean).join(', '))}${p.year ? ' · ' + esc(p.year) : ''}</small><small><i>${esc((p.products || '').replace(/\s*\(.*?\)/g, ''))}</i></small></span></button></li>`).join(''); }
+$('lOl').addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) { open(P[+b.dataset.i], true); if (innerWidth <= 760) $('list').hidden = true; } });
+$('tList').onclick = () => { $('list').hidden = !$('list').hidden; renderList(); hideHint(); };
+$('lX').onclick = () => { $('list').hidden = true; };
+$('lSort').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; lSort = b.dataset.s; document.querySelectorAll('#lSort button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderList(); });
+map.on('moveend', renderList);
 fetch('projects.json').then(r => r.json()).then(list => {
   P = list.filter(p => p.lat != null);
   TYPES.filter(t => P.some(p => p.type === t)).forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = LABEL[t]; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { fType = fType === t ? null : t; syncChips(); refilter(); }; $('bar').appendChild(b); });
