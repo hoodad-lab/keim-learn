@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css">
+<script>(function () { var t; try { t = localStorage.getItem("keim-theme"); } catch (e) {} if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.dataset.theme = t; })();</script>
 <style>
 /* KEIM corporate design: KEIM Red, KEIM Anthracite, white; Futura (Jost as web stand-in); one secondary colour (Umbra) for headlines */
 :root { --red: #D62025; --red2: #D10612; --anth: #36393C; --grey: #A3AAAE; --grey2: #D5D9DB; --umbra: #957F68; --ink: #1d1e20; --mute: #6c7174; --sans: "Jost", "Futura", "Futura PT", "Century Gothic", system-ui, sans-serif; }
@@ -128,14 +129,13 @@ body:not(.nocard) .under { padding-right: 446px; }
 .hq .b img { width: 64px; height: auto; display: block; }
 .hq .l { margin-top: 4px; background: #fff; color: var(--anth); font: 500 9.5px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: 4px 7px 3px; white-space: nowrap; }
 .hq:hover .b { background: var(--red2); border-bottom-color: #fff; }
-/* "find us" button */
-.findus { position: fixed; z-index: 3; left: 16px; bottom: calc(max(30px, calc(env(safe-area-inset-bottom) + 14px)) + 44px); display: flex; align-items: center; gap: 9px; border: 0; background: var(--anth); color: #fff; padding: 7px 12px 6px 9px; border-radius: 2px; font: 500 11px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; box-shadow: 0 6px 18px -6px rgba(0,0,0,.6); }
-.findus svg { width: 14px; height: 16px; flex: none; }
+/* "find us" button — same family as the tool buttons */
+.findus { position: fixed; z-index: 3; left: 16px; bottom: calc(max(30px, calc(env(safe-area-inset-bottom) + 14px)) + 42px); height: 34px; display: flex; align-items: center; gap: 8px; border: 0; background: var(--anth); color: #fff; padding: 0 12px 0 10px; border-radius: 2px; font: 500 10.5px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; box-shadow: 0 6px 18px -6px rgba(0,0,0,.5); transition: background .2s; }
+.findus svg { width: 11px; height: 13px; flex: none; }
 .findus:hover { background: var(--red2); }
-.findus small { display: block; font: 400 10px/1 var(--sans); letter-spacing: .08em; text-transform: none; color: var(--grey); margin-top: 3px; }
-.findus:hover small { color: #fff; }
+.findus:hover svg path { fill: #fff; }
 body.touring .findus, .embed .findus { display: none; }
-@media (max-width: 760px) { .findus { bottom: calc(max(30px, calc(env(safe-area-inset-bottom) + 14px)) + 62px); } body:not(.nocard) .findus { display: none; } }
+@media (max-width: 760px) { .findus { bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); height: 40px; } body:not(.nocard) .findus { display: none; } }
 
 /* tours */
 .tmenu { position: fixed; z-index: 6; right: 84px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); width: 330px; max-height: min(560px, 70vh); background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,.45); border-radius: 3px; display: flex; flex-direction: column; overflow: hidden; }
@@ -167,6 +167,52 @@ body.touring .legend, body.touring .hint { display: none; }
   .tbar { left: 8px; right: 8px; bottom: auto; top: calc(72px + env(safe-area-inset-top)); }
   .tbar .prog { display: none; } .tbar .tt { flex: 1; }
 }
+
+/* ---------- dark mode ---------- */
+.theme { position: absolute; right: 14px; bottom: 14px; width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.25); background: transparent; border-radius: 2px; color: #fff; cursor: pointer; display: grid; place-items: center; }
+.theme:hover { background: rgba(255,255,255,.1); }
+.theme svg { width: 17px; height: 17px; }
+.theme .sun { display: none; } html[data-theme="dark"] .theme .sun { display: block; } html[data-theme="dark"] .theme .moon { display: none; }
+html[data-theme="dark"] { --ink: #e9ebec; --mute: #9aa0a4; --umbra: #b9a48d; --line: #2c2f32; --surf: #141618; --surf2: #1e2124; color-scheme: dark; }
+html[data-theme="dark"], html[data-theme="dark"] body { background: #000; }
+html[data-theme="dark"] #map .maplibregl-canvas-container { background: radial-gradient(ellipse at 50% 50%, #1c1f22 0%, #0a0b0c 45%, #000 100%); }
+html[data-theme="dark"] .panel { background: #111214; }
+html[data-theme="dark"] .under { background: linear-gradient(rgba(8,9,10,.95), rgba(8,9,10,.78) 60%, rgba(8,9,10,0)); }
+html[data-theme="dark"] .brand h1 b { color: #fff; }
+html[data-theme="dark"] .chip { background: rgba(20,22,24,.85); color: var(--ink); border-color: #4f5559; }
+html[data-theme="dark"] .chip[aria-pressed="true"] { background: #e9ebec; color: #111; border-color: #e9ebec; }
+html[data-theme="dark"] .chip.au { color: #ff4d52; border-color: var(--red); }
+html[data-theme="dark"] .chip.au[aria-pressed="true"] { background: var(--red); color: #fff; }
+html[data-theme="dark"] .search { background: var(--surf); color: var(--ink); border-color: #4f5559; }
+html[data-theme="dark"] .search::placeholder { color: var(--mute); }
+html[data-theme="dark"] .tools button, html[data-theme="dark"] .findus { background: #1e2124; box-shadow: 0 0 0 1px #33373a, 0 6px 18px -6px rgba(0,0,0,.8); }
+html[data-theme="dark"] .tools button:hover, html[data-theme="dark"] .findus:hover { background: var(--red2); }
+html[data-theme="dark"] .legend { background: var(--surf); color: var(--ink); }
+html[data-theme="dark"] .card, html[data-theme="dark"] .list, html[data-theme="dark"] .tmenu { background: var(--surf); color: var(--ink); box-shadow: 0 0 0 1px #2a2d30, 0 20px 60px rgba(0,0,0,.8); }
+html[data-theme="dark"] .card .ph, html[data-theme="dark"] .tmenu .opt .th2 { background-color: var(--surf2); }
+html[data-theme="dark"] .card .more.sv, html[data-theme="dark"] .card .nav button { background: transparent; color: var(--ink); box-shadow: none; border: 1px solid #50565a; }
+html[data-theme="dark"] .card .more.sv { box-shadow: inset 0 0 0 1px #50565a; border: 0; }
+html[data-theme="dark"] .card .nav { border-top-color: var(--line); }
+html[data-theme="dark"] .card .approx { background: var(--surf2); color: var(--ink); }
+html[data-theme="dark"] .card .story { color: #c9cdd0; }
+html[data-theme="dark"] .card .src a, html[data-theme="dark"] .card a:not(.more) { color: #cfd3d5; }
+html[data-theme="dark"] .list .lh, html[data-theme="dark"] .list .sort { border-color: var(--line); }
+html[data-theme="dark"] .list .lh button { color: var(--ink); }
+html[data-theme="dark"] .list .sort button { background: transparent; color: var(--ink); border-color: #3a3e42; }
+html[data-theme="dark"] .list .sort button[aria-pressed="true"] { background: #e9ebec; color: #111; }
+html[data-theme="dark"] .list li button { background: var(--surf); color: var(--ink); border-bottom-color: var(--line); }
+html[data-theme="dark"] .list li button:hover, html[data-theme="dark"] .tmenu .opt:hover { background: var(--surf2); }
+html[data-theme="dark"] .tmenu .th { border-bottom-color: var(--umbra); }
+html[data-theme="dark"] .tmenu .opt { background: var(--surf); color: var(--ink); }
+html[data-theme="dark"] .tmenu .opt b { color: #fff; }
+html[data-theme="dark"] .tmenu .th button { background: #2a2d30; }
+html[data-theme="dark"] .tbar { background: #1e2124; box-shadow: 0 0 0 1px #33373a, 0 8px 24px -8px rgba(0,0,0,.8); }
+html[data-theme="dark"] .maplibregl-ctrl-group { background: var(--surf); box-shadow: 0 0 0 1px #33373a; }
+html[data-theme="dark"] .maplibregl-ctrl-group button + button { border-top-color: #33373a; }
+html[data-theme="dark"] .maplibregl-ctrl-icon { filter: invert(1); }
+html[data-theme="dark"] .maplibregl-ctrl-attrib { background: rgba(20,22,24,.8) !important; color: var(--mute); }
+html[data-theme="dark"] .maplibregl-ctrl-attrib a { color: var(--mute); }
+html[data-theme="dark"] .maplibregl-ctrl-attrib-button { filter: invert(1); }
 </style>
 </head>
 <body class="nocard">
@@ -174,7 +220,7 @@ body.touring .legend, body.touring .hint { display: none; }
 <script>if (/[?&]embed=1/.test(location.search)) document.documentElement.classList.add("embed");</script>
 <style>.embed .top, .embed .hint, .embed .legend, .embed .list, .embed #tList { display: none !important; } .embed .maplibregl-ctrl-top-right { top: 16px !important; } .embed .card { top: 16px; }</style>
 <header class="top">
-  <div class="panel"><a class="home" href="../" target="_top">‹ All projects</a><a class="logo" href="../" target="_top" aria-label="KEIM projects"><img src="../keim-logo-neg.png" alt="KEIM" width="92" height="94"></a></div>
+  <div class="panel"><a class="home" href="../" target="_top">‹ All projects</a><a class="logo" href="../" target="_top" aria-label="KEIM projects"><img src="../keim-logo-neg.png" alt="KEIM" width="92" height="94"></a><button class="theme" id="theme" type="button" aria-label="Switch dark or light mode"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>
   <div class="under"><div class="brand"><h1>KEIM references <b>worldwide</b></h1><span class="count" id="count"></span></div>
   <div class="bar" id="bar">
     <input class="search" id="q" type="search" placeholder="Search a project or city" aria-label="Search projects">
@@ -182,12 +228,11 @@ body.touring .legend, body.touring .hint { display: none; }
   </div></div>
 </header>
 <div class="legend" id="legend"><span><i style="background:#D62025"></i>Australia</span><span><i style="background:#36393C;outline:1px solid #fff"></i>Worldwide</span></div>
-<button class="findus" id="findUs" type="button" aria-label="Fly to the KEIM Australia showroom"><svg viewBox="0 0 40 46"><path d="M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z" fill="#D62025"/></svg><span>KEIM Australia<small>Find our showroom</small></span></button>
+<button class="findus" id="findUs" type="button" aria-label="Fly to the KEIM Australia showroom"><svg viewBox="0 0 40 46"><path d="M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z" fill="#D62025"/></svg><span>KEIM Australia</span></button>
 <div class="tmenu" id="tMenu" hidden role="dialog" aria-label="Choose a tour"><div class="th"><b>Choose a tour</b><button id="tmX" type="button" aria-label="Close">✕</button></div><div class="tl" id="tmList"></div></div>
 <div class="tbar" id="tBar" hidden><div class="tt"><b id="tbName"></b><span id="tbStep"></span></div><div class="prog"><i id="tbProg"></i></div><button id="tbPrev" type="button" aria-label="Previous stop">‹</button><button id="tbPlay" type="button">Pause</button><button id="tbNext" type="button" aria-label="Next stop">›</button><button id="tbX" type="button" aria-label="End tour">✕</button></div>
 <div class="tools"><button id="tMap" type="button" aria-label="Switch between street map and satellite">MAP</button><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button><button id="tList" type="button" aria-label="Show project list">LIST</button></div>
 <aside class="list" id="list" hidden><div class="lh"><div><b>Projects in view</b><br><span id="lCount"></span></div><button id="lX" type="button" aria-label="Close list">✕</button></div><div class="sort" id="lSort"><button type="button" data-s="name" aria-pressed="true">A–Z</button><button type="button" data-s="year" aria-pressed="false">Newest</button><button type="button" data-s="country" aria-pressed="false">Country</button></div><ol id="lOl"></ol></aside>
-<div class="hint" id="hint">Spin the globe, zoom in and tap a KEIM wedge to fly to the project</div>
 <aside class="card" id="card" hidden aria-live="polite">
   <div class="stick"><button class="grab" id="cGrab" type="button" aria-label="Expand"></button><button class="x" id="cX" type="button" aria-label="Close">✕</button></div>
   <div class="ph" id="cPh"></div>
@@ -223,13 +268,13 @@ const map = new maplibregl.Map({
     sky: { 'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 5, 1, 7, 0] } }
 });
 map.addControl(new maplibregl.NavigationControl({ visualizePitch: true, showCompass: true }), 'top-right');
-map.on('load', () => { try { map.setSky({ 'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 5, 1, 7, 0] }); } catch (e) {} });
+map.on('load', () => { try { if (innerWidth <= 760) document.querySelectorAll('.maplibregl-ctrl-attrib').forEach(a => a.classList.remove('maplibregl-compact-show')); } catch (e) {} try { map.setSky({ 'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 5, 1, 7, 0] }); } catch (e) {} });
 
 // slow spin of the globe until someone touches it
 function spin() { if (!spinning || map.isMoving() || map.getZoom() > 3) return; const c = map.getCenter(); c.lng -= 2.2; map.easeTo({ center: c, duration: 1000, easing: n => n }); }
 map.on('moveend', spin);
 ['mousedown', 'touchstart', 'wheel', 'dragstart'].forEach(ev => map.on(ev, () => { spinning = false; touring = false; hideHint(); }));
-let hintGone = false; function hideHint() { if (!hintGone) { hintGone = true; $('hint').style.opacity = 0; } }
+let hintGone = false; function hideHint() { hintGone = true; }
 setTimeout(hideHint, 10000);
 
 // pins and clusters drawn inside the map itself (WebGL), so they stay glued to the ground while you move
@@ -284,7 +329,7 @@ $('tMap').onclick = () => { street = !street; map.setLayoutProperty('street', 'v
 
 
 // KEIM Australia showroom — always on the map
-const HQ = { id: 'keim-australia', name: 'KEIM Australia', sub: 'Showroom & office · Unit 7, 19 McCauley Street, Matraville NSW 2036', place: 'Matraville, Sydney', region: 'New South Wales', country: 'Australia', lat: -33.96085, lon: 151.22445, exact: 1, type: 'KEIM Australia', products: 'The full KEIM mineral paint range, colour advice and technical support', status: 'Visit by appointment · (02) 9748 7160', story: 'Our Sydney showroom and office. KEIM has been supplying mineral silicate paints in Australia for more than 35 years, and since 2025 KEIM Australia is part of the global KEIM family. Come and see the colours on real substrates, or call us to talk through a project.', link: 'https://www.keim.com.au', src: 'KEIM Australia' };
+const HQ = { id: 'keim-australia', name: 'KEIM Australia', sub: 'Showroom & office · Unit 7, 19 McCauley Street, Matraville NSW 2036', place: 'Matraville, Sydney', region: 'New South Wales', country: 'Australia', lat: -33.96212, lon: 151.22421, exact: 1, type: 'KEIM Australia', products: 'The full KEIM mineral paint range, colour advice and technical support', status: 'Visit by appointment · (02) 9748 7160', story: 'Our Sydney showroom and office. KEIM has been supplying mineral silicate paints in Australia for more than 35 years, and since 2025 KEIM Australia is part of the global KEIM family. Come and see the colours on real substrates, or call us to talk through a project.', link: 'https://www.keim.com.au', src: 'KEIM Australia' };
 (function () {
   const el = document.createElement('div'); el.className = 'hq'; el.title = 'KEIM Australia showroom, Matraville';
   const logo = document.createElement('img');
@@ -327,6 +372,12 @@ function nextNearby() { if (!sel) return; const d = p => (p.lat - sel.lat) ** 2 
 $('cNext').onclick = () => { touring = false; nextNearby(); };
 $('cBack').onclick = () => { if (hist.length) open(hist.pop(), 'back'); };
 $('tWorld').onclick = () => { close(); hist.length = 0; map.flyTo({ center: [map.getCenter().lng, 15], zoom: innerWidth < 700 ? 0.9 : 1.9, pitch: 0, bearing: 0, speed: 1.2 }); spinning = true; };
+
+// dark / light mode — remembered per browser, shared with the projects page
+function setTheme(t) { document.documentElement.dataset.theme = t; try { localStorage.setItem('keim-theme', t); } catch (e) {} try { parent !== window && parent.postMessage({ keimTheme: t }, '*'); } catch (e) {} }
+$('theme').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+addEventListener('storage', e => { if (e.key === 'keim-theme' && e.newValue) document.documentElement.dataset.theme = e.newValue; });
+addEventListener('message', e => { if (e.data && e.data.keimTheme) document.documentElement.dataset.theme = e.data.keimTheme; });
 // guided tours: world highlights, Australia, or one sector — flown as a route, nearest stop next
 const goodPic = p => p.img && !p.priv;
 const tourOK = p => goodPic(p) || canAer(p);
