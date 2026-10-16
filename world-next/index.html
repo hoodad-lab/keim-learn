@@ -396,7 +396,7 @@ function open(p, fly) {
   } else { $('cMore').setAttribute('target', '_blank'); $('cSv').textContent = 'Google Street View ↗'; }
   $('card').classList.remove('full'); $('card').hidden = false; $('card').scrollTop = 0; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
   if (fly) { const wide = innerWidth > 760;
-    const hq = p === HQ; map.flyTo({ center: [p.lon, p.lat], zoom: hq ? 17.2 : p.exact ? 16.6 : 12.5, pitch: hq ? 40 : p.exact ? 58 : 35, bearing: hq ? -20 : (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
+    const hq = p === HQ; map.flyTo({ center: [p.lon, p.lat], zoom: hq ? 17.2 : p.exact ? 16.6 : Math.max(14, Math.min(map.getZoom(), 16)), pitch: hq ? 40 : p.exact ? 58 : 35, bearing: hq ? -20 : (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
       padding: wide ? { right: 430, top: 150, left: 0, bottom: 0 } : { bottom: innerHeight * 0.52, top: hq ? 120 : 110, left: 0, right: 0 } }); }
   try { history.replaceState(null, '', '#' + p.id); } catch (e) {}
 }
