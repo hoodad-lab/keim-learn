@@ -3214,7 +3214,8 @@
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
-  "exact": 0
+  "exact": 0,
+  "year": "2025"
  },
  {
   "id": "au-waigani-national-courthouse",
@@ -3691,7 +3692,8 @@
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
-  "exact": 0
+  "exact": 0,
+  "year": "2020"
  },
  {
   "id": "au-lucent-gasworks",
@@ -3717,7 +3719,8 @@
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
-  "exact": 1
+  "exact": 1,
+  "year": "2017"
  },
  {
   "id": "au-mlc-centre-brisbane",
@@ -3858,7 +3861,7 @@
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 1,
-  "year": "by 2015",
+  "year": "2010",
   "year_src": "KEIM Australia website, first archived 2015 (Wayback Machine)"
  },
  {
