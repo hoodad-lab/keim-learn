@@ -123,6 +123,37 @@ body:not(.nocard) .under { padding-right: 446px; }
 .hq .b img { width: 50px; height: auto; display: block; }
 .hq .l { margin-top: 3px; background: #fff; color: var(--anth); font: 500 9px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: 4px 6px 3px; white-space: nowrap; }
 .hq.small .tag { transform: scale(.78); }
+
+/* tours */
+.tmenu { position: fixed; z-index: 6; right: 84px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); width: 330px; max-height: min(560px, 70vh); background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,.45); border-radius: 3px; display: flex; flex-direction: column; overflow: hidden; }
+.tmenu[hidden] { display: none; }
+.tmenu .th { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px 12px; border-bottom: 3px solid var(--umbra); }
+.tmenu .th b { font: 500 16px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--umbra); }
+.tmenu .th button { border: 0; background: var(--anth); color: #fff; width: 30px; height: 30px; border-radius: 2px; cursor: pointer; }
+.tmenu .tl { overflow-y: auto; padding: 6px 0 8px; }
+.tmenu h4 { margin: 10px 16px 4px; font: 500 10.5px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
+.tmenu .opt { display: grid; grid-template-columns: 54px 1fr auto; gap: 12px; align-items: center; width: 100%; border: 0; background: #fff; padding: 8px 16px; text-align: left; cursor: pointer; font: inherit; color: var(--ink); }
+.tmenu .opt:hover { background: var(--paper); }
+.tmenu .opt .th2 { width: 54px; height: 40px; background: var(--grey2) center/cover; border-radius: 2px; }
+.tmenu .opt b { display: block; font: 500 14px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--anth); }
+.tmenu .opt small { display: block; font: 400 12.5px/1.3 var(--sans); color: var(--mute); margin-top: 2px; }
+.tmenu .opt .n { font: 500 12px/1 var(--sans); color: #fff; background: var(--red2); padding: 5px 7px 4px; border-radius: 2px; }
+.tbar { position: fixed; z-index: 6; left: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); display: flex; align-items: center; gap: 10px; background: var(--anth); color: #fff; padding: 8px 8px 8px 14px; border-radius: 2px; box-shadow: 0 8px 24px -8px rgba(0,0,0,.6); border-left: 4px solid var(--red); max-width: calc(100vw - 32px); }
+.tbar[hidden] { display: none; }
+.tbar .tt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.tbar .tt b { font: 500 12px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tbar .tt span { font: 400 12px/1 var(--sans); color: var(--grey); }
+.tbar .prog { width: 90px; height: 3px; background: rgba(255,255,255,.2); }
+.tbar .prog i { display: block; height: 100%; background: var(--red); width: 0; transition: width .4s; }
+.tbar button { border: 1px solid rgba(255,255,255,.35); background: transparent; color: #fff; height: 32px; min-width: 34px; padding: 0 10px; border-radius: 2px; font: 500 11px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+.tbar button:hover { background: var(--red2); border-color: var(--red2); }
+body.touring .legend, body.touring .hint { display: none; }
+@media (min-width: 761px) { body:not(.nocard) .tbar { max-width: calc(100vw - 470px); } }
+@media (max-width: 760px) {
+  .tmenu { left: 0; right: 0; bottom: 0; width: auto; max-height: 75dvh; border-radius: 3px 3px 0 0; }
+  .tbar { left: 8px; right: 8px; bottom: auto; top: calc(72px + env(safe-area-inset-top)); }
+  .tbar .prog { display: none; } .tbar .tt { flex: 1; }
+}
 </style>
 </head>
 <body class="nocard">
@@ -138,6 +169,8 @@ body:not(.nocard) .under { padding-right: 446px; }
   </div></div>
 </header>
 <div class="legend" id="legend"><span><i style="background:#D62025"></i>Australia</span><span><i style="background:#36393C;outline:1px solid #fff"></i>Worldwide</span></div>
+<div class="tmenu" id="tMenu" hidden role="dialog" aria-label="Choose a tour"><div class="th"><b>Choose a tour</b><button id="tmX" type="button" aria-label="Close">✕</button></div><div class="tl" id="tmList"></div></div>
+<div class="tbar" id="tBar" hidden><div class="tt"><b id="tbName"></b><span id="tbStep"></span></div><div class="prog"><i id="tbProg"></i></div><button id="tbPrev" type="button" aria-label="Previous stop">‹</button><button id="tbPlay" type="button">Pause</button><button id="tbNext" type="button" aria-label="Next stop">›</button><button id="tbX" type="button" aria-label="End tour">✕</button></div>
 <div class="tools"><button id="tMap" type="button" aria-label="Switch between street map and satellite">MAP</button><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button><button id="tList" type="button" aria-label="Show project list">LIST</button></div>
 <aside class="list" id="list" hidden><div class="lh"><div><b>Projects in view</b><br><span id="lCount"></span></div><button id="lX" type="button" aria-label="Close list">✕</button></div><div class="sort" id="lSort"><button type="button" data-s="name" aria-pressed="true">A–Z</button><button type="button" data-s="year" aria-pressed="false">Newest</button><button type="button" data-s="country" aria-pressed="false">Country</button></div><ol id="lOl"></ol></aside>
 <div class="hint" id="hint">Spin the globe, zoom in and tap a KEIM wedge to fly to the project</div>
@@ -272,15 +305,52 @@ function open(p, fly) {
       padding: wide ? { right: 430, top: 150, left: 0, bottom: 0 } : { bottom: innerHeight * 0.52, top: 70, left: 0, right: 0 } }); }
   try { history.replaceState(null, '', '#' + p.id); } catch (e) {}
 }
-function close() { $('card').hidden = true; sel = null; repaintPins(); document.body.classList.add('nocard'); touring = false; try { history.replaceState(null, '', location.pathname); } catch (e) {} }
+function close() { $('card').hidden = true; sel = null; repaintPins(); document.body.classList.add('nocard'); touring = false; if (typeof tourUI === 'function') tourUI(); try { history.replaceState(null, '', location.pathname); } catch (e) {} }
 $('cX').onclick = close; $('cGrab').onclick = () => $('card').classList.toggle('full'); $('card').addEventListener('scroll', () => { if (innerWidth <= 760 && $('card').scrollTop > 24) $('card').classList.add('full'); }, { passive: true }); addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
 function nextNearby() { if (!sel) return; const d = p => (p.lat - sel.lat) ** 2 + ((p.lon - sel.lon) * Math.cos(sel.lat * Math.PI / 180)) ** 2;
   const n = vis.filter(p => p !== sel && !hist.includes(p)).sort((a, b) => d(a) - d(b))[0]; if (n) open(n, true); }
 $('cNext').onclick = () => { touring = false; nextNearby(); };
 $('cBack').onclick = () => { if (hist.length) open(hist.pop(), 'back'); };
 $('tWorld').onclick = () => { close(); hist.length = 0; map.flyTo({ center: [map.getCenter().lng, 15], zoom: innerWidth < 700 ? 0.9 : 1.9, pitch: 0, bearing: 0, speed: 1.2 }); spinning = true; };
-// a little guided flight through highlights with photos
-$('tTour').onclick = () => { const pool = vis.filter(p => p.img && p.exact); if (!pool.length) return; touring = true; let k = 0; const step = () => { if (!touring) return; open(pool[k++ % pool.length], true); setTimeout(() => map.once('moveend', () => setTimeout(step, 4500)), 400); }; step(); };
+// guided tours: world highlights, Australia, or one sector — flown as a route, nearest stop next
+const goodPic = p => p.img && !p.priv;
+const tourOK = p => goodPic(p) || canAer(p);
+const TOURS = [
+  { id: 'highlights', name: 'World highlights', desc: 'The best-photographed KEIM projects around the globe', f: p => goodPic(p) && p.exact, max: 24, filt: {} },
+  { id: 'australia', name: 'Australia', desc: 'From the showroom in Sydney across the country', f: p => p.country === 'Australia' && tourOK(p), max: 30, hq: true, filt: { au: true } },
+  { id: 'europe', name: 'Europe', desc: 'Where KEIM began — Germany and beyond', f: p => p.lon > -12 && p.lon < 40 && p.lat > 34 && tourOK(p), max: 24, filt: {} }
+];
+TYPES.forEach(t => TOURS.push({ id: t.toLowerCase(), name: LABEL[t], desc: '', f: p => p.type === t && (t === 'Residential' ? goodPic(p) : tourOK(p)), max: 24, filt: { type: t } }));
+const TDESC = { heritage: 'Historic buildings restored with mineral paint', culture: 'Museums, galleries and theatres', education: 'Schools and universities', health: 'Hospitals and care', residential: 'Homes and apartments (with photos only)', commercial: 'Offices, retail and workplaces', transport: 'Stations, airports and infrastructure', hospitality: 'Hotels and venues', civic: 'Town halls, courts and public buildings', mural: 'Large-scale murals and street art' };
+TOURS.forEach(t => { if (!t.desc) t.desc = TDESC[t.id] || ''; });
+function route(list, start) { const out = [], left = list.slice(); let cur = start || left[0];
+  while (left.length) { const c = Math.cos(cur.lat * Math.PI / 180); let bi = 0, bd = Infinity; left.forEach((p, i) => { const d = (p.lat - cur.lat) ** 2 + ((p.lon - cur.lon) * c) ** 2; if (d < bd) { bd = d; bi = i; } }); cur = left.splice(bi, 1)[0]; out.push(cur); }
+  return out; }
+function tourStops(t) { let L = P.filter(t.f); L.sort((a, b) => (goodPic(b) - goodPic(a)) || (yr(b) - yr(a))); L = L.slice(0, t.max);
+  const start = t.hq ? HQ : t.id === 'europe' ? { lat: 48.4, lon: 10.8 } : L.slice().sort((a, b) => a.lon - b.lon)[0];
+  const r = route(L, start); return t.hq ? [HQ, ...r] : r; }
+let T = null, tk = 0, tTimer = 0;
+function tourUI() { const on = !!T; $('tBar').hidden = !on; document.body.classList.toggle('touring', on); if (!on) return;
+  $('tbName').textContent = T.name + ' tour'; $('tbStep').textContent = 'Stop ' + Math.min(tk, T.stops.length) + ' of ' + T.stops.length;
+  $('tbProg').style.width = (100 * tk / T.stops.length) + '%'; $('tbPlay').textContent = touring ? 'Pause' : 'Play'; }
+function tourGo(i) { if (!T) return; clearTimeout(tTimer); tk = (i + T.stops.length) % T.stops.length; open(T.stops[tk], true); tk++; tourUI();
+  if (touring) tTimer = setTimeout(() => map.once('moveend', () => { tTimer = setTimeout(() => { if (touring && T) { if (tk >= T.stops.length) { touring = false; tourUI(); $('tbStep').textContent = 'Tour complete · ' + T.stops.length + ' stops'; } else tourGo(tk); } }, 5200); }), 400); }
+function startTour(id) { const t = TOURS.find(x => x.id === id); if (!t || !P.length) return; const stops = tourStops(t); if (!stops.length) return;
+  $('tMenu').hidden = true; $('list').hidden = true; hideHint(); spinning = false;
+  fType = t.filt.type || null; fAU = !!t.filt.au; syncChips(); refilter();
+  T = { ...t, stops }; touring = true; hist.length = 0; tourGo(0); try { history.replaceState(null, '', '#tour=' + id); } catch (e) {} }
+function endTour() { clearTimeout(tTimer); touring = false; T = null; tourUI(); }
+function buildTourMenu() { const row = t => { const st = tourStops(t); if (st.length < 3) return ''; const pic = st.find(goodPic) || st[0]; const bg = goodPic(pic) ? (/^https?:/.test(pic.img) ? pic.img : 'img/' + pic.img) : pic === HQ ? '' : AER(pic, 128, 92);
+    return `<button class="opt" type="button" data-tour="${t.id}"><span class="th2" style="background-image:url('${esc(bg)}')"></span><span><b>${esc(t.name)}</b><small>${esc(t.desc)}</small></span><span class="n">${st.length}</span></button>`; };
+  $('tmList').innerHTML = '<h4>Places</h4>' + TOURS.slice(0, 3).map(row).join('') + '<h4>By sector</h4>' + TOURS.slice(3).map(row).join(''); }
+$('tTour').onclick = () => { if ($('tMenu').hidden) buildTourMenu(); $('tMenu').hidden = !$('tMenu').hidden; hideHint(); };
+$('tmX').onclick = () => { $('tMenu').hidden = true; };
+$('tmList').addEventListener('click', e => { const b = e.target.closest('[data-tour]'); if (b) startTour(b.dataset.tour); });
+$('tbPlay').onclick = () => { if (!T) return; touring = !touring; if (touring) { if (tk >= T.stops.length) tk = 0; tourGo(tk); } else { clearTimeout(tTimer); tourUI(); } };
+$('tbNext').onclick = () => { if (T) tourGo(tk); };
+$('tbPrev').onclick = () => { if (T) tourGo(tk - 2); };
+$('tbX').onclick = endTour;
+setInterval(() => { if (T && !touring && $('tbPlay').textContent !== 'Play') tourUI(); }, 500);
 
 // filters + search
 function syncChips() { document.querySelectorAll('#bar .chip[data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === fType ? 'true' : 'false')); $('fAU').setAttribute('aria-pressed', fAU ? 'true' : 'false'); }
@@ -309,7 +379,7 @@ fetch('projects.json').then(r => r.json()).then(list => {
   P = list.filter(p => p.lat != null);
   TYPES.filter(t => P.some(p => p.type === t)).forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = LABEL[t]; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { fType = fType === t ? null : t; syncChips(); refilter(); }; $('bar').appendChild(b); });
   refilter();
-  const go = () => { const deep = decodeURIComponent(location.hash.slice(1)), p = deep && (deep === HQ.id ? HQ : P.find(p => p.id === deep)); if (p) open(p, true); else spin(); };
+  const go = () => { const deep = decodeURIComponent(location.hash.slice(1)); if (/^tour=/.test(deep)) { startTour(deep.slice(5)); return; } const p = deep && (deep === HQ.id ? HQ : P.find(p => p.id === deep)); if (p) open(p, true); else spin(); };
   if (map.loaded()) go(); else map.once('load', go);
 });
 </script>
