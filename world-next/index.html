@@ -166,7 +166,9 @@ body.touring .legend, body.touring .hint { display: none; }
 @media (min-width: 761px) { body:not(.nocard) .tbar { max-width: calc(100vw - 470px); } }
 @media (max-width: 760px) {
   .tmenu { left: 0; right: 0; bottom: 0; width: auto; max-height: 75dvh; border-radius: 3px 3px 0 0; }
-  .tbar { left: 8px; right: 8px; bottom: auto; top: calc(72px + env(safe-area-inset-top)); }
+  .tbar { left: 0; right: 0; bottom: 0; top: auto; max-width: none; border-radius: 0; padding-bottom: calc(8px + env(safe-area-inset-bottom)); }
+  body.touring .card { bottom: calc(52px + env(safe-area-inset-bottom)); }
+  body.touring .card.full { height: calc(100dvh - 64px - 52px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
   .tbar .prog { display: none; } .tbar .tt { flex: 1; }
 }
 
@@ -343,19 +345,30 @@ $('tMap').onclick = () => { street = !street; map.setLayoutProperty('street', 'v
 
 
 // KEIM Australia showroom — always on the map
-const HQ = { id: 'keim-australia', name: 'KEIM Australia', sub: 'Showroom & office · Unit 7, 19 McCauley Street, Matraville NSW 2036', place: 'Matraville, Sydney', region: 'New South Wales', country: 'Australia', lat: -33.96212, lon: 151.22421, exact: 1, type: 'KEIM Australia', products: 'The full KEIM mineral paint range, colour advice and technical support', status: 'Visit by appointment · (02) 9748 7160', story: 'Our Sydney showroom and office. KEIM has been supplying mineral silicate paints in Australia for more than 35 years, and since 2025 KEIM Australia is part of the global KEIM family. Come and see the colours on real substrates, or call us to talk through a project.', link: 'https://www.keim.com.au', src: 'KEIM Australia' };
+const HQ = { id: 'keim-australia', name: 'KEIM Australia', sub: 'Showroom & office · Unit 7, 19 McCauley Street, Matraville NSW 2036', place: 'Matraville, Sydney', region: 'New South Wales', country: 'Australia', lat: -33.9622617, lon: 151.2242474, exact: 1, type: 'KEIM Australia', products: 'The full KEIM mineral paint range, colour advice and technical support', status: 'Visit by appointment · (02) 9748 7160', story: 'Our Sydney showroom and office. KEIM has been supplying mineral silicate paints in Australia for more than 35 years, and since 2025 KEIM Australia is part of the global KEIM family. Come and see the colours on real substrates, or call us to talk through a project.', link: 'https://www.keim.com.au', src: 'KEIM Australia' };
 (function () {
   const el = document.createElement('div'); el.className = 'hq'; el.title = 'KEIM Australia showroom, Matraville';
   const pin = document.createElement('div'); pin.className = 'pin';
   pin.innerHTML = '<svg viewBox="0 0 40 46"><path d="M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z" fill="#D62025" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/></svg>';
   const tag = document.createElement('div'); tag.className = 'lab'; tag.innerHTML = '<b>KEIM Australia</b><span>Showroom &amp; office</span>';
   const mk = c => { const i = document.createElement('i'); i.className = c; return i; };
-  el.append(mk('dot'), mk('ring'), mk('ring2'), pin, tag);
+  el.append(mk('dot'), pin, tag);
   // only appears once you are close to the showroom; pops up with a pulse
   const show = () => { const on = map.getZoom() >= 12.5; if (on === !el.hidden) return; el.hidden = !on; if (on) { [pin, tag].forEach(x => { x.style.animation = 'none'; void x.offsetWidth; x.style.animation = ''; }); } };
   el.hidden = true; map.on('zoom', show); show();
   el.addEventListener('click', e => { e.stopPropagation(); open(HQ, true); });
   new maplibregl.Marker({ element: el, anchor: 'center', pitchAlignment: 'viewport' }).setLngLat([HQ.lon, HQ.lat]).addTo(map);
+  // our unit, outlined in KEIM red with a slow 'breathing' glow
+  const FOOT = [[151.2240812, -33.9622898], [151.2242644, -33.9621491], [151.2244136, -33.9622324], [151.2242305, -33.9623753], [151.2240812, -33.9622898]];
+  const addFoot = () => { if (map.getSource('hqfoot')) return;
+    map.addSource('hqfoot', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [FOOT] } } });
+    const before = map.getLayer('clu') ? 'clu' : undefined;
+    map.addLayer({ id: 'hqglow', type: 'line', source: 'hqfoot', minzoom: 14.5, paint: { 'line-color': '#D62025', 'line-width': 14, 'line-blur': 10, 'line-opacity': 0.6 } }, before);
+    map.addLayer({ id: 'hqfill', type: 'fill', source: 'hqfoot', minzoom: 14.5, paint: { 'fill-color': '#D62025', 'fill-opacity': 0.35 } }, before);
+    map.addLayer({ id: 'hqline', type: 'line', source: 'hqfoot', minzoom: 14.5, paint: { 'line-color': '#ff3b40', 'line-width': 2.5 } }, before);
+    let t0 = performance.now(); const tick = now => { if (map.getZoom() >= 14.5 && map.getLayer('hqfill')) { const k = (Math.sin((now - t0) / 650) + 1) / 2; map.setPaintProperty('hqfill', 'fill-opacity', 0.2 + 0.3 * k); map.setPaintProperty('hqglow', 'line-opacity', 0.3 + 0.5 * k); } requestAnimationFrame(tick); }; requestAnimationFrame(tick); };
+  if (map.loaded()) addFoot(); else map.on('load', () => setTimeout(addFoot, 300));
+  map.on('style.load', () => setTimeout(addFoot, 300));
 })();
 // project card + fly-to
 function open(p, fly) {
