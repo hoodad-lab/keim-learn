@@ -2,6 +2,7 @@
 <html lang="en-AU">
 <head>
 <meta charset="utf-8"><meta name="robots" content="noindex">
+<meta name="format-detection" content="telephone=no, address=no, email=no">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>KEIM References Map</title>
 <meta name="description" content="Fly around the globe to KEIM mineral paint projects: heritage, hospitals, schools, murals and landmarks.">
@@ -213,6 +214,18 @@ html[data-theme="dark"] .maplibregl-ctrl-icon { filter: invert(1); }
 html[data-theme="dark"] .maplibregl-ctrl-attrib { background: rgba(20,22,24,.8) !important; color: var(--mute); }
 html[data-theme="dark"] .maplibregl-ctrl-attrib a { color: var(--mute); }
 html[data-theme="dark"] .maplibregl-ctrl-attrib-button { filter: invert(1); }
+
+/* showroom card */
+.card .hqph { position: absolute; inset: 0; background: var(--anth); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #fff; padding: 18px 0 14px; }
+.card .hqph::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: var(--umbra); }
+.card .hqph img { width: 104px; height: auto; margin-bottom: 4px; }
+.card .hqph span { font: 500 11.5px/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; }
+.card .hqph em { font: 300 14px/1 var(--sans); font-style: normal; letter-spacing: .08em; color: var(--grey); }
+.card.hqc dd a { color: var(--red2); text-decoration: none; font-weight: 500; }
+.card.hqc .more:not(.sv) { background: var(--red2); }
+@media (max-width: 760px) { .card.hqc .ph { height: 38vw; max-height: 170px; } .card .hqph img { width: 70px; } .hq .b img { width: 50px; } .hq .stem { height: 18px; } .hq .tag { bottom: 18px; } }
+html[data-theme="dark"] .card .hqph { background: #0b0c0d; }
+html[data-theme="dark"] .card.hqc dd a { color: #ff4d52; }
 </style>
 </head>
 <body class="nocard">
@@ -359,10 +372,21 @@ function open(p, fly) {
   $('cApprox').hidden = !!p.exact;
   $('cMore').hidden = !p.link; if (p.link) { $('cMore').href = p.link; $('cMore').textContent = p === HQ ? 'Visit keim.com.au ↗' : 'Read the full case study'; } $('cSv').hidden = !canSV(p); if (canSV(p)) $('cSv').href = SV(p); $('cPp').hidden = !p.ppage; if (p.ppage) { $('cPp').href = p.ppage; $('cPp').textContent = 'See photos · ' + (p.powner || 'source') + ' ↗'; }
   $('cSrc').innerHTML = 'Source: ' + esc(p.src || 'KEIM') + (p.year_src && p.year ? '<br>Year source: ' + (/^https?:/.test(p.year_src) ? '<a href="' + esc(p.year_src) + '" target="_blank" rel="noopener">' + esc(p.year_src.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]) + '</a>' : esc(p.year_src)) : '') + (p.ipage ? `<br>Photo: <a href="${esc(p.ipage)}" target="_blank" rel="noopener">${esc(p.iby || 'Wikimedia Commons')}</a>, ${esc(p.ilic || '')}, via Wikimedia Commons (general view of the building)` : '');
+  $('card').classList.toggle('hqc', p === HQ);
+  if (p === HQ) {
+    $('cPh').innerHTML = `<div class="hqph"><img src="../keim-logo-neg.png" alt="KEIM"><span>Showroom &amp; office · Sydney</span></div>`;
+    $('cKick').textContent = 'Visit us'; $('cSub').hidden = true;
+    $('cFacts').innerHTML = `<dt>Address</dt><dd>Unit 7, 19 McCauley Street<br>Matraville NSW 2036</dd><dt>Phone</dt><dd><a href="tel:+61297487160">(02) 9748 7160</a></dd><dt>Visits</dt><dd>By appointment</dd><dt>We offer</dt><dd>The full KEIM range, colour samples and technical advice</dd>`;
+    $('cStory').textContent = 'See KEIM colours on real substrates and talk through your project with our team. KEIM has been in Australia for more than 35 years and is part of the global KEIM family.';
+    $('cMore').hidden = false; $('cMore').href = 'tel:+61297487160'; $('cMore').removeAttribute('target'); $('cMore').textContent = 'Call us';
+    $('cSv').hidden = false; $('cSv').href = 'https://www.google.com/maps/dir/?api=1&destination=' + HQ.lat + ',' + HQ.lon; $('cSv').textContent = 'Directions ↗';
+    $('cPp').hidden = false; $('cPp').href = 'https://www.keim.com.au'; $('cPp').textContent = 'keim.com.au ↗';
+    $('cSrc').innerHTML = ''; $('cApprox').hidden = true;
+  } else { $('cMore').setAttribute('target', '_blank'); $('cSv').textContent = 'Google Street View ↗'; }
   $('card').classList.remove('full'); $('card').hidden = false; $('card').scrollTop = 0; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
   if (fly) { const wide = innerWidth > 760;
-    map.flyTo({ center: [p.lon, p.lat], zoom: p.exact ? 16.6 : 12.5, pitch: p.exact ? 58 : 35, bearing: (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
-      padding: wide ? { right: 430, top: 150, left: 0, bottom: 0 } : { bottom: innerHeight * 0.52, top: 70, left: 0, right: 0 } }); }
+    const hq = p === HQ; map.flyTo({ center: [p.lon, p.lat], zoom: hq ? 17.2 : p.exact ? 16.6 : 12.5, pitch: hq ? 40 : p.exact ? 58 : 35, bearing: hq ? -20 : (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
+      padding: wide ? { right: 430, top: 150, left: 0, bottom: 0 } : { bottom: innerHeight * 0.52, top: hq ? 190 : 110, left: 0, right: 0 } }); }
   try { history.replaceState(null, '', '#' + p.id); } catch (e) {}
 }
 function close() { $('card').hidden = true; sel = null; repaintPins(); document.body.classList.add('nocard'); touring = false; if (typeof tourUI === 'function') tourUI(); try { history.replaceState(null, '', location.pathname); } catch (e) {} }
