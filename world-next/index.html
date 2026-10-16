@@ -125,7 +125,7 @@ body:not(.nocard) .under { padding-right: 446px; }
     <dl id="cFacts"></dl>
     <p class="story" id="cStory"></p>
     <div class="approx" id="cApprox">Pin shows the suburb or city — the exact building isn’t marked yet.</div>
-    <a class="more" id="cMore" target="_blank" rel="noopener">Read the full case study</a> <a class="more sv" id="cSv" target="_blank" rel="noopener">Google Street View ↗</a>
+    <a class="more" id="cMore" target="_blank" rel="noopener">Read the full case study</a> <a class="more sv" id="cSv" target="_blank" rel="noopener">Google Street View ↗</a> <a class="more sv" id="cPp" target="_blank" rel="noopener"></a>
     <div class="src" id="cSrc"></div>
     <div class="nav"><button id="cBack" type="button">‹ Back</button><button id="cNext" class="solid" type="button">Next nearby ›</button></div>
   </div>
@@ -220,7 +220,7 @@ function open(p, fly) {
   $('cFacts').innerHTML = rows.map(([k, v, c]) => `<dt>${k}</dt><dd${c ? ' class="' + c + '"' : ''}>${esc(v)}</dd>`).join('');
   $('cStory').textContent = [p.story, p.notes].filter(Boolean).join(' '); $('cStory').hidden = !(p.story || p.notes);
   $('cApprox').hidden = !!p.exact;
-  $('cMore').hidden = !p.link; if (p.link) $('cMore').href = p.link; $('cSv').hidden = !canSV(p); if (canSV(p)) $('cSv').href = SV(p);
+  $('cMore').hidden = !p.link; if (p.link) $('cMore').href = p.link; $('cSv').hidden = !canSV(p); if (canSV(p)) $('cSv').href = SV(p); $('cPp').hidden = !p.ppage; if (p.ppage) { $('cPp').href = p.ppage; $('cPp').textContent = 'See photos · ' + (p.powner || 'source') + ' ↗'; }
   $('cSrc').innerHTML = 'Source: ' + esc(p.src || 'KEIM') + (p.year_src && p.year ? '<br>Year source: ' + (/^https?:/.test(p.year_src) ? '<a href="' + esc(p.year_src) + '" target="_blank" rel="noopener">' + esc(p.year_src.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]) + '</a>' : esc(p.year_src)) : '') + (p.ipage ? `<br>Photo: <a href="${esc(p.ipage)}" target="_blank" rel="noopener">${esc(p.iby || 'Wikimedia Commons')}</a>, ${esc(p.ilic || '')}, via Wikimedia Commons (general view of the building)` : '');
   $('card').hidden = false; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
   if (fly) { const wide = innerWidth > 760;

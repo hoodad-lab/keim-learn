@@ -61,7 +61,9 @@
   "src": "keim.com references",
   "exact": 1,
   "year": "2024",
-  "year_src": "https://www.sagst.de/en/news-detail/responsible-neighborhood-development-franklin-village-in-mannheim"
+  "year_src": "https://www.sagst.de/en/news-detail/responsible-neighborhood-development-franklin-village-in-mannheim",
+  "ppage": "https://www.archdaily.com/1028436/franklin-village-sauerbruch-hutton",
+  "powner": "ArchDaily"
  },
  {
   "id": "w-cyber-city",
@@ -3328,7 +3330,9 @@
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
-  "exact": 1
+  "exact": 1,
+  "ppage": "https://www.adcoconstruct.com.au/news/bond-university-unveils-adco-built-health-sciences-medicine-building",
+  "powner": "ADCO Constructions"
  },
  {
   "id": "au-brisbane-tafe",
@@ -3438,7 +3442,9 @@
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
-  "year": "In progress"
+  "year": "In progress",
+  "ppage": "https://www.hassellstudio.com/news-event/albert-street-station-a-commuter-experience-for-a-new-world-city",
+  "powner": "Hassell Studio"
  },
  {
   "id": "au-cross-river-rail-loganlea-station",
@@ -3522,7 +3528,9 @@
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 1,
-  "year": "In progress"
+  "year": "In progress",
+  "ppage": "https://crossriverrail.qld.gov.au/our-precincts/precinct-woolloongabba/",
+  "powner": "Cross River Rail Delivery Authority"
  },
  {
   "id": "au-ecosciences-precinct",
@@ -3550,7 +3558,9 @@
   "src": "KEIM Australia reference list",
   "exact": 1,
   "year": "2010",
-  "year_src": "https://www.wilsonarchitects.com.au/all-project-3/ecosciences-precinct"
+  "year_src": "https://www.wilsonarchitects.com.au/all-project-3/ecosciences-precinct",
+  "ppage": "https://www.e-architect.com/brisbane/ecosciences-precinct-brisbane",
+  "powner": "HASSELL"
  },
  {
   "id": "au-florian-residences",
@@ -3666,7 +3676,9 @@
   "src": "KEIM Australia reference list",
   "exact": 1,
   "year": "2024",
-  "year_src": "https://cqtoday.com.au/?p=85258"
+  "year_src": "https://cqtoday.com.au/?p=85258",
+  "ppage": "https://www.arkhefield.com.au/projects/keppel-bay-sailing-club",
+  "powner": "Arkhefield"
  },
  {
   "id": "au-la-scala",
@@ -4279,7 +4291,9 @@
   "src": "KEIM Australia reference list",
   "exact": 1,
   "year": "by 2016",
-  "year_src": "KEIM Australia website, first archived 2016 (Wayback Machine)"
+  "year_src": "KEIM Australia website, first archived 2016 (Wayback Machine)",
+  "ppage": "https://capellacapital.com.au/projects/frankston-hospital-redevelopment-project",
+  "powner": "Capella Capital"
  },
  {
   "id": "au-geelong-library-and-heritage-centre",
@@ -4449,7 +4463,9 @@
   "src": "KEIM Australia reference list",
   "exact": 1,
   "year": "2016",
-  "year_src": "https://architectus.com.au/projects/arts-west/"
+  "year_src": "https://architectus.com.au/projects/arts-west/",
+  "ppage": "https://www.kane.com.au/project/university-of-melbourne-arts-west-redevelopment",
+  "powner": "Kane Constructions"
  },
  {
   "id": "au-monash-university",
@@ -4559,7 +4575,9 @@
   "src": "KEIM Australia reference list",
   "exact": 1,
   "year": "2018",
-  "year_src": "https://www.svph.org.au/patient-news/svph-werribee-five-years-of-serving-the-west"
+  "year_src": "https://www.svph.org.au/patient-news/svph-werribee-five-years-of-serving-the-west",
+  "ppage": "https://adcoconstruct.com.au/case-study/st-vincents-private-hospital",
+  "powner": "ADCO Constructions"
  },
  {
   "id": "au-st-vincent-s-private-hospital",
@@ -5421,7 +5439,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
   "year": "2005",
-  "year_src": "https://inherit.dplh.wa.gov.au/public/inventory/printsinglerecord/e7cc2ca8-c3e6-45dc-b3e7-bb2187f59762"
+  "year_src": "https://inherit.dplh.wa.gov.au/public/inventory/printsinglerecord/e7cc2ca8-c3e6-45dc-b3e7-bb2187f59762",
+  "ppage": "https://inherit.dplh.wa.gov.au/Public/Inventory/Details/05d1b69a-c0fe-43b4-9534-6f8c2be3cdf2",
+  "powner": "inHerit WA"
  },
  {
   "id": "au-old-state-library-of-south-australia-mortlock-wing",
@@ -5443,7 +5463,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "by 2015",
-  "year_src": "https://explore.cityofadelaide.com.au/heritage-places/mortlock-wing-state-library-of-south-australia-north-terrace-adelaide/"
+  "year_src": "https://explore.cityofadelaide.com.au/heritage-places/mortlock-wing-state-library-of-south-australia-north-terrace-adelaide/",
+  "ppage": "https://collections.slsa.sa.gov.au/resource/B+76800/1-6",
+  "powner": "State Library of South Australia"
  },
  {
   "id": "au-old-royal-brisbane-hospital-brisbane-general-hospital-precinct",
@@ -5540,7 +5562,9 @@
   "src": "KEIM Australia website (archived 2019)",
   "exact": 1,
   "year": "by 2019",
-  "year_src": "https://meyershircore.com.au/project/atwell-arcade/"
+  "year_src": "https://meyershircore.com.au/project/atwell-arcade/",
+  "ppage": "https://meyershircore.com.au/project/atwell-arcade/",
+  "powner": "Meyer Shircore Architects"
  },
  {
   "id": "au-old-averi-apartments",
@@ -5606,7 +5630,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "c. 2012",
-  "year_src": "https://esdnews.com.au/connecting-sydney/"
+  "year_src": "https://esdnews.com.au/connecting-sydney/",
+  "ppage": "https://esdnews.com.au/beaconsfield-substation-project-management-recognised-at-engineering-excellence-awards/",
+  "powner": "TransGrid"
  },
  {
   "id": "au-old-broken-hill-and-district-war-memorial",
@@ -5628,7 +5654,9 @@
   "src": "KEIM Australia website (archived 2019)",
   "exact": 1,
   "year": "by 2019",
-  "year_src": "https://monumentaustralia.org.au/display/20542-broken-hill-and-district-war-memorial"
+  "year_src": "https://monumentaustralia.org.au/display/20542-broken-hill-and-district-war-memorial",
+  "ppage": "https://placesofpride.awm.gov.au/memorials/189751",
+  "powner": "Australian War Memorial"
  },
  {
   "id": "au-old-charlestown-square",
@@ -5650,7 +5678,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
   "year": "c. 2010",
-  "year_src": "https://en.wikipedia.org/wiki/Charlestown_Square"
+  "year_src": "https://en.wikipedia.org/wiki/Charlestown_Square",
+  "ppage": "https://www.gpt.com.au/node/1796",
+  "powner": "GPT Group"
  },
  {
   "id": "au-old-children-s-medical-research-institute-cmri",
@@ -5672,7 +5702,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
   "year": "by 2015",
-  "year_src": "https://awedwards.com.au/project/childrens-medical-research-institute/"
+  "year_src": "https://awedwards.com.au/project/childrens-medical-research-institute/",
+  "ppage": "https://awedwards.com.au/project/childrens-medical-research-institute/",
+  "powner": "A W Edwards Pty Ltd"
  },
  {
   "id": "au-old-common-ground-sydney",
@@ -5838,7 +5870,9 @@
   "src": "KEIM Australia website (archived 2018)",
   "exact": 1,
   "year": "c. 2017",
-  "year_src": "https://fdcbuilding.com.au/?p=3791"
+  "year_src": "https://fdcbuilding.com.au/?p=3791",
+  "ppage": "https://fdcbuilding.com.au/?p=3791",
+  "powner": "FDC Building"
  },
  {
   "id": "au-old-kingsway-christian-college",
@@ -5932,7 +5966,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "2015",
-  "year_src": "https://johnholland.com.au/what-we-do/our-projects-and-specialisations/university-of-newcastle-student-accommodation"
+  "year_src": "https://johnholland.com.au/what-we-do/our-projects-and-specialisations/university-of-newcastle-student-accommodation",
+  "ppage": "https://architectus.com.au/projects/university-of-newcastle-student-accommodation/",
+  "powner": "Architectus"
  },
  {
   "id": "au-old-orange-regional-museum",
@@ -5954,7 +5990,9 @@
   "src": "KEIM Australia website (archived 2018)",
   "exact": 1,
   "year": "2016",
-  "year_src": "https://www.e-architect.com/sydney/orange-regional-museum-building-nsw"
+  "year_src": "https://www.e-architect.com/sydney/orange-regional-museum-building-nsw",
+  "ppage": "https://www.e-architect.com/sydney/orange-regional-museum-building-nsw",
+  "powner": "Crone Architects"
  },
  {
   "id": "au-old-parliament-house-western-australia",
@@ -6001,7 +6039,9 @@
   "src": "KEIM Australia website (archived 2016)",
   "exact": 1,
   "year": "by 2016",
-  "year_src": "https://en.wikipedia.org/wiki/Pedare_Christian_College"
+  "year_src": "https://en.wikipedia.org/wiki/Pedare_Christian_College",
+  "ppage": "https://swanburypenglase.com/projects/pedare-christian-college-stage-1-new-junior-and-middle-school/",
+  "powner": "Swanbury Penglase"
  },
  {
   "id": "au-old-private-residence-dalkeith",
@@ -6117,7 +6157,9 @@
   "src": "KEIM Australia website (archived 2020)",
   "exact": 0,
   "year": "2018",
-  "year_src": "https://kane.com.au/project/clifton-views"
+  "year_src": "https://kane.com.au/project/clifton-views",
+  "ppage": "https://www.kane.com.au/project/clifton-views",
+  "powner": "Kane Constructions"
  },
  {
   "id": "au-old-uts-yura-mudang-student-residence",
@@ -6139,7 +6181,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "by 2015",
-  "year_src": "https://www.hutchinsonbuilders.com.au/projects/education/uts-student-accommodation"
+  "year_src": "https://www.hutchinsonbuilders.com.au/projects/education/uts-student-accommodation",
+  "ppage": "https://www.hutchinsonbuilders.com.au/projects/education/uts-student-accommodation",
+  "powner": "Hutchinson Builders"
  },
  {
   "id": "au-old-victorian-college-of-the-arts-secondary-school",
@@ -6161,7 +6205,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
   "year": "2009",
-  "year_src": "https://williamsboag.com.au/vcass"
+  "year_src": "https://williamsboag.com.au/vcass",
+  "ppage": "https://www.williamsboag.com.au/vcass",
+  "powner": "Williams Boag Architects"
  },
  {
   "id": "au-old-waurn-ponds-police-and-ses-facility",
@@ -6183,7 +6229,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
   "year": "2014",
-  "year_src": "https://accuraco.com/project/waurn-ponds-police-ses"
+  "year_src": "https://accuraco.com/project/waurn-ponds-police-ses",
+  "ppage": "https://accuraco.com/project/waurn-ponds-police-ses",
+  "powner": "Accuraco"
  },
  {
   "id": "au-old-wat-dhammadharo-thai-buddhist-temple",
@@ -6205,7 +6253,9 @@
   "src": "KEIM Australia website (archived 2016)",
   "exact": 1,
   "year": "c. 2015",
-  "year_src": "https://nationalprecast.com.au/wp-content/uploads/2015/06/Wat-Dhammadharo-Thai-Buddhist-Temple.pdf"
+  "year_src": "https://nationalprecast.com.au/wp-content/uploads/2015/06/Wat-Dhammadharo-Thai-Buddhist-Temple.pdf",
+  "ppage": "https://nationalprecast.com.au/wp-content/uploads/2015/06/Wat-Dhammadharo-Thai-Buddhist-Temple.pdf",
+  "powner": "Asurco Contracting"
  },
  {
   "id": "au-old-werribee-mercy-hospital",
@@ -6421,7 +6471,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
   "year": "2010",
-  "year_src": "https://www.dezeen.com/2010/10/18/evelyn-grace-academy-by-zaha-hadid-architects/amp/"
+  "year_src": "https://www.dezeen.com/2010/10/18/evelyn-grace-academy-by-zaha-hadid-architects/amp/",
+  "ppage": "https://www.dezeen.com/2010/10/18/evelyn-grace-academy-by-zaha-hadid-architects/amp/",
+  "powner": "Zaha Hadid Architects"
  },
  {
   "id": "w-old-grand-egyptian-museum",
@@ -6565,7 +6617,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
   "year": "by 2015",
-  "year_src": "https://sahistory.org.za/ss/place/grey-instituteschool-port-elizabeth"
+  "year_src": "https://sahistory.org.za/ss/place/grey-instituteschool-port-elizabeth",
+  "ppage": "https://sahistory.org.za/place/grey-instituteschool-port-elizabeth",
+  "powner": "SA History Online"
  },
  {
   "id": "w-old-porsche-arena",
@@ -6609,7 +6663,9 @@
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
   "year": "c. 1999",
-  "year_src": "https://en.wikipedia.org/wiki/Royal_Opera_House"
+  "year_src": "https://en.wikipedia.org/wiki/Royal_Opera_House",
+  "ppage": "https://jeremydixon-edwardjones.co.uk/projects/royal-opera-house-covent-garden",
+  "powner": "Dixon Jones"
  },
  {
   "id": "w-old-run-run-shaw-creative-media-centre-city-university-of-hong-kong",
