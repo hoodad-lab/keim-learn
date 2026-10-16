@@ -216,7 +216,7 @@ function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
   if (la < -39.2) return 'TAS'; if (lo > 148.7 && lo < 149.45 && la < -35.1 && la > -35.95) return 'ACT';
   if (lo < 129) return 'WA'; if (lo < 138 && la > -26) return 'NT'; if (lo < 141 && la <= -26) return 'SA'; if (lo < 138) return 'NT';
   if (la > -29) return 'QLD'; if (la < -35.9 - (lo - 141) * 0.17) return 'VIC'; return 'NSW'; }
-function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(Boolean).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
+function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(s => s && !/^products?$/i.test(s)).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
 let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
 fetch('map/projects.json').then(r => r.json()).then(list => {
   ALL = list.map(p => ({ ...p, au: p.country === 'Australia', st: p.country === 'Australia' ? auState(p) : '', pr: prods(p) }));
