@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#EEF0F1"/>
+      <stop offset="1" stop-color="#D5D9DB"/>
+    </linearGradient>
+    <pattern id="grain" width="6" height="6" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r=".6" fill="#A3AAAE" opacity=".25"/>
+      <circle cx="4" cy="4" r=".5" fill="#957F68" opacity=".18"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect width="1200" height="800" fill="url(#grain)"/>
+  <!-- ground -->
+  <rect y="600" width="1200" height="200" fill="#C9CED1"/>
+  <rect y="600" width="1200" height="4" fill="#A3AAAE"/>
+  <!-- house: mineral-paint façade in KEIM umbra tones -->
+  <g transform="translate(350 220)">
+    <polygon points="250,0 520,170 -20,170" fill="#36393C"/>
+    <rect x="20" y="170" width="460" height="210" fill="#E4DCD2"/>
+    <rect x="20" y="170" width="460" height="210" fill="url(#grain)"/>
+    <rect x="20" y="170" width="460" height="14" fill="#957F68" opacity=".55"/>
+    <rect x="70" y="220" width="96" height="88" fill="#4A4E52"/>
+    <rect x="334" y="220" width="96" height="88" fill="#4A4E52"/>
+    <rect x="114" y="220" width="8" height="88" fill="#E4DCD2"/>
+    <rect x="70" y="260" width="96" height="8" fill="#E4DCD2"/>
+    <rect x="378" y="220" width="8" height="88" fill="#E4DCD2"/>
+    <rect x="334" y="260" width="96" height="8" fill="#E4DCD2"/>
+    <rect x="210" y="250" width="80" height="130" fill="#957F68"/>
+    <circle cx="276" cy="318" r="5" fill="#E4DCD2"/>
+    <rect x="390" y="40" width="40" height="80" fill="#36393C"/>
+  </g>
+  <!-- KEIM wedge -->
+  <g transform="translate(560 96) scale(2)">
+    <path d="M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z" fill="#D62025"/>
+  </g>
+  <!-- label -->
+  <text x="600" y="690" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', Arial, sans-serif" font-size="44" font-weight="500" letter-spacing="9" fill="#36393C">PRIVATE RESIDENCE</text>
+  <text x="600" y="738" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', Arial, sans-serif" font-size="24" font-weight="400" letter-spacing="2" fill="#5E6468">Photo withheld to respect the owner’s privacy</text>
+</svg>

@@ -2966,13 +2966,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
   "year": "2018",
-  "year_src": "https://www.apartments.com.au/buildings/one-a-1a-coulson-street-erskineville-nsw-2043"
+  "year_src": "https://www.apartments.com.au/buildings/one-a-1a-coulson-street-erskineville-nsw-2043",
+  "priv": 1
  },
  {
   "id": "au-oran-park-metro-apartments",
@@ -3129,13 +3130,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
   "year": "2016",
-  "year_src": "https://www.hassellstudio.com/project/summer-hill-flour-mill"
+  "year_src": "https://www.hassellstudio.com/project/summer-hill-flour-mill",
+  "priv": 1
  },
  {
   "id": "au-wagga-railway-station",
@@ -3298,13 +3300,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
   "year": "by 2019",
-  "year_src": "KEIM Australia website, first archived 2019 (Wayback Machine)"
+  "year_src": "KEIM Australia website, first archived 2019 (Wayback Machine)",
+  "priv": 1
  },
  {
   "id": "au-bond-university",
@@ -3382,12 +3385,13 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
-  "year": "In progress"
+  "year": "In progress",
+  "priv": 1
  },
  {
   "id": "au-cross-river-rail-albert-street-station",
@@ -3527,12 +3531,13 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 1,
-  "year": "In progress"
+  "year": "In progress",
+  "priv": 1
  },
  {
   "id": "au-gold-coast-university-hospital",
@@ -3645,12 +3650,13 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
-  "year": "2020"
+  "year": "2020",
+  "priv": 1
  },
  {
   "id": "au-lucent-gasworks",
@@ -3672,12 +3678,13 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 1,
-  "year": "2017"
+  "year": "2017",
+  "priv": 1
  },
  {
   "id": "au-brisbane-magistrates-court",
@@ -3757,13 +3764,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 1,
   "year": "by 2015",
-  "year_src": "KEIM Australia website, first archived 2015 (Wayback Machine)"
+  "year_src": "KEIM Australia website, first archived 2015 (Wayback Machine)",
+  "priv": 1
  },
  {
   "id": "au-scott-street-apartments",
@@ -3785,13 +3793,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 1,
   "year": "2010",
-  "year_src": "KEIM Australia website, first archived 2015 (Wayback Machine)"
+  "year_src": "KEIM Australia website, first archived 2015 (Wayback Machine)",
+  "priv": 1
  },
  {
   "id": "au-southern-cross-university-mural",
@@ -3955,13 +3964,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
   "year": "2018",
-  "year_src": "https://architectureau.com/articles/walan/"
+  "year_src": "https://architectureau.com/articles/walan/",
+  "priv": 1
  },
  {
   "id": "au-west-village",
@@ -4092,13 +4102,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
   "year": "by 2019",
-  "year_src": "KEIM Australia website, first archived 2019 (Wayback Machine)"
+  "year_src": "KEIM Australia website, first archived 2019 (Wayback Machine)",
+  "priv": 1
  },
  {
   "id": "au-frankston-hospital",
@@ -4181,13 +4192,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
   "year": "by 2016",
-  "year_src": "KEIM Australia website, first archived 2016 (Wayback Machine)"
+  "year_src": "KEIM Australia website, first archived 2016 (Wayback Machine)",
+  "priv": 1
  },
  {
   "id": "au-joan-kirner-women-s-children-s-hospital",
@@ -4236,13 +4248,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 1,
   "year": "c. 2013",
-  "year_src": "KEIM Australia website, first archived 2015 (Wayback Machine)"
+  "year_src": "KEIM Australia website, first archived 2015 (Wayback Machine)",
+  "priv": 1
  },
  {
   "id": "au-university-of-melbourne-arts-west",
@@ -4294,13 +4307,14 @@
   "credit": "",
   "story": "",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
   "exact": 0,
   "year": "by 2015",
-  "year_src": "KEIM Australia website, first archived 2015 (Wayback Machine)"
+  "year_src": "KEIM Australia website, first archived 2015 (Wayback Machine)",
+  "priv": 1
  },
  {
   "id": "au-ritz-mansions",
@@ -4897,11 +4911,12 @@
   "credit": "",
   "story": "A former surface car park on the edge of downtown Buffalo became 201 affordable apartments, a fresh-food market and the city’s first purpose-built mobility hub. Artist Josef Kristofoletti’s large mural is painted in KEIM Soldalit.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "render": "",
   "link": "https://www.keim.com.au/post/201-ellicott-street",
   "src": "keim.com.au",
-  "exact": 1
+  "exact": 1,
+  "priv": 1
  },
  {
   "id": "au-old-166-gertrude-street",
@@ -4918,12 +4933,13 @@
   "credit": "",
   "story": "166 Gertrude is a six-storey boutique development by Melbourne developer Kalex, with 26 one-, two- and three-bedroom apartments over about 600 sqm of ground-floor retail on Gertrude Street, Fitzroy. Pre-sales opened in late 2015, construction was due to start in 2016, and completion was listed for around 2018. (The slug says Fitzroy North, but the address is in Fitzroy.)",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2019)",
   "exact": 0,
   "year": "by 2019",
-  "year_src": "https://www.apartments.com.au/buildings/166-gertrude-street-fitzroy-vic-3065"
+  "year_src": "https://www.apartments.com.au/buildings/166-gertrude-street-fitzroy-vic-3065",
+  "priv": 1
  },
  {
   "id": "au-old-babworth-house",
@@ -4965,12 +4981,13 @@
   "credit": "",
   "story": "Elouera Tower is a 15-storey apartment and holiday-letting tower at 81 Sixth Avenue in the Cotton Tree area of Maroochydore, across the road from Maroochydore Beach. It has one-, two- and three-bedroom apartments and a three-bedroom penthouse, and levels 5 to 14 have uninterrupted ocean views.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "by 2015",
-  "year_src": "https://qica.com.au/accommodation/maroochydore/elouera-tower-beachfront-resort"
+  "year_src": "https://qica.com.au/accommodation/maroochydore/elouera-tower-beachfront-resort",
+  "priv": 1
  },
  {
   "id": "au-old-festival-towers",
@@ -4987,12 +5004,13 @@
   "credit": "",
   "story": "Festival Towers is a 41-floor, 135 m residential tower on the corner of Albert and Charlotte Streets in Brisbane's CBD, completed in August 2006. It was named after Brisbane's Festival Hall, which once stood on the site. Owner-occupiers, corporate short-stay guests and permanent renters now share the building.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "2006",
-  "year_src": "https://en.wikipedia.org/wiki/Festival_Towers"
+  "year_src": "https://en.wikipedia.org/wiki/Festival_Towers",
+  "priv": 1
  },
  {
   "id": "au-old-millennium-arts-project-gallery-of-modern-art-and-state-library-of-queensland",
@@ -5034,12 +5052,13 @@
   "credit": "",
   "story": "Newtown Silos is an adaptive reuse of the former Crago flour mill on Gladstone Street, Newtown. Its landmark grain silos were turned into three residential buildings with 59 apartments over 14 levels, with a metal-clad penthouse on top and a new low-rise building along Gladstone Street. The project ran from 1999 to 2005 and won awards in 2006. The coordinates are approximate (Gladstone Street).",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "by 2015",
-  "year_src": "https://tzg.com.au/project/newtown-silos/"
+  "year_src": "https://tzg.com.au/project/newtown-silos/",
+  "priv": 1
  },
  {
   "id": "au-old-private-residence-elizabeth-bay",
@@ -5056,12 +5075,13 @@
   "credit": "",
   "story": "A residential project on Roslyn Gardens, a residential street running through Elizabeth Bay and Rushcutters Bay in Sydney's eastern suburbs. The old KEIM Australia gallery named only the street, so the exact building can't be identified and the suburb centre is used.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "by 2015",
-  "year_src": "https://www.planningalerts.org.au/applications/1534859"
+  "year_src": "https://www.planningalerts.org.au/applications/1534859",
+  "priv": 1
  },
  {
   "id": "au-old-silkwood-apartments",
@@ -5078,12 +5098,13 @@
   "credit": "",
   "story": "Silkwood is a mixed-use building in Surry Hills, on a former disused triangular site at the edge of the city. It has 48 apartments arranged around a courtyard, a 400-seat auditorium, and commercial and retail space, with upper levels mainly in precast concrete. It won the RAIA NSW Chapter Award for housing in 2007.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "2006",
-  "year_src": "https://www.e-architect.com/sydney/surry-hills-building"
+  "year_src": "https://www.e-architect.com/sydney/surry-hills-building",
+  "priv": 1
  },
  {
   "id": "au-old-stadium-australia-telstra-stadium-now-accor-stadium",
@@ -5125,12 +5146,13 @@
   "credit": "",
   "story": "UniLodge developed and manages four student residences (Kinloch, Davey, Warrumbul and Lena Karmel Lodges) in the ANU Exchange precinct between the ANU Acton campus and Civic. Kinloch Lodge stands on the former Childers Street Hall site, and Lena Karmel Lodge opened in 2012.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "by 2015",
-  "year_src": "https://archives.anu.edu.au/exhibitions/building-australias-national-university-75-years-australian-national-university-56"
+  "year_src": "https://archives.anu.edu.au/exhibitions/building-australias-national-university-75-years-australian-national-university-56",
+  "priv": 1
  },
  {
   "id": "au-old-abc-centre-east-perth",
@@ -5294,12 +5316,13 @@
   "credit": "",
   "story": "Averi is a five-storey apartment building in Hawthorn East with 29 one- to three-bedroom homes over a semi-basement car park. It uses sculptural massing, clip-on 'lanterns' and layered landscaping instead of a stepped form, and Hutchinson Builders built it. It won an AIA Victorian Architecture Award for Multiple Housing.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2017)",
   "exact": 0,
   "year": "by 2017",
-  "year_src": "https://jcba.com.au/projects/averi"
+  "year_src": "https://jcba.com.au/projects/averi",
+  "priv": 1
  },
  {
   "id": "au-old-beaconsfield-west-substation-transgrid",
@@ -5412,12 +5435,13 @@
   "credit": "",
   "story": "Common Ground Sydney is a 104-unit supportive housing building in Camperdown that brought New York's 'street to home' Common Ground model to Sydney, housing formerly homeless people alongside low-income tenants with 24-hour concierge and on-site support. It was designed by HASSELL and built by Grocon largely at cost for Housing NSW, targeting a 5-star Green Star rating, and was completed in 2011.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "2011",
-  "year_src": "https://www.e-architect.com/sydney/common-ground-camperdown"
+  "year_src": "https://www.e-architect.com/sydney/common-ground-camperdown",
+  "priv": 1
  },
  {
   "id": "au-old-dame-eadith-walker-estate-yaralla",
@@ -5459,12 +5483,13 @@
   "credit": "",
   "story": "Flagstaff Green is a residential development on Batman Street, West Melbourne, for Spec Property Group, with 242 apartments plus 25 serviced apartments, an indoor pool and gym. Designed by Peddle Thorp in brick, glass, timber and stone tile to sit comfortably beside its neighbours, it was completed in 2019.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2020)",
   "exact": 0,
   "year": "2019",
-  "year_src": "https://www.pta.com.au/projects/flagstaff-green"
+  "year_src": "https://www.pta.com.au/projects/flagstaff-green",
+  "priv": 1
  },
  {
   "id": "au-old-fremantle-prison",
@@ -5727,12 +5752,13 @@
   "credit": "",
   "story": "A private home on Victoria Avenue in the riverside Perth suburb of Dalkeith. It was listed as a KEIM Australia reference project by 2017.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2017)",
   "exact": 0,
   "year": "by 2017",
-  "year_src": "https://reiwa.com.au/158-victoria-avenue-dalkeith-5045053/"
+  "year_src": "https://reiwa.com.au/158-victoria-avenue-dalkeith-5045053/",
+  "priv": 1
  },
  {
   "id": "au-old-redfern-town-hall",
@@ -6019,12 +6045,13 @@
   "credit": "",
   "story": "A private home on Ramsgate Avenue in North Bondi, shown in the KEIM Australia project gallery. Its exterior was finished in KEIM mineral silicate paint.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "by 2015",
-  "year_src": ""
+  "year_src": "",
+  "priv": 1
  },
  {
   "id": "au-old-private-residence-paddington",
@@ -6041,12 +6068,13 @@
   "credit": "",
   "story": "A private home on Jersey Road in Paddington, a heritage suburb of Victorian terraces, shown in the KEIM Australia project gallery. It was finished in KEIM mineral silicate paint.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "by 2015",
-  "year_src": ""
+  "year_src": "",
+  "priv": 1
  },
  {
   "id": "w-old-cathedral-of-christ-the-saviour",
@@ -6162,12 +6190,13 @@
   "credit": "",
   "story": "A contemporary private home in Khyber Rock, a residential suburb of Sandton in northern Johannesburg. KEIM listed it as one of its worldwide references. The specific house and its architect could not be confirmed.",
   "type": "Residential",
-  "img": "",
+  "img": "private-residence.svg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 0,
   "year": "by 2015",
-  "year_src": "https://en.wikipedia.org/wiki/Khyber_Rock"
+  "year_src": "https://en.wikipedia.org/wiki/Khyber_Rock",
+  "priv": 1
  },
  {
   "id": "w-old-linderhof-palace",
