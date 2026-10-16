@@ -6366,5 +6366,29 @@
   "ipage": "https://commons.wikimedia.org/wiki/File:MJK50147_Virginia_State_Capitol.jpg",
   "ilic": "CC BY-SA 3.0",
   "iby": "Martin Kraft"
+ },
+ {
+  "id": "w-old-the-lucerne-hotel",
+  "name": "The Lucerne Hotel",
+  "sub": "",
+  "place": "Upper West Side, New York City",
+  "country": "United States",
+  "lat": 40.783507,
+  "lon": -73.978362,
+  "products": "KEIM mineral paint",
+  "colours": "",
+  "architect": "Harry B. Mulliken",
+  "builder": "",
+  "credit": "",
+  "story": "The Lucerne is a Beaux-Arts hotel built in 1904 at West 79th Street and Amsterdam Avenue, with an ornate brownstone and brick facade. It was designed by Harry B. Mulliken, and KEIM listed it as one of its worldwide references.",
+  "type": "Hospitality",
+  "img": "",
+  "link": "",
+  "src": "KEIM Australia website (archived 2015)",
+  "exact": 1,
+  "year": "by 2015",
+  "year_src": "https://www.newyorkitecture.com/tag/harry-b-mulliken/",
+  "ppage": "https://www.thelucernehotel.com/",
+  "powner": "The Lucerne Hotel"
  }
 ]
