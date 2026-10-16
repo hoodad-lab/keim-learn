@@ -41,7 +41,7 @@ body:not(.nocard) .under { padding-right: 446px; }
 .search { flex: none; width: 210px; border: 1px solid var(--anth); border-radius: 2px; padding: 8px 12px 7px; font: 400 14px/1 var(--sans); background: #fff; color: var(--ink); }
 .tools { position: fixed; right: 16px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); display: grid; gap: 6px; z-index: 3; }
 .tools button { width: 58px; height: 40px; border-radius: 2px; border: 0; background: var(--anth); color: #fff; font: 500 11px/1 var(--sans); letter-spacing: .14em; box-shadow: 0 6px 18px -6px rgba(0,0,0,.5); cursor: pointer; }
-.tools button:hover { background: var(--red2); }
+@media (hover: hover) { .tools button:hover { background: var(--red2); } }
 /* project card */
 .card { position: fixed; z-index: 5; background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,.45); display: flex; flex-direction: column; overflow: hidden; transition: transform .35s cubic-bezier(.2,.8,.2,1), opacity .25s; }
 .card[hidden] { display: flex; opacity: 0; pointer-events: none; }
@@ -123,13 +123,14 @@ body:not(.nocard) .under { padding-right: 446px; }
 .hq .ring2 { animation-delay: 1.2s; }
 @keyframes hqp { 0% { opacity: .9; width: 18px; height: 18px; left: -9px; top: -9px; } 100% { opacity: 0; width: 120px; height: 120px; left: -60px; top: -60px; } }
 .hq .dot { position: absolute; left: -6px; top: -4px; width: 12px; height: 8px; border-radius: 50%; background: rgba(0,0,0,.35); filter: blur(1px); }
-.hq .stem { position: absolute; left: -1px; bottom: 0; width: 2px; height: 26px; background: linear-gradient(var(--red), #fff); }
-.hq .tag { position: absolute; left: 0; bottom: 26px; display: flex; flex-direction: column; align-items: center; transform: translateX(-50%); filter: drop-shadow(0 6px 10px rgba(0,0,0,.5)); animation: hqin .55s cubic-bezier(.2,1.6,.4,1) both; }
-@keyframes hqin { from { opacity: 0; transform: translateX(-50%) translateY(14px) scale(.6); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
-.hq .b { background: var(--anth); padding: 8px 10px 6px; border-radius: 2px; line-height: 0; border-bottom: 3px solid var(--red); }
-.hq .b img { width: 64px; height: auto; display: block; }
-.hq .l { margin-top: 4px; background: #fff; color: var(--anth); font: 500 9.5px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: 4px 7px 3px; white-space: nowrap; }
-.hq:hover .b { background: var(--red2); border-bottom-color: #fff; }
+.hq .pin { position: absolute; left: -19px; bottom: -2px; width: 38px; height: 44px; filter: drop-shadow(0 4px 6px rgba(0,0,0,.45)); animation: hqdrop .6s cubic-bezier(.3,1.5,.5,1) both; transform-origin: 50% 100%; }
+.hq .pin svg { width: 100%; height: 100%; display: block; }
+@keyframes hqdrop { from { opacity: 0; transform: translateY(-30px) scale(.7); } to { opacity: 1; transform: none; } }
+.hq .lab { position: absolute; left: 24px; bottom: 16px; background: #fff; padding: 6px 10px 5px; border-left: 3px solid var(--red); box-shadow: 0 4px 12px rgba(0,0,0,.35); white-space: nowrap; animation: hqin2 .45s .15s ease-out both; }
+.hq .lab b { display: block; font: 500 11px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--anth); }
+.hq .lab span { display: block; margin-top: 3px; font: 400 11px/1 var(--sans); color: var(--mute); }
+@keyframes hqin2 { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+html[data-theme="dark"] .hq .lab { background: #141618; } html[data-theme="dark"] .hq .lab b { color: #fff; }
 /* "find us" button — same family as the tool buttons */
 .findus { position: fixed; z-index: 3; left: 16px; bottom: calc(max(30px, calc(env(safe-area-inset-bottom) + 14px)) + 42px); height: 34px; display: flex; align-items: center; gap: 8px; border: 0; background: var(--anth); color: #fff; padding: 0 12px 0 10px; border-radius: 2px; font: 500 10.5px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; cursor: pointer; box-shadow: 0 6px 18px -6px rgba(0,0,0,.5); transition: background .2s; }
 .findus svg { width: 11px; height: 13px; flex: none; }
@@ -223,7 +224,7 @@ html[data-theme="dark"] .maplibregl-ctrl-attrib-button { filter: invert(1); }
 .card .hqph em { font: 300 14px/1 var(--sans); font-style: normal; letter-spacing: .08em; color: var(--grey); }
 .card.hqc dd a { color: var(--red2); text-decoration: none; font-weight: 500; }
 .card.hqc .more:not(.sv) { background: var(--red2); }
-@media (max-width: 760px) { .card.hqc .ph { height: 38vw; max-height: 170px; } .card .hqph img { width: 70px; } .hq .b img { width: 50px; } .hq .stem { height: 18px; } .hq .tag { bottom: 18px; } }
+@media (max-width: 760px) { .card.hqc .ph { height: 38vw; max-height: 170px; } .card .hqph img { width: 70px; } }
 html[data-theme="dark"] .card .hqph { background: #0b0c0d; }
 html[data-theme="dark"] .card.hqc dd a { color: #ff4d52; }
 </style>
@@ -345,16 +346,13 @@ $('tMap').onclick = () => { street = !street; map.setLayoutProperty('street', 'v
 const HQ = { id: 'keim-australia', name: 'KEIM Australia', sub: 'Showroom & office · Unit 7, 19 McCauley Street, Matraville NSW 2036', place: 'Matraville, Sydney', region: 'New South Wales', country: 'Australia', lat: -33.96212, lon: 151.22421, exact: 1, type: 'KEIM Australia', products: 'The full KEIM mineral paint range, colour advice and technical support', status: 'Visit by appointment · (02) 9748 7160', story: 'Our Sydney showroom and office. KEIM has been supplying mineral silicate paints in Australia for more than 35 years, and since 2025 KEIM Australia is part of the global KEIM family. Come and see the colours on real substrates, or call us to talk through a project.', link: 'https://www.keim.com.au', src: 'KEIM Australia' };
 (function () {
   const el = document.createElement('div'); el.className = 'hq'; el.title = 'KEIM Australia showroom, Matraville';
-  const logo = document.createElement('img');
-  logo.src = 'keim-logo-neg.png';
-  logo.alt = 'KEIM';
-  const b = document.createElement('div'); b.className = 'b'; b.appendChild(logo);
-  const l = document.createElement('div'); l.className = 'l'; l.textContent = 'KEIM Australia';
-  const tag = document.createElement('div'); tag.className = 'tag'; tag.append(b, l);
+  const pin = document.createElement('div'); pin.className = 'pin';
+  pin.innerHTML = '<svg viewBox="0 0 40 46"><path d="M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z" fill="#D62025" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/></svg>';
+  const tag = document.createElement('div'); tag.className = 'lab'; tag.innerHTML = '<b>KEIM Australia</b><span>Showroom &amp; office</span>';
   const mk = c => { const i = document.createElement('i'); i.className = c; return i; };
-  el.append(mk('dot'), mk('ring'), mk('ring2'), mk('stem'), tag);
+  el.append(mk('dot'), mk('ring'), mk('ring2'), pin, tag);
   // only appears once you are close to the showroom; pops up with a pulse
-  const show = () => { const on = map.getZoom() >= 12.5; if (on === !el.hidden) return; el.hidden = !on; if (on) { tag.style.animation = 'none'; void tag.offsetWidth; tag.style.animation = ''; } };
+  const show = () => { const on = map.getZoom() >= 12.5; if (on === !el.hidden) return; el.hidden = !on; if (on) { [pin, tag].forEach(x => { x.style.animation = 'none'; void x.offsetWidth; x.style.animation = ''; }); } };
   el.hidden = true; map.on('zoom', show); show();
   el.addEventListener('click', e => { e.stopPropagation(); open(HQ, true); });
   new maplibregl.Marker({ element: el, anchor: 'center', pitchAlignment: 'viewport' }).setLngLat([HQ.lon, HQ.lat]).addTo(map);
@@ -386,7 +384,7 @@ function open(p, fly) {
   $('card').classList.remove('full'); $('card').hidden = false; $('card').scrollTop = 0; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
   if (fly) { const wide = innerWidth > 760;
     const hq = p === HQ; map.flyTo({ center: [p.lon, p.lat], zoom: hq ? 17.2 : p.exact ? 16.6 : 12.5, pitch: hq ? 40 : p.exact ? 58 : 35, bearing: hq ? -20 : (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
-      padding: wide ? { right: 430, top: 150, left: 0, bottom: 0 } : { bottom: innerHeight * 0.52, top: hq ? 190 : 110, left: 0, right: 0 } }); }
+      padding: wide ? { right: 430, top: 150, left: 0, bottom: 0 } : { bottom: innerHeight * 0.52, top: hq ? 120 : 110, left: 0, right: 0 } }); }
   try { history.replaceState(null, '', '#' + p.id); } catch (e) {}
 }
 function close() { $('card').hidden = true; sel = null; repaintPins(); document.body.classList.add('nocard'); touring = false; if (typeof tourUI === 'function') tourUI(); try { history.replaceState(null, '', location.pathname); } catch (e) {} }
