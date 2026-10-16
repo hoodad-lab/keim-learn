@@ -116,13 +116,26 @@ body:not(.nocard) .under { padding-right: 446px; }
 .card [hidden] { display: none !important; }
 /* KEIM Australia showroom marker */
 .hq { position: relative; width: 0; height: 0; cursor: pointer; z-index: 1; }
-.hq .dot { position: absolute; left: -7px; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: var(--red); border: 2.5px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,.5); box-sizing: border-box; }
-.hq .stem { position: absolute; left: 0; top: 0; width: 34px; height: 2px; background: #fff; transform-origin: 0 50%; transform: rotate(35deg); box-shadow: 0 1px 3px rgba(0,0,0,.4); }
-.hq .tag { position: absolute; left: 26px; top: 16px; display: flex; flex-direction: column; align-items: flex-start; filter: drop-shadow(0 4px 8px rgba(0,0,0,.45)); transform-origin: 0 0; transition: transform .2s; }
-.hq .b { background: var(--anth); padding: 6px 8px 4px; border-radius: 2px; line-height: 0; border-bottom: 3px solid var(--red); }
-.hq .b img { width: 50px; height: auto; display: block; }
-.hq .l { margin-top: 3px; background: #fff; color: var(--anth); font: 500 9px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: 4px 6px 3px; white-space: nowrap; }
-.hq.small .tag { transform: scale(.78); }
+.hq[hidden] { display: none; }
+.hq .ring, .hq .ring2 { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--red); transform: scaleY(.55); pointer-events: none; animation: hqp 2.4s ease-out infinite; }
+.hq .ring2 { animation-delay: 1.2s; }
+@keyframes hqp { 0% { opacity: .9; width: 18px; height: 18px; left: -9px; top: -9px; } 100% { opacity: 0; width: 120px; height: 120px; left: -60px; top: -60px; } }
+.hq .dot { position: absolute; left: -6px; top: -4px; width: 12px; height: 8px; border-radius: 50%; background: rgba(0,0,0,.35); filter: blur(1px); }
+.hq .stem { position: absolute; left: -1px; bottom: 0; width: 2px; height: 26px; background: linear-gradient(var(--red), #fff); }
+.hq .tag { position: absolute; left: 0; bottom: 26px; display: flex; flex-direction: column; align-items: center; transform: translateX(-50%); filter: drop-shadow(0 6px 10px rgba(0,0,0,.5)); animation: hqin .55s cubic-bezier(.2,1.6,.4,1) both; }
+@keyframes hqin { from { opacity: 0; transform: translateX(-50%) translateY(14px) scale(.6); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+.hq .b { background: var(--anth); padding: 8px 10px 6px; border-radius: 2px; line-height: 0; border-bottom: 3px solid var(--red); }
+.hq .b img { width: 64px; height: auto; display: block; }
+.hq .l { margin-top: 4px; background: #fff; color: var(--anth); font: 500 9.5px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; padding: 4px 7px 3px; white-space: nowrap; }
+.hq:hover .b { background: var(--red2); border-bottom-color: #fff; }
+/* "find us" button */
+.findus { position: fixed; z-index: 3; left: 16px; bottom: calc(max(30px, calc(env(safe-area-inset-bottom) + 14px)) + 44px); display: flex; align-items: center; gap: 9px; border: 0; background: var(--anth); color: #fff; padding: 7px 12px 6px 9px; border-radius: 2px; font: 500 11px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; box-shadow: 0 6px 18px -6px rgba(0,0,0,.6); }
+.findus svg { width: 14px; height: 16px; flex: none; }
+.findus:hover { background: var(--red2); }
+.findus small { display: block; font: 400 10px/1 var(--sans); letter-spacing: .08em; text-transform: none; color: var(--grey); margin-top: 3px; }
+.findus:hover small { color: #fff; }
+body.touring .findus, .embed .findus { display: none; }
+@media (max-width: 760px) { .findus { bottom: calc(max(30px, calc(env(safe-area-inset-bottom) + 14px)) + 62px); } body:not(.nocard) .findus { display: none; } }
 
 /* tours */
 .tmenu { position: fixed; z-index: 6; right: 84px; bottom: max(30px, calc(env(safe-area-inset-bottom) + 14px)); width: 330px; max-height: min(560px, 70vh); background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,.45); border-radius: 3px; display: flex; flex-direction: column; overflow: hidden; }
@@ -169,6 +182,7 @@ body.touring .legend, body.touring .hint { display: none; }
   </div></div>
 </header>
 <div class="legend" id="legend"><span><i style="background:#D62025"></i>Australia</span><span><i style="background:#36393C;outline:1px solid #fff"></i>Worldwide</span></div>
+<button class="findus" id="findUs" type="button" aria-label="Fly to the KEIM Australia showroom"><svg viewBox="0 0 40 46"><path d="M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z" fill="#D62025"/></svg><span>KEIM Australia<small>Find our showroom</small></span></button>
 <div class="tmenu" id="tMenu" hidden role="dialog" aria-label="Choose a tour"><div class="th"><b>Choose a tour</b><button id="tmX" type="button" aria-label="Close">✕</button></div><div class="tl" id="tmList"></div></div>
 <div class="tbar" id="tBar" hidden><div class="tt"><b id="tbName"></b><span id="tbStep"></span></div><div class="prog"><i id="tbProg"></i></div><button id="tbPrev" type="button" aria-label="Previous stop">‹</button><button id="tbPlay" type="button">Pause</button><button id="tbNext" type="button" aria-label="Next stop">›</button><button id="tbX" type="button" aria-label="End tour">✕</button></div>
 <div class="tools"><button id="tMap" type="button" aria-label="Switch between street map and satellite">MAP</button><button id="tTour" type="button" aria-label="Fly me around">TOUR</button><button id="tWorld" type="button" aria-label="Back to the globe">GLOBE</button><button id="tList" type="button" aria-label="Show project list">LIST</button></div>
@@ -279,12 +293,13 @@ const HQ = { id: 'keim-australia', name: 'KEIM Australia', sub: 'Showroom & offi
   const b = document.createElement('div'); b.className = 'b'; b.appendChild(logo);
   const l = document.createElement('div'); l.className = 'l'; l.textContent = 'KEIM Australia';
   const tag = document.createElement('div'); tag.className = 'tag'; tag.append(b, l);
-  const stem = document.createElement('i'); stem.className = 'stem';
-  const dot = document.createElement('i'); dot.className = 'dot';
-  el.append(stem, dot, tag);
-  const sz = () => el.classList.toggle('small', map.getZoom() < 10); map.on('zoom', sz); sz();
+  const mk = c => { const i = document.createElement('i'); i.className = c; return i; };
+  el.append(mk('dot'), mk('ring'), mk('ring2'), mk('stem'), tag);
+  // only appears once you are close to the showroom; pops up with a pulse
+  const show = () => { const on = map.getZoom() >= 12.5; if (on === !el.hidden) return; el.hidden = !on; if (on) { tag.style.animation = 'none'; void tag.offsetWidth; tag.style.animation = ''; } };
+  el.hidden = true; map.on('zoom', show); show();
   el.addEventListener('click', e => { e.stopPropagation(); open(HQ, true); });
-  new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([HQ.lon, HQ.lat]).addTo(map);
+  new maplibregl.Marker({ element: el, anchor: 'center', pitchAlignment: 'viewport' }).setLngLat([HQ.lon, HQ.lat]).addTo(map);
 })();
 // project card + fly-to
 function open(p, fly) {
@@ -344,6 +359,7 @@ function buildTourMenu() { const row = t => { const st = tourStops(t); if (st.le
     return `<button class="opt" type="button" data-tour="${t.id}"><span class="th2" style="background-image:url('${esc(bg)}')"></span><span><b>${esc(t.name)}</b><small>${esc(t.desc)}</small></span><span class="n">${st.length}</span></button>`; };
   $('tmList').innerHTML = '<h4>Places</h4>' + TOURS.slice(0, 3).map(row).join('') + '<h4>By sector</h4>' + TOURS.slice(3).map(row).join(''); }
 $('tTour').onclick = () => { if ($('tMenu').hidden) buildTourMenu(); $('tMenu').hidden = !$('tMenu').hidden; hideHint(); };
+$('findUs').onclick = () => { if (T) endTour(); $('tMenu').hidden = true; hideHint(); open(HQ, true); };
 $('tmX').onclick = () => { $('tMenu').hidden = true; };
 $('tmList').addEventListener('click', e => { const b = e.target.closest('[data-tour]'); if (b) startTour(b.dataset.tour); });
 $('tbPlay').onclick = () => { if (!T) return; touring = !touring; if (touring) { if (tk >= T.stops.length) tk = 0; tourGo(tk); } else { clearTimeout(tTimer); tourUI(); } };
