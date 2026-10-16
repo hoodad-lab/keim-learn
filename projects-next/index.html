@@ -81,6 +81,7 @@ select, .q { border: 1px solid var(--line); background: #fff; border-radius: 0; 
 .card .ph.none { display: grid; place-items: center; background: var(--anth); }
 .card .ph.none i { display: block; width: 34px; height: 40px; background: var(--red); clip-path: path('M3.7 6.4A33.5 33.5 0 0 1 30.3 6.4L17 38Z'); }
 .card .tag { position: absolute; left: 0; top: 10px; background: #fff; padding: 6px 10px 5px; font: 500 10.5px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--anth); }
+.aer { position: absolute; right: 0; bottom: 0; background: rgba(54,57,60,.85); color: #fff; font: 500 10px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; padding: 6px 9px 5px; }
 .card .tag.au { background: var(--red2); color: #fff; }
 .card .bd { padding: 14px 16px 16px; border-top: 4px solid var(--anth); }
 .card h3 { font: 500 17px/1.2 var(--sans); text-transform: uppercase; letter-spacing: .03em; margin: 0 0 6px; color: var(--ink); }
@@ -167,6 +168,11 @@ select, .q { border: 1px solid var(--line); background: #fff; border-radius: 0; 
 <script>
 const $ = id => document.getElementById(id);
 const IMG = f => /^https?:/.test(f) ? f : 'map/img/' + f;
+const AER = (p, w, h) => { const d = 0.0011, e = d * w / h / Math.cos(p.lat * Math.PI / 180); return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=' + [p.lon - e, p.lat - d, p.lon + e, p.lat + d].map(v => v.toFixed(6)).join(',') + '&bboxSR=4326&imageSR=3857&size=' + w + ',' + h + '&format=jpg&f=image'; };
+const SV = p => 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + p.lat + ',' + p.lon;
+const canAer = p => !p.img && p.exact && p.type !== 'Residential';
+const canSV = p => p.exact && p.type !== 'Residential';
+
 const FEATURED = ['Sydney Opera House', 'Parramatta Town Hall', 'Royal Hobart Hospital', 'State Library of Queensland', 'Nyaal Banyul Geelong Convention and Event Centre', 'WestConnex M8 tunnel', 'Shell House', 'Joan Kirner Women\'s & Children\'s Hospital', 'Castle Residences & Porter House', 'Wellington Dam mural "Reflections"', '25hours Hotel The Olympia', 'Australian National Maritime Museum'];
 const TYPE_LABEL = { Residential: 'Homes & apartments', Heritage: 'Heritage', Commercial: 'Commercial', Education: 'Education', Culture: 'Culture', Transport: 'Infrastructure', Health: 'Healthcare', Mural: 'Murals & art', Hospitality: 'Hotels', Civic: 'Civic', Community: 'Community' };
 function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
@@ -207,7 +213,7 @@ function render() {
   $('count').textContent = L.length + (L.length === 1 ? ' project' : ' projects'); const g = $('grid'); g.innerHTML = '';
   L.slice(0, shown).forEach(p => { const b = document.createElement('button'); b.className = 'card'; b.type = 'button';
     b.innerHTML = '<div class="ph"><span class="tag"></span></div><div class="bd"><h3></h3><div class="pl"></div><div class="pr"></div></div>';
-    const ph = b.querySelector('.ph'); if (p.img) ph.style.backgroundImage = 'url("' + IMG(p.img) + '")'; else { ph.classList.add('none'); ph.insertAdjacentHTML('beforeend', '<i></i>'); }
+    const ph = b.querySelector('.ph'); if (p.img) ph.style.backgroundImage = 'url("' + IMG(p.img) + '")'; else if (canAer(p)) { ph.style.backgroundImage = 'url("' + AER(p, 520, 347) + '")'; ph.insertAdjacentHTML('beforeend', '<span class="aer">Aerial view</span>'); } else { ph.classList.add('none'); ph.insertAdjacentHTML('beforeend', '<i></i>'); }
     const tg = b.querySelector('.tag'); tg.textContent = TYPE_LABEL[p.type] || p.type; if (p.au) tg.classList.add('au');
     b.querySelector('h3').textContent = p.name; b.querySelector('.pl').textContent = [p.place, p.au ? p.st : p.country].filter(Boolean).join(', ') + (p.year ? ' · ' + p.year : ''); b.querySelector('.pr').textContent = p.pr.slice(0, 2).map(x => 'KEIM ' + x).join(' · ');
     b.addEventListener('click', () => openP(p)); g.appendChild(b); });
@@ -221,13 +227,13 @@ $('prod').addEventListener('change', e => { st.prod = e.target.value; shown = 24
 let qt; $('q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { st.q = e.target.value.trim(); shown = 24; render(); }, 150); });
 // drawer
 function openP(p) {
-  const ph = $('dPh'); ph.style.backgroundImage = p.img ? 'url("' + IMG(p.img) + '")' : 'linear-gradient(135deg,#4a4e52,#36393C)';
+  const ph = $('dPh'); ph.style.backgroundImage = p.img ? 'url("' + IMG(p.img) + '")' : canAer(p) ? 'url("' + AER(p, 640, 480) + '")' : 'linear-gradient(135deg,#4a4e52,#36393C)'; ph.querySelectorAll('.aer').forEach(x => x.remove()); if (!p.img && canAer(p)) ph.insertAdjacentHTML('beforeend', '<span class="aer">Aerial view · Imagery © Esri, Maxar</span>');
   const f = (k, v, wide) => v ? '<div class="fact' + (wide ? ' wide' : '') + '"><small>' + k + '</small><div>' + esc(v) + '</div></div>' : '';
   const subj = encodeURIComponent('Project enquiry: ' + p.name), body = encodeURIComponent('Hi KEIM Australia,\n\nI saw ' + p.name + ' on your projects page and would like to know more about the system used.\n\n');
   $('dIn').innerHTML = '<div class="kick">' + esc((TYPE_LABEL[p.type] || p.type) + (p.au ? ' · Australia' : ' · ' + p.country)) + '</div><h2>' + esc(p.name) + '</h2>' + (p.sub ? '<p class="sub">' + esc(p.sub) + '</p>' : '') +
     '<div class="facts">' + f('Location', [p.place, p.au ? p.st : p.country].filter(Boolean).join(', ')) + f('Year painted / completed', p.year) + f('Sector', TYPE_LABEL[p.type] || p.type) + f('KEIM products', p.products, true) + f('Colours', p.colours, true) + f('Architect', p.architect) + f('Builder / client', p.builder) + f('Applicator', p.applicator) + f('Area', p.area) + f('Status', p.status) + '</div>' +
     (p.story ? '<p class="story">' + esc(p.story) + '</p>' : '') +
-    '<div class="acts"><a class="btn red" target="_top" href="mailto:info@keim.com.au?subject=' + subj + '&body=' + body + '">Ask about this project</a>' + (p.link ? '<a class="btn line" target="_blank" rel="noopener" href="' + esc(p.link) + '">Full case study ↗</a>' : '') + '<a class="btn line" target="_blank" rel="noopener" href="map/#' + esc(p.id) + '">Show on map ↗</a></div>' +
+    '<div class="acts"><a class="btn red" target="_top" href="mailto:info@keim.com.au?subject=' + subj + '&body=' + body + '">Ask about this project</a>' + (p.link ? '<a class="btn line" target="_blank" rel="noopener" href="' + esc(p.link) + '">Full case study ↗</a>' : '') + '<a class="btn line" target="_blank" rel="noopener" href="map/#' + esc(p.id) + '">Show on map ↗</a>' + (canSV(p) ? '<a class="btn line" target="_blank" rel="noopener" href="' + SV(p) + '">Street View ↗</a>' : '') + '</div>' +
     '<div class="src">Source: ' + esc(p.src || 'KEIM') + (p.credit ? ' · Photo: ' + esc(p.credit) : '') + (/^c\.|^by /.test(p.year || '') ? ' · Year is approximate (c. = circa, by = listed by that year)' : '') + '</div>' +
     (p.ipage ? '<div class="src">Photo: <a target="_blank" rel="noopener" href="' + esc(p.ipage) + '">' + esc(p.iby || 'Wikimedia Commons') + '</a>, ' + esc(p.ilic || '') + ', via Wikimedia Commons. General view of the building, not necessarily of the KEIM works.</div>' : '');
   $('drawer').classList.add('on'); $('dim').classList.add('on'); $('drawer').setAttribute('aria-hidden', 'false'); $('drawer').scrollTop = 0;

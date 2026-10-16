@@ -65,6 +65,7 @@ body:not(.nocard) .under { padding-right: 446px; }
 .card .story { font: 400 15px/1.6 var(--sans); color: #2b2d30; margin: 10px 0 0; }
 .card .approx { font: 400 13px/1.4 var(--sans); color: var(--ink); background: #eef0f1; border-left: 3px solid var(--grey); padding: 8px 10px; margin-top: 12px; }
 .card .more { display: inline-block; margin-top: 16px; font: 500 12px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: #fff; background: var(--red2); text-decoration: none; padding: 11px 14px 10px; }
+.card .more.sv { background: #fff; color: var(--anth); box-shadow: inset 0 0 0 1px var(--anth); }
 .card .nav { display: flex; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--grey2); }
 .card .nav button { flex: 1; border: 1px solid var(--anth); background: #fff; border-radius: 2px; padding: 11px 8px 10px; font: 500 11.5px/1.2 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--anth); cursor: pointer; }
 .card .nav button.solid { background: var(--anth); color: #fff; }
@@ -124,7 +125,7 @@ body:not(.nocard) .under { padding-right: 446px; }
     <dl id="cFacts"></dl>
     <p class="story" id="cStory"></p>
     <div class="approx" id="cApprox">Pin shows the suburb or city — the exact building isn’t marked yet.</div>
-    <a class="more" id="cMore" target="_blank" rel="noopener">Read the full case study</a>
+    <a class="more" id="cMore" target="_blank" rel="noopener">Read the full case study</a> <a class="more sv" id="cSv" target="_blank" rel="noopener">Google Street View ↗</a>
     <div class="src" id="cSrc"></div>
     <div class="nav"><button id="cBack" type="button">‹ Back</button><button id="cNext" class="solid" type="button">Next nearby ›</button></div>
   </div>
@@ -161,6 +162,10 @@ setTimeout(hideHint, 10000);
 // pins and clusters drawn inside the map itself (WebGL), so they stay glued to the ground while you move
 // pins are the KEIM wedge (arch-shaped sector, point on the spot): KEIM Red for Australia, KEIM Anthracite worldwide
 const WEDGE = 'M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z';
+const AER = (p, w, h) => { const d = 0.0011, e = d * w / h / Math.cos(p.lat * Math.PI / 180); return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=' + [p.lon - e, p.lat - d, p.lon + e, p.lat + d].map(v => v.toFixed(6)).join(',') + '&bboxSR=4326&imageSR=3857&size=' + w + ',' + h + '&format=jpg&f=image'; };
+const SV = p => 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + p.lat + ',' + p.lon;
+const canAer = p => !p.img && p.exact && p.type !== 'Residential';
+const canSV = p => p.exact && p.type !== 'Residential';
 const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" height="96" viewBox="0 0 40 50.5">${on ? `<path d="${WEDGE}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="7" stroke-linejoin="round"/>` : ''}<path d="${WEDGE}" fill="${au || on ? '#D62025' : '#36393C'}" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg>`;
 function svgImg(svg) { return new Promise((res, rej) => { const im = new Image(76, 96); im.onload = () => res(im); im.onerror = rej; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }); }
 // cluster bubbles are drawn on demand, one image per count
@@ -207,7 +212,7 @@ $('tMap').onclick = () => { street = !street; map.setLayoutProperty('street', 'v
 // project card + fly-to
 function open(p, fly) {
   spinning = false; hideHint(); if (sel && sel !== p && fly !== 'back') hist.push(sel); sel = p; repaintPins(); document.body.classList.remove('nocard');
-  $('cPh').innerHTML = (p.img ? `<img src="${/^https?:/.test(p.img) ? esc(p.img) : 'img/' + esc(p.img)}" alt="${esc(p.name)}">` : `<div class="noimg"><svg viewBox="0 0 40 46"><path d="${WEDGE}" fill="#D62025"/></svg>Photo to come</div>`) + (p.ipage ? `<span class="credit">Photo: ${esc(p.iby || '')} · ${esc(p.ilic || '')} · Wikimedia Commons</span>` : p.credit ? `<span class="credit">Photo: ${esc(p.credit)}</span>` : '') + (p.render ? `<span class="tag">Artist’s impression</span>` : '');
+  $('cPh').innerHTML = canAer(p) ? `<img src="${AER(p, 640, 427)}" alt="Aerial view of ${esc(p.name)}"><span class="credit">Aerial view · Imagery © Esri, Maxar</span><span class="tag">Aerial</span>` : (p.img ? `<img src="${/^https?:/.test(p.img) ? esc(p.img) : 'img/' + esc(p.img)}" alt="${esc(p.name)}">` : `<div class="noimg"><svg viewBox="0 0 40 46"><path d="${WEDGE}" fill="#D62025"/></svg>Photo to come</div>`) + (p.ipage ? `<span class="credit">Photo: ${esc(p.iby || '')} · ${esc(p.ilic || '')} · Wikimedia Commons</span>` : p.credit ? `<span class="credit">Photo: ${esc(p.credit)}</span>` : '') + (p.render ? `<span class="tag">Artist’s impression</span>` : '');
   $('cKick').textContent = [LABEL[p.type] || p.type, [p.place, p.region, p.country].filter((v, i, a) => v && a.indexOf(v) === i).join(', ')].filter(Boolean).join(' · ');
   $('cName').textContent = p.name; $('cSub').textContent = p.sub || ''; $('cSub').hidden = !p.sub;
   const art = /^Artists?:/.test(p.architect || '');
@@ -215,8 +220,8 @@ function open(p, fly) {
   $('cFacts').innerHTML = rows.map(([k, v, c]) => `<dt>${k}</dt><dd${c ? ' class="' + c + '"' : ''}>${esc(v)}</dd>`).join('');
   $('cStory').textContent = [p.story, p.notes].filter(Boolean).join(' '); $('cStory').hidden = !(p.story || p.notes);
   $('cApprox').hidden = !!p.exact;
-  $('cMore').hidden = !p.link; if (p.link) $('cMore').href = p.link;
-  $('cSrc').innerHTML = 'Source: ' + esc(p.src || 'KEIM') + (p.year_src && p.year ? '<br>Year: ' + esc(p.year_src) : '') + (p.ipage ? `<br>Photo: <a href="${esc(p.ipage)}" target="_blank" rel="noopener">${esc(p.iby || 'Wikimedia Commons')}</a>, ${esc(p.ilic || '')}, via Wikimedia Commons (general view of the building)` : '');
+  $('cMore').hidden = !p.link; if (p.link) $('cMore').href = p.link; $('cSv').hidden = !canSV(p); if (canSV(p)) $('cSv').href = SV(p);
+  $('cSrc').innerHTML = 'Source: ' + esc(p.src || 'KEIM') + (p.year_src && p.year ? '<br>Year source: ' + (/^https?:/.test(p.year_src) ? '<a href="' + esc(p.year_src) + '" target="_blank" rel="noopener">' + esc(p.year_src.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]) + '</a>' : esc(p.year_src)) : '') + (p.ipage ? `<br>Photo: <a href="${esc(p.ipage)}" target="_blank" rel="noopener">${esc(p.iby || 'Wikimedia Commons')}</a>, ${esc(p.ilic || '')}, via Wikimedia Commons (general view of the building)` : '');
   $('card').hidden = false; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
   if (fly) { const wide = innerWidth > 760;
     map.flyTo({ center: [p.lon, p.lat], zoom: p.exact ? 16.6 : 12.5, pitch: p.exact ? 58 : 35, bearing: (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
@@ -250,7 +255,7 @@ function renderList() { if ($('list').hidden) return;
   let L = vis; try { const b = map.getBounds(); if (map.getZoom() > 2.5) L = vis.filter(p => b.contains([p.lon, p.lat])); } catch (e) {}
   L = L.slice().sort(lSort === 'year' ? (a, b) => yr(b) - yr(a) || a.name.localeCompare(b.name) : lSort === 'country' ? (a, b) => a.country.localeCompare(b.country) || a.name.localeCompare(b.name) : (a, b) => a.name.localeCompare(b.name));
   $('lCount').textContent = L.length + (L.length === 1 ? ' project' : ' projects') + (L.length !== vis.length ? ' of ' + vis.length : '');
-  $('lOl').innerHTML = L.map(p => `<li><button type="button" data-i="${P.indexOf(p)}"><span class="th${p.img ? '' : ' none'}" ${p.img ? `style="background-image:url('${/^https?:/.test(p.img) ? esc(p.img) : 'img/' + esc(p.img)}')"` : ''}></span><span><b>${esc(p.name)}</b><small>${esc([p.place, p.country].filter(Boolean).join(', '))}${p.year ? ' · ' + esc(p.year) : ''}</small><small><i>${esc((p.products || '').replace(/\s*\(.*?\)/g, ''))}</i></small></span></button></li>`).join(''); }
+  $('lOl').innerHTML = L.map(p => `<li><button type="button" data-i="${P.indexOf(p)}"><span class="th${p.img || canAer(p) ? '' : ' none'}" ${p.img ? `style="background-image:url('${/^https?:/.test(p.img) ? esc(p.img) : 'img/' + esc(p.img)}')"` : canAer(p) ? `style="background-image:url('${AER(p, 128, 92)}')"` : ''}></span><span><b>${esc(p.name)}</b><small>${esc([p.place, p.country].filter(Boolean).join(', '))}${p.year ? ' · ' + esc(p.year) : ''}</small><small><i>${esc((p.products || '').replace(/\s*\(.*?\)/g, ''))}</i></small></span></button></li>`).join(''); }
 $('lOl').addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) { open(P[+b.dataset.i], true); if (innerWidth <= 760) $('list').hidden = true; } });
 $('tList').onclick = () => { $('list').hidden = !$('list').hidden; renderList(); hideHint(); };
 $('lX').onclick = () => { $('list').hidden = true; };
