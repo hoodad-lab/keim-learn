@@ -4911,7 +4911,8 @@
   "render": 0,
   "link": "",
   "src": "KEIM Australia project review 2021",
-  "exact": 1
+  "exact": 1,
+  "year": "by 2021"
  },
  {
   "id": "au-wagga-wagga-mural",
@@ -4937,7 +4938,8 @@
   "render": 0,
   "link": "",
   "src": "KEIM Australia project review 2021",
-  "exact": 0
+  "exact": 0,
+  "year": "by 2021"
  },
  {
   "id": "au-wenona-school-aquatic-centre",
@@ -4990,7 +4992,8 @@
   "render": 0,
   "link": "",
   "src": "KEIM Australia project review 2021",
-  "exact": 0
+  "exact": 0,
+  "year": "by 2021"
  },
  {
   "id": "au-sap-building-north-sydney",
@@ -5044,7 +5047,8 @@
   "render": 0,
   "link": "",
   "src": "KEIM Australia projects 2018",
-  "exact": 1
+  "exact": 1,
+  "year": "by 2018"
  },
  {
   "id": "au-albany-ring-road",
@@ -5070,7 +5074,8 @@
   "render": "",
   "link": "https://www.keim.com.au/post/interview-with-glenn-hegedus",
   "src": "keim.com.au",
-  "exact": 0
+  "exact": 0,
+  "year": "2024"
  },
  {
   "id": "us-201-ellicott",
