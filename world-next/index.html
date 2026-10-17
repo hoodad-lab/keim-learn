@@ -149,6 +149,8 @@ body.touring .findus, .embed .findus { display: none; }
 .tmenu h4 { margin: 10px 16px 4px; font: 500 10.5px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--mute); }
 .tmenu .opt { display: grid; grid-template-columns: 54px 1fr auto; gap: 12px; align-items: center; width: 100%; border: 0; background: #fff; padding: 8px 16px; text-align: left; cursor: pointer; font: inherit; color: var(--ink); }
 .tmenu .opt:hover { background: var(--paper); }
+.tmenu .opt.cur { box-shadow: inset 4px 0 0 var(--red); }
+#tTour { position: relative; } #tTour.sel::after { content: ''; position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 2px rgba(214,32,37,.3); }
 .tmenu .opt .th2 { width: 54px; height: 40px; background: var(--grey2) center/cover; border-radius: 2px; }
 .tmenu .opt b { display: block; font: 500 14px/1.2 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--anth); }
 .tmenu .opt small { display: block; font: 400 12.5px/1.3 var(--sans); color: var(--mute); margin-top: 2px; }
@@ -440,14 +442,17 @@ function tourUI() { const on = !!T; $('tBar').hidden = !on; document.body.classL
   $('tbProg').style.width = (100 * tk / T.stops.length) + '%'; $('tbPlay').textContent = touring ? 'Pause' : 'Play'; }
 function tourGo(i) { if (!T) return; clearTimeout(tTimer); tk = (i + T.stops.length) % T.stops.length; open(T.stops[tk], true); tk++; tourUI();
   if (touring) tTimer = setTimeout(() => map.once('moveend', () => { tTimer = setTimeout(() => { if (touring && T) { if (tk >= T.stops.length) { touring = false; tourUI(); $('tbStep').textContent = 'Tour complete · ' + T.stops.length + ' stops'; } else tourGo(tk); } }, 5200); }), 400); }
-function startTour(id) { const t = TOURS.find(x => x.id === id); if (!t || !P.length) return; const stops = tourStops(t); if (!stops.length) return;
+function selTour() { if (!fType && !fReg && !fQ) return null; const parts = [fType ? LABEL[fType] : '', fReg ? { au: 'Australia', eu: 'Europe', am: 'Americas' }[fReg] : '', fQ ? '“' + fQ + '”' : ''].filter(Boolean);
+  return { id: 'current', name: parts.join(' · '), desc: 'Tour the projects the map is showing now', f: p => vis.includes(p) && (p.type === 'Residential' ? goodPic(p) : tourOK(p)), max: 30, filt: { cur: true } }; }
+function startTour(id) { const t = id === 'current' ? selTour() : TOURS.find(x => x.id === id); if (!t || !P.length) return; const stops = tourStops(t); if (!stops.length) return;
   $('tMenu').hidden = true; $('list').hidden = true; hideHint(); spinning = false;
-  fType = t.filt.type || null; fReg = t.filt.keep ? fReg : (t.filt.reg || null); syncChips(); refilter();
-  T = { ...t, stops }; touring = true; hist.length = 0; tourGo(0); try { history.replaceState(null, '', '#tour=' + id); } catch (e) {} }
+  if (!t.filt.cur) { fType = t.filt.type || null; fReg = t.filt.keep ? fReg : (t.filt.reg || null); syncChips(); refilter(); }
+  T = { ...t, stops }; touring = true; hist.length = 0; tourGo(0); if (id !== 'current') try { history.replaceState(null, '', '#tour=' + id); } catch (e) {} }
 function endTour() { clearTimeout(tTimer); touring = false; T = null; tourUI(); }
-function buildTourMenu() { const row = t => { const st = tourStops(t); if (st.length < 3) return ''; const pic = st.find(goodPic) || st[0]; const bg = goodPic(pic) ? (/^https?:/.test(pic.img) ? pic.img : 'img/' + pic.img) : pic === HQ ? '' : AER(pic, 128, 92);
+function buildTourMenu() { const row = (t, min = 3) => { const st = tourStops(t); if (st.length < min) return ''; const pic = st.find(goodPic) || st[0]; const bg = goodPic(pic) ? (/^https?:/.test(pic.img) ? pic.img : 'img/' + pic.img) : pic === HQ ? '' : AER(pic, 128, 92);
     return `<button class="opt" type="button" data-tour="${t.id}"><span class="th2" style="background-image:url('${esc(bg)}')"></span><span><b>${esc(t.name)}</b><small>${esc(t.desc)}</small></span><span class="n">${st.length}</span></button>`; };
-  $('tmList').innerHTML = '<h4>Places</h4>' + TOURS.slice(0, 5).map(row).join('') + '<h4>By sector</h4>' + TOURS.slice(5).map(row).join(''); }
+  const cur = selTour(), cr = cur ? row(cur, 1) : '';
+  $('tmList').innerHTML = (cr ? '<h4>Your selection</h4>' + cr.replace('class="opt"', 'class="opt cur"') : '') + '<h4>Places</h4>' + TOURS.slice(0, 5).map(row).join('') + '<h4>By sector</h4>' + TOURS.slice(5).map(row).join(''); }
 $('tTour').onclick = () => { if ($('tMenu').hidden) buildTourMenu(); $('tMenu').hidden = !$('tMenu').hidden; hideHint(); };
 $('findUs').onclick = () => { if (T) endTour(); $('tMenu').hidden = true; hideHint(); open(HQ, true); };
 $('tmX').onclick = () => { $('tMenu').hidden = true; };
@@ -463,7 +468,7 @@ function syncChips() { document.querySelectorAll('#bar .chip[data-t]').forEach(b
 function refilter() { const q = fQ.toLowerCase();
   vis = P.filter(p => (!fType || p.type === fType) && (!fReg || REG[fReg].t(p)) && (!q || (p.name + ' ' + p.place + ' ' + p.country + ' ' + (p.region || '') + ' ' + p.products + ' ' + p.architect + ' ' + (p.artist || '') + ' ' + (p.builder || '') + ' ' + (p.applicator || '') + ' ' + (p.year || '')).toLowerCase().includes(q)));
   const nc = new Set(vis.map(p => p.country)).size; $('count').textContent = vis.length + ' projects · ' + nc + (nc === 1 ? ' country' : ' countries');
-  const s = map.getSource && map.getSource('pts'); if (s) s.setData(geo()); renderList(); }
+  const s = map.getSource && map.getSource('pts'); if (s) s.setData(geo()); renderList(); $('tTour').classList.toggle('sel', !!(fType || fReg || fQ)); }
 document.querySelectorAll('#bar .chip[data-r]').forEach(b => b.onclick = () => { const k = b.dataset.r; if (T) endTour(); fReg = fReg === k ? null : k; syncChips(); refilter(); spinning = false; hideHint(); if (fReg) { const g = REG[fReg]; map.flyTo({ center: g.c, zoom: innerWidth < 700 ? g.z[0] : g.z[1], pitch: 0, bearing: 0, speed: 1.1 }); } });
 $('q').addEventListener('input', e => { fQ = e.target.value.trim(); refilter(); if (fQ && vis.length === 1) open(vis[0], true); });
 $('q').addEventListener('keydown', e => { if (e.key === 'Enter' && vis.length) open(vis[0], true); });
