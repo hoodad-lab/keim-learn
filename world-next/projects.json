@@ -3625,7 +3625,7 @@
   "credit": "",
   "story": "",
   "type": "Community",
-  "img": "",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/KeppelBaySailing4.jpg/1280px-KeppelBaySailing4.jpg",
   "render": 0,
   "link": "",
   "src": "KEIM Australia reference list",
@@ -3633,7 +3633,10 @@
   "year": "2024",
   "year_src": "https://cqtoday.com.au/?p=85258",
   "ppage": "https://www.arkhefield.com.au/projects/keppel-bay-sailing-club",
-  "powner": "Arkhefield"
+  "powner": "Arkhefield",
+  "ipage": "https://commons.wikimedia.org/wiki/File:KeppelBaySailing4.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "RegionalQueenslander"
  },
  {
   "id": "au-la-scala",
@@ -5386,7 +5389,7 @@
   "credit": "",
   "story": "Sir John Monash unveiled the memorial on 11 October 1925. It is a Harcourt granite monument with a bronze soldier throwing a bomb, by Charles Web Gilbert, who died a week before the unveiling. Four bronze tablets carry the names of 365 men of the district killed in the Great War.",
   "type": "Civic",
-  "img": "",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Broken_Hill_War_Memorial%2C_2017_%2801%29.jpg/1280px-Broken_Hill_War_Memorial%2C_2017_%2801%29.jpg",
   "link": "",
   "src": "KEIM Australia website (archived 2019)",
   "exact": 1,
@@ -5394,7 +5397,10 @@
   "year_src": "https://monumentaustralia.org.au/display/20542-broken-hill-and-district-war-memorial",
   "ppage": "https://placesofpride.awm.gov.au/memorials/189751",
   "powner": "Australian War Memorial",
-  "artist": "Charles Web Gilbert"
+  "artist": "Charles Web Gilbert",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Broken_Hill_War_Memorial,_2017_(01).jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Bahnfrend"
  },
  {
   "id": "au-old-charlestown-square",
@@ -6165,14 +6171,17 @@
   "credit": "",
   "story": "Evelyn Grace Academy is a secondary school in Brixton run by the ARK academy trust, with a 100 m running track that passes through the middle of the building. Designed by Zaha Hadid Architects, it opened in 2010 and won the RIBA Stirling Prize in 2011. KEIM listed it as one of its worldwide references.",
   "type": "Education",
-  "img": "",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Evelyn_Grace_Academy%2C_Loughborough_Park_%281%29_-_geograph.org.uk_-_4404993.jpg/1280px-Evelyn_Grace_Academy%2C_Loughborough_Park_%281%29_-_geograph.org.uk_-_4404993.jpg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
   "year": "2010",
   "year_src": "https://www.dezeen.com/2010/10/18/evelyn-grace-academy-by-zaha-hadid-architects/amp/",
   "ppage": "https://www.dezeen.com/2010/10/18/evelyn-grace-academy-by-zaha-hadid-architects/amp/",
-  "powner": "Zaha Hadid Architects"
+  "powner": "Zaha Hadid Architects",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Evelyn_Grace_Academy,_Loughborough_Park_(1)_-_geograph.org.uk_-_4404993.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Stephen Craven"
  },
  {
   "id": "w-old-grand-egyptian-museum",
@@ -6360,7 +6369,7 @@
   "credit": "",
   "story": "The Run Run Shaw Creative Media Centre is City University of Hong Kong's faceted, crystalline media school building, with studios, theatres and labs. Designed by Daniel Libeskind, it was completed in 2011. KEIM listed it as one of its worldwide references.",
   "type": "Education",
-  "img": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Run_Run_Shaw_Creative_Media_Centre_Exterior.jpg",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Run_Run_Shaw_Creative_Media_Centre_Exterior.jpg/1280px-Run_Run_Shaw_Creative_Media_Centre_Exterior.jpg",
   "link": "",
   "src": "KEIM Australia website (archived 2015)",
   "exact": 1,
@@ -6717,7 +6726,9 @@
   "story": "Two public murals for the Brilliant Bamboo programme celebrate Stoke's ceramic heritage, one beside the canal and one near the former Spode works. The artists chose KEIM for its breathability on historic brick and its low environmental impact, adding KEIM metallic gold highlights.",
   "src": "KEIM Mineral Paints UK case study",
   "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Brilliant_Botanicals_Murals__KEIM_Soldalit___Design_Lasur_.pdf",
-  "artist": "Rob Fenton and Reiko Kaneko"
+  "artist": "Rob Fenton and Reiko Kaneko",
+  "ppage": "https://www.keim.com/en-gb/local-references/brilliant-botanicals-murals-stoke-on-trent/",
+  "powner": "KEIM (own reference page)"
  },
  {
   "id": "uk-bryn-gwalia-hall",
@@ -6801,7 +6812,11 @@
   "year": "2023",
   "story": "This hotel opposite Windsor Guildhall began life as a 16th-century inn and later held royal warrants. During its restoration the old render was replaced with natural hydraulic lime and painted in photocatalytic KEIM Soldalit-ME.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Castle_Hotel_Windsor__KEIM_Soldalit-ME_onto_new_lime_render_.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Castle_Hotel_Windsor__KEIM_Soldalit-ME_onto_new_lime_render_.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Castle_Hotel%2C_High_St%2C_Windsor.jpg/1280px-Castle_Hotel%2C_High_St%2C_Windsor.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Castle_Hotel,_High_St,_Windsor.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Paul the Archivist"
  },
  {
   "id": "uk-clare-priory",
@@ -6821,7 +6836,11 @@
   "year": "2020",
   "story": "Founded in 1248, the Grade I listed priory is one of England's oldest religious houses and is now a retreat. It was repainted in stages from 2017 in a traditional Suffolk Pink KEIM Soldalit-ME, chosen for resistance to algae under the surrounding trees.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Clare_Priory__Ashen_Road__Clare__Sudbury__Keim_Soldalit-ME_onto_render_.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Clare_Priory__Ashen_Road__Clare__Sudbury__Keim_Soldalit-ME_onto_render_.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Clare_Priory_%28geograph_4024443%29.jpg/1280px-Clare_Priory_%28geograph_4024443%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Clare_Priory_(geograph_4024443).jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Kim Fyson"
  },
  {
   "id": "uk-compass-community-hub",
@@ -7560,7 +7579,11 @@
   "year": "2023",
   "story": "Cardiff's Grade II listed 1840s Custom House was restored as the base of a 248-room hotel with a new tower behind. Its listed facades were finished in KEIM Soldalit-ME for pollution resistance.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Premier_Inn__Custom_House__Cardiff__KEIM_Soldalit-ME_onto_render_and_stonework_.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Premier_Inn__Custom_House__Cardiff__KEIM_Soldalit-ME_onto_render_and_stonework_.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Custom_House_%28Premier_Inn%29%2C_Cardiff._April_2023.jpg/1280px-Custom_House_%28Premier_Inn%29%2C_Cardiff._April_2023.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Custom_House_(Premier_Inn),_Cardiff._April_2023.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Seth Whales"
  },
  {
   "id": "uk-primark-western-road",
@@ -7710,7 +7733,11 @@
   "year": "2022",
   "story": "The 1797 flax mill, the world's first iron-framed building, was restored as workspace and a visitor destination. Up to 15 old paint layers were removed and interiors painted in KEIM Ecosil-ME, with KEIM Royalan lettering and a Soldalit-ME stripe outside.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Shrewsbury_Flaxmill_Maltings__Shrewsbury__KEIM_Paints_onto_mixed_substrates__.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Shrewsbury_Flaxmill_Maltings__Shrewsbury__KEIM_Paints_onto_mixed_substrates__.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/DSC00406_%28cropped%29.jpg/1280px-DSC00406_%28cropped%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:DSC00406_(cropped).jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Tk420"
  },
  {
   "id": "uk-st-francis-of-assisi-catholic-church-murals",
@@ -7875,7 +7902,11 @@
   "story": "Joseph Goldie's 1930-31 Catholic church in Surrey was repaired with new lime render where needed. It was finished in a fresh white KEIM Soldalit for breathability and resistance to algae.",
   "src": "KEIM Mineral Paints UK case study",
   "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/The_Assumption_Of_Our_Lady_Church__Englefield_Green__London__Keim_Soldalit_onto_render_.pdf",
-  "consultant": "MacConvilles (surveyor)"
+  "consultant": "MacConvilles (surveyor)",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/The_Assumption_of_Our_Lady%2C_Englefield_Green_-_geograph.org.uk_-_1354733.jpg/1280px-The_Assumption_of_Our_Lady%2C_Englefield_Green_-_geograph.org.uk_-_1354733.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:The_Assumption_of_Our_Lady,_Englefield_Green_-_geograph.org.uk_-_1354733.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Basher Eyre"
  },
  {
   "id": "uk-the-george-hotel",
@@ -8232,7 +8263,11 @@
   "year": "2012",
   "story": "Zaha Hadid's Olympic pool is now a public swimming centre. Its internal concrete is protected with clear KEIM Ecotec, and KEIM Concretal Lasur evens out the stair upstands.",
   "src": "KEIM UK local references",
-  "link": "https://www.keim.com/en-gb/local-references/london-aquatics-centre-london/"
+  "link": "https://www.keim.com/en-gb/local-references/london-aquatics-centre-london/",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/London%2C_England_%2815513446165%29.jpg/1280px-London%2C_England_%2815513446165%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:London,_England_(15513446165).jpg",
+  "ilic": "CC BY 2.0",
+  "iby": "Rick Ligthelm from Rotterdam, The Netherlands"
  },
  {
   "id": "uk-littleton-hall",
@@ -8486,7 +8521,11 @@
   "year": null,
   "story": "The category B listed library in Thurso is a KEIM UK listed-building example. Its facade was painted with KEIM mineral paint.",
   "src": "KEIM UK brochure: Listed and Prestigious Buildings",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Listed___Historic_Buildings.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Listed___Historic_Buildings.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Library_and_Town_Hall%2C_Thurso_%28geograph_6173930%29.jpg/1280px-Library_and_Town_Hall%2C_Thurso_%28geograph_6173930%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Library_and_Town_Hall,_Thurso_(geograph_6173930).jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Andrew Abbott"
  },
  {
   "id": "uk-lode-road-house",
@@ -8610,7 +8649,11 @@
   "year": null,
   "story": "This Grade II* timber-framed medieval house beside St Nicolas church appears in KEIM UK's listed-buildings brochure. Stockist Celtic Sustainables shows it in its KEIM Royalan gallery.",
   "src": "Celtic Sustainables",
-  "link": "https://www.celticsustainables.co.uk/keim-royalan-exterior-silicate-paint/"
+  "link": "https://www.celticsustainables.co.uk/keim-royalan-exterior-silicate-paint/",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Kings_Norton_Saracens_Head.jpg/1280px-Kings_Norton_Saracens_Head.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Kings_Norton_Saracens_Head.jpg",
+  "ilic": "CC BY-SA 3.0",
+  "iby": "Oosoom"
  },
  {
   "id": "uk-criterion-theatre",
@@ -8670,7 +8713,11 @@
   "year": "2011",
   "story": "The Grade II listed hall at St Peter's College has a lime-rendered facade. KEIM Soldalit and KEIM Design Lasur gave it a breathable colourwash finish; KEIM's schools brochure dates the Design Lasur work to 2011.",
   "src": "KEIM UK brochure: Lime Render and Why Buildings Need to Breathe",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Lime_Render___Why_Buildings_Need_to_Breathe.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Lime_Render___Why_Buildings_Need_to_Breathe.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/84/St_Peters_College_Oxford_Hannington_Hall_2.jpg/1280px-St_Peters_College_Oxford_Hannington_Hall_2.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:St_Peters_College_Oxford_Hannington_Hall_2.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "JCrue"
  },
  {
   "id": "uk-gunsgreen-house",
@@ -8770,7 +8817,11 @@
   "year": null,
   "story": "Belfast's Grade A listed Gothic Revival church, known for its fan-vaulted ceiling, is shown in several KEIM UK heritage brochures. KEIM mineral paints were used inside.",
   "src": "KEIM UK brochure: Listed and Prestigious Buildings",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Listed___Historic_Buildings.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Listed___Historic_Buildings.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/61/Church_Night.JPG/1280px-Church_Night.JPG",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Church_Night.JPG",
+  "ilic": "Public domain",
+  "iby": "Martin Graham"
  },
  {
   "id": "uk-carrick-house",
@@ -8850,7 +8901,11 @@
   "year": null,
   "story": "During the restoration of this Grade I listed Victorian hotel, its rendered facade was given Portland and Bath stone effects. KEIM Restauro Lasur provides a UV-stable, breathable stone look.",
   "src": "NBS Source - KEIM Mineral Paints Ltd case study",
-  "link": "https://source.thenbs.com/en/gb/case-study/corinthia-hotel-london/nN3atpcp5B4ZsxA4eYtxVm/aFAVezyYrSeMS2pT5bDQT6"
+  "link": "https://source.thenbs.com/en/gb/case-study/corinthia-hotel-london/nN3atpcp5B4ZsxA4eYtxVm/aFAVezyYrSeMS2pT5bDQT6",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2c/Corinthia_Hotel_London_%281%29.jpg/1280px-Corinthia_Hotel_London_%281%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Corinthia_Hotel_London_(1).jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Ricardalovesmonuments"
  },
  {
   "id": "uk-royal-hotel-llangollen",
@@ -8890,7 +8945,11 @@
   "year": null,
   "story": "This Grade II listed house in Laugharne was rendered with KEIM NHL Kalkputz natural hydraulic lime render. It is featured in KEIM UK's listed-buildings brochure.",
   "src": "KEIM UK brochure: Listed and Prestigious Buildings",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Listed___Historic_Buildings.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Listed___Historic_Buildings.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0b/Seaview%2C_Laugharne_-_geograph.org.uk_-_7644148.jpg/1280px-Seaview%2C_Laugharne_-_geograph.org.uk_-_7644148.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Seaview,_Laugharne_-_geograph.org.uk_-_7644148.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Eirian Evans"
  },
  {
   "id": "uk-summerhill-house",
@@ -9010,7 +9069,11 @@
   "year": "2012",
   "story": "Wiltshire's Westbury White Horse, on the slope below Bratton Camp, had been discoloured by algae. It was restored for the 2012 Diamond Jubilee with KEIM Royalan for weathering protection.",
   "src": "KEIM UK brochure: KEIM Mineral Paints in Conservation",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Keim_Mineral_Paints_in_Conservation.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Keim_Mineral_Paints_in_Conservation.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/81/Westbury_White_Horse_from_view_point_-_May_2025.jpg/1280px-Westbury_White_Horse_from_view_point_-_May_2025.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Westbury_White_Horse_from_view_point_-_May_2025.jpg",
+  "ilic": "CC BY 4.0",
+  "iby": "Stinkycheesey"
  },
  {
   "id": "uk-mercat-cross-banff",
@@ -9090,7 +9153,11 @@
   "year": null,
   "story": "This English Heritage hunting lodge, where Charles II hid after Worcester, is listed by KEIM UK as a conservation project that used its mineral paints.",
   "src": "KEIM UK brochure: KEIM Mineral Paints in Conservation",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Keim_Mineral_Paints_in_Conservation.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Keim_Mineral_Paints_in_Conservation.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Boscobel_House.jpg/1280px-Boscobel_House.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Boscobel_House.jpg",
+  "ilic": "CC BY-SA 3.0",
+  "iby": "Oosoom"
  },
  {
   "id": "uk-chapter-house-pyx-chamber-westminster-abbey",
@@ -9170,7 +9237,11 @@
   "year": null,
   "story": "KEIM UK lists the moated medieval Rothesay Castle on the Isle of Bute among conservation projects that used its mineral paints.",
   "src": "KEIM UK brochure: KEIM Mineral Paints in Conservation",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Keim_Mineral_Paints_in_Conservation.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Keim_Mineral_Paints_in_Conservation.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Rothesay_Castle_-_Gatehouse_and_Pigeon_Tower_2016.jpg/1280px-Rothesay_Castle_-_Gatehouse_and_Pigeon_Tower_2016.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Rothesay_Castle_-_Gatehouse_and_Pigeon_Tower_2016.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "DeFacto"
  },
  {
   "id": "uk-buckingham-palace",
@@ -9250,7 +9321,11 @@
   "year": null,
   "story": "KEIM UK lists the Oxford Oratory church on Woodstock Road among conservation projects that used its mineral paints.",
   "src": "KEIM UK brochure: KEIM Mineral Paints in Conservation",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Keim_Mineral_Paints_in_Conservation.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Keim_Mineral_Paints_in_Conservation.pdf",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Oxford_Oratory_church_of_St_Aloysius_Gonzaga_Oxford_-_geograph.org.uk_-_8095191.jpg/1280px-Oxford_Oratory_church_of_St_Aloysius_Gonzaga_Oxford_-_geograph.org.uk_-_8095191.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Oxford_Oratory_church_of_St_Aloysius_Gonzaga_Oxford_-_geograph.org.uk_-_8095191.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Bill Nicholls"
  },
  {
   "id": "uk-st-pancras-station",
@@ -9410,7 +9485,11 @@
   "year": null,
   "story": "Wren's small City church on Gresham Street is named in KEIM UK's churches brochure as a project that used KEIM mineral paints.",
   "src": "KEIM UK brochure: Churches, Chapels and Historic Buildings",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=84728"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=84728",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/St_Anne_and_St_Agnes%2C_Gresham_Street%2C_City_of_London_-_22771711443.jpg/1280px-St_Anne_and_St_Agnes%2C_Gresham_Street%2C_City_of_London_-_22771711443.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:St_Anne_and_St_Agnes,_Gresham_Street,_City_of_London_-_22771711443.jpg",
+  "ilic": "CC BY 2.0",
+  "iby": "Brokentaco"
  },
  {
   "id": "uk-st-chad-s-cathedral",
@@ -9490,7 +9569,11 @@
   "year": null,
   "story": "A KEIM UK case study names Cardiff Castle among the historic buildings where KEIM paints were used in restoration work.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/St._Francis_of_Assisi_Catholic_Church__Baddesley_Clinton__Keim_Design_Lasur_on_plaster_.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/St._Francis_of_Assisi_Catholic_Church__Baddesley_Clinton__Keim_Design_Lasur_on_plaster_.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/37/Aerial_view_of_Cardiff_Castle.jpg/1280px-Aerial_view_of_Cardiff_Castle.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Cardiff_Castle.jpg",
+  "ilic": "CC BY 2.0",
+  "iby": "Clint Budd"
  },
  {
   "id": "uk-the-globe-academy",
@@ -9510,7 +9593,11 @@
   "year": "2010",
   "story": "This Southwark academy was rendered with KEIM Universal Render and painted with KEIM Granital in 2010. KEIM UK includes it in its education brochure.",
   "src": "KEIM UK brochure: Schools, Universities and Educational Buildings",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=69175"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=69175",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Globe_Academy%2C_Harper_Road_-_geograph.org.uk_-_2399378.jpg/1280px-Globe_Academy%2C_Harper_Road_-_geograph.org.uk_-_2399378.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Globe_Academy,_Harper_Road_-_geograph.org.uk_-_2399378.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Roger Templeman"
  },
  {
   "id": "uk-bushbury-hill-primary-school",
@@ -9590,7 +9677,11 @@
   "year": "2008",
   "story": "The Jessop West arts building at the University of Sheffield had its concrete finished with KEIM Concretal Lasur in 2008. KEIM UK includes it in its education brochure.",
   "src": "KEIM UK brochure: Schools, Universities and Educational Buildings",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=69175"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=69175",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Jessop_West_0759.JPG/1280px-Jessop_West_0759.JPG",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Jessop_West_0759.JPG",
+  "ilic": "CC0",
+  "iby": "Chemical Engineer"
  },
  {
   "id": "uk-stowe-school",
@@ -9670,7 +9761,11 @@
   "year": "2012",
   "story": "Stanton Williams' 2012 Stirling Prize-winning plant science lab at Cambridge Botanic Garden used KEIM Lotexan. KEIM UK includes it in its education brochure.",
   "src": "KEIM UK brochure: Schools, Universities and Educational Buildings",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=69175"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=69175",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d4/Sainsbury_Laboratory-_Botanic_Garden_Cambridge_%289120932218%29.jpg/1280px-Sainsbury_Laboratory-_Botanic_Garden_Cambridge_%289120932218%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Sainsbury_Laboratory-_Botanic_Garden_Cambridge_(9120932218).jpg",
+  "ilic": "CC BY 2.0",
+  "iby": "John Lord from Edinburgh, Scotland"
  },
  {
   "id": "uk-diploma-learning-centre-pendeford",
@@ -9750,7 +9845,11 @@
   "year": "2009",
   "story": "External concrete at this Ilford school was coated in KEIM Concretal W in 2009 for a bright white finish that will not yellow. KEIM UK includes it in its education brochure.",
   "src": "KEIM UK brochure: Schools, Universities and Educational Buildings",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=69175"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=69175",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/Loxford_School_of_Science_and_Technology%2C_Ilford_-_geograph.org.uk_-_3397415.jpg/1280px-Loxford_School_of_Science_and_Technology%2C_Ilford_-_geograph.org.uk_-_3397415.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Loxford_School_of_Science_and_Technology,_Ilford_-_geograph.org.uk_-_3397415.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "David Anstiss"
  },
  {
   "id": "uk-university-of-east-anglia-norfolk-and-suffolk-terraces",
@@ -9850,7 +9949,11 @@
   "year": null,
   "story": "KEIM UK lists Evelina Children's Hospital among the medical and health projects where KEIM mineral paints have been used. The brochure promotes KEIM's photocatalytic, easy-clean systems for healthcare interiors.",
   "src": "KEIM UK brochure: Hospitals, Medical Environments and Care Homes",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=77364"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=77364",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/Evelina_Children%27s_Hospital%2C_Lambeth_-_geograph.org.uk_-_2706274.jpg/1280px-Evelina_Children%27s_Hospital%2C_Lambeth_-_geograph.org.uk_-_2706274.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Evelina_Children%27s_Hospital,_Lambeth_-_geograph.org.uk_-_2706274.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "David Anstiss"
  },
  {
   "id": "uk-moorfields-eye-hospital",
@@ -9930,7 +10033,11 @@
   "year": null,
   "story": "KEIM UK lists Southampton General Hospital among the medical and health projects where KEIM mineral paints have been used. The brochure promotes KEIM's photocatalytic, easy-clean systems for healthcare interiors.",
   "src": "KEIM UK brochure: Hospitals, Medical Environments and Care Homes",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=77364"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=77364",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Southampton_General_Hospital.jpg/1280px-Southampton_General_Hospital.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Southampton_General_Hospital.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "ValP"
  },
  {
   "id": "uk-south-tipperary-general-hospital",
@@ -10180,7 +10287,11 @@
   "year": null,
   "story": "The Limes and The Beehive in Llangadog were decorated with KEIM Granital through the village's Townscape Heritage Initiative. It appears in KEIM UK's streetscapes brochure.",
   "src": "KEIM UK brochure: Town Heritage Initiatives and Streetscapes",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=77366"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=77366",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/The_Limes%2C_Llangadog_-_geograph.org.uk_-_2516321.jpg/1280px-The_Limes%2C_Llangadog_-_geograph.org.uk_-_2516321.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:The_Limes,_Llangadog_-_geograph.org.uk_-_2516321.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Jaggery"
  },
  {
   "id": "uk-cornes-close",
@@ -10462,7 +10573,11 @@
   "year": "2010",
   "story": "Chanel's Mayfair flagship, one of its grandest boutiques, was painted in a bespoke KEIM Granital colour in 2010. KEIM UK features it in its retail brochure.",
   "src": "KEIM UK brochure: Retail",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=85618"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=85618",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/Chanel%2C_New_Bond_Street%2C_Mayfair%2C_April_2024.jpg/1280px-Chanel%2C_New_Bond_Street%2C_Mayfair%2C_April_2024.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Chanel,_New_Bond_Street,_Mayfair,_April_2024.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "No Swan So Fine"
  },
  {
   "id": "uk-national-trust-northern-ireland-head-office",
@@ -10543,7 +10658,11 @@
   "story": "A 1980s Soho office building with polished granite and reconstituted stone was reinvented as design-led workspace. The stone was etched and painted in a blue-black KEIM Royalan.",
   "src": "KEIM UK brochure: The Art of Upcycling",
   "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=81474",
-  "client": "Brockton Capital"
+  "client": "Brockton Capital",
+  "img": "https://live.staticflickr.com/3280/2928171342_b6d7eb661d_b.jpg",
+  "ipage": "https://www.flickr.com/photos/53921762@N00/2928171342",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Alan Stanton"
  },
  {
   "id": "uk-greenwood-house",
@@ -10989,7 +11108,11 @@
   "year": null,
   "story": "This category A listed 19th-century pub had up to ten layers of paint on its sandstone. Deep repairs used KEIM Restauro mortars and the facade was finished in matching KEIM Soldalit.",
   "src": "NBS Source - KEIM Mineral Paints Ltd case study",
-  "link": "https://source.thenbs.com/en/gb/case-study/the-caledonian-inverness/x2QTueSZgSS44VV2vZeH14/3Xk1TQT3mcDcyEud19ePDE"
+  "link": "https://source.thenbs.com/en/gb/case-study/the-caledonian-inverness/x2QTueSZgSS44VV2vZeH14/3Xk1TQT3mcDcyEud19ePDE",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/The_Caledonian%2C_Inverness_%28geograph_3173740%29.jpg/1280px-The_Caledonian%2C_Inverness_%28geograph_3173740%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:The_Caledonian,_Inverness_(geograph_3173740).jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Dave Fergusson"
  },
  {
   "id": "uk-the-colonnade",
@@ -11070,7 +11193,11 @@
   "year": "2024",
   "story": "This Grade II listed windmill on Walton Hill, owned by the Clarks shoe family, was first painted in KEIM Soldalit in 2010. After 14 years it only needed cleaning before a fresh coat of KEIM Soldalit-ME.",
   "src": "NBS Source - KEIM Mineral Paints Ltd case study",
-  "link": "https://source.thenbs.com/en/gb/case-study/walton-windmill-street/Cr7gkPx5df9LoY5A5zyPr/uxzH9d5jt26PDCE5hrZvYz"
+  "link": "https://source.thenbs.com/en/gb/case-study/walton-windmill-street/Cr7gkPx5df9LoY5A5zyPr/uxzH9d5jt26PDCE5hrZvYz",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Walton_windmill.jpg/1280px-Walton_windmill.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Walton_windmill.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Graeme Neal"
  },
  {
   "id": "uk-22-west-tollcross-car-park",
@@ -11192,7 +11319,11 @@
   "year": null,
   "story": "Anglesey's only cinema was fully restored for Holyhead Town Council. It was painted in a vibrant KEIM Soldalit that will not fade.",
   "src": "Keim Paint Shop project gallery",
-  "link": "https://www.keimpaintshop.co.uk/project-gallery/empire-cinema-holyhead/"
+  "link": "https://www.keimpaintshop.co.uk/project-gallery/empire-cinema-holyhead/",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/The_Empire_Cinema_-_geograph.org.uk_-_6105477.jpg/1280px-The_Empire_Cinema_-_geograph.org.uk_-_6105477.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:The_Empire_Cinema_-_geograph.org.uk_-_6105477.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Richard Hoare"
  },
  {
   "id": "uk-fairlight-cottage-porch",
@@ -11379,7 +11510,11 @@
   "year": null,
   "story": "The old render of this Cheshire church was replaced with KEIM Universal Render. It was then given a natural colourwash finish in KEIM Concretal Lasur.",
   "src": "Keim Paint Shop project gallery",
-  "link": "https://www.keimpaintshop.co.uk/project-gallery/st-michaels-church/"
+  "link": "https://www.keimpaintshop.co.uk/project-gallery/st-michaels-church/",
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/St_Michael%27s_Church%2C_Bramhall.jpg/1280px-St_Michael%27s_Church%2C_Bramhall.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:St_Michael%27s_Church,_Bramhall.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "David Dixon"
  },
  {
   "id": "uk-st-vincent-de-paul-church",
@@ -11545,7 +11680,11 @@
   "year": null,
   "story": "McConnells Coatings, an Irish KEIM stockist, lists the Irish President's residence in Phoenix Park among buildings where KEIM paints are found. No project details are given.",
   "src": "McConnells Coatings (MCC), Irish KEIM stockist",
-  "link": "https://mcc.ie/keim-paints/"
+  "link": "https://mcc.ie/keim-paints/",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/%C3%81ras_an_Uachtar%C3%A1in_2010.jpg/1280px-%C3%81ras_an_Uachtar%C3%A1in_2010.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:%C3%81ras_an_Uachtar%C3%A1in_2010.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "William Murphy"
  },
  {
   "id": "us-1399-park-avenue",
@@ -11711,7 +11850,9 @@
   "story": "A faded mural on the concrete garage beside the Central Square branch library was replaced with a new work by Silvia Lopez Chavez celebrating libraries, with birds, paper planes and open books. It was painted with Concretal-W and Concretal-Lasur for colour that lasts on exposed concrete.",
   "src": "KEIM USA Reference Gallery",
   "link": "https://keim-usa.com/reference-gallery/central-square-library-garage/",
-  "artist": "Silvia Lopez Chavez"
+  "artist": "Silvia Lopez Chavez",
+  "ppage": "https://cambridgema.gov/arts/News/2019/08/muralatcentralsquarelibrary",
+  "powner": "City of Cambridge Arts Council"
  },
  {
   "id": "us-charleston-county-courthouse",
@@ -11732,7 +11873,11 @@
   "story": "The courthouse at Charleston's 'Four Corners of Law' dates from 1753 and was rebuilt in 1792. Cracks in the stucco were bridged with KEIM Grob, then the courthouse and the Blake Tenement behind it were coated in custom-matched Soldalit, with adhesion tests throughout.",
   "src": "KEIM USA Reference Gallery",
   "link": "https://keim-usa.com/reference-gallery/charleston-county-courthouse-charleston-south-carolina/",
-  "consultant": "SKA Consulting Engineers (engineer); Meadors, Inc. (preservation consultant)"
+  "consultant": "SKA Consulting Engineers (engineer); Meadors, Inc. (preservation consultant)",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/da/Charleston_County_Courthouse_2013.jpg/1280px-Charleston_County_Courthouse_2013.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Charleston_County_Courthouse_2013.jpg",
+  "ilic": "CC BY-SA 3.0",
+  "iby": "ProfReader"
  },
  {
   "id": "us-courtyard-by-marriott-dupont-circle",
@@ -11854,7 +11999,11 @@
   "story": "The 1821 birthplace of the Girl Scouts' founder, Savannah's first National Historic Landmark. Hard cement stucco that was damaging the soft brick was removed and replaced with mesh-reinforced Universalputz lime stucco, finished in two coats of Soldalit, with PSS 20 anti-graffiti on the west wall, aiming for a 100-year solution.",
   "src": "KEIM USA Reference Gallery",
   "link": "https://keim-usa.com/reference-gallery/juliette-gordon-low-birthplace-savannah-georgia/",
-  "consultant": "Sarah Chase, Preservation Consulting"
+  "consultant": "Sarah Chase, Preservation Consulting",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Juliette_Gordon_Low_Birthplace_2019.jpg/1280px-Juliette_Gordon_Low_Birthplace_2019.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Juliette_Gordon_Low_Birthplace_2019.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "KWhiteJGLB"
  },
  {
   "id": "us-jupiter-inlet-lighthouse",
@@ -11954,7 +12103,11 @@
   "year": "2011",
   "story": "The 1925 Mediterranean Revival newspaper tower that later processed Cuban refugees and is now a Miami Dade College cultural centre. Its cracked, detaching stucco was replaced with mesh-reinforced Universalputz render to keep the building dry in Miami's humid climate.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/miami-freedom-tower-miami-florida/"
+  "link": "https://keim-usa.com/reference-gallery/miami-freedom-tower-miami-florida/",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/Freedom_Tower_Downtown_Miami_%2838075844515%29.jpg/1280px-Freedom_Tower_Downtown_Miami_%2838075844515%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Freedom_Tower_Downtown_Miami_(38075844515).jpg",
+  "ilic": "CC BY 2.0",
+  "iby": "Phillip Pessar from Miami, USA"
  },
  {
   "id": "us-moody-amphitheater-waterloo-greenway",
@@ -12179,7 +12332,11 @@
   "year": null,
   "story": "The 24-storey residence towers of Edward Durell Stone's uptown SUNY Albany campus had weathered badly. After concrete repairs they were treated with Silan 100 and two coats of Concretal-Lasur in two colours, restoring an even look while repelling water.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/suny-albany-dormitory/"
+  "link": "https://keim-usa.com/reference-gallery/suny-albany-dormitory/",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Eastman_Tower_Albany%2C_NY.JPG/1280px-Eastman_Tower_Albany%2C_NY.JPG",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Eastman_Tower_Albany,_NY.JPG",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Kurtman518"
  },
  {
   "id": "us-the-ark-house",
@@ -12490,7 +12647,11 @@
   "year": null,
   "story": "A 1920s Romanesque/French château-style office tower in the Financial District. KEIM silicate coatings were custom-matched to its terracotta and glazed brick for the restoration.",
   "src": "HFS Materials (Historic Fabric Studio)",
-  "link": "https://hfsmaterials.com/restoration-preservation-2-2/project-highlights-2/"
+  "link": "https://hfsmaterials.com/restoration-preservation-2-2/project-highlights-2/",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Hunter-Dulin_Building.jpg/1280px-Hunter-Dulin_Building.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Hunter-Dulin_Building.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Dead.rabbit"
  },
  {
   "id": "us-museum-of-science-and-industry",
@@ -12510,7 +12671,11 @@
   "year": null,
   "story": "The former Palace of Fine Arts from the 1893 World's Columbian Exposition, now one of the largest science museums in the Americas. A custom-blended KEIM coating with mica inclusions was used to match the original terracotta.",
   "src": "HFS Materials (Historic Fabric Studio)",
-  "link": "https://hfsmaterials.com/restoration-preservation-2-2/project-highlights-2/"
+  "link": "https://hfsmaterials.com/restoration-preservation-2-2/project-highlights-2/",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/Museum_of_Science_and_Industry_%28Chicago%29.jpg/1280px-Museum_of_Science_and_Industry_%28Chicago%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Museum_of_Science_and_Industry_(Chicago).jpg",
+  "ilic": "CC BY 2.0",
+  "iby": "zooey from Chicago, Illinois USA"
  },
  {
   "id": "us-gage-building",
@@ -12552,9 +12717,12 @@
   "story": "EverGreene was chosen in 2004 to recreate six lost murals originally designed by Pierre Bourdelle in 1936, each about 15 ft wide by 27 ft high. The murals were executed in situ using Keim mineral coating paint on newly prepared walls.",
   "src": "https://evergreene.com/projects/dallas-fair-park/",
   "link": "https://evergreene.com/projects/dallas-fair-park/",
-  "img": "",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Depression-era_bas-relief_on_the_facade_of_Centennial_Hall_at_Fair_Park_in_Dallas%2C_Texas_LCCN2015630260.tif/lossy-page1-1280px-Depression-era_bas-relief_on_the_facade_of_Centennial_Hall_at_Fair_Park_in_Dallas%2C_Texas_LCCN2015630260.tif.jpg",
   "artist": "Pierre Bourdelle (original 1936 mural design)",
-  "client": "City of Dallas"
+  "client": "City of Dallas",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Depression-era_bas-relief_on_the_facade_of_Centennial_Hall_at_Fair_Park_in_Dallas,_Texas_LCCN2015630260.tif",
+  "ilic": "Public domain",
+  "iby": "Carol M. Highsmith"
  },
  {
   "id": "us-wilshire-boulevard-temple",
@@ -12620,8 +12788,11 @@
   "story": "In 2002 EverGreene worked with Richard Haas to execute his full-scale mural, painted directly on the wall with Keim Paints, about 23 ft high by 42 ft wide.",
   "src": "https://evergreene.com/projects/national-cowgirl-museum-and-hall-of-fame/",
   "link": "https://evergreene.com/projects/national-cowgirl-museum-and-hall-of-fame/",
-  "img": "",
-  "artist": "Richard Haas"
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Trompe_l%27oeil_mural_by_artist_Richard_Haas_outside_the_National_Cowgirl_Museum_and_Hall_of_Fame_in_Fort_Worth%2C_Texas_LCCN2013650782.tif/lossy-page1-1280px-Trompe_l%27oeil_mural_by_artist_Richard_Haas_outside_the_National_Cowgirl_Museum_and_Hall_of_Fame_in_Fort_Worth%2C_Texas_LCCN2013650782.tif.jpg",
+  "artist": "Richard Haas",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Trompe_l%27oeil_mural_by_artist_Richard_Haas_outside_the_National_Cowgirl_Museum_and_Hall_of_Fame_in_Fort_Worth,_Texas_LCCN2013650782.tif",
+  "ilic": "Public domain",
+  "iby": "Carol M. Highsmith"
  },
  {
   "id": "us-downtown-doral-charter-elementary-school",
@@ -12735,8 +12906,11 @@
   "story": "The mural depicts a central marble statue of Lucius Quinctius Cincinnatus, the Roman statesman for whom the city is named. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": "",
-  "artist": "Richard Haas"
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Homage_to_Cincinnatus_from_north_2025.jpg/1280px-Homage_to_Cincinnatus_from_north_2025.jpg",
+  "artist": "Richard Haas",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Homage_to_Cincinnatus_from_north_2025.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Visviva"
  },
  {
   "id": "us-2300-chestnut-street-mural",
@@ -12828,7 +13002,9 @@
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
   "img": "",
-  "artist": "Richard Haas"
+  "artist": "Richard Haas",
+  "ppage": "https://www.hrm.org/collection/2008-09-07/",
+  "powner": "Hudson River Museum"
  },
  {
   "id": "us-fulton-theatre-mural",
@@ -12920,7 +13096,9 @@
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
   "img": "",
-  "artist": "Richard Haas"
+  "artist": "Richard Haas",
+  "ppage": "https://www.sarasotaclerk.com/About-Us/Clerk-Karen-E.-Rushing/Sarasotas-Historic-Courthouse",
+  "powner": "Sarasota County Clerk of the Circuit Court"
  },
  {
   "id": "us-blake-tenement-building-behind-charlesto",
@@ -12942,8 +13120,11 @@
   "story": "The Blake Tenement building behind the courthouse also received Keim Soldalit, applied to the stucco portions of its lower section and right-hand side.",
   "src": "https://keim-usa.com/reviving-a-charleston-gem-keim-mineral-paints-breathe-new-life-into-the-historic-charleston-courthouse/",
   "link": "https://keim-usa.com/reviving-a-charleston-gem-keim-mineral-paints-breathe-new-life-into-the-historic-charleston-courthouse/",
-  "img": "",
-  "consultant": "SKA Consulting (specifier)"
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/SOUTH_%28FRONT%29_ELEVATION_-_Daniel_Blake_Tenement%2C_6-8_%282-4%29_Courthouse_Square%2C_Charleston%2C_Charleston_County%2C_SC_HABS_SC%2C10-CHAR%2C11-27.tif/lossy-page1-1280px-SOUTH_%28FRONT%29_ELEVATION_-_Daniel_Blake_Tenement%2C_6-8_%282-4%29_Courthouse_Square%2C_Charleston%2C_Charleston_County%2C_SC_HABS_SC%2C10-CHAR%2C11-27.tif.jpg",
+  "consultant": "SKA Consulting (specifier)",
+  "ipage": "https://commons.wikimedia.org/wiki/File:SOUTH_(FRONT)_ELEVATION_-_Daniel_Blake_Tenement,_6-8_(2-4)_Courthouse_Square,_Charleston,_Charleston_County,_SC_HABS_SC,10-CHAR,11-27.tif",
+  "ilic": "Public domain",
+  "iby": "Historic American Buildings Survey (Library of Congress)"
  },
  {
   "id": "us-harbor-freeway-olympic-mural-terry-schoo",
@@ -13189,7 +13370,10 @@
   "story": "1906 office building by Frank Verity; KEIM Restauro Lasur applied to Portland stone to blend imperfections while keeping its natural look.",
   "src": "https://www.buildingcentre.co.uk/news/articles/25-berkeley-square-london",
   "link": "https://www.buildingcentre.co.uk/news/articles/25-berkeley-square-london",
-  "img": ""
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/25_Berkeley_Square%2C_Mayfair%2C_November_2022.jpg/1280px-25_Berkeley_Square%2C_Mayfair%2C_November_2022.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:25_Berkeley_Square,_Mayfair,_November_2022.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "No Swan So Fine"
  },
  {
   "id": "uk-marmalade-lane",
@@ -13347,7 +13531,10 @@
   "story": "UK's first joint-use university and public library; KEIM Concretal Lasur colourwash finished internal concrete.",
   "src": "https://www.buildingcentre.co.uk/news/articles/the-hive-worcester-library",
   "link": "https://www.buildingcentre.co.uk/news/articles/the-hive-worcester-library",
-  "img": ""
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/The_Hive%2C_Public_Library%2C_Worcester%2C_UK.JPG/1280px-The_Hive%2C_Public_Library%2C_Worcester%2C_UK.JPG",
+  "ipage": "https://commons.wikimedia.org/wiki/File:The_Hive,_Public_Library,_Worcester,_UK.JPG",
+  "ilic": "CC BY-SA 3.0",
+  "iby": "JanetMackinnon"
  },
  {
   "id": "uk-children-at-play-brixton-mural",
@@ -13507,8 +13694,11 @@
   "story": "46 x 38 ft mural by Ray Walker for the GLC Peace Year in Keim silicate, repaired and repainted in 2014.",
   "src": "https://www.forwallswithtongues.org.uk/projects/ray-walker-hackney-peace-carnival-1984/",
   "link": "https://www.forwallswithtongues.org.uk/projects/ray-walker-hackney-peace-carnival-1984/",
-  "img": "",
-  "artist": "Ray Walker"
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Dalston_Lane%2C_Hackney_Peace_Carnival_Mural._Designed_by_Ray_Walker%2C_unveiled_in_1985.jpg/1280px-Dalston_Lane%2C_Hackney_Peace_Carnival_Mural._Designed_by_Ray_Walker%2C_unveiled_in_1985.jpg",
+  "artist": "Ray Walker",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Dalston_Lane,_Hackney_Peace_Carnival_Mural._Designed_by_Ray_Walker,_unveiled_in_1985.jpg",
+  "ilic": "Public domain",
+  "iby": "Maggie Jones"
  },
  {
   "id": "uk-bellefields-road-murals",
@@ -13599,8 +13789,11 @@
   "story": "Graeme Wilson's final outdoor mural, painted using the Keim system on Leeds Corn Exchange.",
   "src": "https://www.forwallswithtongues.org.uk/artists/graeme-wilson/",
   "link": "https://www.forwallswithtongues.org.uk/artists/graeme-wilson/",
-  "img": "",
-  "artist": "Graeme Wilson"
+  "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Mural%2C_Leeds_City_Centre_-_geograph.org.uk_-_4520449.jpg/1280px-Mural%2C_Leeds_City_Centre_-_geograph.org.uk_-_4520449.jpg",
+  "artist": "Graeme Wilson",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Mural,_Leeds_City_Centre_-_geograph.org.uk_-_4520449.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Eirian Evans"
  },
  {
   "id": "uk-st-christopher-s-roman-catholic-church-c",
@@ -13710,7 +13903,10 @@
   "story": "KEIM brochure lists Manchester Metropolitan University among UK projects using Concretal Lasur (building not specified).",
   "src": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Specifying_Visual_Concrete.pdf",
   "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Specifying_Visual_Concrete.pdf",
-  "img": ""
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Manchester_Metropolitan_University%2C_Grosvenor_East_Building_-_geograph.org.uk_-_7311546.jpg/1280px-Manchester_Metropolitan_University%2C_Grosvenor_East_Building_-_geograph.org.uk_-_7311546.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Manchester_Metropolitan_University,_Grosvenor_East_Building_-_geograph.org.uk_-_7311546.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Gerald England"
  },
  {
   "id": "uk-greenfield-county-primary-school",
@@ -13754,7 +13950,10 @@
   "story": "KEIM Lasurs were used on the new Coronation Street set to blend new bricks with the original look.",
   "src": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Lasur_Finishes___Colourwashes.pdf",
   "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Lasur_Finishes___Colourwashes.pdf",
-  "img": ""
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/77/Coronation_Street_set%2C_Trafford%2C_May_2020_%2801%29.jpg/1280px-Coronation_Street_set%2C_Trafford%2C_May_2020_%2801%29.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Coronation_Street_set,_Trafford,_May_2020_(01).jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Ardfern"
  },
  {
   "id": "w-raffles-hotel",
@@ -13776,7 +13975,10 @@
   "story": "National monument hotel; old coatings were stripped and two coats of KEIM Royalan applied to street and patio facades (test areas April 2018, work June 2018 to June 2019).",
   "src": "https://www.archdaily.com/catalog/en/products/22356/mineral-paint-in-raffles-hotel-singapore-keim",
   "link": "https://www.archdaily.com/catalog/en/products/22356/mineral-paint-in-raffles-hotel-singapore-keim",
-  "img": ""
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Front_facade_of_Raffles_Hotel%2C_Singapore%2C_from_southeast.jpg/1280px-Front_facade_of_Raffles_Hotel%2C_Singapore%2C_from_southeast.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Front_facade_of_Raffles_Hotel,_Singapore,_from_southeast.jpg",
+  "ilic": "CC BY-SA 4.0",
+  "iby": "Daniel Case"
  },
  {
   "id": "w-xxii-carat-club-villas",
@@ -13954,7 +14156,10 @@
   "story": "TOVP project article says KEIM mineral silicate paint was chosen for the gold sections of the dome brackets (article dated Aug 2017).",
   "src": "https://tovp.org/?p=41984",
   "link": "https://tovp.org/?p=41984",
-  "img": ""
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Chandrodaya_Mandir_Under_Construction_-_Temple_Of_Vedic_Planetarium_-_ISKCON_Campus_-_Mayapur_-_Nadia_20170815110025.jpg/1280px-Chandrodaya_Mandir_Under_Construction_-_Temple_Of_Vedic_Planetarium_-_ISKCON_Campus_-_Mayapur_-_Nadia_20170815110025.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Chandrodaya_Mandir_Under_Construction_-_Temple_Of_Vedic_Planetarium_-_ISKCON_Campus_-_Mayapur_-_Nadia_20170815110025.jpg",
+  "ilic": "CC BY 3.0",
+  "iby": "Biswarup Ganguly"
  },
  {
   "id": "w-218-social-housing-units-hacienda-el-ros",
@@ -14109,7 +14314,10 @@
   "story": "Denkmal Leipzig article states the facade restoration used mainly KEIM Purkristalat.",
   "src": "https://www.denkmal-leipzig.de/en/news/between-tradition-and-innovation",
   "link": "https://www.denkmal-leipzig.de/en/news/between-tradition-and-innovation",
-  "img": ""
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Befreiungshalle_Hall_of_Liberation_Kelheim.jpg/1280px-Befreiungshalle_Hall_of_Liberation_Kelheim.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Befreiungshalle_Hall_of_Liberation_Kelheim.jpg",
+  "ilic": "CC BY-SA 2.5",
+  "iby": "Richard Bartz"
  },
  {
   "id": "w-stein-am-rhein-historic-centre-buildings",
@@ -14307,7 +14515,9 @@
   "story": "ArchDaily lists KEIM among the manufacturers; product not stated.",
   "src": "https://www.archdaily.com/1185702/stara-hasicka-cultural-and-community-center-schwerpunkt",
   "link": "https://www.archdaily.com/1185702/stara-hasicka-cultural-and-community-center-schwerpunkt",
-  "img": ""
+  "img": "",
+  "ppage": "https://urbancentrum.brno.cz/wp-content/uploads/2021/05/2019_katalog_Star%C3%A1-hasi%C4%8Dka.pdf",
+  "powner": "Urban Centrum Brno (City of Brno)"
  },
  {
   "id": "w-morskie-centrum-nauki-maritime-science-c",
@@ -14461,7 +14671,10 @@
   "story": "Shown as a KEIM reference in the KEIM Poland 2025/26 catalogue; product not stated.",
   "src": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/PL-PL/A_KATALOG_2025_2026.pdf",
   "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/PL-PL/A_KATALOG_2025_2026.pdf",
-  "img": ""
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/SM_Brzeg_Ratusz_%281%29_ID_609764.jpg/1280px-SM_Brzeg_Ratusz_%281%29_ID_609764.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:SM_Brzeg_Ratusz_(1)_ID_609764.jpg",
+  "ilic": "CC BY-SA 3.0 pl",
+  "iby": "Sławomir Milejski"
  },
  {
   "id": "w-lubi-abbey",
