@@ -443,8 +443,9 @@ let T = null, tk = 0, tTimer = 0;
 function tourUI() { const on = !!T; $('tBar').hidden = !on; document.body.classList.toggle('touring', on); if (!on) return;
   $('tbName').textContent = T.name + ' tour'; $('tbStep').textContent = 'Stop ' + Math.min(tk, T.stops.length) + ' of ' + T.stops.length;
   $('tbProg').style.width = (100 * tk / T.stops.length) + '%'; $('tbPlay').textContent = touring ? 'Pause' : 'Play'; }
-function tourGo(i) { if (!T) return; clearTimeout(tTimer); tk = (i + T.stops.length) % T.stops.length; open(T.stops[tk], true); tk++; tourUI();
-  if (touring) tTimer = setTimeout(() => map.once('moveend', () => { tTimer = setTimeout(() => { if (touring && T) { if (tk >= T.stops.length) { touring = false; tourUI(); $('tbStep').textContent = 'Tour complete · ' + T.stops.length + ' stops'; } else tourGo(tk); } }, 5200); }), 400); }
+let tGen = 0;
+function tourGo(i) { if (!T) return; clearTimeout(tTimer); const gen = ++tGen; tk = (i + T.stops.length) % T.stops.length; open(T.stops[tk], true); tk++; tourUI();
+  if (touring) tTimer = setTimeout(() => map.once('moveend', () => { if (gen !== tGen) return; tTimer = setTimeout(() => { if (gen === tGen && touring && T) { if (tk >= T.stops.length) { touring = false; tourUI(); $('tbStep').textContent = 'Tour complete · ' + T.stops.length + ' stops'; } else tourGo(tk); } }, 5200); }), 400); }
 function selTour() { if (!fType && !fReg && !fQ) return null; const parts = [fType ? LABEL[fType] : '', fReg ? { au: 'Australia', eu: 'Europe', am: 'Americas' }[fReg] : '', fQ ? '“' + fQ + '”' : ''].filter(Boolean);
   return { id: 'current', name: parts.join(' · '), desc: 'Tour the projects the map is showing now', f: p => vis.includes(p) && (p.type === 'Residential' ? goodPic(p) : tourOK(p)), max: 30, filt: { cur: true } }; }
 function startTour(id) { const t = id === 'current' ? selTour() : TOURS.find(x => x.id === id); if (!t || !P.length) return; const stops = tourStops(t); if (!stops.length) return;
@@ -460,7 +461,7 @@ $('tTour').onclick = () => { if ($('tMenu').hidden) buildTourMenu(); $('tMenu').
 $('findUs').onclick = () => { if (T) endTour(); $('tMenu').hidden = true; hideHint(); open(HQ, true); };
 $('tmX').onclick = () => { $('tMenu').hidden = true; };
 $('tmList').addEventListener('click', e => { const b = e.target.closest('[data-tour]'); if (b) startTour(b.dataset.tour); });
-$('tbPlay').onclick = () => { if (!T) return; touring = !touring; if (touring) { if (tk >= T.stops.length) tk = 0; tourGo(tk); } else { clearTimeout(tTimer); tourUI(); } };
+$('tbPlay').onclick = () => { if (!T) return; touring = !touring; if (touring) { if (tk >= T.stops.length) tk = 0; tourGo(tk); } else { clearTimeout(tTimer); tGen++; tourUI(); } };
 $('tbNext').onclick = () => { if (T) tourGo(tk); };
 $('tbPrev').onclick = () => { if (T) tourGo(tk - 2); };
 $('tbX').onclick = endTour;
