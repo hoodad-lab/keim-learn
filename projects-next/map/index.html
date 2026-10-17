@@ -230,7 +230,7 @@ html[data-theme="dark"] .maplibregl-ctrl-attrib-button { filter: invert(1); }
 .card .hqph em { font: 300 14px/1 var(--sans); font-style: normal; letter-spacing: .08em; color: var(--grey); }
 .card.hqc dd a { color: var(--red2); text-decoration: none; font-weight: 500; }
 .card.hqc .more:not(.sv) { background: var(--red2); }
-@media (max-width: 760px) { .card.hqc .ph { height: 38vw; max-height: 170px; } .card .hqph img { width: 70px; } }
+@media (max-width: 760px) { .card.hqc .ph { height: 22vw; max-height: 110px; } .card .hqph img { width: 70px; } }
 html[data-theme="dark"] .card .hqph { background: #0b0c0d; }
 html[data-theme="dark"] .card.hqc dd a { color: #ff4d52; }
 </style>
@@ -392,7 +392,7 @@ function open(p, fly) {
   $('cSrc').innerHTML = 'Source: ' + esc(p.src || 'KEIM') + (p.year_src && p.year ? '<br>Year source: ' + (/^https?:/.test(p.year_src) ? '<a href="' + esc(p.year_src) + '" target="_blank" rel="noopener">' + esc(p.year_src.replace(/^https?:\/\/(www\.)?/, '').split('/')[0]) + '</a>' : esc(p.year_src)) : '') + (p.ipage ? `<br>Photo: <a href="${esc(p.ipage)}" target="_blank" rel="noopener">${esc(p.iby || 'Wikimedia Commons')}</a>, ${esc(p.ilic || '')}, via Wikimedia Commons (general view of the building)` : '');
   $('card').classList.toggle('hqc', p === HQ);
   if (p === HQ) {
-    $('cPh').innerHTML = `<div class="hqph"><img src="../keim-logo-neg.png" alt="KEIM"><span>Showroom &amp; office · Sydney</span></div>`;
+    $('cPh').innerHTML = `<div class="hqph"><span>Showroom &amp; office · Sydney</span></div>`;
     $('cKick').textContent = 'Visit us'; $('cSub').hidden = true;
     $('cFacts').innerHTML = `<dt>Address</dt><dd>Unit 7, 19 McCauley Street<br>Matraville NSW 2036</dd><dt>Phone</dt><dd><a href="tel:+61297487160">(02) 9748 7160</a></dd><dt>Email</dt><dd><a href="mailto:info@keim.com.au">info@keim.com.au</a></dd><dt>Visits</dt><dd>By appointment</dd><dt>We offer</dt><dd>The full KEIM range, colour samples and technical advice</dd>`;
     $('cStory').textContent = 'See KEIM colours on real substrates and talk through your project with our team. KEIM has been in Australia for more than 35 years and is part of the global KEIM family.';
