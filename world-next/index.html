@@ -265,7 +265,7 @@ html[data-theme="dark"] .card.hqc dd a { color: #ff4d52; }
     <dl id="cFacts"></dl>
     <p class="story" id="cStory"></p>
     <div class="approx" id="cApprox">Pin shows the suburb or city — the exact building isn’t marked yet.</div>
-    <a class="more" id="cMore" target="_blank" rel="noopener">Read the full case study</a> <a class="more sv" id="cSv" target="_blank" rel="noopener">Google Street View ↗</a> <a class="more sv" id="cPp" target="_blank" rel="noopener"></a>
+    <a class="more" id="cMore" target="_blank" rel="noopener">Read the full case study</a> <a class="more sv" id="cSv" target="_blank" rel="noopener" title="Open the place in Google Maps. In Street View tap See more dates to look back at the building after painting.">Google Maps · Street View ↗</a> <a class="more sv" id="cPp" target="_blank" rel="noopener"></a>
     <div class="src" id="cSrc"></div>
     <div class="nav"><button id="cBack" type="button">‹ Back</button><button id="cNext" class="solid" type="button">Next nearby ›</button></div>
   </div>
@@ -304,9 +304,9 @@ setTimeout(hideHint, 10000);
 // pins are the KEIM wedge (arch-shaped sector, point on the spot): KEIM Red for Australia, KEIM Anthracite worldwide
 const WEDGE = 'M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z';
 const AER = (p, w, h) => { const d = 0.0011, e = d * w / h / Math.cos(p.lat * Math.PI / 180); return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=' + [p.lon - e, p.lat - d, p.lon + e, p.lat + d].map(v => v.toFixed(6)).join(',') + '&bboxSR=4326&imageSR=3857&size=' + w + ',' + h + '&format=jpg&f=image'; };
-const SV = p => 'https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=' + p.lat + ',' + p.lon;
+const SV = p => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([p.name, p.sub && p.sub.length < 60 ? p.sub : '', p.place, p.country].filter((x,i,a)=>x && a.indexOf(x)===i).join(', '));
 const canAer = p => !p.img && p.exact && p.type !== 'Residential';
-const canSV = p => p.exact && p.type !== 'Residential';
+const canSV = p => p.type !== 'Residential' && !p.priv;
 const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" height="96" viewBox="0 0 40 50.5">${on ? `<path d="${WEDGE}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="7" stroke-linejoin="round"/>` : ''}<path d="${WEDGE}" fill="${au || on ? '#D62025' : '#36393C'}" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg>`;
 function svgImg(svg) { return new Promise((res, rej) => { const im = new Image(76, 96); im.onload = () => res(im); im.onerror = rej; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }); }
 // cluster bubbles are drawn on demand, one image per count
@@ -400,7 +400,7 @@ function open(p, fly) {
     $('cSv').hidden = false; $('cSv').href = 'https://www.google.com/maps/dir/?api=1&destination=' + HQ.lat + ',' + HQ.lon; $('cSv').textContent = 'Directions ↗';
     $('cPp').hidden = false; $('cPp').href = 'https://www.keim.com.au'; $('cPp').textContent = 'keim.com.au ↗';
     $('cSrc').innerHTML = ''; $('cApprox').hidden = true;
-  } else { $('cMore').setAttribute('target', '_blank'); $('cSv').textContent = 'Google Street View ↗'; }
+  } else { $('cMore').setAttribute('target', '_blank'); $('cSv').textContent = 'Google Maps · Street View ↗'; }
   $('card').classList.remove('full'); $('card').hidden = false; $('card').scrollTop = 0; $('card').querySelector('.body').scrollTop = 0; $('cBack').disabled = !hist.length;
   if (fly) { const wide = innerWidth > 760;
     const hq = p === HQ; map.flyTo({ center: [p.lon, p.lat], zoom: hq ? 17.2 : p.exact ? 16.6 : Math.max(14, Math.min(map.getZoom(), 16)), pitch: hq ? 40 : p.exact ? 58 : 35, bearing: hq ? -20 : (P.indexOf(p) * 37) % 60 - 30, speed: 0.9, curve: 1.6, essential: true,
