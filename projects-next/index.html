@@ -65,7 +65,7 @@ section { padding: 64px 0 0; }
 .filters { position: sticky; top: 0; z-index: 5; background: rgba(238,240,241,.95); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 12px 0; border-bottom: 1px solid var(--line); }
 .frow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .frow + .frow { margin-top: 8px; }
-.seg { display: inline-flex; background: #fff; padding: 3px; box-shadow: inset 0 0 0 1px var(--line); }
+.seg { display: inline-flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; background: #fff; padding: 3px; box-shadow: inset 0 0 0 1px var(--line); }
 .seg button { border: 0; background: transparent; padding: 9px 14px 8px; font: 500 12px/1 var(--sans); letter-spacing: .14em; text-transform: uppercase; cursor: pointer; color: var(--anth); }
 .seg button[aria-pressed="true"] { background: var(--anth); color: #fff; }
 select, .q { border: 1px solid var(--line); background: #fff; border-radius: 0; padding: 10px 12px 9px; font: 400 14px/1 var(--sans); color: var(--ink); }
@@ -119,7 +119,7 @@ select, .q { border: 1px solid var(--line); background: #fff; border-radius: 0; 
 .cta p { font: 300 19px/1.45 var(--sans); color: rgba(255,255,255,.88); }
 .cta .acts { justify-content: flex-end; }
 .foot { padding: 20px 0 30px; font: 400 12.5px/1.5 var(--sans); color: var(--mute); }
-@media (max-width: 760px) { .panel .nav { display: none; } .hero { height: auto; min-height: 0; } .hero iframe { position: relative; display: block; height: 62vh; } .hero .shade { display: none; } .hero .over { position: relative; padding: 20px 20px 28px; } .stats { margin-top: 6px; gap: 18px; } .cta .wrap { grid-template-columns: 1fr; } .cta .acts { justify-content: flex-start; } .feat { grid-auto-columns: 82%; } .count { width: 100%; margin: 4px 0 0; } }
+@media (max-width: 760px) { .seg button { padding: 9px 7px 8px; font-size: 11px; letter-spacing: .05em; } .panel .nav { display: none; } .hero { height: auto; min-height: 0; } .hero iframe { position: relative; display: block; height: 62vh; } .hero .shade { display: none; } .hero .over { position: relative; padding: 20px 20px 28px; } .stats { margin-top: 6px; gap: 18px; } .cta .wrap { grid-template-columns: 1fr; } .cta .acts { justify-content: flex-start; } .feat { grid-auto-columns: 82%; } .count { width: 100%; margin: 4px 0 0; } }
 
 /* ---------- dark mode ---------- */
 .theme { position: absolute; right: 16px; top: 17px; z-index: 7; width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.25); background: transparent; border-radius: 2px; color: #fff; cursor: pointer; display: grid; place-items: center; }
@@ -177,7 +177,7 @@ html[data-theme="dark"] .dim { background: rgba(0,0,0,.7); }
 <section id="browse" style="padding-top:56px">
   <div class="filters"><div class="wrap">
     <div class="frow">
-      <div class="seg" id="region"><button type="button" data-r="au" aria-pressed="true">Australia</button><button type="button" data-r="world" aria-pressed="false">Worldwide</button><button type="button" data-r="all" aria-pressed="false">All</button></div>
+      <div class="seg" id="region"><button type="button" data-r="au" aria-pressed="true">Australia</button><button type="button" data-r="eu" aria-pressed="false">Europe</button><button type="button" data-r="am" aria-pressed="false">Americas</button><button type="button" data-r="world" aria-pressed="false">Worldwide</button><button type="button" data-r="all" aria-pressed="false">All</button></div>
       <select id="state" aria-label="State"><option value="">All states</option></select>
       <select id="prod" aria-label="Product"><option value="">All products</option></select>
       <input class="q" id="q" type="search" placeholder="Search a project, city or architect" aria-label="Search">
@@ -242,8 +242,8 @@ fetch('map/projects.json').then(r => r.json()).then(list => {
   const m = location.hash.match(/p=([\w-]+)/); if (m) { const p = ALL.find(x => x.id === m[1]); if (p) openP(p); }
   syncUI(); render();
 });
-function syncUI() { document.querySelectorAll('#region button').forEach(b => b.setAttribute('aria-pressed', b.dataset.r === st.r)); document.querySelectorAll('#types .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === st.type)); $('state').disabled = st.r === 'world'; $('state').value = st.r === 'world' ? '' : st.state; $('prod').value = st.prod; }
-function match(p) { if (st.r === 'au' && !p.au) return false; if (st.r === 'world' && p.au) return false; if (st.state && p.st !== st.state) return false; if (st.prod && !p.pr.includes(st.prod)) return false; if (st.type && p.type !== st.type) return false;
+function syncUI() { document.querySelectorAll('#region button').forEach(b => b.setAttribute('aria-pressed', b.dataset.r === st.r)); document.querySelectorAll('#types .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === st.type)); const noSt = st.r !== 'au' && st.r !== 'all'; $('state').disabled = noSt; $('state').value = noSt ? '' : st.state; $('prod').value = st.prod; }
+function match(p) { if (st.r === 'au' && !p.au) return false; if (st.r === 'world' && p.au) return false; if (st.r === 'eu' && !(p.lon > -25 && p.lon < 45 && p.lat > 34)) return false; if (st.r === 'am' && !(p.lon < -30 && p.lon > -170)) return false; if (st.state && p.st !== st.state) return false; if (st.prod && !p.pr.includes(st.prod)) return false; if (st.type && p.type !== st.type) return false;
   if (st.q) { const h = (p.name + ' ' + p.place + ' ' + p.country + ' ' + p.architect + ' ' + p.builder + ' ' + p.products).toLowerCase(); if (!st.q.toLowerCase().split(/\s+/).every(w => h.includes(w))) return false; } return true; }
 function render() {
   const L = ALL.filter(match).sort((a, b) => (!!b.img - !!a.img) || (b.au - a.au) || a.name.localeCompare(b.name));
@@ -258,7 +258,7 @@ function render() {
   $('moreB').hidden = L.length <= shown;
 }
 $('moreB').addEventListener('click', () => { shown += 24; render(); });
-$('region').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.r = b.dataset.r; if (st.r === 'world') st.state = ''; shown = 24; syncUI(); render(); });
+$('region').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.r = b.dataset.r; if (st.r !== 'au' && st.r !== 'all') st.state = ''; try { document.querySelector('.hero iframe').contentWindow.postMessage({ keimRegion: st.r }, '*'); } catch (e) {} shown = 24; syncUI(); render(); });
 $('state').addEventListener('change', e => { st.state = e.target.value; if (st.state) st.r = 'au'; shown = 24; syncUI(); render(); });
 $('prod').addEventListener('change', e => { st.prod = e.target.value; shown = 24; render(); });
 let qt; $('q').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { st.q = e.target.value.trim(); shown = 24; render(); }, 150); });

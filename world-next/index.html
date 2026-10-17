@@ -415,7 +415,7 @@ $('tWorld').onclick = () => { close(); hist.length = 0; map.flyTo({ center: [map
 function setTheme(t) { document.documentElement.dataset.theme = t; try { localStorage.setItem('keim-theme', t); } catch (e) {} try { parent !== window && parent.postMessage({ keimTheme: t }, '*'); } catch (e) {} }
 $('theme').onclick = () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
 addEventListener('storage', e => { if (e.key === 'keim-theme' && e.newValue) document.documentElement.dataset.theme = e.newValue; });
-addEventListener('message', e => { if (e.data && e.data.keimTheme) document.documentElement.dataset.theme = e.data.keimTheme; });
+addEventListener('message', e => { if (e.data && e.data.keimTheme) document.documentElement.dataset.theme = e.data.keimTheme; if (e.data && e.data.keimRegion) { const k = REG[e.data.keimRegion] ? e.data.keimRegion : null; if (k !== fReg) { if (T) endTour(); fReg = k; syncChips(); refilter(); spinning = false; const g = k ? REG[k] : null; map.flyTo(g ? { center: g.c, zoom: innerWidth < 700 ? g.z[0] : g.z[1], pitch: 0, bearing: 0, speed: 1.1 } : { center: [map.getCenter().lng, 15], zoom: innerWidth < 700 ? 0.9 : 1.9, pitch: 0, bearing: 0, speed: 1.1 }); } } });
 // guided tours: world highlights, Australia, or one sector — flown as a route, nearest stop next
 const goodPic = p => p.img && !p.priv;
 const tourOK = p => goodPic(p) || canAer(p);
