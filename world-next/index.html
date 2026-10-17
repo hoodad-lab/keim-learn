@@ -366,13 +366,14 @@ const HQ = { id: 'keim-australia', name: 'KEIM Australia', sub: 'Showroom & offi
   el.addEventListener('click', e => { e.stopPropagation(); open(HQ, true); });
   new maplibregl.Marker({ element: el, anchor: 'center', pitchAlignment: 'viewport' }).setLngLat([HQ.lon, HQ.lat]).addTo(map);
   // our unit, outlined in KEIM red with a slow 'breathing' glow
-  const FOOT = [[151.2240812, -33.9622898], [151.2242644, -33.9621491], [151.2244136, -33.9622324], [151.2242305, -33.9623753], [151.2240812, -33.9622898]];
+  const FOOT = [[151.2240922, -33.9622848], [151.2243049, -33.9620888], [151.224423, -33.9621778], [151.2243511, -33.9622437], [151.2242076, -33.9623749], [151.2240922, -33.9622848]];
   const addFoot = () => { if (map.getSource('hqfoot')) return;
     map.addSource('hqfoot', { type: 'geojson', data: { type: 'Feature', properties: {}, geometry: { type: 'Polygon', coordinates: [FOOT] } } });
     const before = map.getLayer('clu') ? 'clu' : undefined;
     map.addLayer({ id: 'hqglow', type: 'line', source: 'hqfoot', minzoom: 14.5, paint: { 'line-color': '#D62025', 'line-width': 14, 'line-blur': 10, 'line-opacity': 0.6 } }, before);
-    map.addLayer({ id: 'hqfill', type: 'fill', source: 'hqfoot', minzoom: 14.5, paint: { 'fill-color': '#D62025', 'fill-opacity': 0.35 } }, before);
-    map.addLayer({ id: 'hqline', type: 'line', source: 'hqfoot', minzoom: 14.5, paint: { 'line-color': '#ff3b40', 'line-width': 2.5 } }, before);
+    map.addLayer({ id: 'hqfill', type: 'fill', source: 'hqfoot', minzoom: 14.5, paint: { 'fill-color': '#D62025', 'fill-opacity': 0.28 } }, before);
+    map.addLayer({ id: 'hqcase', type: 'line', source: 'hqfoot', minzoom: 14.5, layout: { 'line-join': 'round' }, paint: { 'line-color': '#ffffff', 'line-width': 5.5, 'line-opacity': 0.9 } }, before);
+    map.addLayer({ id: 'hqline', type: 'line', source: 'hqfoot', minzoom: 14.5, layout: { 'line-join': 'round' }, paint: { 'line-color': '#D62025', 'line-width': 3 } }, before);
     let t0 = performance.now(); const tick = now => { if (map.getZoom() >= 14.5 && map.getLayer('hqfill')) { const k = (Math.sin((now - t0) / 650) + 1) / 2; map.setPaintProperty('hqfill', 'fill-opacity', 0.2 + 0.3 * k); map.setPaintProperty('hqglow', 'line-opacity', 0.3 + 0.5 * k); } requestAnimationFrame(tick); }; requestAnimationFrame(tick); };
   if (map.loaded()) addFoot(); else map.on('load', () => setTimeout(addFoot, 300));
   map.on('style.load', () => setTimeout(addFoot, 300));
