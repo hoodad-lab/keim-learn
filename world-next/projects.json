@@ -10393,7 +10393,11 @@
   "year": null,
   "story": "A mural at Cockenzie Power Station near Prestonpans was painted with KEIM mineral paints. It features in KEIM UK's murals brochure.",
   "src": "KEIM UK brochure: Murals",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=77368"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=77368",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Mural_at_the_entrance_to_the_former_Cockenzie_Power_Station_-_geograph.org.uk_-_5070047.jpg/960px-Mural_at_the_entrance_to_the_former_Cockenzie_Power_Station_-_geograph.org.uk_-_5070047.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Mural_at_the_entrance_to_the_former_Cockenzie_Power_Station_-_geograph.org.uk_-_5070047.jpg",
+  "ilic": "CC BY-SA 2.0",
+  "iby": "Mike Pennington"
  },
  {
   "id": "uk-trafalgar-junior-school-mural",
@@ -12527,7 +12531,11 @@
   "year": "2015",
   "story": "Florida's tallest lighthouse had its brick tower repainted in three applications of venetian red KEIM mineral coating. KEIM donated paint for the third coat, and HIS Painting of Titusville did the work.",
   "src": "Ponce de Leon Inlet Lighthouse Preservation Association (Illuminations newsletter)",
-  "link": "https://www.ponceinlet.org/wp-content/uploads/2024/05/april-2015-nl-pdf.pdf"
+  "link": "https://www.ponceinlet.org/wp-content/uploads/2024/05/april-2015-nl-pdf.pdf",
+  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/Ponce_Inlet_Lighthouse_2018.jpg/500px-Ponce_Inlet_Lighthouse_2018.jpg",
+  "ipage": "https://commons.wikimedia.org/wiki/File:Ponce_Inlet_Lighthouse_2018.jpg",
+  "ilic": "CC0",
+  "iby": "PA Uploader"
  },
  {
   "id": "us-cape-hatteras-lighthouse",
@@ -13903,10 +13911,10 @@
   "story": "KEIM brochure lists Manchester Metropolitan University among UK projects using Concretal Lasur (building not specified).",
   "src": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Specifying_Visual_Concrete.pdf",
   "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Subject_brochures/Specifying_Visual_Concrete.pdf",
-  "img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Manchester_Metropolitan_University%2C_Grosvenor_East_Building_-_geograph.org.uk_-_7311546.jpg/1280px-Manchester_Metropolitan_University%2C_Grosvenor_East_Building_-_geograph.org.uk_-_7311546.jpg",
-  "ipage": "https://commons.wikimedia.org/wiki/File:Manchester_Metropolitan_University,_Grosvenor_East_Building_-_geograph.org.uk_-_7311546.jpg",
-  "ilic": "CC BY-SA 2.0",
-  "iby": "Gerald England"
+  "img": "",
+  "ipage": "",
+  "ilic": "",
+  "iby": ""
  },
  {
   "id": "uk-greenfield-county-primary-school",
