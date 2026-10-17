@@ -326,7 +326,7 @@ map.on('load', async () => {
   const [pw, pa, po] = await Promise.all([svgImg(PIN(0, 0)), svgImg(PIN(1, 0)), svgImg(PIN(0, 1))]);
   map.addImage('pin-w', pw, { pixelRatio: 2 }); map.addImage('pin-au', pa, { pixelRatio: 2 }); map.addImage('pin-on', po, { pixelRatio: 2 });
   try { await document.fonts.load('500 14px Jost'); } catch (e) {}
-  map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 46, clusterMaxZoom: 15, clusterProperties: { au: ['+', ['get', 'au']] } });
+  map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 30, clusterMaxZoom: 12, clusterProperties: { au: ['+', ['get', 'au']] } });
   map.addSource('sel', { type: 'geojson', data: selGeo() });
   const common = { 'icon-allow-overlap': true, 'icon-ignore-placement': true, 'icon-pitch-alignment': 'viewport', 'icon-rotation-alignment': 'viewport' };
   map.addLayer({ id: 'clu', type: 'symbol', source: 'pts', filter: ['has', 'point_count'],
