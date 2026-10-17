@@ -234,6 +234,17 @@ html[data-theme="dark"] .maplibregl-ctrl-attrib-button { filter: invert(1); }
 @media (max-width: 760px) { .card.hqc .ph { height: 112px; } .card .hqph img { width: 70px; } }
 html[data-theme="dark"] .card .hqph { background: #0b0c0d; }
 html[data-theme="dark"] .card.hqc dd a { color: #ff4d52; }
+
+.sug { position: fixed; z-index: 30; background: #fff; color: var(--ink); border: 1px solid var(--anth); border-top: 3px solid var(--red); box-shadow: 0 10px 28px rgba(0,0,0,.35); max-height: min(52vh, 420px); overflow-y: auto; display: none; }
+.sug.on { display: block; }
+.sug button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid rgba(128,128,128,.25); background: none; color: inherit; padding: 10px 12px 9px; cursor: pointer; font-family: var(--sans); }
+.sug button:last-child { border-bottom: 0; }
+.sug button:hover, .sug button.act { background: rgba(214,32,37,.12); }
+.sug b { display: block; font: 500 14px/1.25 var(--sans); }
+.sug b mark { background: none; color: var(--red2); font-weight: 600; }
+.sug span { display: block; margin-top: 3px; font: 400 11.5px/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.sug .none { padding: 12px; font: 400 13px/1.3 var(--sans); color: var(--mute); }
+html[data-theme="dark"] .sug { background: #16181a; border-color: #4f5559; border-top-color: var(--red); }
 </style>
 </head>
 <body class="nocard">
@@ -475,8 +486,27 @@ function refilter() { const q = fQ.toLowerCase();
   const nc = new Set(vis.map(p => p.country)).size; $('count').textContent = vis.length + ' projects · ' + nc + (nc === 1 ? ' country' : ' countries');
   const s = map.getSource && map.getSource('pts'); if (s) s.setData(geo()); renderList(); $('tTour').classList.toggle('sel', !!(fType || fReg || fQ)); }
 document.querySelectorAll('#bar .chip[data-r]').forEach(b => b.onclick = () => { const k = b.dataset.r; if (T) endTour(); fReg = fReg === k ? null : k; syncChips(); refilter(); spinning = false; hideHint(); if (fReg) { const g = REG[fReg]; map.flyTo({ center: g.c, zoom: innerWidth < 700 ? g.z[0] : g.z[1], pitch: 0, bearing: 0, speed: 1.1 }); } });
-$('q').addEventListener('input', e => { fQ = e.target.value.trim(); refilter(); if (fQ && vis.length === 1) open(vis[0], true); });
-$('q').addEventListener('keydown', e => { if (e.key === 'Enter' && vis.length) open(vis[0], true); });
+// suggestions under the search box: show matches, open only when one is clicked
+const sug = document.createElement('div'); sug.className = 'sug'; sug.setAttribute('role', 'listbox'); document.body.appendChild(sug);
+let sugList = [], sugAct = -1;
+const hl = (t, q) => { const i = t.toLowerCase().indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); };
+function sugScore(p, q) { const n = p.name.toLowerCase(); if (n.startsWith(q)) return 0; if (n.split(/[\s\-\/(),]+/).some(w => w.startsWith(q))) return 1; if (n.includes(q)) return 2; if ((p.place + ' ' + p.country + ' ' + (p.region || '')).toLowerCase().includes(q)) return 3; return 4; }
+function sugPlace() { const r = $('q').getBoundingClientRect(), w = Math.min(Math.max(r.width, 300), innerWidth - 16); sug.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px'; sug.style.top = (r.bottom + 4) + 'px'; sug.style.width = w + 'px'; }
+function sugShow() { const q = fQ.toLowerCase(); if (!q) { sug.classList.remove('on'); sugList = []; return; }
+  sugList = vis.map(p => [sugScore(p, q), p]).sort((a, b) => a[0] - b[0] || a[1].name.localeCompare(b[1].name)).slice(0, 8).map(x => x[1]); sugAct = -1;
+  sug.innerHTML = sugList.length ? sugList.map((p, i) => `<button type="button" role="option" data-i="${i}"><b>${hl(p.name, q)}</b><span>${esc([p.place, p.country].filter(Boolean).join(', '))}${p.type ? ' · ' + esc(p.type) : ''}</span></button>`).join('') + (vis.length > 8 ? `<div class="none">${vis.length - 8} more · keep typing to narrow</div>` : '') : '<div class="none">No project matches that</div>';
+  sugPlace(); sug.classList.add('on'); }
+function sugPick(p) { sug.classList.remove('on'); $('q').blur(); fQ = ''; $('q').value = p.name; refilter(); open(p, true); }
+$('q').addEventListener('input', e => { fQ = e.target.value.trim(); refilter(); sugShow(); });
+$('q').addEventListener('focus', () => { if (fQ) sugShow(); });
+$('q').addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { if (!sugList.length) return; e.preventDefault(); sugAct = (sugAct + (e.key === 'ArrowDown' ? 1 : -1) + sugList.length) % sugList.length; sug.querySelectorAll('button').forEach((b, i) => b.classList.toggle('act', i === sugAct)); }
+  else if (e.key === 'Enter') { if (sugAct >= 0) sugPick(sugList[sugAct]); else if (sugList.length === 1) sugPick(sugList[0]); }
+  else if (e.key === 'Escape') sug.classList.remove('on'); });
+sug.addEventListener('mousedown', e => e.preventDefault());
+sug.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) sugPick(sugList[+b.dataset.i]); });
+document.addEventListener('pointerdown', e => { if (e.target !== $('q') && !sug.contains(e.target)) sug.classList.remove('on'); });
+addEventListener('resize', () => { if (sug.classList.contains('on')) sugPlace(); });
 
 // list of projects in view
 let lSort = 'name';
