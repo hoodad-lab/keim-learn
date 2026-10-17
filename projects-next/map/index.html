@@ -223,14 +223,15 @@ html[data-theme="dark"] .maplibregl-ctrl-attrib a { color: var(--mute); }
 html[data-theme="dark"] .maplibregl-ctrl-attrib-button { filter: invert(1); }
 
 /* showroom card */
-.card .hqph { position: absolute; inset: 0; background: var(--anth); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #fff; padding: 18px 0 14px; }
+.card .hqph { position: absolute; inset: 0; background: var(--anth); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 26px !important; gap: 8px; color: #fff; padding: 18px 0 14px; }
 .card .hqph::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: var(--umbra); }
 .card .hqph img { width: 104px; height: auto; margin-bottom: 4px; }
 .card .hqph span { font: 500 11.5px/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; }
 .card .hqph em { font: 300 14px/1 var(--sans); font-style: normal; letter-spacing: .08em; color: var(--grey); }
 .card.hqc dd a { color: var(--red2); text-decoration: none; font-weight: 500; }
 .card.hqc .more:not(.sv) { background: var(--red2); }
-@media (max-width: 760px) { .card.hqc .ph { height: 22vw; max-height: 110px; } .card .hqph img { width: 70px; } }
+.card.hqc .ph { aspect-ratio: auto !important; height: 112px; }
+@media (max-width: 760px) { .card.hqc .ph { height: 112px; } .card .hqph img { width: 70px; } }
 html[data-theme="dark"] .card .hqph { background: #0b0c0d; }
 html[data-theme="dark"] .card.hqc dd a { color: #ff4d52; }
 </style>
@@ -397,7 +398,7 @@ function open(p, fly) {
     $('cFacts').innerHTML = `<dt>Address</dt><dd>Unit 7, 19 McCauley Street<br>Matraville NSW 2036</dd><dt>Phone</dt><dd><a href="tel:+61297487160">(02) 9748 7160</a></dd><dt>Email</dt><dd><a href="mailto:info@keim.com.au">info@keim.com.au</a></dd><dt>Visits</dt><dd>By appointment</dd><dt>We offer</dt><dd>The full KEIM range, colour samples and technical advice</dd>`;
     $('cStory').textContent = 'See KEIM colours on real substrates and talk through your project with our team. KEIM has been in Australia for more than 35 years and is part of the global KEIM family.';
     $('cMore').hidden = false; $('cMore').href = 'tel:+61297487160'; $('cMore').removeAttribute('target'); $('cMore').textContent = 'Call us';
-    $('cSv').hidden = false; $('cSv').href = 'https://www.google.com/maps/dir/?api=1&destination=' + HQ.lat + ',' + HQ.lon; $('cSv').textContent = 'Directions ↗';
+    $('cSv').hidden = false; $('cSv').href = 'https://www.google.com/maps/dir/?api=1&destination=' + HQ.lat + ',' + HQ.lon; $('cSv').textContent = 'Directions ↗'; $('cPp').hidden = false; $('cPp').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('KEIM Australia, 7/19 McCauley St, Matraville NSW 2036'); $('cPp').textContent = 'Google Maps · Street View ↗';
     $('cPp').hidden = false; $('cPp').href = 'https://www.keim.com.au'; $('cPp').textContent = 'keim.com.au ↗';
     $('cSrc').innerHTML = ''; $('cApprox').hidden = true;
   } else { $('cMore').setAttribute('target', '_blank'); $('cSv').textContent = 'Google Maps · Street View ↗'; }
