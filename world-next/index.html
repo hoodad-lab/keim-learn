@@ -18,7 +18,8 @@ html, body { margin: 0; height: 100%; background: #e4e7e9; color: var(--ink); fo
 #map { position: fixed; inset: 0; }
 #map .maplibregl-canvas-container { background: radial-gradient(ellipse at 50% 50%, #ffffff 0%, #eef0f1 45%, #c9ced1 100%); }
 /* the 'panel': anthracite bar with the logo centred, wedge reaching below */
-.top { position: fixed; left: 0; right: 0; top: 0; z-index: 3; pointer-events: none; color: #fff; }
+.top { position: fixed; left: 0; right: 0; top: 0; z-index: 7; pointer-events: none; color: #fff; }
+body:not(.nocard) .panel .logo { filter: drop-shadow(0 1px 2px rgba(0,0,0,.55)) drop-shadow(0 3px 8px rgba(0,0,0,.45)); }
 .top > * { pointer-events: auto; }
 .panel { position: relative; height: calc(64px + env(safe-area-inset-top)); background: var(--anth); }
 .panel .logo { position: absolute; left: 50%; bottom: -38px; transform: translateX(-50%); width: 92px; display: block; line-height: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
