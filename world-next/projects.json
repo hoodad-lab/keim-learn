@@ -462,7 +462,8 @@
   "link": "https://www.keim.com/references/schwyz-town-hall/",
   "src": "keim.com references",
   "exact": 1,
-  "year": "1891"
+  "year": "1891",
+  "artist": "Ferdinand Wagner (1891)"
  },
  {
   "id": "w-leibniz-institute-for-astrophysics",
@@ -827,7 +828,8 @@
   "link": "https://www.keim.com/references/bahnhof-amstelstation-amsterdam/",
   "src": "keim.com references",
   "exact": 1,
-  "year": "c. 2021"
+  "year": "c. 2021",
+  "artist": "Peter Alma"
  },
  {
   "id": "w-bahnhof-stuttgart-21",
@@ -3816,7 +3818,7 @@
   "lon": 153.5177994,
   "products": "KEIM Concretal-Lasur",
   "colours": "",
-  "architect": "Artist Guido Van Helten",
+  "architect": "",
   "builder": "",
   "applicator": "",
   "area": "",
@@ -3831,7 +3833,8 @@
   "src": "KEIM Australia reference list",
   "exact": 1,
   "year": "2018",
-  "year_src": "https://www.scu.edu.au/news/2018/international-artist-unveils-10-storey-gold-coast-mural-.php"
+  "year_src": "https://www.scu.edu.au/news/2018/international-artist-unveils-10-storey-gold-coast-mural-.php",
+  "artist": "Guido Van Helten"
  },
  {
   "id": "au-springfield-central-station",
@@ -4471,7 +4474,7 @@
   "lon": 115.8638456,
   "products": "KEIM Concretal-Lasur",
   "colours": "",
-  "architect": "Artist: Rone",
+  "architect": "",
   "builder": "",
   "applicator": "",
   "area": "400 m2",
@@ -4489,7 +4492,8 @@
   "img_site": "p2018_25_0.jpg",
   "ipage": "https://commons.wikimedia.org/wiki/File:2026-02-05-Westin-Perth-01.jpg",
   "iby": "Elrondil",
-  "ilic": "CC BY 4.0"
+  "ilic": "CC BY 4.0",
+  "artist": "Rone"
  },
  {
   "id": "au-wellington-dam-mural-reflections",
@@ -4502,7 +4506,7 @@
   "lon": 115.9086,
   "products": "KEIM Concretal-Lasur",
   "colours": "",
-  "architect": "Artist: Guido van Helten",
+  "architect": "",
   "builder": "",
   "applicator": "",
   "area": "8,000 m²",
@@ -4516,7 +4520,8 @@
   "link": "https://www.keim.com.au/post/reflections-wellington-dam",
   "src": "keim.com.au",
   "exact": 1,
-  "year": "2021"
+  "year": "2021",
+  "artist": "Guido van Helten"
  },
  {
   "id": "au-nyaal-banyul-geelong-convention-and-even",
@@ -4890,8 +4895,8 @@
   "lon": 117.81937,
   "products": "KEIM Concretal-Lasur, KEIM Faceal Oleo HD (anti-graffiti)",
   "colours": "",
-  "architect": "Artist: Glenn Hegedus (Archetype Projects)",
-  "builder": "Main Roads Western Australia (client)",
+  "architect": "",
+  "builder": "",
   "applicator": "",
   "area": "Thousands of m² of precast bridge abutments",
   "status": "",
@@ -4904,7 +4909,9 @@
   "link": "https://www.keim.com.au/post/interview-with-glenn-hegedus",
   "src": "keim.com.au",
   "exact": 1,
-  "year": "2024"
+  "year": "2024",
+  "artist": "Glenn Hegedus (Archetype Projects)",
+  "client": "Main Roads Western Australia"
  },
  {
   "id": "us-201-ellicott",
@@ -4918,7 +4925,7 @@
   "products": "KEIM Soldalit",
   "colours": "",
   "architect": "Cannon Design",
-  "builder": "Ciminelli Real Estate (developer)",
+  "builder": "",
   "applicator": "",
   "area": "",
   "status": "",
@@ -4931,7 +4938,8 @@
   "link": "https://www.keim.com.au/post/201-ellicott-street",
   "src": "keim.com.au",
   "exact": 1,
-  "priv": 1
+  "priv": 1,
+  "client": "Ciminelli Real Estate"
  },
  {
   "id": "au-old-166-gertrude-street",
@@ -5373,7 +5381,7 @@
   "lon": 141.463766,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Charles Web Gilbert (sculptor)",
+  "architect": "",
   "builder": "",
   "credit": "",
   "story": "Sir John Monash unveiled the memorial on 11 October 1925. It is a Harcourt granite monument with a bronze soldier throwing a bomb, by Charles Web Gilbert, who died a week before the unveiling. Four bronze tablets carry the names of 365 men of the district killed in the Great War.",
@@ -5385,7 +5393,8 @@
   "year": "by 2019",
   "year_src": "https://monumentaustralia.org.au/display/20542-broken-hill-and-district-war-memorial",
   "ppage": "https://placesofpride.awm.gov.au/memorials/189751",
-  "powner": "Australian War Memorial"
+  "powner": "Australian War Memorial",
+  "artist": "Charles Web Gilbert"
  },
  {
   "id": "au-old-charlestown-square",
@@ -6702,12 +6711,13 @@
   "colours": "Earthy tones with metallic gold",
   "architect": "",
   "builder": "",
-  "applicator": "Artists Rob Fenton and Reiko Kaneko",
+  "applicator": "",
   "type": "Mural",
   "year": "2025",
   "story": "Two public murals for the Brilliant Bamboo programme celebrate Stoke's ceramic heritage, one beside the canal and one near the former Spode works. The artists chose KEIM for its breathability on historic brick and its low environmental impact, adding KEIM metallic gold highlights.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Brilliant_Botanicals_Murals__KEIM_Soldalit___Design_Lasur_.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Brilliant_Botanicals_Murals__KEIM_Soldalit___Design_Lasur_.pdf",
+  "artist": "Rob Fenton and Reiko Kaneko"
  },
  {
   "id": "uk-bryn-gwalia-hall",
@@ -7231,7 +7241,8 @@
   "year": "2021",
   "story": "Francis Gomila's 1982 street-scene mural had badly faded. Peterborough Presents and Nene Park Trust restored it with KEIM Soldalit, matched to the original colours, on the advice of Hirst Conservation.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Link_Road_Mural__Peterborough__KEIM_Soldalit_onto_previously_painted_.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Link_Road_Mural__Peterborough__KEIM_Soldalit_onto_previously_painted_.pdf",
+  "artist": "Francis Gomila (original, 1982)"
  },
  {
   "id": "uk-echo-building",
@@ -7714,12 +7725,13 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Martin Earle (muralist)",
+  "applicator": "",
   "type": "Mural",
   "year": "2020",
   "story": "This 1793 church in Warwickshire was redecorated with murals showing around 40 angels, prophets and saints. Muralist Martin Earle painted them in KEIM Design Lasur over KEIM Innostar and Optil base coats.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/St._Francis_of_Assisi_Catholic_Church__Baddesley_Clinton__Keim_Design_Lasur_on_plaster_.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/St._Francis_of_Assisi_Catholic_Church__Baddesley_Clinton__Keim_Design_Lasur_on_plaster_.pdf",
+  "artist": "Martin Earle"
  },
  {
   "id": "uk-students-union-building-university-of-warwick",
@@ -7832,7 +7844,7 @@
   "exact": 0,
   "products": "KEIM STS 7M, KEIM Concretal-C",
   "colours": "",
-  "architect": "Ian Bridge Consultancy (surveyor)",
+  "architect": "",
   "builder": "",
   "applicator": "Concrete Repairs Ltd",
   "type": "Residential",
@@ -7841,7 +7853,8 @@
   "src": "KEIM Mineral Paints UK case study",
   "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/Thackley_End__Oxford__Keim_Concretal-C_onto_concrete_.pdf",
   "img": "private-residence.svg",
-  "priv": 1
+  "priv": 1,
+  "consultant": "Ian Bridge Consultancy (surveyor)"
  },
  {
   "id": "uk-the-assumption-of-our-lady-church",
@@ -7854,14 +7867,15 @@
   "exact": 1,
   "products": "KEIM Soldalit, KEIM Soldalit Fixativ, KEIM Soldalit Grob, KEIM Spachtel",
   "colours": "White",
-  "architect": "MacConvilles (surveyor)",
+  "architect": "",
   "builder": "Corniche Construction",
   "applicator": "Corniche Construction",
   "type": "Heritage",
   "year": "2021",
   "story": "Joseph Goldie's 1930-31 Catholic church in Surrey was repaired with new lime render where needed. It was finished in a fresh white KEIM Soldalit for breathability and resistance to algae.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/The_Assumption_Of_Our_Lady_Church__Englefield_Green__London__Keim_Soldalit_onto_render_.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/The_Assumption_Of_Our_Lady_Church__Englefield_Green__London__Keim_Soldalit_onto_render_.pdf",
+  "consultant": "MacConvilles (surveyor)"
  },
  {
   "id": "uk-the-george-hotel",
@@ -7894,14 +7908,15 @@
   "exact": 1,
   "products": "KEIM STS 7M, KEIM Contact-Plus, KEIM Soldalit",
   "colours": "Bespoke grey KS01 0312",
-  "architect": "Towler Shaw Roberts (surveyor)",
+  "architect": "",
   "builder": "Randle Building Solutions",
   "applicator": "",
   "type": "Commercial",
   "year": "2022",
   "story": "A Grade II listed former school house converted to offices had flaking paint on damp stonework. Paint was stripped with KEIM STS 7M and the building finished in KEIM Soldalit matched to the original grey.",
   "src": "KEIM Mineral Paints UK case study",
-  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/The_Old_Grammar_School__Shrewsbury__KEIM_Soldalit_onto_stripped_surfaces_.pdf"
+  "link": "https://www.keim.com/fileadmin/content/Documents/Additional_brochures/EN-EN/Case_studies/The_Old_Grammar_School__Shrewsbury__KEIM_Soldalit_onto_stripped_surfaces_.pdf",
+  "consultant": "Towler Shaw Roberts (surveyor)"
  },
  {
   "id": "uk-the-old-vicarage-penrhos",
@@ -8297,7 +8312,7 @@
   "products": "KEIM Spachtel, KEIM Royalan Grob, KEIM Royalan Dilution, KEIM Royalan",
   "colours": "9477",
   "architect": "Guy Taylor Associates",
-  "builder": "Foxley Group (developer)",
+  "builder": "",
   "applicator": "",
   "type": "Residential",
   "year": "2022",
@@ -8305,7 +8320,8 @@
   "src": "KEIM UK local references",
   "link": "https://www.keim.com/en-gb/local-references/103-105-st-peters-street-st-albans/",
   "img": "private-residence.svg",
-  "priv": 1
+  "priv": 1,
+  "client": "Foxley Group"
  },
  {
   "id": "uk-st-edward-s-catholic-church-icons",
@@ -8320,12 +8336,13 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Aidan Hart (iconographer)",
+  "applicator": "",
   "type": "Mural",
   "year": "2022",
   "story": "Iconographer Aidan Hart painted interior icon murals in this church, built in 1872 as a chapel of ease. He used KEIM Design Lasur for the work.",
   "src": "KEIM UK local references",
-  "link": "https://www.keim.com/en-gb/local-references/st-edwards-catholic-church-oldham/"
+  "link": "https://www.keim.com/en-gb/local-references/st-edwards-catholic-church-oldham/",
+  "artist": "Aidan Hart"
  },
  {
   "id": "uk-atlantis-barn",
@@ -10519,13 +10536,14 @@
   "products": "KEIM Lime Remover, KEIM Royalan",
   "colours": "Black with a blue hue",
   "architect": "Stiff + Trevillion",
-  "builder": "Brockton Capital (developer)",
+  "builder": "",
   "applicator": "H & S Decorating Specialists",
   "type": "Commercial",
   "year": "2018",
   "story": "A 1980s Soho office building with polished granite and reconstituted stone was reinvented as design-led workspace. The stone was etched and painted in a blue-black KEIM Royalan.",
   "src": "KEIM UK brochure: The Art of Upcycling",
-  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=81474"
+  "link": "https://www.bpindex.co.uk/clickpdf.html?manfid=4136&pdfid=81474",
+  "client": "Brockton Capital"
  },
  {
   "id": "uk-greenwood-house",
@@ -11004,14 +11022,15 @@
   "exact": 1,
   "products": "KEIM Algicid, KEIM Silan Primer, KEIM Granital",
   "colours": "",
-  "architect": "Odgers Conservation (specifier)",
+  "architect": "",
   "builder": "Sally Strachey Historic Conservation",
   "applicator": "Thomas Bardwell",
   "type": "Heritage",
   "year": "2024",
   "story": "Karel Vogel's Grade II listed 1938 concrete statue by the Great West Road had cracked and rusted. It was repaired and finished in KEIM Granital, unveiled by the Duke of Gloucester in 2024 and given a Hammersmith Society award.",
   "src": "NBS Source - KEIM Mineral Paints Ltd case study",
-  "link": "https://source.thenbs.com/en/gb/case-study/the-leaning-woman-statue-hammersmith-london/x5HTdsJ2swnfK5n9VqTxj8/vRM4wGHQhRtpYKCYyLhDsK"
+  "link": "https://source.thenbs.com/en/gb/case-study/the-leaning-woman-statue-hammersmith-london/x5HTdsJ2swnfK5n9VqTxj8/vRM4wGHQhRtpYKCYyLhDsK",
+  "consultant": "Odgers Conservation (specifier)"
  },
  {
   "id": "uk-waitrose-south-street",
@@ -11188,14 +11207,15 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Michael Madden (muralist)",
+  "applicator": "",
   "type": "Residential",
   "year": null,
   "story": "Muralist Michael Madden painted a later porch on a 17th-century cottage near Hastings to blend with the old building, including painted lichens. He used KEIM Soldalit so the effect will not fade.",
   "src": "Keim Paint Shop project gallery",
   "link": "https://www.keimpaintshop.co.uk/project-gallery/fairlight-project/",
   "img": "private-residence.svg",
-  "priv": 1
+  "priv": 1,
+  "artist": "Michael Madden"
  },
  {
   "id": "uk-greater-london-house",
@@ -11663,13 +11683,14 @@
   "products": "KEIM Concretal-Lasur, Concretal Fixative, Silan 100",
   "colours": "",
   "architect": "Beyer Blinder Belle",
-  "builder": "Brooklyn Navy Yard Development Corporation (client)",
+  "builder": "",
   "applicator": "",
   "type": "Commercial",
   "year": "2017",
   "story": "A 1942 windowless naval storage and intelligence building, now a National Register-listed hub for urban manufacturing with a food hall. Heavily patched historic concrete was toned with Concretal-Lasur to blend repairs while keeping its gritty raw character.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/brooklyn-navy-yard-bldg-77-brooklyn-ny/"
+  "link": "https://keim-usa.com/reference-gallery/brooklyn-navy-yard-bldg-77-brooklyn-ny/",
+  "client": "Brooklyn Navy Yard Development Corporation"
  },
  {
   "id": "us-central-square-library-garage-mural-wonder",
@@ -11682,14 +11703,15 @@
   "exact": 1,
   "products": "KEIM Concretal-W, Concretal-Lasur",
   "colours": "",
-  "architect": "Silvia Lopez Chavez (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "",
   "type": "Mural",
   "year": "2019",
   "story": "A faded mural on the concrete garage beside the Central Square branch library was replaced with a new work by Silvia Lopez Chavez celebrating libraries, with birds, paper planes and open books. It was painted with Concretal-W and Concretal-Lasur for colour that lasts on exposed concrete.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/central-square-library-garage/"
+  "link": "https://keim-usa.com/reference-gallery/central-square-library-garage/",
+  "artist": "Silvia Lopez Chavez"
  },
  {
   "id": "us-charleston-county-courthouse",
@@ -11702,14 +11724,15 @@
   "exact": 1,
   "products": "KEIM Soldalit, Contact Plus Grob (KEIM Grob)",
   "colours": "Custom-matched colour",
-  "architect": "SKA Consulting Engineers (engineer); Meadors, Inc. (preservation consultant)",
+  "architect": "",
   "builder": "WxTite (WXProofing)",
   "applicator": "",
   "type": "Civic",
   "year": "2024",
   "story": "The courthouse at Charleston's 'Four Corners of Law' dates from 1753 and was rebuilt in 1792. Cracks in the stucco were bridged with KEIM Grob, then the courthouse and the Blake Tenement behind it were coated in custom-matched Soldalit, with adhesion tests throughout.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/charleston-county-courthouse-charleston-south-carolina/"
+  "link": "https://keim-usa.com/reference-gallery/charleston-county-courthouse-charleston-south-carolina/",
+  "consultant": "SKA Consulting Engineers (engineer); Meadors, Inc. (preservation consultant)"
  },
  {
   "id": "us-courtyard-by-marriott-dupont-circle",
@@ -11782,14 +11805,15 @@
   "exact": 1,
   "products": "KEIM Concretal-W",
   "colours": "",
-  "architect": "Kleinfelder (designer)",
+  "architect": "",
   "builder": "",
   "applicator": "",
   "type": "Transport",
   "year": "2016",
   "story": "Seismic retrofit and rehabilitation of the 1914 bridge and retaining walls over University Avenue, keeping their historic character while improving pedestrian and bike access. The concrete was finished in Concretal-W for breathable, long-lasting colour.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/georgia-street-bridge/"
+  "link": "https://keim-usa.com/reference-gallery/georgia-street-bridge/",
+  "consultant": "Kleinfelder (designer)"
  },
  {
   "id": "us-herald-examiner-building",
@@ -11822,14 +11846,15 @@
   "exact": 1,
   "products": "KEIM Universalputz, Soldalit, PSS 20 Anti-Graffiti",
   "colours": "",
-  "architect": "Lott + Barber (Forrest R. Lott); Sarah Chase, Preservation Consulting",
+  "architect": "Lott + Barber (Forrest R. Lott)",
   "builder": "J. T. Turner Construction",
   "applicator": "Two Brothers Plastering",
   "type": "Heritage",
   "year": "2014",
   "story": "The 1821 birthplace of the Girl Scouts' founder, Savannah's first National Historic Landmark. Hard cement stucco that was damaging the soft brick was removed and replaced with mesh-reinforced Universalputz lime stucco, finished in two coats of Soldalit, with PSS 20 anti-graffiti on the west wall, aiming for a 100-year solution.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/juliette-gordon-low-birthplace-savannah-georgia/"
+  "link": "https://keim-usa.com/reference-gallery/juliette-gordon-low-birthplace-savannah-georgia/",
+  "consultant": "Sarah Chase, Preservation Consulting"
  },
  {
   "id": "us-jupiter-inlet-lighthouse",
@@ -11963,13 +11988,14 @@
   "products": "KEIM Concretal-Lasur, Concretal Fixative",
   "colours": "",
   "architect": "Studio Libeskind",
-  "builder": "National Capital Commission (client)",
+  "builder": "",
   "applicator": "",
   "type": "Civic",
   "year": "2018",
   "story": "Canada's national Holocaust memorial, six triangular cast-in-place concrete volumes arranged as the points of a star, including the 14-metre Sky Void. The exposed concrete was finished with Concretal-Lasur mineral stain.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/national-holocaust-monument-ottawa/"
+  "link": "https://keim-usa.com/reference-gallery/national-holocaust-monument-ottawa/",
+  "client": "National Capital Commission"
  },
  {
   "id": "us-national-veterans-memorial-and-museum",
@@ -11983,13 +12009,14 @@
   "products": "KEIM Heavy Duty Cleaner, Concretal-Lasur, Concretal Fixative",
   "colours": "",
   "architect": "Allied Works Architecture",
-  "builder": "Columbus Downtown Development Corp. (client)",
+  "builder": "",
   "applicator": "",
   "type": "Culture",
   "year": "2020",
   "story": "A riverfront museum and memorial honouring veterans from every conflict, where building and landscape merge in a single sweeping concrete form. The concrete was cleaned and stained with Concretal-Lasur for a more even tone that keeps the natural patina.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/national-veterans-memorial-and-museum/"
+  "link": "https://keim-usa.com/reference-gallery/national-veterans-memorial-and-museum/",
+  "client": "Columbus Downtown Development Corp."
  },
  {
   "id": "us-pier-53-fireboat-house-marine-company-1",
@@ -12042,14 +12069,15 @@
   "exact": 1,
   "products": "KEIM Soldalit",
   "colours": "",
-  "architect": "Guido van Helten (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "",
   "type": "Mural",
   "year": "2023",
   "story": "A 3,000 sq ft mural by Guido van Helten wraps the new men's shelter as part of an 'art melts walls' concept. It was meant to connect housed and unhoused neighbours and make the building read more like a museum than a shelter.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/porchlight-mens-shelter-mural/"
+  "link": "https://keim-usa.com/reference-gallery/porchlight-mens-shelter-mural/",
+  "artist": "Guido van Helten"
  },
  {
   "id": "us-scad-forty-residence-hall",
@@ -12102,14 +12130,16 @@
   "exact": 0,
   "products": "KEIM Concretal-Lasur, Concretal Fixative, Concretal Black",
   "colours": "",
-  "architect": "Guido van Helten (artist)",
-  "builder": "Salina Kanvas Project (client)",
+  "architect": "",
+  "builder": "",
   "applicator": "",
   "type": "Mural",
   "year": "2021",
   "story": "Guido van Helten wrapped the H.D. Lee Flour Mill grain elevator with local children playing 'Ring Around the Rosie'. Translucent Concretal-Lasur kept the character of the aged concrete, with Concretal Black for the negative space.",
   "src": "KEIM USA Reference Gallery",
-  "link": "https://keim-usa.com/reference-gallery/silos-at-the-mill-salina-ks/"
+  "link": "https://keim-usa.com/reference-gallery/silos-at-the-mill-salina-ks/",
+  "artist": "Guido van Helten",
+  "client": "Salina Kanvas Project"
  },
  {
   "id": "us-st-benedict-classical-academy",
@@ -12292,12 +12322,13 @@
   "colours": "",
   "architect": "Andrew Gould, New World Byzantine",
   "builder": "",
-  "applicator": "Dmitri Shkolnik, Aleko Mchedlishvili, Vladimir Grygorenko (iconographers)",
+  "applicator": "",
   "type": "Heritage",
   "year": "2008",
   "story": "A Byzantine-style Orthodox church in the I'On neighbourhood, consecrated in 2008. KEIM materials were used inside and out: the church was plastered with KEIM lime-based plaster, and its dome iconography was later painted in silicate paint.",
   "src": "KEIM USA Blog; Orthodox Arts Journal",
-  "link": "https://www.orthodoxartsjournal.org/painting-a-magnificent-dome-in-south-carolina/"
+  "link": "https://www.orthodoxartsjournal.org/painting-a-magnificent-dome-in-south-carolina/",
+  "artist": "Dmitri Shkolnik, Aleko Mchedlishvili, Vladimir Grygorenko"
  },
  {
   "id": "us-canvas-tower-mural-pearlie-harris",
@@ -12310,14 +12341,16 @@
   "exact": 0,
   "products": "KEIM Soldalit, KEIM mineral stains and dilution",
   "colours": "",
-  "architect": "Guido van Helten (artist)",
-  "builder": "The Beach Company (developer)",
+  "architect": "",
+  "builder": "",
   "applicator": "",
   "type": "Mural",
   "year": "2020",
   "story": "A photo-realistic mural of retired educator Pearlie Harris with present-day students, marking 50 years since Greenville's schools desegregated. The brick had an old water-repellent treatment, so Soldalit was used as an adhesive base before the image was finished in stains.",
   "src": "KEIM USA Blog",
-  "link": "https://keim-usa.com/guido-van-helten-is-an-australian-artist-known-for-hisphotorealistic-murals-that-are-bigger-than-life/"
+  "link": "https://keim-usa.com/guido-van-helten-is-an-australian-artist-known-for-hisphotorealistic-murals-that-are-bigger-than-life/",
+  "artist": "Guido van Helten",
+  "client": "The Beach Company"
  },
  {
   "id": "us-ponce-de-leon-inlet-lighthouse",
@@ -12511,15 +12544,17 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Pierre Bourdelle (original 1936 design)",
-  "builder": "City of Dallas (client)",
+  "architect": "",
+  "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Civic",
   "year": "2004",
   "story": "EverGreene was chosen in 2004 to recreate six lost murals originally designed by Pierre Bourdelle in 1936, each about 15 ft wide by 27 ft high. The murals were executed in situ using Keim mineral coating paint on newly prepared walls.",
   "src": "https://evergreene.com/projects/dallas-fair-park/",
   "link": "https://evergreene.com/projects/dallas-fair-park/",
-  "img": ""
+  "img": "",
+  "artist": "Pierre Bourdelle (original 1936 mural design)",
+  "client": "City of Dallas"
  },
  {
   "id": "us-wilshire-boulevard-temple",
@@ -12577,7 +12612,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "David M. Schwarz (museum); Richard Haas (artist)",
+  "architect": "David M. Schwarz (museum)",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12585,7 +12620,8 @@
   "story": "In 2002 EverGreene worked with Richard Haas to execute his full-scale mural, painted directly on the wall with Keim Paints, about 23 ft high by 42 ft wide.",
   "src": "https://evergreene.com/projects/national-cowgirl-museum-and-hall-of-fame/",
   "link": "https://evergreene.com/projects/national-cowgirl-museum-and-hall-of-fame/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-downtown-doral-charter-elementary-school",
@@ -12599,7 +12635,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Education",
@@ -12607,7 +12643,8 @@
   "story": "Two Richard Haas murals on the school portico facade and a freestanding wall were executed by EverGreene in fall 2015, painted directly on the walls with Keim mineral paints.",
   "src": "https://evergreene.com/projects/doral-charter-richard-haas/",
   "link": "https://evergreene.com/projects/doral-charter-richard-haas/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-homage-to-the-chicago-school-1211-n-lasa",
@@ -12621,7 +12658,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12629,7 +12666,8 @@
   "story": "Painted on three sides of an 18-floor apartment house, mimicking the finished front facade as an homage to Louis Sullivan. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-homewood-murals",
@@ -12643,7 +12681,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12651,7 +12689,8 @@
   "story": "Fifteen murals around the town depict community, architecture, transportation and family. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-bradley-symphony-center-mural",
@@ -12665,7 +12704,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12673,7 +12712,8 @@
   "story": "A series of windows and a large central faux glass panel reflects buildings along Wisconsin Avenue, including the former Pabst Building, Lake Front Depot and Gimbels. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-homage-to-cincinnatus-brotherhood-buildi",
@@ -12687,7 +12727,7 @@
   "exact": 0,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12695,7 +12735,8 @@
   "story": "The mural depicts a central marble statue of Lucius Quinctius Cincinnatus, the Roman statesman for whom the city is named. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-2300-chestnut-street-mural",
@@ -12709,7 +12750,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12717,7 +12758,8 @@
   "story": "An office building was transformed into a labyrinth of arched openings containing a figure of William Penn, painted from Thomas Eakins's Max Schmitt in a Single Scull. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-edison-brothers-stores-mural",
@@ -12731,7 +12773,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12739,7 +12781,8 @@
   "story": "A three-sided mural with eight obelisks at its corners, a painted sculpture of Peace on the west facade and an equestrian statue of St Louis on the south facade. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-lincoln-building-mural",
@@ -12753,7 +12796,7 @@
   "exact": 0,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12761,7 +12804,8 @@
   "story": "Painted on the building adjacent to the house where Lincoln died and opposite Ford's Theatre, the mural depicts Lincoln as a young man. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-gateway-to-the-waterfront",
@@ -12775,7 +12819,7 @@
   "exact": 0,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12783,7 +12827,8 @@
   "story": "Painted as part of downtown improvements, three murals depict Yonkers history including indigenous peoples, Dutch settlers, an 18th century English village and 19th century industry. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-fulton-theatre-mural",
@@ -12797,7 +12842,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12805,7 +12850,8 @@
   "story": "The mural represents a stage on which Pittsburgh's steel legacy is depicted, including a steel mill interior with furnaces pouring hot metal. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-the-dwelling-place-mural-heartside",
@@ -12819,7 +12865,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12827,7 +12873,8 @@
   "story": "Painted as part of the Heartside Neighborhood Redevelopment project of The Dwelling Place, an affordable housing and neighborhood revitalization organisation. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-bank-one-ballpark-interior-murals",
@@ -12841,7 +12888,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12849,7 +12896,8 @@
   "story": "Interior murals depict sports throughout history, including the Arizona Diamondbacks, and the topography of Arizona. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-pergola-of-justice-sarasota-county-court",
@@ -12863,7 +12911,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Richard Haas (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "EverGreene Architectural Arts",
   "type": "Mural",
@@ -12871,7 +12919,8 @@
   "story": "A series of three-dimensional arcades and pergolas frame an image of Justice and are adorned with garden foliage. EverGreene executed Haas's color maquettes full scale; the source states the Haas murals were painted directly on the surface with Keim mineral paints.",
   "src": "https://evergreene.com/projects/richard-haas-murals/",
   "link": "https://evergreene.com/projects/richard-haas-murals/",
-  "img": ""
+  "img": "",
+  "artist": "Richard Haas"
  },
  {
   "id": "us-blake-tenement-building-behind-charlesto",
@@ -12885,7 +12934,7 @@
   "exact": 0,
   "products": "KEIM Soldalit",
   "colours": "",
-  "architect": "SKA Consulting (specifier)",
+  "architect": "",
   "builder": "",
   "applicator": "WXProofing (now WXTite)",
   "type": "Heritage",
@@ -12893,7 +12942,8 @@
   "story": "The Blake Tenement building behind the courthouse also received Keim Soldalit, applied to the stucco portions of its lower section and right-hand side.",
   "src": "https://keim-usa.com/reviving-a-charleston-gem-keim-mineral-paints-breathe-new-life-into-the-historic-charleston-courthouse/",
   "link": "https://keim-usa.com/reviving-a-charleston-gem-keim-mineral-paints-breathe-new-life-into-the-historic-charleston-courthouse/",
-  "img": ""
+  "img": "",
+  "consultant": "SKA Consulting (specifier)"
  },
  {
   "id": "us-harbor-freeway-olympic-mural-terry-schoo",
@@ -12907,7 +12957,7 @@
   "exact": 1,
   "products": "KEIM product",
   "colours": "",
-  "architect": "Terry Schoonhoven (artist)",
+  "architect": "",
   "builder": "",
   "applicator": "Terry Schoonhoven",
   "type": "Civic",
@@ -12915,7 +12965,8 @@
   "story": "Working above the Harbor Freeway and using Keim mineral paint, Schoonhoven painted Roman ruins and Greek sculpture in the foreground of a mirror image of the downtown Los Angeles skyline for the 1984 Olympics freeway murals.",
   "src": "https://en.wikipedia.org/wiki/Terry_Schoonhoven",
   "link": "https://en.wikipedia.org/wiki/Terry_Schoonhoven",
-  "img": ""
+  "img": "",
+  "artist": "Terry Schoonhoven"
  },
  {
   "id": "uk-kilkeel-credit-union",
@@ -12973,7 +13024,7 @@
   "exact": 0,
   "products": "KEIM Royalan",
   "colours": "",
-  "architect": "Camerons Ltd (specifier)",
+  "architect": "",
   "builder": "",
   "applicator": "",
   "type": "Hospitality",
@@ -12981,7 +13032,8 @@
   "story": "Public house rebuilt behind its retained facade (offices above a new bar); KEIM Royalan protects the exposed facades. Specifier: Camerons Ltd.",
   "src": "https://www.keim.com/en-gb/project-gallery/detailed-view-uk/southampton-hotel-jersey/",
   "link": "https://www.keim.com/en-gb/project-gallery/detailed-view-uk/southampton-hotel-jersey/",
-  "img": ""
+  "img": "",
+  "consultant": "Camerons Ltd (specifier)"
  },
  {
   "id": "uk-the-lodge-wadhurst",
@@ -13311,13 +13363,14 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Stephen Pusey",
+  "applicator": "",
   "type": "Mural",
   "year": "1982",
   "story": "Stephen Pusey's 30 x 104 ft mural, funded by Lambeth Council, is recorded as painted in Keim silicate paints.",
   "src": "https://www.forwallswithtongues.org.uk/projects/children-at-play-brixton-1981-82/",
   "link": "https://www.forwallswithtongues.org.uk/projects/children-at-play-brixton-1981-82/",
-  "img": ""
+  "img": "",
+  "artist": "Stephen Pusey"
  },
  {
   "id": "uk-peace-mural-shepherd-s-bush",
@@ -13333,13 +13386,14 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Paul Butler and London Muralists for Peace",
+  "applicator": "",
   "type": "Mural",
   "year": "1985",
   "story": "121 ft London Muralists for Peace mural painted in Keim silicate paints.",
   "src": "https://www.forwallswithtongues.org.uk/projects/uxbridge-road-peace-mural-london-muralists-for-peace-1983/",
   "link": "https://www.forwallswithtongues.org.uk/projects/uxbridge-road-peace-mural-london-muralists-for-peace-1983/",
-  "img": ""
+  "img": "",
+  "artist": "Paul Butler and London Muralists for Peace"
  },
  {
   "id": "uk-sankofa-bird-women-s-peace-mural",
@@ -13355,13 +13409,14 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Maggie Clyde, Susan Elliott, Sonia Martin, Louise Vines",
+  "applicator": "",
   "type": "Mural",
   "year": "1984",
   "story": "Gable-end mural by the women's group London Wall (the group's first in Keim), GLC-funded, painted with Keim Farben paints and metallic paint.",
   "src": "https://www.forwallswithtongues.org.uk/projects/london-wall-sankofa-bird-womens-peace-mural-1984/",
   "link": "https://www.forwallswithtongues.org.uk/projects/london-wall-sankofa-bird-womens-peace-mural-1984/",
-  "img": ""
+  "img": "",
+  "artist": "Maggie Clyde, Susan Elliott, Sonia Martin, Louise Vines"
  },
  {
   "id": "uk-riders-of-the-apocalypse",
@@ -13377,13 +13432,14 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Brian Barnes / Wandsworth Mural Workshop",
+  "applicator": "",
   "type": "Mural",
   "year": "1984",
   "story": "35 x 35 ft peace mural by Brian Barnes, painted in Keim silicate for the GLC Peace Year.",
   "src": "https://www.forwallswithtongues.org.uk/projects/riders-of-the-apocalypse-1983/",
   "link": "https://www.forwallswithtongues.org.uk/projects/riders-of-the-apocalypse-1983/",
-  "img": ""
+  "img": "",
+  "artist": "Brian Barnes / Wandsworth Mural Workshop"
  },
  {
   "id": "uk-leithers-mural",
@@ -13399,13 +13455,14 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Tim Chalk and Paul Grime",
+  "applicator": "",
   "type": "Mural",
   "year": "1986",
   "story": "15 x 26 m mural commissioned by the Scottish Development Agency, painted by Tim Chalk and Paul Grime in Keim mineral paints.",
   "src": "https://www.forwallswithtongues.org.uk/projects/leithers/",
   "link": "https://www.forwallswithtongues.org.uk/projects/leithers/",
-  "img": ""
+  "img": "",
+  "artist": "Tim Chalk and Paul Grime"
  },
  {
   "id": "uk-wind-of-peace-greenwich",
@@ -13421,13 +13478,14 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Stephen Lobb, Carol Kenna and tenants",
+  "applicator": "",
   "type": "Mural",
   "year": "1983",
   "story": "30 x 303 ft mural on lime-free render for the GLC Peace Year, painted with Keim Kunstlerfarben A with Meridian Estate tenants.",
   "src": "https://www.forwallswithtongues.org.uk/projects/gmw-wind-of-peace-1983/",
   "link": "https://www.forwallswithtongues.org.uk/projects/gmw-wind-of-peace-1983/",
-  "img": ""
+  "img": "",
+  "artist": "Stephen Lobb, Carol Kenna and tenants"
  },
  {
   "id": "uk-hackney-peace-carnival-mural",
@@ -13449,7 +13507,8 @@
   "story": "46 x 38 ft mural by Ray Walker for the GLC Peace Year in Keim silicate, repaired and repainted in 2014.",
   "src": "https://www.forwallswithtongues.org.uk/projects/ray-walker-hackney-peace-carnival-1984/",
   "link": "https://www.forwallswithtongues.org.uk/projects/ray-walker-hackney-peace-carnival-1984/",
-  "img": ""
+  "img": "",
+  "artist": "Ray Walker"
  },
  {
   "id": "uk-bellefields-road-murals",
@@ -13471,7 +13530,8 @@
   "story": "Two 2-storey gable murals (1987) by local residents with artists including Sonia Martin, Louise Vines, Eugen Palmer and John Saward, in Keim paints.",
   "src": "https://www.forwallswithtongues.org.uk/projects/murals-after-1985/",
   "link": "https://www.forwallswithtongues.org.uk/projects/murals-after-1985/",
-  "img": ""
+  "img": "",
+  "artist": "Sonia Martin, Louise Vines, Eugen Palmer and John Saward, with local residents"
  },
  {
   "id": "uk-ode-to-the-west-wind-mural",
@@ -13487,13 +13547,14 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Louise Vines",
+  "applicator": "",
   "type": "Mural",
   "year": "1989",
   "story": "1989 mural by Louise Vines on a listed building gable, painted in Keim paints.",
   "src": "https://www.forwallswithtongues.org.uk/projects/murals-after-1985/",
   "link": "https://www.forwallswithtongues.org.uk/projects/murals-after-1985/",
-  "img": ""
+  "img": "",
+  "artist": "Louise Vines"
  },
  {
   "id": "uk-the-wild-life-of-hackney-marshes",
@@ -13509,13 +13570,14 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Sonia Martin and Louise Vines",
+  "applicator": "",
   "type": "Mural",
   "year": "1991",
   "story": "1991 mural by Sonia Martin and Louise Vines painted in Keim paints.",
   "src": "https://www.forwallswithtongues.org.uk/projects/murals-after-1985/",
   "link": "https://www.forwallswithtongues.org.uk/projects/murals-after-1985/",
-  "img": ""
+  "img": "",
+  "artist": "Sonia Martin and Louise Vines"
  },
  {
   "id": "uk-cornucopia-leeds-corn-exchange",
@@ -13531,13 +13593,14 @@
   "colours": "",
   "architect": "",
   "builder": "",
-  "applicator": "Graeme Wilson",
+  "applicator": "",
   "type": "Mural",
   "year": "1990",
   "story": "Graeme Wilson's final outdoor mural, painted using the Keim system on Leeds Corn Exchange.",
   "src": "https://www.forwallswithtongues.org.uk/artists/graeme-wilson/",
   "link": "https://www.forwallswithtongues.org.uk/artists/graeme-wilson/",
-  "img": ""
+  "img": "",
+  "artist": "Graeme Wilson"
  },
  {
   "id": "uk-st-christopher-s-roman-catholic-church-c",
