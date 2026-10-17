@@ -47,7 +47,7 @@ body:not(.nocard) .under { padding-right: 446px; }
 .card[hidden] { display: flex; opacity: 0; pointer-events: none; }
 @media (min-width: 761px) { .card { top: 116px; bottom: 16px; right: 16px; width: 410px; border-radius: 3px; } .card[hidden] { transform: translateX(30px); } body:not(.nocard) .tools { right: 442px; } }
 @media (max-width: 760px) { .card { left: 0; right: 0; bottom: 0; max-height: 58vh; border-radius: 3px 3px 0 0; } .card[hidden] { transform: translateY(40px); } .card .ph { aspect-ratio: 16 / 8 !important; } .card h2 { font-size: 21px !important; } .card .body { padding: 14px 18px 18px !important; }
-  .under { padding-top: 46px; } .brand { padding-right: 0; } .brand .count { display: none; } .brand h1 { font-size: 18px; } .search { width: 150px; } .panel .home { display: none; } body:not(.nocard) .tools { display: none; } }
+  .under { padding-top: 46px; } .brand { padding-right: 0; } .brand .count { display: none; } .brand h1 { font-size: 18px; } .search { width: 118px; } .bar .chip { padding: 8px 8px 7px; font-size: 11px; letter-spacing: .08em; } .panel .home { display: none; } body:not(.nocard) .tools { display: none; } }
 .card .ph { position: relative; background: var(--grey2); aspect-ratio: 3 / 2; flex: none; }
 .card .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .card .ph .noimg { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 10px; font: 300 15px var(--sans); letter-spacing: .08em; color: var(--mute); text-transform: uppercase; }
@@ -240,7 +240,9 @@ html[data-theme="dark"] .card.hqc dd a { color: #ff4d52; }
   <div class="under"><div class="brand"><h1>KEIM references <b>worldwide</b></h1><span class="count" id="count"></span></div>
   <div class="bar" id="bar">
     <input class="search" id="q" type="search" placeholder="Search a project or city" aria-label="Search projects">
-    <button class="chip au" id="fAU" type="button" aria-pressed="false">Australia</button>
+    <button class="chip au" data-r="au" type="button" aria-pressed="false">Australia</button>
+    <button class="chip au" data-r="eu" type="button" aria-pressed="false">Europe</button>
+    <button class="chip au" data-r="am" type="button" aria-pressed="false">Americas</button>
   </div></div>
 </header>
 <div class="legend" id="legend"><span><i style="background:#D62025"></i>Australia</span><span><i style="background:#36393C;outline:1px solid #fff"></i>Worldwide</span></div>
@@ -270,7 +272,8 @@ html[data-theme="dark"] .card.hqc dd a { color: #ff4d52; }
 const $ = id => document.getElementById(id), esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const TYPES = ['Heritage', 'Culture', 'Education', 'Health', 'Residential', 'Commercial', 'Transport', 'Hospitality', 'Civic', 'Mural'];
 const LABEL = { Heritage: 'Heritage', Culture: 'Culture', Education: 'Education', Health: 'Health', Residential: 'Homes', Commercial: 'Commercial', Transport: 'Transport', Hospitality: 'Hotels', Civic: 'Civic', Mural: 'Murals', Community: 'Community' };
-let P = [], vis = [], fType = null, fAU = false, fQ = '', sel = null, spinning = true, touring = false;
+const REG = { au: { t: p => p.country === 'Australia', c: [134, -28], z: [2.6, 3.4] }, eu: { t: p => p.lon > -25 && p.lon < 45 && p.lat > 34, c: [12, 50], z: [2.9, 3.8] }, am: { t: p => p.lon < -30 && p.lon > -170, c: [-98, 38], z: [1.5, 2.5] } };
+let P = [], vis = [], fType = null, fReg = null, fQ = '', sel = null, spinning = true, touring = false;
 const hist = [];
 
 // satellite imagery + place names, on a 3D globe
@@ -417,11 +420,11 @@ addEventListener('message', e => { if (e.data && e.data.keimTheme) document.docu
 const goodPic = p => p.img && !p.priv;
 const tourOK = p => goodPic(p) || canAer(p);
 const TOURS = [
-  { id: 'highlights', name: 'World highlights', desc: 'The best-photographed KEIM projects around the globe', f: p => goodPic(p) && p.exact, max: 24, filt: {} },
-  { id: 'australia', name: 'Australia', desc: 'From the showroom in Sydney across the country', f: p => p.country === 'Australia' && tourOK(p), max: 30, hq: true, filt: { au: true } },
-  { id: 'uk', name: 'UK & Ireland', desc: 'Castles, terraces and landmarks across Britain and Ireland', f: p => (p.country === 'United Kingdom' || p.country === 'Ireland') && tourOK(p) && p.exact, max: 24, filt: {} },
-  { id: 'northamerica', name: 'North America', desc: 'Capitols, lighthouses and landmarks in the USA and Canada', f: p => (p.country === 'United States' || p.country === 'Canada') && tourOK(p), max: 24, filt: {} },
-  { id: 'europe', name: 'Europe', desc: 'Where KEIM began — Germany and beyond', f: p => p.lon > -12 && p.lon < 40 && p.lat > 34 && tourOK(p), max: 24, filt: {} }
+  { id: 'highlights', name: 'World highlights', desc: 'The best-photographed KEIM projects around the globe (follows the Australia / Europe / Americas filter)', f: p => goodPic(p) && p.exact && (!fReg || REG[fReg].t(p)), max: 24, filt: { keep: true } },
+  { id: 'australia', name: 'Australia', desc: 'From the showroom in Sydney across the country', f: p => p.country === 'Australia' && tourOK(p), max: 30, hq: true, filt: { reg: 'au' } },
+  { id: 'uk', name: 'UK & Ireland', desc: 'Castles, terraces and landmarks across Britain and Ireland', f: p => (p.country === 'United Kingdom' || p.country === 'Ireland') && tourOK(p) && p.exact, max: 24, filt: { reg: 'eu' } },
+  { id: 'northamerica', name: 'North America', desc: 'Capitols, lighthouses and landmarks in the USA and Canada', f: p => (p.country === 'United States' || p.country === 'Canada') && tourOK(p), max: 24, filt: { reg: 'am' } },
+  { id: 'europe', name: 'Europe', desc: 'Where KEIM began — Germany and beyond', f: p => p.lon > -12 && p.lon < 40 && p.lat > 34 && tourOK(p), max: 24, filt: { reg: 'eu' } }
 ];
 TYPES.forEach(t => TOURS.push({ id: t.toLowerCase(), name: LABEL[t], desc: '', f: p => p.type === t && (t === 'Residential' ? goodPic(p) : tourOK(p)), max: 24, filt: { type: t } }));
 const TDESC = { heritage: 'Historic buildings restored with mineral paint', culture: 'Museums, galleries and theatres', education: 'Schools and universities', health: 'Hospitals and care', residential: 'Homes and apartments (with photos only)', commercial: 'Offices, retail and workplaces', transport: 'Stations, airports and infrastructure', hospitality: 'Hotels and venues', civic: 'Town halls, courts and public buildings', mural: 'Large-scale murals and street art' };
@@ -440,7 +443,7 @@ function tourGo(i) { if (!T) return; clearTimeout(tTimer); tk = (i + T.stops.len
   if (touring) tTimer = setTimeout(() => map.once('moveend', () => { tTimer = setTimeout(() => { if (touring && T) { if (tk >= T.stops.length) { touring = false; tourUI(); $('tbStep').textContent = 'Tour complete · ' + T.stops.length + ' stops'; } else tourGo(tk); } }, 5200); }), 400); }
 function startTour(id) { const t = TOURS.find(x => x.id === id); if (!t || !P.length) return; const stops = tourStops(t); if (!stops.length) return;
   $('tMenu').hidden = true; $('list').hidden = true; hideHint(); spinning = false;
-  fType = t.filt.type || null; fAU = !!t.filt.au; syncChips(); refilter();
+  fType = t.filt.type || null; fReg = t.filt.keep ? fReg : (t.filt.reg || null); syncChips(); refilter();
   T = { ...t, stops }; touring = true; hist.length = 0; tourGo(0); try { history.replaceState(null, '', '#tour=' + id); } catch (e) {} }
 function endTour() { clearTimeout(tTimer); touring = false; T = null; tourUI(); }
 function buildTourMenu() { const row = t => { const st = tourStops(t); if (st.length < 3) return ''; const pic = st.find(goodPic) || st[0]; const bg = goodPic(pic) ? (/^https?:/.test(pic.img) ? pic.img : 'img/' + pic.img) : pic === HQ ? '' : AER(pic, 128, 92);
@@ -457,12 +460,12 @@ $('tbX').onclick = endTour;
 setInterval(() => { if (T && !touring && $('tbPlay').textContent !== 'Play') tourUI(); }, 500);
 
 // filters + search
-function syncChips() { document.querySelectorAll('#bar .chip[data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === fType ? 'true' : 'false')); $('fAU').setAttribute('aria-pressed', fAU ? 'true' : 'false'); }
+function syncChips() { document.querySelectorAll('#bar .chip[data-t]').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === fType ? 'true' : 'false')); document.querySelectorAll('#bar .chip[data-r]').forEach(b => b.setAttribute('aria-pressed', b.dataset.r === fReg ? 'true' : 'false')); }
 function refilter() { const q = fQ.toLowerCase();
-  vis = P.filter(p => (!fType || p.type === fType) && (!fAU || p.country === 'Australia') && (!q || (p.name + ' ' + p.place + ' ' + p.country + ' ' + (p.region || '') + ' ' + p.products + ' ' + p.architect + ' ' + (p.year || '')).toLowerCase().includes(q)));
+  vis = P.filter(p => (!fType || p.type === fType) && (!fReg || REG[fReg].t(p)) && (!q || (p.name + ' ' + p.place + ' ' + p.country + ' ' + (p.region || '') + ' ' + p.products + ' ' + p.architect + ' ' + (p.year || '')).toLowerCase().includes(q)));
   const nc = new Set(vis.map(p => p.country)).size; $('count').textContent = vis.length + ' projects · ' + nc + (nc === 1 ? ' country' : ' countries');
   const s = map.getSource && map.getSource('pts'); if (s) s.setData(geo()); renderList(); }
-$('fAU').onclick = () => { fAU = !fAU; syncChips(); refilter(); spinning = false; hideHint(); if (fAU) map.flyTo({ center: [134, -28], zoom: innerWidth < 700 ? 2.6 : 3.4, pitch: 0, bearing: 0, speed: 1.1 }); };
+document.querySelectorAll('#bar .chip[data-r]').forEach(b => b.onclick = () => { const k = b.dataset.r; if (T) endTour(); fReg = fReg === k ? null : k; syncChips(); refilter(); spinning = false; hideHint(); if (fReg) { const g = REG[fReg]; map.flyTo({ center: g.c, zoom: innerWidth < 700 ? g.z[0] : g.z[1], pitch: 0, bearing: 0, speed: 1.1 }); } });
 $('q').addEventListener('input', e => { fQ = e.target.value.trim(); refilter(); if (fQ && vis.length === 1) open(vis[0], true); });
 $('q').addEventListener('keydown', e => { if (e.key === 'Enter' && vis.length) open(vis[0], true); });
 
