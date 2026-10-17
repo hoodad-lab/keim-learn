@@ -208,7 +208,7 @@ const IMG = f => /^https?:/.test(f) ? f : 'map/img/' + f;
 const AER = (p, w, h) => { const d = 0.0011, e = d * w / h / Math.cos(p.lat * Math.PI / 180); return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=' + [p.lon - e, p.lat - d, p.lon + e, p.lat + d].map(v => v.toFixed(6)).join(',') + '&bboxSR=4326&imageSR=3857&size=' + w + ',' + h + '&format=jpg&f=image'; };
 const SV = p => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([p.name, p.sub && p.sub.length < 60 ? p.sub : '', p.place, p.country].filter((x,i,a)=>x && a.indexOf(x)===i).join(', '));
 const canAer = p => !p.img && p.exact && p.type !== 'Residential';
-const canSV = p => p.type !== 'Residential' && !p.priv;
+const canSV = p => !p.priv && (p.type !== 'Residential' || !/house|homes?\b|villa|atrium|silent rock/i.test(p.name));
 
 const FEATURED = ['Sydney Opera House', 'Parramatta Town Hall', 'Royal Hobart Hospital', 'State Library of Queensland', 'Nyaal Banyul Geelong Convention and Event Centre', 'WestConnex M8 tunnel', 'Shell House', 'Joan Kirner Women\'s & Children\'s Hospital', 'Castle Residences & Porter House', 'Wellington Dam mural "Reflections"', '25hours Hotel The Olympia', 'Australian National Maritime Museum'];
 const TYPE_LABEL = { Residential: 'Homes & apartments', Heritage: 'Heritage', Commercial: 'Commercial', Education: 'Education', Culture: 'Culture', Transport: 'Infrastructure', Health: 'Healthcare', Mural: 'Murals & art', Hospitality: 'Hotels', Civic: 'Civic', Community: 'Community' };
