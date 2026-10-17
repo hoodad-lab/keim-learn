@@ -419,6 +419,8 @@ const tourOK = p => goodPic(p) || canAer(p);
 const TOURS = [
   { id: 'highlights', name: 'World highlights', desc: 'The best-photographed KEIM projects around the globe', f: p => goodPic(p) && p.exact, max: 24, filt: {} },
   { id: 'australia', name: 'Australia', desc: 'From the showroom in Sydney across the country', f: p => p.country === 'Australia' && tourOK(p), max: 30, hq: true, filt: { au: true } },
+  { id: 'uk', name: 'UK & Ireland', desc: 'Castles, terraces and landmarks across Britain and Ireland', f: p => (p.country === 'United Kingdom' || p.country === 'Ireland') && tourOK(p) && p.exact, max: 24, filt: {} },
+  { id: 'northamerica', name: 'North America', desc: 'Capitols, lighthouses and landmarks in the USA and Canada', f: p => (p.country === 'United States' || p.country === 'Canada') && tourOK(p), max: 24, filt: {} },
   { id: 'europe', name: 'Europe', desc: 'Where KEIM began — Germany and beyond', f: p => p.lon > -12 && p.lon < 40 && p.lat > 34 && tourOK(p), max: 24, filt: {} }
 ];
 TYPES.forEach(t => TOURS.push({ id: t.toLowerCase(), name: LABEL[t], desc: '', f: p => p.type === t && (t === 'Residential' ? goodPic(p) : tourOK(p)), max: 24, filt: { type: t } }));
@@ -443,7 +445,7 @@ function startTour(id) { const t = TOURS.find(x => x.id === id); if (!t || !P.le
 function endTour() { clearTimeout(tTimer); touring = false; T = null; tourUI(); }
 function buildTourMenu() { const row = t => { const st = tourStops(t); if (st.length < 3) return ''; const pic = st.find(goodPic) || st[0]; const bg = goodPic(pic) ? (/^https?:/.test(pic.img) ? pic.img : 'img/' + pic.img) : pic === HQ ? '' : AER(pic, 128, 92);
     return `<button class="opt" type="button" data-tour="${t.id}"><span class="th2" style="background-image:url('${esc(bg)}')"></span><span><b>${esc(t.name)}</b><small>${esc(t.desc)}</small></span><span class="n">${st.length}</span></button>`; };
-  $('tmList').innerHTML = '<h4>Places</h4>' + TOURS.slice(0, 3).map(row).join('') + '<h4>By sector</h4>' + TOURS.slice(3).map(row).join(''); }
+  $('tmList').innerHTML = '<h4>Places</h4>' + TOURS.slice(0, 5).map(row).join('') + '<h4>By sector</h4>' + TOURS.slice(5).map(row).join(''); }
 $('tTour').onclick = () => { if ($('tMenu').hidden) buildTourMenu(); $('tMenu').hidden = !$('tMenu').hidden; hideHint(); };
 $('findUs').onclick = () => { if (T) endTour(); $('tMenu').hidden = true; hideHint(); open(HQ, true); };
 $('tmX').onclick = () => { $('tMenu').hidden = true; };
