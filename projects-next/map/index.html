@@ -114,6 +114,7 @@ body:not(.nocard) .under { padding-right: 446px; }
   .card .ph { aspect-ratio: auto !important; height: 44vw; max-height: 210px; }
   .card .grab { display: block; position: absolute; left: 0; top: 0; height: 26px; border: 0; padding: 0; background: none; width: 100%; cursor: pointer; }
   .card .grab::before { content: ""; position: absolute; left: 50%; top: 7px; width: 44px; height: 5px; margin-left: -22px; border-radius: 3px; background: rgba(255,255,255,.95); box-shadow: 0 1px 4px rgba(0,0,0,.45); }
+  .card.full .grab::before { display: none; }
 }
 
 .card [hidden] { display: none !important; }
