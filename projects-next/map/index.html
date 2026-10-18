@@ -318,7 +318,7 @@ html, body { background: #02040a; }
 .sp { position: absolute; left: 0; top: 0; width: 60px; height: 69px; border: 0; padding: 0; background: none; cursor: pointer; transform: translate(-50%, -100%) scale(.25); opacity: 0; transition: transform .38s cubic-bezier(.2,1.35,.4,1), opacity .2s; filter: drop-shadow(0 3px 5px rgba(0,0,0,.5)); -webkit-tap-highlight-color: transparent; }
 .spider.on .sp { transform: translate(-50%, -100%) translate(var(--x), var(--y)) scale(1); opacity: 1; }
 .sp::before, .sp i { content: ""; position: absolute; inset: 0; clip-path: var(--wedge); }
-.sp::before { background: #fff; }
+.sp::before { background: #D62025; }
 .sp i { inset: 2.6px 3px 4px; background: #2a2d30 center / cover no-repeat; }
 .sp.au i { background-color: #D62025; }
 .sp b { position: absolute; left: 50%; top: -22px; transform: translateX(-50%); white-space: nowrap; font: 500 10.5px/1 var(--sans); letter-spacing: .04em; color: #fff; background: rgba(20,22,24,.82); padding: 4px 7px 3px; border-radius: 4px; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
@@ -363,6 +363,19 @@ body.stripon .tools { transform: translateY(160%) !important; opacity: 0 !import
 #halo { box-shadow: 0 0 18px 6px rgba(140,195,255,.7), 0 0 60px 24px rgba(80,150,255,.42), 0 0 140px 60px rgba(40,100,240,.22), 0 0 260px 110px rgba(30,70,200,.1) !important; background: rgba(110,170,255,.45) !important; }
 #rim { position: fixed; left: 50%; top: 50%; width: 10px; height: 10px; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); z-index: 1; transition: opacity .4s;
   background: radial-gradient(circle closest-side, rgba(120,180,255,0) 72%, rgba(120,180,255,.10) 84%, rgba(150,205,255,.32) 94%, rgba(190,225,255,.55) 98.5%, rgba(190,225,255,0) 100%); mix-blend-mode: screen; }
+
+/* phone: search pill sits at the bottom, just above the dock; filters open upwards */
+.qdock { display: none; }
+@media (max-width: 760px) {
+  .qdock { display: flex; flex-direction: column; gap: 8px; position: fixed; left: 12px; right: 12px; z-index: 4; bottom: calc(max(12px, calc(env(safe-area-inset-bottom) + 6px)) + 78px); transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .25s; }
+  body:not(.nocard) .qdock, body.stripon .qdock, body.touring .qdock { transform: translateY(40px); opacity: 0; pointer-events: none; }
+  .qdock > .search { width: 100%; height: 46px; border-radius: 23px; padding: 10px 52px 10px 44px; font-size: 16px; border: 1px solid rgba(255,255,255,.18); background: rgba(16,18,22,.72) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'><circle cx='11' cy='11' r='7'/><path d='m20 20-3.5-3.5'/></svg>") 16px center / 18px no-repeat; color: #fff; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 8px 24px -10px rgba(0,0,0,.6); }
+  .qdock > .search::placeholder { color: rgba(255,255,255,.7); }
+  .qdock .fbtn { top: auto; bottom: 4px; right: 6px; }
+  .qdock .bar { display: none; flex-wrap: wrap; gap: 6px; padding: 10px; border-radius: 16px; background: rgba(16,18,22,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+  .qdock.open .bar { display: flex; animation: fdrop .22s ease-out; }
+  .under { padding: 0; min-height: 0; }
+}
 </style>
 <script>if (window.top === window.self) { var hs = document.createElement("script"); hs.id = "hs-script-loader"; hs.async = true; hs.defer = true; hs.src = "//js.hs-scripts.com/47417993.js"; document.head.appendChild(hs); }</script>
 </head>
@@ -576,6 +589,9 @@ const HQ = { id: 'keim-australia', name: 'KEIM Australia', sub: 'Showroom & offi
 })();
 // project card + fly-to
 function open(p, fly) {
+  // inside the projects page on a phone: let the page show its own full-height sheet, just move the map here
+  if (document.documentElement.classList.contains('embed') && innerWidth <= 760 && window.parent !== window && fly !== 'back') { try { window.parent.postMessage({ keimOpen: p.id }, '*'); } catch (e) {}
+    if ($('strip').classList.contains('on')) { $('strip').classList.remove('on'); document.body.classList.remove('stripon'); } sel = p; repaintPins(); spinning = false; if (fly) map.flyTo({ center: [p.lon, p.lat], zoom: p === HQ ? 16.8 : p.exact ? 16 : 13.5, pitch: 45, speed: 1.1, essential: true }); return; }
   if (typeof hideStrip === 'function' && $('strip').classList.contains('on')) { $('strip').classList.remove('on'); document.body.classList.remove('stripon'); }
   spinning = false; hideHint(); if (sel && sel !== p && fly !== 'back') hist.push(sel); sel = p; repaintPins(); document.body.classList.remove('nocard');
   $('cPh').innerHTML = canAer(p) ? `<img src="${AER(p, 640, 427)}" alt="Aerial view of ${esc(p.name)}"><span class="credit">Aerial view · Imagery © Esri, Maxar</span><span class="tag">Aerial</span>` : (p.img ? `<img src="${/^https?:/.test(p.img) ? esc(p.img) : 'img/' + esc(p.img)}" alt="${p.priv ? 'Private residence — photo withheld' : esc(p.name)}"${p.priv ? ' style="object-position:50% 100%"' : ''}>` : `<div class="noimg"><svg viewBox="0 0 40 46"><path d="${WEDGE}" fill="#D62025"/></svg>Photo to come</div>`) + (p.ipage ? `<span class="credit">Photo: ${esc(p.iby || '')} · ${esc(p.ilic || '')} · Wikimedia Commons</span>` : p.credit ? `<span class="credit">Photo: ${esc(p.credit)}</span>` : '') + (p.render ? `<span class="tag">Artist’s impression</span>` : '');
@@ -676,7 +692,7 @@ const sug = document.createElement('div'); sug.className = 'sug'; sug.setAttribu
 let sugList = [], sugAct = -1;
 const hl = (t, q) => { const i = t.toLowerCase().indexOf(q); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length)); };
 function sugScore(p, q) { const n = p.name.toLowerCase(); if (n.startsWith(q)) return 0; if (n.split(/[\s\-\/(),]+/).some(w => w.startsWith(q))) return 1; if (n.includes(q)) return 2; if ((p.place + ' ' + p.country + ' ' + (p.region || '')).toLowerCase().includes(q)) return 3; return 4; }
-function sugPlace() { const r = $('q').getBoundingClientRect(), w = Math.min(Math.max(r.width, 300), innerWidth - 16); sug.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px'; sug.style.top = (r.bottom + 4) + 'px'; sug.style.width = w + 'px'; }
+function sugPlace() { const r = $('q').getBoundingClientRect(), w = Math.min(Math.max(r.width, 300), innerWidth - 16); sug.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px'; if (r.top > innerHeight / 2) { sug.style.top = 'auto'; sug.style.bottom = (innerHeight - r.top + 6) + 'px'; } else { sug.style.bottom = 'auto'; sug.style.top = (r.bottom + 4) + 'px'; } sug.style.width = w + 'px'; }
 function sugShow() { const q = fQ.toLowerCase(); if (!q) { sug.classList.remove('on'); sugList = []; return; }
   sugList = vis.map(p => [sugScore(p, q), p]).sort((a, b) => a[0] - b[0] || a[1].name.localeCompare(b[1].name)).slice(0, 8).map(x => x[1]); sugAct = -1;
   sug.innerHTML = sugList.length ? sugList.map((p, i) => `<button type="button" role="option" data-i="${i}"><b>${hl(p.name, q)}</b><span>${esc([p.place, p.country].filter(Boolean).join(', '))}${p.type ? ' · ' + esc(p.type) : ''}</span></button>`).join('') + (vis.length > 8 ? `<div class="none">${vis.length - 8} more · keep typing to narrow</div>` : '') : '<div class="none">No project matches that</div>';
@@ -828,12 +844,12 @@ map.on('load', () => { try {
 // phone layout: search on its own row, KEIM button in the dock, swipe the project sheet down to close
 (function () {
   if (innerWidth > 760) return;
-  const q = $('q'), bar = $('bar'); bar.parentNode.insertBefore(q, bar);
+  const q = $('q'), bar = $('bar'); const qd = document.createElement('div'); qd.className = 'qdock'; document.body.appendChild(qd); qd.appendChild(bar); qd.appendChild(q);
   const hq = document.createElement('button'); hq.type = 'button'; hq.id = 'tHq'; hq.className = 'dockhq'; hq.textContent = 'KEIM'; hq.setAttribute('aria-label', 'KEIM Australia showroom');
   hq.onclick = () => $('findUs').click(); document.querySelector('.tools').prepend(hq);
   const fb = document.createElement('button'); fb.type = 'button'; fb.className = 'fbtn'; fb.setAttribute('aria-label', 'Filters');
   fb.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><b></b>';
-  q.parentNode.appendChild(fb); fb.onclick = () => q.parentNode.classList.toggle('open');
+  qd.appendChild(fb); fb.onclick = () => qd.classList.toggle('open');
   const badge = () => { const n = (fType ? 1 : 0) + (fReg ? 1 : 0); fb.classList.toggle('on', n > 0); fb.querySelector('b').textContent = n; };
   bar.addEventListener('click', () => setTimeout(badge, 0)); badge();
 
