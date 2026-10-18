@@ -324,9 +324,10 @@ html, body { background: #02040a; }
 .sp b { position: absolute; left: 50%; top: -22px; transform: translateX(-50%); white-space: nowrap; font: 500 10.5px/1 var(--sans); letter-spacing: .04em; color: #fff; background: rgba(20,22,24,.82); padding: 4px 7px 3px; border-radius: 4px; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
 .spider.on .sp b, .ppin:hover b { opacity: 1; }
 .ppin { width: 0; height: 0; }
-.ppin .sp { transform: translate(-50%, -100%) scale(1); opacity: 1; transition: transform .2s; }
-.ppin .sp:active { transform: translate(-50%, -100%) scale(.92); }
-.ppin.on .sp { transform: translate(-50%, -100%) scale(1.25); }
+.ppin .sp { transform: translate(-50%, -100%) scale(calc(var(--ps, 1) * .6)); opacity: 0; transition: transform .35s cubic-bezier(.2,1.2,.4,1), opacity .3s; }
+.ppin.in .sp { transform: translate(-50%, -100%) scale(var(--ps, 1)); opacity: 1; }
+.ppin.in .sp:active { transform: translate(-50%, -100%) scale(calc(var(--ps, 1) * .92)); }
+.ppin.in.on .sp { transform: translate(-50%, -100%) scale(calc(var(--ps, 1) * 1.25)); }
 
 /* phone: slim photo strip of nearby projects, swipe to move between them */
 .strip { position: fixed; left: 0; right: 0; bottom: max(14px, calc(env(safe-area-inset-bottom) + 8px)); z-index: 6; transform: translateY(140%); transition: transform .38s cubic-bezier(.2,.9,.25,1); pointer-events: none; }
@@ -500,7 +501,7 @@ map.on('load', async () => {
   for (const id of ['clu', 'pins']) { const L = map.getLayer(id), def = { id: id + '2', type: 'symbol', source: 'pts2', filter: map.getFilter(id), layout: {} };
     for (const k of ['icon-allow-overlap', 'icon-ignore-placement', 'icon-pitch-alignment', 'icon-rotation-alignment', 'icon-anchor', 'icon-size', 'icon-image', 'symbol-sort-key']) { const v = map.getLayoutProperty(id, k); if (v !== undefined) def.layout[k] = v; }
     map.addLayer(def); }
-  map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': 'pin-on', 'icon-anchor': 'bottom', 'icon-size': 1.25 } });
+  map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': 'pin-on', 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.62, 6, 0.72, 12, 0.85, 15, 1, 17, 1.2] } });
   // switch between wide and tight grouping with a buffer, so a steady zoom never flips back and forth
   let fine = null; const level = () => { const z = map.getZoom(), want = fine === null ? z > CZ : fine ? z > CZ - 0.25 : z > CZ + 0.25; if (want === fine) return; fine = want;
     map.setLayoutProperty('clu', 'visibility', fine ? 'none' : 'visible'); map.setLayoutProperty('pins', 'visibility', fine ? 'none' : 'visible');
@@ -784,20 +785,24 @@ function spiderfy(center, items) { unspider(); const el = document.createElement
 map.on('zoomstart', unspider); map.on('dragstart', unspider);
 // street level: show the photo in the wedge itself
 const PP = new Map(); let ppOn = false; const PPZ = 9;
+const psz = () => { const z = map.getZoom(); document.documentElement.style.setProperty('--ps', Math.max(0.5, Math.min(1, 0.5 + (z - PPZ) * 0.1)).toFixed(3)); }; map.on('zoom', psz); psz();
+const ppDrop = m => { const el = m.getElement(); el.classList.remove('in'); setTimeout(() => m.remove(), 320); };
 // photo wedges go the moment you zoom back out (not only when the move ends), and the globe always comes back upright and centred
-map.on('zoom', () => { if (ppOn && map.getZoom() < PPZ - 0.3) { PP.forEach(m => m.remove()); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; } });
-map.on('zoomend', () => { if (map.getZoom() >= 4.5 || map.isMoving()) return; const pd = map.getPadding(); if (map.getPitch() > 0.5 || pd.top || pd.bottom || pd.left || pd.right) map.easeTo({ pitch: 0, padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 700 }); });
+map.on('zoom', () => { if (ppOn && map.getZoom() < PPZ - 0.3) { PP.forEach(ppDrop); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; } });
+map.on('moveend', () => { if (map.getZoom() >= 4.5) return; const pd = map.getPadding(); if (map.getPitch() > 0.5 || pd.top || pd.bottom || pd.left || pd.right) map.easeTo({ pitch: 0, padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 700 }); });
 function photoPins() { const z = map.getZoom(); const want = z >= PPZ && map.getLayer('pins2');
-  if (!want) { if (ppOn) { PP.forEach(m => m.remove()); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; } return; }
+  if (!want) { if (ppOn) { PP.forEach(ppDrop); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; } return; }
   const fs = map.queryRenderedFeatures({ layers: ['pins2'] }).slice(0, 45), keep = new Set();
   fs.forEach(f => { const p = P[f.properties.i]; if (!p || !THUMB(p)) return; keep.add(p.id); if (PP.has(p.id)) return;
     const el = document.createElement('div'); el.className = 'ppin'; const b = photoWedge(p); b.onclick = ev => { ev.stopPropagation(); choose(p); }; el.appendChild(b);
-    PP.set(p.id, new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([p.lon, p.lat]).addTo(map)); });
-  PP.forEach((m, id) => { if (!keep.has(id)) { m.remove(); PP.delete(id); } });
+    PP.set(p.id, new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([p.lon, p.lat]).addTo(map)); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('in'))); });
+  PP.forEach((m, id) => { if (!keep.has(id)) { ppDrop(m); PP.delete(id); } });
   PP.forEach((m, id) => m.getElement().classList.toggle('on', !!sel && sel.id === id));
   const ids = []; PP.forEach((m, id) => { const k = P.findIndex(x => x.id === id); if (k >= 0) ids.push(k); });
   map.setPaintProperty('pins2', 'icon-opacity', ['case', ['in', ['get', 'i'], ['literal', ids]], 0, 1]); ppOn = true; }
 map.on('moveend', photoPins); map.on('idle', photoPins);
+let ppT = 0; map.on('zoom', () => { const t = performance.now(); if (t - ppT > 260 && map.getZoom() >= PPZ) { ppT = t; photoPins(); } });
+map.once('idle', () => { try { map.setPaintProperty('pins2', 'icon-opacity-transition', { duration: 300, delay: 0 }); } catch (e) {} });
 // a tap on the map picks a project: the bottom strip on phones, the full card on bigger screens
 function choose(p) { if (innerWidth <= 760 && typeof showStrip === 'function') showStrip(p); else open(p, true); }
 
