@@ -387,17 +387,20 @@ const AER = (p, w, h) => { const d = 0.0011, e = d * w / h / Math.cos(p.lat * Ma
 const SV = p => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([p.name, p.sub && p.sub.length < 60 ? p.sub : '', p.place, p.country].filter((x,i,a)=>x && a.indexOf(x)===i).join(', '));
 const canAer = p => !p.img && p.exact && p.type !== 'Residential';
 const canSV = p => !p.priv && (p.type !== 'Residential' || !/house|homes?\b|villa|atrium|silent rock/i.test(p.name));
-const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" height="96" viewBox="0 0 40 50.5">${on ? `<path d="${WEDGE}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="7" stroke-linejoin="round"/>` : ''}<path d="${WEDGE}" fill="${au || on ? '#D62025' : '#36393C'}" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/></svg>`;
+const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" height="96" viewBox="0 0 40 50.5">${on ? `<path d="${WEDGE}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="7" stroke-linejoin="round"/>` : ''}<path d="${WEDGE}" transform="translate(0 1.2)" fill="rgba(0,0,0,.35)"/><path d="${WEDGE}" fill="${au || on ? '#D62025' : '#2a2d30'}" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
 function svgImg(svg) { return new Promise((res, rej) => { const im = new Image(76, 96); im.onload = () => res(im); im.onerror = rej; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }); }
 // cluster bubbles are drawn on demand, one image per count
 map.on('styleimagemissing', e => {
   const m = /^clu-(au|w)-(\d+)$/.exec(e.id); if (!m) return;
-  const n = m[2], big = +n > 20, r = big ? 24 : 19, pad = 4, w = Math.max(2 * r, 22 + n.length * 18), W = (w + 2 * pad) * 2, H = (2 * r + 2 * pad) * 2;
-  const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.scale(2, 2);
-  const cw = w, ch = 2 * r; x.beginPath(); x.roundRect(pad, pad, cw, ch, 4); x.fillStyle = m[1] === 'au' ? '#D62025' : '#36393C'; x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = 6; x.shadowOffsetY = 2; x.fill();
-  x.shadowColor = 'transparent'; x.lineWidth = 3; x.strokeStyle = '#fff'; x.stroke();
-  x.fillStyle = '#fff'; x.font = `500 ${big ? 16 : 14}px Jost, Futura, system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(n, pad + cw / 2, pad + r + 1);
-  map.addImage(e.id, { width: W, height: H, data: x.getImageData(0, 0, W, H).data }, { pixelRatio: 2 });
+  // round glowing badge, a little bigger for bigger groups
+  const n = +m[2], au = m[1] === 'au', r = Math.min(26, 11 + Math.log2(n) * 2.6), glow = 7, S = 2, W = Math.ceil((r + glow) * 2 * S), c = document.createElement('canvas'); c.width = c.height = W;
+  const x = c.getContext('2d'); x.scale(S, S); const cx = W / S / 2;
+  const g = x.createRadialGradient(cx, cx, r * .6, cx, cx, r + glow); g.addColorStop(0, au ? 'rgba(214,32,37,.55)' : 'rgba(255,255,255,.28)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  x.fillStyle = g; x.beginPath(); x.arc(cx, cx, r + glow, 0, 7); x.fill();
+  x.beginPath(); x.arc(cx, cx, r, 0, 7); x.fillStyle = au ? 'rgba(214,32,37,.95)' : 'rgba(28,31,34,.88)'; x.fill();
+  x.lineWidth = 1.5; x.strokeStyle = 'rgba(255,255,255,.85)'; x.stroke();
+  x.fillStyle = '#fff'; x.font = `600 ${r > 18 ? 14 : 12}px Jost, Futura, system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), cx, cx + 1);
+  map.addImage(e.id, { width: W, height: W, data: x.getImageData(0, 0, W, W).data }, { pixelRatio: S });
 });
 function geo() { return { type: 'FeatureCollection', features: vis.map(p => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
 function selGeo() { return { type: 'FeatureCollection', features: sel && sel.id !== 'keim-australia' ? [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [sel.lon, sel.lat] } }] : [] }; }
@@ -406,13 +409,13 @@ map.on('load', async () => {
   const [pw, pa, po] = await Promise.all([svgImg(PIN(0, 0)), svgImg(PIN(1, 0)), svgImg(PIN(0, 1))]);
   map.addImage('pin-w', pw, { pixelRatio: 2 }); map.addImage('pin-au', pa, { pixelRatio: 2 }); map.addImage('pin-on', po, { pixelRatio: 2 });
   try { await document.fonts.load('500 14px Jost'); } catch (e) {}
-  map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 30, clusterMaxZoom: 12, clusterProperties: { au: ['+', ['get', 'au']] } });
+  map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 48, clusterMaxZoom: 12, clusterProperties: { au: ['+', ['get', 'au']] } });
   map.addSource('sel', { type: 'geojson', data: selGeo() });
   const common = { 'icon-allow-overlap': true, 'icon-ignore-placement': true, 'icon-pitch-alignment': 'viewport', 'icon-rotation-alignment': 'viewport' };
   map.addLayer({ id: 'clu', type: 'symbol', source: 'pts', filter: ['has', 'point_count'],
     layout: { ...common, 'icon-image': ['concat', 'clu-', ['case', ['==', ['get', 'au'], ['get', 'point_count']], 'au', 'w'], '-', ['to-string', ['get', 'point_count']]] } });
   map.addLayer({ id: 'pins', type: 'symbol', source: 'pts', filter: ['!', ['has', 'point_count']],
-    layout: { ...common, 'icon-image': ['case', ['==', ['get', 'au'], 1], 'pin-au', 'pin-w'], 'icon-anchor': 'bottom', 'symbol-sort-key': ['-', 0, ['get', 'i']] } });
+    layout: { ...common, 'icon-image': ['case', ['==', ['get', 'au'], 1], 'pin-au', 'pin-w'], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.55, 6, 0.7, 12, 0.9, 15, 1], 'symbol-sort-key': ['-', 0, ['get', 'i']] } });
   map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': 'pin-on', 'icon-anchor': 'bottom', 'icon-size': 1.25 } });
   layersReady = true;
   map.on('click', 'clu', e => { const f = e.features[0]; spinning = false; hideHint();
