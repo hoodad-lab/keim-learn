@@ -290,6 +290,24 @@ html, body { background: #02040a; }
 .chip.au[aria-pressed="true"] { background: var(--red2); color: #fff; border-color: var(--red2); }
 
 #halo { position: fixed; left: 50%; top: 50%; width: 10px; height: 10px; border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); box-shadow: 0 0 22px 6px rgba(120,180,255,.55), 0 0 70px 26px rgba(70,130,255,.28), 0 0 160px 60px rgba(40,90,220,.14); background: rgba(90,150,255,.35); transition: opacity .4s; }
+
+/* cleaner globe: light top shade only; phone shows a single search pill, filters tucked behind a button */
+.under, html[data-theme="dark"] .under { background: linear-gradient(rgba(2,4,10,.55), rgba(2,4,10,0)); }
+.fbtn { display: none; }
+@media (max-width: 760px) {
+  .under { padding: 34px 12px 14px; position: relative; }
+  .brand { display: none; }
+  .under > .search { height: 46px; border-radius: 23px; padding: 10px 52px 10px 44px; border: 1px solid rgba(255,255,255,.18); background: rgba(16,18,22,.62) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'><circle cx='11' cy='11' r='7'/><path d='m20 20-3.5-3.5'/></svg>") 16px center / 18px no-repeat; color: #fff; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 8px 24px -10px rgba(0,0,0,.6); }
+  .under > .search::placeholder { color: rgba(255,255,255,.7); }
+  .fbtn { display: grid; place-items: center; position: absolute; right: 18px; top: 38px; width: 38px; height: 38px; border-radius: 50%; border: 0; background: transparent; color: #fff; cursor: pointer; }
+  .fbtn svg { width: 20px; height: 20px; }
+  .fbtn b { position: absolute; top: 4px; right: 3px; min-width: 15px; height: 15px; border-radius: 8px; background: var(--red); font: 600 9px/15px var(--sans); color: #fff; display: none; }
+  .fbtn.on b { display: block; }
+  .bar { display: none; }
+  .under.open .bar { display: flex; animation: fdrop .22s ease-out; }
+  @keyframes fdrop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  .maplibregl-ctrl-top-right { display: none !important; }
+}
 </style>
 </head>
 <body class="nocard">
@@ -427,6 +445,7 @@ map.on('load', async () => {
     for (const l of st.layers) {
       const L = { ...l, id: 'v-' + l.id }; if (l.source) L.source = 'v-' + l.source;
       L.layout = { ...(l.layout || {}), visibility: 'none' };
+      if (l.type === 'symbol' && L.layout['text-field'] && /^(label_|water_name|waterway_line|airport)/.test(l.id)) L.layout['text-field'] = ['coalesce', ['get', 'name:en'], ['get', 'name_en'], ['get', 'name']];
       if (l.type === 'symbol') { VEC.lab.push(L.id); const p = l.paint || {}; VEC.orig[L.id] = { c: p['text-color'] || '#333', h: p['text-halo-color'] || 'rgba(255,255,255,.8)', w: p['text-halo-width'] ?? 1 }; }
       else VEC.base.push(L.id);
       if (l.id === 'building-3d') { L.paint = { ...L.paint, 'fill-extrusion-opacity': 0.9, 'fill-extrusion-color': ['interpolate', ['linear'], ['coalesce', ['get', 'render_height'], 0], 0, 'hsl(35,10%,86%)', 60, 'hsl(30,8%,78%)', 200, 'hsl(25,6%,70%)'] }; }
@@ -653,6 +672,12 @@ fetch('projects.json?v=1792233310').then(r => r.json()).then(list => {
   const q = $('q'), bar = $('bar'); bar.parentNode.insertBefore(q, bar);
   const hq = document.createElement('button'); hq.type = 'button'; hq.id = 'tHq'; hq.className = 'dockhq'; hq.textContent = 'KEIM'; hq.setAttribute('aria-label', 'KEIM Australia showroom');
   hq.onclick = () => $('findUs').click(); document.querySelector('.tools').prepend(hq);
+  const fb = document.createElement('button'); fb.type = 'button'; fb.className = 'fbtn'; fb.setAttribute('aria-label', 'Filters');
+  fb.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><b></b>';
+  q.parentNode.appendChild(fb); fb.onclick = () => q.parentNode.classList.toggle('open');
+  const badge = () => { const n = (fType ? 1 : 0) + (fReg ? 1 : 0); fb.classList.toggle('on', n > 0); fb.querySelector('b').textContent = n; };
+  bar.addEventListener('click', () => setTimeout(badge, 0)); badge();
+
   const card = $('card'); let sy = null, dy = 0, drag = false, fromTop = false;
   card.addEventListener('touchstart', e => { fromTop = !!e.target.closest('.ph, .stick'); if (!fromTop && card.scrollTop > 2) { sy = null; return; } sy = e.touches[0].clientY; dy = 0; drag = false; }, { passive: true });
   card.addEventListener('touchmove', e => { if (sy === null) return; dy = e.touches[0].clientY - sy;
