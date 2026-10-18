@@ -230,7 +230,7 @@ html .cta, html[data-theme="dark"] .cta { background: transparent; padding: 0; m
 <body>
 <div class="panel"><div class="nav"><a href="https://www.keim.com.au" target="_top">keim.com.au</a><a href="#browse">Browse projects</a></div><a class="logo" href="https://www.keim.com.au" target="_top" aria-label="KEIM Australia"><img src="keim-logo-neg.png" alt="KEIM" width="100" height="102"></a><button class="theme" id="theme" type="button" aria-label="Switch dark or light mode"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>
 <header class="hero">
-  <iframe src="map/?embed=1&v=1792321801" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen"></iframe>
+  <iframe src="map/?embed=1&v=1792349613" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen"></iframe>
   <div class="shade"></div>
   <a class="fullmap" href="map/" target="_blank" rel="noopener">Full map ↗</a>
   <div class="over"><div class="wrap">
@@ -242,6 +242,11 @@ html .cta, html[data-theme="dark"] .cta { background: transparent; padding: 0; m
 <section><div class="wrap">
   <div class="shead"><div><div class="kick">Australian landmarks</div><h2>Icons in mineral paint</h2><p>A few of the buildings Australians walk past every day.</p></div></div>
   <div class="feat" id="feat"></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="shead"><div><div class="kick">Global landmarks</div><h2>Extraordinary projects worldwide</h2><p>From Berlin’s Humboldt Forum to the US Capitol and Singapore’s Marina Bay Sands: KEIM on some of the world’s best-known buildings.</p></div></div>
+  <div class="feat" id="feat2"></div>
 </div></section>
 
 <section><div class="wrap">
@@ -286,6 +291,7 @@ const canAer = p => !p.img && p.exact && p.type !== 'Residential';
 const canSV = p => !p.priv && (p.type !== 'Residential' || !/house|homes?\b|villa|atrium|silent rock/i.test(p.name));
 
 const FEATURED = ['Sydney Opera House', 'Parramatta Town Hall', 'Royal Hobart Hospital', 'State Library of Queensland', 'Nyaal Banyul Geelong Convention and Event Centre', 'WestConnex M8 tunnel', 'Shell House', 'Joan Kirner Women\'s & Children\'s Hospital', 'Castle Residences & Porter House', 'Wellington Dam mural "Reflections"', '25hours Hotel The Olympia', 'Australian National Maritime Museum'];
+const GLOBAL = ['Humboldt Forum', 'United States Capitol (West Front)', 'Marina Bay Sands', 'Galleria Vittorio Emanuele II', 'Battersea Power Station', 'Zeitz MOCAA', 'Raffles Hotel', 'Kunsthaus Bregenz', 'Czech National Museum Prague', 'Kraków Cloth Hall', 'The Palace Madrid Hotel', 'London Aquatics Centre', 'Yas Marina Circuit', 'Stadtcasino Basel'];
 const TYPE_LABEL = { Residential: 'Homes & apartments', Heritage: 'Heritage', Commercial: 'Commercial', Education: 'Education', Culture: 'Culture', Transport: 'Infrastructure', Health: 'Healthcare', Mural: 'Murals & art', Hospitality: 'Hotels', Civic: 'Civic', Community: 'Community' };
 function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
   if (la < -39.2) return 'TAS'; if (lo > 148.7 && lo < 149.45 && la < -35.1 && la > -35.95) return 'ACT';
@@ -293,14 +299,16 @@ function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
   if (la > -29) return 'QLD'; if (la < -35.9 - (lo - 141) * 0.17) return 'VIC'; return 'NSW'; }
 function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(s => s && !/^products?$/i.test(s)).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
 let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
-fetch('map/projects.json?v=1792321691').then(r => r.json()).then(list => {
+fetch('map/projects.json?v=1792349613').then(r => r.json()).then(list => {
   ALL = list.map(p => ({ ...p, au: p.country === 'Australia', st: p.country === 'Australia' ? auState(p) : '', pr: prods(p) }));
   $('sTot').textContent = ALL.length; $('sAu').textContent = ALL.filter(p => p.au).length; $('sCo').textContent = new Set(ALL.map(p => p.country)).size;
   // featured
-  FEATURED.map(n => ALL.find(p => p.name === n)).filter(p => p && p.img).forEach(p => { const b = document.createElement('button'); b.className = 'fcard'; b.type = 'button';
-    b.innerHTML = '<img loading="lazy" alt=""><div class="cap"><small></small><b></b><span></span></div>'; b.querySelector('img').src = IMG(p.img); b.querySelector('img').alt = p.name;
-    b.querySelector('small').textContent = (TYPE_LABEL[p.type] || p.type) + ' · ' + (p.place || p.country) + (p.year ? ' · ' + p.year : ''); b.querySelector('b').textContent = p.name; b.querySelector('span').textContent = p.pr.slice(0, 2).join(' + ');
-    b.addEventListener('click', () => openP(p)); $('feat').appendChild(b); });
+  const feature = (names, box, intl) => names.map(n => ALL.find(p => p.name === n)).filter(p => p && p.img && !p.priv).forEach(p => { const b = document.createElement('button'); b.className = 'fcard'; b.type = 'button';
+    b.innerHTML = '<img loading="lazy" alt=""><div class="cap"><small></small><b></b><span></span></div>'; b.querySelector('img').src = IMG(/^https?:/.test(p.img) ? p.img.replace(/\/\d{3,4}px-/, '/960px-') : p.img); b.querySelector('img').alt = p.name;
+    b.querySelector('small').textContent = (TYPE_LABEL[p.type] || p.type) + ' · ' + (intl ? [p.place, p.country].filter((v, i, a) => v && a.indexOf(v) === i).join(', ') : (p.place || p.country)) + (p.year && !/^by |None/.test(p.year) ? ' · ' + p.year : ''); b.querySelector('b').textContent = p.name; b.querySelector('span').textContent = (p.pr.filter(x => !/stripper|cleaner|remover|algicid|fixativ|primer|grund|silan/i.test(x)).length ? p.pr.filter(x => !/stripper|cleaner|remover|algicid|fixativ|primer|grund|silan/i.test(x)) : p.pr).slice(0, 2).join(' + ');
+    b.addEventListener('click', () => openP(p)); box.appendChild(b); });
+  feature(FEATURED, $('feat'), false);
+  feature(GLOBAL, $('feat2'), true);
   // sectors
   const tc = {}; ALL.forEach(p => tc[p.type] = (tc[p.type] || 0) + 1);
   Object.entries(tc).sort((a, b) => b[1] - a[1]).forEach(([t, n]) => { const b = document.createElement('button'); b.className = 'sec'; b.type = 'button'; b.innerHTML = '<b></b><span></span>'; b.querySelector('b').textContent = n; b.querySelector('span').textContent = TYPE_LABEL[t] || t;
