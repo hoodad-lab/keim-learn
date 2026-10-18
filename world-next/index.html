@@ -295,7 +295,7 @@ const hist = [];
 // satellite imagery + place names, on a 3D globe
 const map = new maplibregl.Map({
   container: 'map', center: innerWidth < 700 ? [100, 0] : [60, 15], zoom: innerWidth < 700 ? 0.9 : 1.9, maxPitch: 75, attributionControl: { compact: true },
-  style: { version: 8, projection: { type: 'globe' },
+  style: { version: 8, projection: { type: 'globe' }, glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf', sprite: 'https://tiles.openfreemap.org/sprites/ofm_f384/ofm',
     sources: {
       sat: { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], attribution: 'Imagery © Esri, Maxar, Earthstar Geographics, and the GIS User Community' },
       names: { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'] } },
@@ -354,13 +354,45 @@ map.on('load', async () => {
 });
 function repaintPins() { const s = layersReady && map.getSource('sel'); if (s) s.setData(selGeo()); }
 
-// satellite or street map
-let street = false;
-map.on('load', () => {
-  map.addSource('street', { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'], attribution: 'Map © Esri, HERE, Garmin, OpenStreetMap contributors' });
-  map.addLayer({ id: 'street', type: 'raster', source: 'street', layout: { visibility: 'none' } }, 'names');
+// satellite (with crisp labels + 3D buildings) or a modern street map, both from free OpenStreetMap vector tiles
+// until someone picks a view, show the satellite globe and switch to the 3D street map when zoomed right in
+let street = false, pick = null; try { pick = localStorage.getItem('keim-map'); } catch (e) {} if (pick) street = pick === 'map';
+const VEC = { base: [], lab: [], orig: {} };
+const SATLAB = /^(boundary_|label_|water_name_|waterway_line_label|highway-name-|highway-shield|road_shield|airport)/;
+function applyMode() {
+  if (!VEC.base.length) { if (map.getLayer('street')) { map.setLayoutProperty('street', 'visibility', street ? 'visible' : 'none'); map.setLayoutProperty('names', 'visibility', street ? 'none' : 'visible'); } }
+  else {
+    VEC.base.forEach(id => map.setLayoutProperty(id, 'visibility', street ? 'visible' : 'none'));
+    VEC.lab.forEach(id => { const on = street || SATLAB.test(id.slice(2)); map.setLayoutProperty(id, 'visibility', on ? 'visible' : 'none');
+      const o = VEC.orig[id]; if (!o) return; map.setPaintProperty(id, 'text-color', street ? o.c : '#ffffff'); map.setPaintProperty(id, 'text-halo-color', street ? o.h : 'rgba(0,0,0,.75)'); map.setPaintProperty(id, 'text-halo-width', street ? o.w : 1.4); });
+    map.setLayoutProperty('names', 'visibility', 'none');
+  }
+  $('tMap').textContent = street ? 'SAT' : 'MAP';
+}
+map.on('load', async () => {
+  try {
+    const st = await (await fetch('https://tiles.openfreemap.org/styles/liberty')).json();
+    for (const [k, v] of Object.entries(st.sources)) if (!map.getSource('v-' + k)) map.addSource('v-' + k, v);
+    const before = map.getLayer('clu') ? 'clu' : undefined;
+    for (const l of st.layers) {
+      const L = { ...l, id: 'v-' + l.id }; if (l.source) L.source = 'v-' + l.source;
+      L.layout = { ...(l.layout || {}), visibility: 'none' };
+      if (l.type === 'symbol') { VEC.lab.push(L.id); const p = l.paint || {}; VEC.orig[L.id] = { c: p['text-color'] || '#333', h: p['text-halo-color'] || 'rgba(255,255,255,.8)', w: p['text-halo-width'] ?? 1 }; }
+      else VEC.base.push(L.id);
+      if (l.id === 'building-3d') { L.paint = { ...L.paint, 'fill-extrusion-opacity': 0.9, 'fill-extrusion-color': ['interpolate', ['linear'], ['coalesce', ['get', 'render_height'], 0], 0, 'hsl(35,10%,86%)', 60, 'hsl(30,8%,78%)', 200, 'hsl(25,6%,70%)'] }; }
+      map.addLayer(L, before);
+    }
+    try { map.setLight({ anchor: 'viewport', color: '#ffffff', intensity: 0.35, position: [1.4, 210, 40] }); } catch (e) {}
+    // keep the KEIM footprint and pins on top
+    ['hqglow', 'hqfill', 'hqcase', 'hqline'].forEach(id => { if (map.getLayer(id)) map.moveLayer(id, before); });
+  } catch (e) {
+    map.addSource('street', { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'], attribution: 'Map © Esri, HERE, Garmin, OpenStreetMap contributors' });
+    map.addLayer({ id: 'street', type: 'raster', source: 'street', layout: { visibility: 'none' } }, 'names');
+  }
+  applyMode();
 });
-$('tMap').onclick = () => { street = !street; map.setLayoutProperty('street', 'visibility', street ? 'visible' : 'none'); map.setLayoutProperty('names', 'visibility', street ? 'none' : 'visible'); $('tMap').textContent = street ? 'SAT' : 'MAP'; };
+$('tMap').onclick = () => { street = !street; pick = street ? 'map' : 'sat'; try { localStorage.setItem('keim-map', pick); } catch (e) {} applyMode(); };
+map.on('zoom', () => { if (pick) return; const z = map.getZoom(), want = street ? z > 14.4 : z > 15; if (want !== street) { street = want; applyMode(); } });
 
 
 // KEIM Australia showroom — always on the map
