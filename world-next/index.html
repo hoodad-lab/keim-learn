@@ -517,7 +517,7 @@ map.on('load', async () => {
   map.on('click', 'pins', pinClick); map.on('click', 'pins2', pinClick);
   for (const id of ['clu', 'pins', 'clu2', 'pins2']) { map.on('mouseenter', id, () => map.getCanvas().style.cursor = 'pointer'); map.on('mouseleave', id, () => map.getCanvas().style.cursor = ''); }
 });
-function repaintPins() { const s = layersReady && map.getSource('sel'); if (s) s.setData(selGeo()); }
+function repaintPins() { const s = layersReady && map.getSource('sel'); if (s) s.setData(selGeo()); try { selVis(); } catch (e) {} }
 
 // satellite (with crisp labels + 3D buildings) or a modern street map, both from free OpenStreetMap vector tiles
 // until someone picks a view, show the satellite globe and switch to the 3D street map when zoomed right in
@@ -786,12 +786,13 @@ map.on('zoomstart', unspider); map.on('dragstart', unspider);
 // street level: show the photo in the wedge itself
 const PP = new Map(); let ppOn = false; const PPZ = 9;
 const psz = () => { const z = map.getZoom(); document.documentElement.style.setProperty('--ps', Math.max(0.5, Math.min(1, 0.5 + (z - PPZ) * 0.1)).toFixed(3)); }; map.on('zoom', psz); psz();
+const selVis = () => { try { if (map.getLayer('sel')) map.setPaintProperty('sel', 'icon-opacity', sel && PP.has(sel.id) ? 0 : 1); } catch (e) {} };
 const ppDrop = m => { const el = m.getElement(); el.classList.remove('in'); setTimeout(() => m.remove(), 320); };
 // photo wedges go the moment you zoom back out (not only when the move ends), and the globe always comes back upright and centred
-map.on('zoom', () => { if (ppOn && map.getZoom() < PPZ - 0.3) { PP.forEach(ppDrop); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; } });
+map.on('zoom', () => { if (ppOn && map.getZoom() < PPZ - 0.3) { PP.forEach(ppDrop); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; selVis(); } });
 map.on('moveend', () => { if (map.getZoom() >= 4.5) return; const pd = map.getPadding(); if (map.getPitch() > 0.5 || pd.top || pd.bottom || pd.left || pd.right) map.easeTo({ pitch: 0, padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 700 }); });
 function photoPins() { const z = map.getZoom(); const want = z >= PPZ && map.getLayer('pins2');
-  if (!want) { if (ppOn) { PP.forEach(ppDrop); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; } return; }
+  if (!want) { if (ppOn) { PP.forEach(ppDrop); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; selVis(); } return; }
   const fs = map.queryRenderedFeatures({ layers: ['pins2'] }).slice(0, 45), keep = new Set();
   fs.forEach(f => { const p = P[f.properties.i]; if (!p || !THUMB(p)) return; keep.add(p.id); if (PP.has(p.id)) return;
     const el = document.createElement('div'); el.className = 'ppin'; const b = photoWedge(p); b.onclick = ev => { ev.stopPropagation(); choose(p); }; el.appendChild(b);
@@ -799,7 +800,7 @@ function photoPins() { const z = map.getZoom(); const want = z >= PPZ && map.get
   PP.forEach((m, id) => { if (!keep.has(id)) { ppDrop(m); PP.delete(id); } });
   PP.forEach((m, id) => m.getElement().classList.toggle('on', !!sel && sel.id === id));
   const ids = []; PP.forEach((m, id) => { const k = P.findIndex(x => x.id === id); if (k >= 0) ids.push(k); });
-  map.setPaintProperty('pins2', 'icon-opacity', ['case', ['in', ['get', 'i'], ['literal', ids]], 0, 1]); ppOn = true; }
+  map.setPaintProperty('pins2', 'icon-opacity', ['case', ['in', ['get', 'i'], ['literal', ids]], 0, 1]); ppOn = true; selVis(); }
 map.on('moveend', photoPins); map.on('idle', photoPins);
 let ppT = 0; map.on('zoom', () => { const t = performance.now(); if (t - ppT > 260 && map.getZoom() >= PPZ) { ppT = t; photoPins(); } });
 map.once('idle', () => { try { map.setPaintProperty('pins2', 'icon-opacity-transition', { duration: 300, delay: 0 }); } catch (e) {} });
