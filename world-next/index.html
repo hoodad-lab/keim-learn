@@ -468,6 +468,17 @@ const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" heig
 function svgImg(svg) { return new Promise((res, rej) => { const im = new Image(76, 96); im.onload = () => res(im); im.onerror = rej; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }); }
 // cluster bubbles are drawn on demand, one image per count
 map.on('styleimagemissing', e => {
+  const pm = /^ph-(\d+)(-on)?$/.exec(e.id);
+  if (pm) { const p = P[+pm[1]], on = !!pm[2], k = 3.8, W = 152, H = 192, c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.scale(k, k);
+    const wd = new Path2D(WEDGE), au = p && p.country === 'Australia';
+    const frame = img => { x.clearRect(0, 0, 40, 50.5); if (on) { x.lineWidth = 7; x.lineJoin = 'round'; x.strokeStyle = 'rgba(255,255,255,.55)'; x.stroke(wd); }
+      x.save(); x.translate(0, 1.2); x.fillStyle = 'rgba(0,0,0,.35)'; x.fill(wd); x.restore();
+      x.save(); x.clip(wd); x.fillStyle = au ? '#D62025' : '#2a2d30'; x.fillRect(0, 0, 40, 50.5);
+      if (img) { const sc = Math.max(40 / img.width, 46 / img.height), w = img.width * sc, h = img.height * sc; x.drawImage(img, (40 - w) / 2, (46 - h) / 2, w, h); } x.restore();
+      x.lineWidth = 1.8; x.lineJoin = 'round'; x.strokeStyle = img ? '#D62025' : '#fff'; x.stroke(wd); return { width: W, height: H, data: x.getImageData(0, 0, W, H).data }; };
+    map.addImage(e.id, frame(null), { pixelRatio: 4 });
+    const t = p && THUMB(p); if (t) { const im = new Image(); im.crossOrigin = 'anonymous'; im.onload = () => { try { if (map.hasImage(e.id)) map.updateImage(e.id, frame(im)); } catch (er) {} }; im.src = t; }
+    return; }
   const m = /^clu-(au|w)-(\d+)$/.exec(e.id); if (!m) return;
   // group marker: the KEIM wedge with the count inside, a second wedge peeking behind like a stack
   const n = +m[2], au = m[1] === 'au', k = Math.min(1.5, 0.95 + Math.log10(n) * 0.28), S = 2, pad = 6;
@@ -481,8 +492,8 @@ map.on('styleimagemissing', e => {
   x.fillStyle = '#fff'; x.font = `600 ${Math.round(11 + 2.5 * k)}px Jost, Futura, system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), pad + 20 * k, pad + 15 * k);
   map.addImage(e.id, { width: W, height: H, data: x.getImageData(0, 0, W, H).data }, { pixelRatio: S });
 });
-function geo() { return { type: 'FeatureCollection', features: vis.map(p => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0, ph: typeof THUMB === 'function' && THUMB(p) ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
-function selGeo() { return { type: 'FeatureCollection', features: sel && sel.id !== 'keim-australia' ? [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [sel.lon, sel.lat] } }] : [] }; }
+function geo() { return { type: 'FeatureCollection', features: vis.map(p => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0, ph: THUMB(p) ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
+function selGeo() { return { type: 'FeatureCollection', features: sel && sel.id !== 'keim-australia' ? [{ type: 'Feature', properties: { i: P.indexOf(sel), ph: THUMB(sel) ? 1 : 0 }, geometry: { type: 'Point', coordinates: [sel.lon, sel.lat] } }] : [] }; }
 let layersReady = false;
 map.on('load', async () => {
   const [pw, pa, po] = await Promise.all([svgImg(PIN(0, 0)), svgImg(PIN(1, 0)), svgImg(PIN(0, 1))]);
@@ -497,11 +508,11 @@ map.on('load', async () => {
   map.addLayer({ id: 'clu', type: 'symbol', source: 'pts', filter: ['has', 'point_count'],
     layout: { ...common, 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.8, 8, 0.95], 'icon-image': ['concat', 'clu-', ['case', ['==', ['get', 'au'], ['get', 'point_count']], 'au', 'w'], '-', ['to-string', ['get', 'point_count']]] } });
   map.addLayer({ id: 'pins', type: 'symbol', source: 'pts', filter: ['!', ['has', 'point_count']],
-    layout: { ...common, 'icon-image': ['case', ['==', ['get', 'au'], 1], 'pin-au', 'pin-w'], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.55, 6, 0.62, 12, 0.7, 15, 0.82, 17, 1], 'symbol-sort-key': ['-', 0, ['get', 'i']] } });
+    layout: { ...common, 'icon-image': ['step', ['zoom'], ['case', ['==', ['get', 'au'], 1], 'pin-au', 'pin-w'], 9, ['case', ['==', ['get', 'ph'], 1], ['concat', 'ph-', ['to-string', ['get', 'i']]], ['==', ['get', 'au'], 1], 'pin-au', 'pin-w']], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.55, 6, 0.62, 9, 0.68, 12, 0.85, 15, 1.05, 17, 1.3], 'symbol-sort-key': ['-', 0, ['get', 'i']] } });
   for (const id of ['clu', 'pins']) { const L = map.getLayer(id), def = { id: id + '2', type: 'symbol', source: 'pts2', filter: map.getFilter(id), layout: {} };
     for (const k of ['icon-allow-overlap', 'icon-ignore-placement', 'icon-pitch-alignment', 'icon-rotation-alignment', 'icon-anchor', 'icon-size', 'icon-image', 'symbol-sort-key']) { const v = map.getLayoutProperty(id, k); if (v !== undefined) def.layout[k] = v; }
     map.addLayer(def); }
-  map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': 'pin-on', 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.62, 6, 0.72, 12, 0.85, 15, 1, 17, 1.2] } });
+  map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': ['step', ['zoom'], 'pin-on', 9, ['case', ['==', ['get', 'ph'], 1], ['concat', 'ph-', ['to-string', ['get', 'i']], '-on'], 'pin-on']], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.62, 6, 0.72, 9, 0.8, 12, 1, 15, 1.2, 17, 1.5] } });
   // switch between wide and tight grouping with a buffer, so a steady zoom never flips back and forth
   let fine = null; const level = () => { const z = map.getZoom(), want = fine === null ? z > CZ : fine ? z > CZ - 0.25 : z > CZ + 0.25; if (want === fine) return; fine = want;
     map.setLayoutProperty('clu', 'visibility', fine ? 'none' : 'visible'); map.setLayoutProperty('pins', 'visibility', fine ? 'none' : 'visible');
@@ -723,7 +734,7 @@ $('tList').onclick = () => { $('list').hidden = !$('list').hidden; renderList();
 $('lX').onclick = () => { $('list').hidden = true; };
 $('lSort').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; lSort = b.dataset.s; document.querySelectorAll('#lSort button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderList(); });
 map.on('moveend', renderList);
-fetch('projects.json?v=1792353640').then(r => r.json()).then(list => {
+fetch('projects.json?v=1792354095').then(r => r.json()).then(list => {
   P = list.filter(p => p.lat != null);
   TYPES.filter(t => P.some(p => p.type === t)).forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = LABEL[t]; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { fType = fType === t ? null : t; syncChips(); refilter(); }; $('bar').appendChild(b); });
   refilter();
@@ -793,7 +804,7 @@ map.on('zoom', () => { if (ppOn && map.getZoom() < PPZ - 0.3) { PP.forEach(ppDro
 let lvT = 0; const level0 = () => { clearTimeout(lvT); lvT = setTimeout(() => { if (held || map.isMoving() || map.getZoom() >= 4.5) return; const pd = map.getPadding(); if (map.getPitch() > 0.5 || pd.top || pd.bottom || pd.left || pd.right) map.easeTo({ pitch: 0, padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 600 }); }, 700); };
 map.on('moveend', e => { if (e && e.originalEvent === undefined && !lastUser) return; lastUser = false; level0(); }); let lastUser = false;
 ['touchstart', 'pointerdown', 'wheel'].forEach(t => addEventListener(t, () => { clearTimeout(lvT); lastUser = true; }, { capture: true, passive: true }));
-function photoPins() { const z = map.getZoom(); const want = z >= PPZ && map.getLayer('pins2');
+function photoPins() { return; const z = map.getZoom(); const want = z >= PPZ && map.getLayer('pins2');
   if (!want) { if (ppOn) { PP.forEach(ppDrop); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; selVis(); } return; }
   const fs = map.queryRenderedFeatures({ layers: ['pins2'] }).slice(0, 45), keep = new Set();
   fs.forEach(f => { const p = P[f.properties.i]; if (!p || !THUMB(p)) return; keep.add(p.id); if (PP.has(p.id)) return;
