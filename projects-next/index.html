@@ -231,7 +231,7 @@ html .cta, html[data-theme="dark"] .cta { background: transparent; padding: 0; m
 <body>
 <div class="panel"><div class="nav"><a href="https://www.keim.com.au" target="_top">keim.com.au</a><a href="#browse">Browse projects</a></div><a class="logo" href="https://www.keim.com.au" target="_top" aria-label="KEIM Australia"><img src="keim-logo-neg.png" alt="KEIM" width="100" height="102"></a><button class="theme" id="theme" type="button" aria-label="Switch dark or light mode"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>
 <header class="hero">
-  <iframe src="map/?embed=1&v=1792351566" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen"></iframe>
+  <iframe src="map/?embed=1&v=1792351794" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen"></iframe>
   <div class="shade"></div>
   <a class="fullmap" href="map/" target="_blank" rel="noopener">Full map ↗</a>
   <div class="over"><div class="wrap">
@@ -300,7 +300,7 @@ function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
   if (la > -29) return 'QLD'; if (la < -35.9 - (lo - 141) * 0.17) return 'VIC'; return 'NSW'; }
 function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(s => s && !/^products?$/i.test(s)).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
 let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
-fetch('map/projects.json?v=1792351566').then(r => r.json()).then(list => {
+fetch('map/projects.json?v=1792351794').then(r => r.json()).then(list => {
   ALL = list.map(p => ({ ...p, au: p.country === 'Australia', st: p.country === 'Australia' ? auState(p) : '', pr: prods(p) }));
   $('sTot').textContent = ALL.length; $('sAu').textContent = ALL.filter(p => p.au).length; $('sCo').textContent = new Set(ALL.map(p => p.country)).size;
   // featured
