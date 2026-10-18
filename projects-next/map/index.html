@@ -308,6 +308,9 @@ html, body { background: #02040a; }
   @keyframes fdrop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
   .maplibregl-ctrl-top-right { display: none !important; }
 }
+
+.panel { z-index: 2; }
+.panel .logo { z-index: 3; }
 </style>
 </head>
 <body class="nocard">
@@ -392,15 +395,18 @@ function svgImg(svg) { return new Promise((res, rej) => { const im = new Image(7
 // cluster bubbles are drawn on demand, one image per count
 map.on('styleimagemissing', e => {
   const m = /^clu-(au|w)-(\d+)$/.exec(e.id); if (!m) return;
-  // round glowing badge, a little bigger for bigger groups
-  const n = +m[2], au = m[1] === 'au', r = Math.min(26, 11 + Math.log2(n) * 2.6), glow = 7, S = 2, W = Math.ceil((r + glow) * 2 * S), c = document.createElement('canvas'); c.width = c.height = W;
-  const x = c.getContext('2d'); x.scale(S, S); const cx = W / S / 2;
-  const g = x.createRadialGradient(cx, cx, r * .6, cx, cx, r + glow); g.addColorStop(0, au ? 'rgba(214,32,37,.55)' : 'rgba(255,255,255,.28)'); g.addColorStop(1, 'rgba(0,0,0,0)');
-  x.fillStyle = g; x.beginPath(); x.arc(cx, cx, r + glow, 0, 7); x.fill();
-  x.beginPath(); x.arc(cx, cx, r, 0, 7); x.fillStyle = au ? 'rgba(214,32,37,.95)' : 'rgba(28,31,34,.88)'; x.fill();
-  x.lineWidth = 1.5; x.strokeStyle = 'rgba(255,255,255,.85)'; x.stroke();
-  x.fillStyle = '#fff'; x.font = `600 ${r > 18 ? 14 : 12}px Jost, Futura, system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), cx, cx + 1);
-  map.addImage(e.id, { width: W, height: W, data: x.getImageData(0, 0, W, W).data }, { pixelRatio: S });
+  // group marker: the KEIM wedge with the count inside, a second wedge peeking behind like a stack
+  const n = +m[2], au = m[1] === 'au', k = Math.min(1.5, 0.95 + Math.log10(n) * 0.28), S = 2, pad = 6;
+  const w = 40 * k, h = 46 * k, W = Math.ceil((w + pad * 2 + 4) * S), H = Math.ceil((h + pad * 2 + 4) * S);
+  const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.scale(S, S);
+  const wedge = (ox, oy) => { const p = new Path2D(); const sx = v => ox + v * k, sy = v => oy + v * k;
+    p.moveTo(sx(4.4), sy(7.6)); p.arcTo(sx(20), sy(0.2), sx(35.6), sy(7.6), 40 * k); p.lineTo(sx(35.6), sy(7.6)); p.lineTo(sx(20), sy(44)); p.closePath(); return p; };
+  const back = wedge(pad + 4, pad), front = wedge(pad, pad + 4);
+  x.fillStyle = au ? 'rgba(214,32,37,.45)' : 'rgba(42,45,48,.55)'; x.fill(back); x.lineWidth = 1.2; x.strokeStyle = 'rgba(255,255,255,.55)'; x.stroke(back);
+  x.shadowColor = 'rgba(0,0,0,.45)'; x.shadowBlur = 6; x.shadowOffsetY = 2; x.fillStyle = au ? '#D62025' : '#2a2d30'; x.fill(front);
+  x.shadowColor = 'transparent'; x.lineWidth = 1.8; x.lineJoin = 'round'; x.strokeStyle = '#fff'; x.stroke(front);
+  x.fillStyle = '#fff'; x.font = `600 ${Math.round(11 + 2.5 * k)}px Jost, Futura, system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), pad + 20 * k, pad + 4 + 15.5 * k);
+  map.addImage(e.id, { width: W, height: H, data: x.getImageData(0, 0, W, H).data }, { pixelRatio: S });
 });
 function geo() { return { type: 'FeatureCollection', features: vis.map(p => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
 function selGeo() { return { type: 'FeatureCollection', features: sel && sel.id !== 'keim-australia' ? [{ type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: [sel.lon, sel.lat] } }] : [] }; }
@@ -413,7 +419,7 @@ map.on('load', async () => {
   map.addSource('sel', { type: 'geojson', data: selGeo() });
   const common = { 'icon-allow-overlap': true, 'icon-ignore-placement': true, 'icon-pitch-alignment': 'viewport', 'icon-rotation-alignment': 'viewport' };
   map.addLayer({ id: 'clu', type: 'symbol', source: 'pts', filter: ['has', 'point_count'],
-    layout: { ...common, 'icon-image': ['concat', 'clu-', ['case', ['==', ['get', 'au'], ['get', 'point_count']], 'au', 'w'], '-', ['to-string', ['get', 'point_count']]] } });
+    layout: { ...common, 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.8, 8, 0.95], 'icon-image': ['concat', 'clu-', ['case', ['==', ['get', 'au'], ['get', 'point_count']], 'au', 'w'], '-', ['to-string', ['get', 'point_count']]] } });
   map.addLayer({ id: 'pins', type: 'symbol', source: 'pts', filter: ['!', ['has', 'point_count']],
     layout: { ...common, 'icon-image': ['case', ['==', ['get', 'au'], 1], 'pin-au', 'pin-w'], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.55, 6, 0.7, 12, 0.9, 15, 1], 'symbol-sort-key': ['-', 0, ['get', 'i']] } });
   map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': 'pin-on', 'icon-anchor': 'bottom', 'icon-size': 1.25 } });
