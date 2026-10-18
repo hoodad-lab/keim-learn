@@ -626,7 +626,7 @@ function nextNearby() { if (!sel) return; const d = p => (p.lat - sel.lat) ** 2 
   const n = vis.filter(p => p !== sel && !hist.includes(p)).sort((a, b) => d(a) - d(b))[0]; if (n) open(n, true); }
 $('cNext').onclick = () => { touring = false; nextNearby(); };
 $('cBack').onclick = () => { if (hist.length) open(hist.pop(), 'back'); };
-$('tWorld').onclick = () => { close(); hist.length = 0; map.flyTo({ center: [map.getCenter().lng, 15], zoom: innerWidth < 700 ? 1.35 : 1.9, pitch: 0, bearing: 0, speed: 1.2 }); spinning = true; };
+$('tWorld').onclick = () => { close(); hist.length = 0; map.flyTo({ center: [map.getCenter().lng, 15], zoom: innerWidth < 700 ? 1.35 : 1.9, pitch: 0, bearing: 0, speed: 1.2, padding: { top: 0, bottom: 0, left: 0, right: 0 } }); spinning = true; };
 
 // dark / light mode — remembered per browser, shared with the projects page
 function setTheme(t) { document.documentElement.dataset.theme = t; try { localStorage.setItem('keim-theme', t); } catch (e) {} try { parent !== window && parent.postMessage({ keimTheme: t }, '*'); } catch (e) {} }
@@ -763,7 +763,7 @@ fetch('projects.json?v=1792349613').then(r => r.json()).then(list => {
 // soft blue atmosphere glow around the globe, kept the same size as the Earth on screen
 (function () { const h = $('halo'); const upd = () => { const z = map.getZoom(), p = map.getPitch(), o = Math.max(0, Math.min(1, (3.6 - z) / 1.2)) * Math.max(0, 1 - p / 25);
   h.style.opacity = o; if (o <= 0) { $('rim').style.opacity = 0; return; } const T = map.transform, Rw = T.worldSize / (2 * Math.PI * Math.cos(Math.min(80, Math.abs(map.getCenter().lat)) * Math.PI / 180)), D = T.cameraToCenterDistance, r = D * Rw / Math.sqrt((D + Rw) * (D + Rw) - Rw * Rw), el = map.getContainer().getBoundingClientRect();
-  h.style.width = h.style.height = (2 * r) + 'px'; h.style.left = (el.left + el.width / 2) + 'px'; h.style.top = (el.top + el.height / 2) + 'px';
+  h.style.width = h.style.height = (2 * r) + 'px'; const c = map.project(map.getCenter()); h.style.left = (el.left + c.x) + 'px'; h.style.top = (el.top + c.y) + 'px';
   const g = $('rim'); g.style.opacity = o; g.style.width = g.style.height = (2 * r * 1.005) + 'px'; g.style.left = h.style.left; g.style.top = h.style.top; };
   map.on('move', upd); map.on('load', upd); addEventListener('resize', upd); upd(); })();
 
@@ -783,16 +783,20 @@ function spiderfy(center, items) { unspider(); const el = document.createElement
   spider = new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat(center).addTo(map); requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('on'))); }
 map.on('zoomstart', unspider); map.on('dragstart', unspider);
 // street level: show the photo in the wedge itself
-const PP = new Map(); let ppOn = false;
-function photoPins() { const z = map.getZoom(); const want = z >= 12.5 && map.getLayer('pins2');
+const PP = new Map(); let ppOn = false; const PPZ = 9;
+// photo wedges go the moment you zoom back out (not only when the move ends), and the globe always comes back upright and centred
+map.on('zoom', () => { if (ppOn && map.getZoom() < PPZ - 0.3) { PP.forEach(m => m.remove()); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; } });
+map.on('zoomend', () => { if (map.getZoom() >= 4.5 || map.isMoving()) return; const pd = map.getPadding(); if (map.getPitch() > 0.5 || pd.top || pd.bottom || pd.left || pd.right) map.easeTo({ pitch: 0, padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 700 }); });
+function photoPins() { const z = map.getZoom(); const want = z >= PPZ && map.getLayer('pins2');
   if (!want) { if (ppOn) { PP.forEach(m => m.remove()); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; } return; }
-  const fs = map.queryRenderedFeatures({ layers: ['pins2'] }), keep = new Set();
+  const fs = map.queryRenderedFeatures({ layers: ['pins2'] }).slice(0, 45), keep = new Set();
   fs.forEach(f => { const p = P[f.properties.i]; if (!p || !THUMB(p)) return; keep.add(p.id); if (PP.has(p.id)) return;
     const el = document.createElement('div'); el.className = 'ppin'; const b = photoWedge(p); b.onclick = ev => { ev.stopPropagation(); choose(p); }; el.appendChild(b);
     PP.set(p.id, new maplibregl.Marker({ element: el, anchor: 'center' }).setLngLat([p.lon, p.lat]).addTo(map)); });
   PP.forEach((m, id) => { if (!keep.has(id)) { m.remove(); PP.delete(id); } });
   PP.forEach((m, id) => m.getElement().classList.toggle('on', !!sel && sel.id === id));
-  if (!ppOn) { map.setPaintProperty('pins2', 'icon-opacity', ['case', ['==', ['get', 'ph'], 1], 0, 1]); ppOn = true; } }
+  const ids = []; PP.forEach((m, id) => { const k = P.findIndex(x => x.id === id); if (k >= 0) ids.push(k); });
+  map.setPaintProperty('pins2', 'icon-opacity', ['case', ['in', ['get', 'i'], ['literal', ids]], 0, 1]); ppOn = true; }
 map.on('moveend', photoPins); map.on('idle', photoPins);
 // a tap on the map picks a project: the bottom strip on phones, the full card on bigger screens
 function choose(p) { if (innerWidth <= 760 && typeof showStrip === 'function') showStrip(p); else open(p, true); }
