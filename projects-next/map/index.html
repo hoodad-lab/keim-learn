@@ -373,16 +373,17 @@ map.addControl(new maplibregl.NavigationControl({ visualizePitch: true, showComp
 map.on('load', () => { try { if (innerWidth <= 760) document.querySelectorAll('.maplibregl-ctrl-attrib').forEach(a => a.classList.remove('maplibregl-compact-show')); } catch (e) {} try { map.setSky({ 'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 5, 1, 7, 0] }); } catch (e) {} });
 
 // slow spin of the globe until someone touches it
-let spinT = 0, spinOn = false, spinV = 0;
+let spinT = 0, spinOn = false, spinV = 0, held = false;
+addEventListener('pointerdown', () => { held = true; spinV = 0; }, true); addEventListener('pointerup', () => { held = false; }, true); addEventListener('pointercancel', () => { held = false; }, true);
 function spinStep(t) { const dt = spinT ? Math.min(t - spinT, 50) : 16; spinT = t;
   const want = spinning && !map.isMoving() && map.getZoom() <= 3.2 && !document.hidden ? 0.0042 : 0;
   spinV += (want - spinV) * Math.min(1, dt / 600); // ease speed up / down
-  if (spinV > 0.00002 && !map.isMoving()) { const c = map.getCenter(); c.lng -= dt * spinV; map.jumpTo({ center: c }); }
+  if (spinV > 0.00002 && !held && !map.isMoving()) { const c = map.getCenter(); c.lng -= dt * spinV; map.jumpTo({ center: c }); }
   if (!spinning && spinV < 0.00002) { spinOn = false; spinV = 0; return; }
   requestAnimationFrame(spinStep); }
 function spin() { if (!spinning || spinOn) return; spinOn = true; spinT = 0; requestAnimationFrame(spinStep); }
 map.on('load', spin); map.on('moveend', spin);
-['mousedown', 'touchstart', 'wheel', 'dragstart'].forEach(ev => map.on(ev, () => { spinning = false; touring = false; hideHint(); }));
+['mousedown', 'touchstart', 'wheel', 'dragstart'].forEach(ev => map.on(ev, () => { spinV = 0; spinning = false; touring = false; hideHint(); }));
 let hintGone = false; function hideHint() { hintGone = true; }
 setTimeout(hideHint, 10000);
 
