@@ -790,7 +790,9 @@ const selVis = () => { try { if (map.getLayer('sel')) map.setPaintProperty('sel'
 const ppDrop = m => { const el = m.getElement(); el.classList.remove('in'); setTimeout(() => m.remove(), 320); };
 // photo wedges go the moment you zoom back out (not only when the move ends), and the globe always comes back upright and centred
 map.on('zoom', () => { if (ppOn && map.getZoom() < PPZ - 0.3) { PP.forEach(ppDrop); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; selVis(); } });
-map.on('moveend', () => { if (map.getZoom() >= 4.5) return; const pd = map.getPadding(); if (map.getPitch() > 0.5 || pd.top || pd.bottom || pd.left || pd.right) map.easeTo({ pitch: 0, padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 700 }); });
+let lvT = 0; const level0 = () => { clearTimeout(lvT); lvT = setTimeout(() => { if (held || map.isMoving() || map.getZoom() >= 4.5) return; const pd = map.getPadding(); if (map.getPitch() > 0.5 || pd.top || pd.bottom || pd.left || pd.right) map.easeTo({ pitch: 0, padding: { top: 0, bottom: 0, left: 0, right: 0 }, duration: 600 }); }, 700); };
+map.on('moveend', e => { if (e && e.originalEvent === undefined && !lastUser) return; lastUser = false; level0(); }); let lastUser = false;
+['touchstart', 'pointerdown', 'wheel'].forEach(t => addEventListener(t, () => { clearTimeout(lvT); lastUser = true; }, { capture: true, passive: true }));
 function photoPins() { const z = map.getZoom(); const want = z >= PPZ && map.getLayer('pins2');
   if (!want) { if (ppOn) { PP.forEach(ppDrop); PP.clear(); map.setPaintProperty('pins2', 'icon-opacity', 1); ppOn = false; selVis(); } return; }
   const fs = map.queryRenderedFeatures({ layers: ['pins2'] }).slice(0, 45), keep = new Set();
