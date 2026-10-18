@@ -476,7 +476,7 @@ map.on('load', async () => {
   map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 48, clusterMaxZoom: 12, clusterProperties: { au: ['+', ['get', 'au']] } });
   const CZ = innerWidth < 700 ? 1.6 : 2.1; // phones show countries at a lower zoom
   // tighter grouping once you can see countries, so big groups break into cities straight away
-  map.addSource('pts2', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 22, clusterMaxZoom: 16, clusterProperties: { au: ['+', ['get', 'au']] } });
+  map.addSource('pts2', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 38, clusterMaxZoom: 16, clusterProperties: { au: ['+', ['get', 'au']] } });
   map.addSource('sel', { type: 'geojson', data: selGeo() });
   const common = { 'icon-allow-overlap': true, 'icon-ignore-placement': false, 'icon-pitch-alignment': 'viewport', 'icon-rotation-alignment': 'viewport' };
   map.addLayer({ id: 'clu', type: 'symbol', source: 'pts', filter: ['has', 'point_count'],

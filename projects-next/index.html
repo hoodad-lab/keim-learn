@@ -7,7 +7,7 @@
 <meta name="description" content="KEIM mineral paint projects in Australia and around the world: hospitals, schools, heritage, landmarks and homes. Filter by sector, product and state.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap">
-<script>(function () { var t; try { t = localStorage.getItem("keim-theme"); } catch (e) {} if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.dataset.theme = t; })();</script>
+<script>(function () { var t; try { t = localStorage.getItem("keim-theme"); } catch (e) {} document.documentElement.dataset.theme = "dark"; })();</script>
 <style>
 /* KEIM corporate design: panel + centred logo, KEIM Red / Anthracite / white, Futura (Jost web stand-in), Umbra headlines with underline bar */
 :root { --red: #D62025; --red2: #D10612; --anth: #36393C; --ink: #1d1e20; --mute: #6c7174; --grey: #A3AAAE; --grey2: #D5D9DB; --paper: #EEF0F1; --line: #D5D9DB; --umbra: #957F68; --sans: "Jost", "Futura", "Futura PT", "Century Gothic", system-ui, sans-serif; }
@@ -150,14 +150,89 @@ html[data-theme="dark"] .fullmap { background: var(--surf); color: var(--ink); }
 html[data-theme="dark"] .drawer { background: var(--surf); box-shadow: -20px 0 50px rgba(0,0,0,.7); }
 html[data-theme="dark"] .fact { background: var(--surf2); }
 html[data-theme="dark"] .dim { background: rgba(0,0,0,.7); }
+
+/* ---------- space look, matching the map ---------- */
+html, html[data-theme="dark"] { --ink: #eef0f1; --mute: #9aa3aa; --paper: #05070d; --line: rgba(255,255,255,.1); --umbra: #c7b29a; --glass: rgba(255,255,255,.045); --glass2: rgba(255,255,255,.08); color-scheme: dark; }
+html body, html[data-theme="dark"] body { background: #05070d radial-gradient(1200px 600px at 50% -200px, #0f1a36 0%, rgba(5,7,13,0) 70%) no-repeat; color: var(--ink); }
+.theme { display: none !important; }
+html .panel, html[data-theme="dark"] .panel { background: #0a0c12; }
+html .hero, html[data-theme="dark"] .hero { background: #02040a; }
+.hero h1::after, .shead h2::after, .drawer h2::after, .cta h2::after { background: linear-gradient(90deg, var(--red) 0 64px, var(--umbra) 64px); border-radius: 2px; height: 6px !important; }
+.shead h2 { color: #fff; } .shead .kick, .drawer .kick { color: var(--umbra) !important; }
+html .shead p, html[data-theme="dark"] .shead p { color: #b9c0c5; }
+.stat b { font-weight: 300; }
+.fullmap, html[data-theme="dark"] .fullmap { border-radius: 999px; background: rgba(16,18,22,.72); color: #fff; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.15); }
+/* featured */
+.fcard { border-radius: 18px; box-shadow: 0 18px 40px -18px rgba(0,0,0,.8); }
+.fcard::before { content: ""; position: absolute; z-index: 2; left: 16px; top: 16px; width: 16px; height: 19px; background: var(--red); clip-path: polygon(11% 16.5%, 50% 0, 89% 16.5%, 50% 95.6%); filter: drop-shadow(0 1px 2px rgba(0,0,0,.5)); }
+.fcard .cap b::after { height: 4px; border-radius: 2px; }
+/* sectors */
+html .sec, html[data-theme="dark"] .sec { background: var(--glass); border: 1px solid var(--line); border-radius: 14px; transition: background .2s, transform .2s, box-shadow .2s; }
+html .sec:hover, html[data-theme="dark"] .sec:hover { background: rgba(214,32,37,.18); transform: translateY(-2px); box-shadow: 0 10px 26px -12px rgba(214,32,37,.6); border-color: rgba(214,32,37,.5); }
+.sec b { font-weight: 300; color: #fff; } .sec span { color: #c9cfd3; }
+/* filters bar */
+html .filters, html[data-theme="dark"] .filters { background: rgba(5,7,13,.78); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3); border-bottom: 1px solid var(--line); }
+html .seg, html[data-theme="dark"] .seg { background: var(--glass); box-shadow: inset 0 0 0 1px var(--line); border-radius: 999px; padding: 3px; }
+html .seg button, html[data-theme="dark"] .seg button { color: #dfe3e6; border-radius: 999px; }
+html .seg button[aria-pressed="true"], html[data-theme="dark"] .seg button[aria-pressed="true"] { background: var(--red2); color: #fff; }
+html select, html[data-theme="dark"] select { background: var(--glass); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 10px 14px 9px; }
+html select option { background: #111418; }
+html .q, html[data-theme="dark"] .q { border-radius: 999px; border: 1px solid rgba(255,255,255,.16); color: #fff; padding: 11px 16px 10px 42px; background: rgba(16,18,22,.6) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'><circle cx='11' cy='11' r='7'/><path d='m20 20-3.5-3.5'/></svg>") 15px center / 17px no-repeat; font-size: 16px; }
+.q::placeholder { color: rgba(255,255,255,.6); }
+html .chip, html[data-theme="dark"] .chip { background: var(--glass); color: #dfe3e6; border: 1px solid var(--line); border-radius: 999px; }
+html .chip[aria-pressed="true"], html[data-theme="dark"] .chip[aria-pressed="true"] { background: #fff; color: var(--anth); border-color: #fff; }
+/* project cards */
+html .card, html[data-theme="dark"] .card { background: var(--glass); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s, border-color .25s; }
+html .card:hover, html[data-theme="dark"] .card:hover { transform: translateY(-4px); box-shadow: 0 22px 44px -20px rgba(0,0,0,.9), 0 0 0 1px rgba(214,32,37,.45); border-color: rgba(214,32,37,.45); }
+.card .ph { transition: transform .6s; }
+html .card .bd, html[data-theme="dark"] .card .bd { border-top: 0; padding: 14px 16px 16px; }
+.card h3 { color: #fff; }
+.card .pr { color: #ff6b6f; }
+html .card .tag, html[data-theme="dark"] .card .tag { left: 10px; top: 10px; border-radius: 999px; background: rgba(16,18,22,.72); color: #fff; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); padding: 6px 10px 5px 24px; }
+.card .tag::before { content: ""; position: absolute; left: 9px; top: 50%; width: 9px; height: 11px; margin-top: -6px; background: #9aa3aa; clip-path: polygon(11% 16.5%, 50% 0, 89% 16.5%, 50% 95.6%); }
+html .card .tag.au, html[data-theme="dark"] .card .tag.au { background: rgba(16,18,22,.72); color: #fff; }
+.card .tag.au::before { background: var(--red); }
+.aer { border-radius: 999px 0 0 0; }
+html .card .ph.none, html[data-theme="dark"] .card .ph.none { background: radial-gradient(circle at 50% 40%, #1b2030, #0b0e16); }
+/* buttons */
+.btn { border-radius: 999px; }
+html .btn.line, html[data-theme="dark"] .btn.line { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.4); }
+/* drawer */
+html .drawer, html[data-theme="dark"] .drawer { background: #0d1016; border-left: 1px solid var(--line); box-shadow: -30px 0 60px rgba(0,0,0,.7); }
+@media (min-width: 761px) { .drawer { border-radius: 22px 0 0 22px; } .drawer .ph { border-radius: 22px 0 0 0; } }
+.drawer h2 { color: #fff; }
+html .fact, html[data-theme="dark"] .fact { background: var(--glass); border: 1px solid var(--line); border-radius: 12px; }
+.fact small { color: var(--umbra); }
+html .story, html[data-theme="dark"] .story { color: #cdd3d7; }
+.drawer .x { border-radius: 50%; background: rgba(16,18,22,.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+html .dim, html[data-theme="dark"] .dim { background: rgba(2,4,10,.7); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); }
+@media (max-width: 760px) { .drawer { top: auto; height: 92dvh; width: 100%; border-radius: 22px 22px 0 0; transform: translateY(102%); } .drawer.on { transform: none; } .drawer .ph { border-radius: 22px 22px 0 0; } }
+/* call to action */
+html .cta, html[data-theme="dark"] .cta { background: transparent; padding: 0; margin-top: 80px; }
+.cta .wrap { background: linear-gradient(135deg, #1a1f2e, #0c0f17 60%); border: 1px solid var(--line); border-radius: 24px; padding: 44px 40px; position: relative; overflow: hidden; }
+.cta .wrap::after { content: ""; position: absolute; right: -60px; top: -40px; width: 260px; height: 300px; background: var(--red); opacity: .12; clip-path: polygon(11% 16.5%, 50% 0, 89% 16.5%, 50% 95.6%); }
+@media (max-width: 760px) { .cta .wrap { margin: 0 16px; padding: 32px 22px; border-radius: 20px; } .cta .wrap { grid-template-columns: 1fr; } }
+.foot { color: #7d858b; }
+@media (max-width: 760px) { .fullmap { left: auto !important; right: 14px; top: 14px; padding: 10px 14px 9px; } }
+/* search suggestions */
+.sug { position: absolute; z-index: 30; background: #10141b; color: var(--ink); border: 1px solid rgba(255,255,255,.12); border-top: 3px solid var(--red); border-radius: 14px; box-shadow: 0 18px 40px rgba(0,0,0,.6); max-height: min(56vh, 440px); overflow-y: auto; display: none; }
+.sug.on { display: block; }
+.sug button { display: flex; gap: 12px; align-items: center; width: 100%; text-align: left; border: 0; border-bottom: 1px solid rgba(255,255,255,.07); background: none; color: inherit; padding: 9px 12px; cursor: pointer; font-family: var(--sans); }
+.sug button:last-child { border-bottom: 0; }
+.sug button:hover, .sug button.act { background: rgba(214,32,37,.14); }
+.sug i { width: 46px; height: 46px; flex: none; border-radius: 10px; background: #1d222b center / cover no-repeat; }
+.sug b { display: block; font: 500 14px/1.25 var(--sans); }
+.sug b mark { background: none; color: #ff6b6f; font-weight: 600; }
+.sug span { display: block; margin-top: 3px; font: 400 11.5px/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.sug .none { padding: 12px; font: 400 13px/1.3 var(--sans); color: var(--mute); }
 </style>
 </head>
 <body>
 <div class="panel"><div class="nav"><a href="https://www.keim.com.au" target="_top">keim.com.au</a><a href="#browse">Browse projects</a></div><a class="logo" href="https://www.keim.com.au" target="_top" aria-label="KEIM Australia"><img src="keim-logo-neg.png" alt="KEIM" width="100" height="102"></a><button class="theme" id="theme" type="button" aria-label="Switch dark or light mode"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>
 <header class="hero">
-  <iframe src="map/?embed=1&v=1792321491" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen"></iframe>
+  <iframe src="map/?embed=1&v=1792321801" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen"></iframe>
   <div class="shade"></div>
-  <a class="fullmap" href="map/" target="_blank" rel="noopener">Open the full map ↗</a>
+  <a class="fullmap" href="map/" target="_blank" rel="noopener">Full map ↗</a>
   <div class="over"><div class="wrap">
     <div><div class="kick" style="color:rgba(255,255,255,.75)">KEIM mineral paints · references</div><h1>Built with KEIM</h1><p>From the Sydney Opera House to hospitals, schools and heritage town halls: mineral paint that becomes part of the building.</p></div>
     <div class="stats"><div class="stat"><b id="sTot">–</b><span>projects</span></div><div class="stat"><b id="sAu">–</b><span>in Australia</span></div><div class="stat"><b id="sCo">–</b><span>countries</span></div></div>
@@ -218,7 +293,7 @@ function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
   if (la > -29) return 'QLD'; if (la < -35.9 - (lo - 141) * 0.17) return 'VIC'; return 'NSW'; }
 function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(s => s && !/^products?$/i.test(s)).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
 let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
-fetch('map/projects.json?v=1792233310').then(r => r.json()).then(list => {
+fetch('map/projects.json?v=1792321691').then(r => r.json()).then(list => {
   ALL = list.map(p => ({ ...p, au: p.country === 'Australia', st: p.country === 'Australia' ? auState(p) : '', pr: prods(p) }));
   $('sTot').textContent = ALL.length; $('sAu').textContent = ALL.filter(p => p.au).length; $('sCo').textContent = new Set(ALL.map(p => p.country)).size;
   // featured
@@ -278,6 +353,26 @@ function openP(p) {
 }
 function closeP() { $('drawer').classList.remove('on'); $('dim').classList.remove('on'); $('drawer').setAttribute('aria-hidden', 'true'); try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
 $('dX').addEventListener('click', closeP); $('dim').addEventListener('click', closeP); addEventListener('keydown', e => { if (e.key === 'Escape') closeP(); });
+
+// search suggestions under the box: matches as you type, tap one to open it
+(function () { const q = $('q'), sug = document.createElement('div'); sug.className = 'sug'; document.body.appendChild(sug); let L = [], act = -1;
+  const hl = (t, w) => { const i = t.toLowerCase().indexOf(w); return i < 0 ? esc(t) : esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + w.length)) + '</mark>' + esc(t.slice(i + w.length)); };
+  const thumb = p => p.img && !p.priv ? IMG(/^https?:/.test(p.img) ? p.img.replace(/\/\d{3,4}px-/, '/330px-') : p.img) : (canAer(p) ? AER(p, 120, 120) : '');
+  const score = (p, w) => { const n = p.name.toLowerCase(); return n.startsWith(w) ? 0 : n.split(/[\s\-\/(),]+/).some(x => x.startsWith(w)) ? 1 : n.includes(w) ? 2 : (p.place + ' ' + p.country).toLowerCase().includes(w) ? 3 : 4; };
+  const place = () => { const r = q.getBoundingClientRect(), w = Math.min(Math.max(r.width, 320), innerWidth - 16); sug.style.width = w + 'px'; sug.style.left = Math.max(8, Math.min(r.left + scrollX, innerWidth - w - 8)) + 'px'; sug.style.top = (r.bottom + scrollY + 6) + 'px'; };
+  const show = () => { const w = q.value.trim().toLowerCase(); if (!w) { sug.classList.remove('on'); L = []; return; }
+    L = ALL.filter(p => (p.name + ' ' + p.place + ' ' + p.country + ' ' + p.architect + ' ' + p.products).toLowerCase().includes(w)).map(p => [score(p, w), p]).sort((a, b) => a[0] - b[0] || a[1].name.localeCompare(b[1].name)).slice(0, 8).map(x => x[1]); act = -1;
+    sug.innerHTML = L.length ? L.map((p, i) => { const t = thumb(p); return `<button type="button" data-i="${i}"><i${t ? ` style="background-image:url('${t}')"` : ''}></i><div><b>${hl(p.name, w)}</b><span>${esc([p.place, p.au ? p.st : p.country].filter(Boolean).join(', '))} · ${esc(TYPE_LABEL[p.type] || p.type)}</span></div></button>`; }).join('') : '<div class="none">No project matches that</div>';
+    place(); sug.classList.add('on'); };
+  const go = p => { sug.classList.remove('on'); q.blur(); openP(p); };
+  q.addEventListener('input', show); q.addEventListener('focus', () => { if (q.value.trim()) show(); });
+  q.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { if (!L.length) return; e.preventDefault(); act = (act + (e.key === 'ArrowDown' ? 1 : -1) + L.length) % L.length; sug.querySelectorAll('button').forEach((b, i) => b.classList.toggle('act', i === act)); }
+    else if (e.key === 'Enter') { if (act >= 0) go(L[act]); else sug.classList.remove('on'); } else if (e.key === 'Escape') sug.classList.remove('on'); });
+  sug.addEventListener('mousedown', e => e.preventDefault()); sug.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (b) go(L[+b.dataset.i]); });
+  document.addEventListener('pointerdown', e => { if (e.target !== q && !sug.contains(e.target)) sug.classList.remove('on'); });
+  addEventListener('scroll', () => { if (sug.classList.contains('on')) place(); }, { passive: true }); addEventListener('resize', () => { if (sug.classList.contains('on')) place(); });
+})();
+
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
 </script>
 </body>
