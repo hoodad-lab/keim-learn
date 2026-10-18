@@ -399,13 +399,12 @@ map.on('styleimagemissing', e => {
   const n = +m[2], au = m[1] === 'au', k = Math.min(1.5, 0.95 + Math.log10(n) * 0.28), S = 2, pad = 6;
   const w = 40 * k, h = 46 * k, W = Math.ceil((w + pad * 2 + 4) * S), H = Math.ceil((h + pad * 2 + 4) * S);
   const c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d'); x.scale(S, S);
-  const wedge = (ox, oy) => { const p = new Path2D(); const sx = v => ox + v * k, sy = v => oy + v * k;
-    p.moveTo(sx(4.4), sy(7.6)); p.arcTo(sx(20), sy(0.2), sx(35.6), sy(7.6), 40 * k); p.lineTo(sx(35.6), sy(7.6)); p.lineTo(sx(20), sy(44)); p.closePath(); return p; };
-  const back = wedge(pad + 4, pad), front = wedge(pad, pad + 4);
-  x.fillStyle = au ? 'rgba(214,32,37,.45)' : 'rgba(42,45,48,.55)'; x.fill(back); x.lineWidth = 1.2; x.strokeStyle = 'rgba(255,255,255,.55)'; x.stroke(back);
+  // one clean KEIM wedge: an exact circle sector with its point on the location
+  const R = 39.6 * k, a0 = Math.atan2(-36.4, -15.6), a1 = Math.atan2(-36.4, 15.6), px = pad + 20 * k, py = pad + 44 * k;
+  const front = new Path2D(); front.moveTo(px, py); front.arc(px, py, R, a0, a1); front.closePath();
   x.shadowColor = 'rgba(0,0,0,.45)'; x.shadowBlur = 6; x.shadowOffsetY = 2; x.fillStyle = au ? '#D62025' : '#2a2d30'; x.fill(front);
   x.shadowColor = 'transparent'; x.lineWidth = 1.8; x.lineJoin = 'round'; x.strokeStyle = '#fff'; x.stroke(front);
-  x.fillStyle = '#fff'; x.font = `600 ${Math.round(11 + 2.5 * k)}px Jost, Futura, system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), pad + 20 * k, pad + 4 + 15.5 * k);
+  x.fillStyle = '#fff'; x.font = `600 ${Math.round(11 + 2.5 * k)}px Jost, Futura, system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), pad + 20 * k, pad + 15 * k);
   map.addImage(e.id, { width: W, height: H, data: x.getImageData(0, 0, W, H).data }, { pixelRatio: S });
 });
 function geo() { return { type: 'FeatureCollection', features: vis.map(p => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
