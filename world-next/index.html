@@ -361,7 +361,7 @@ const hist = [];
 
 // satellite imagery + place names, on a 3D globe
 const map = new maplibregl.Map({
-  container: 'map', center: innerWidth < 700 ? [100, 0] : [60, 15], zoom: innerWidth < 700 ? 1.35 : 1.9, maxPitch: 75, attributionControl: { compact: true },
+  container: 'map', center: innerWidth < 700 ? [100, 0] : [60, 15], zoom: innerWidth < 700 ? 1.35 : 1.9, maxPitch: 75, fadeDuration: 0, attributionControl: { compact: true },
   style: { version: 8, projection: { type: 'globe' }, glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf', sprite: 'https://tiles.openfreemap.org/sprites/ofm_f384/ofm',
     sources: {
       sat: { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], attribution: 'Imagery © Esri, Maxar, Earthstar Geographics, and the GIS User Community' },
@@ -419,19 +419,24 @@ map.on('load', async () => {
   map.addImage('pin-w', pw, { pixelRatio: 2 }); map.addImage('pin-au', pa, { pixelRatio: 2 }); map.addImage('pin-on', po, { pixelRatio: 2 });
   try { await document.fonts.load('500 14px Jost'); } catch (e) {}
   map.addSource('pts', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 48, clusterMaxZoom: 12, clusterProperties: { au: ['+', ['get', 'au']] } });
-  const CZ = innerWidth < 700 ? 1.7 : 2.2; // phones show countries at a lower zoom
+  const CZ = innerWidth < 700 ? 1.6 : 2.1; // phones show countries at a lower zoom
   // tighter grouping once you can see countries, so big groups break into cities straight away
   map.addSource('pts2', { type: 'geojson', data: geo(), cluster: true, clusterRadius: 20, clusterMaxZoom: 12, clusterProperties: { au: ['+', ['get', 'au']] } });
   map.addSource('sel', { type: 'geojson', data: selGeo() });
   const common = { 'icon-allow-overlap': true, 'icon-ignore-placement': false, 'icon-pitch-alignment': 'viewport', 'icon-rotation-alignment': 'viewport' };
-  map.addLayer({ id: 'clu', type: 'symbol', source: 'pts', maxzoom: CZ, filter: ['has', 'point_count'],
+  map.addLayer({ id: 'clu', type: 'symbol', source: 'pts', filter: ['has', 'point_count'],
     layout: { ...common, 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.8, 8, 0.95], 'icon-image': ['concat', 'clu-', ['case', ['==', ['get', 'au'], ['get', 'point_count']], 'au', 'w'], '-', ['to-string', ['get', 'point_count']]] } });
-  map.addLayer({ id: 'pins', type: 'symbol', source: 'pts', maxzoom: CZ, filter: ['!', ['has', 'point_count']],
+  map.addLayer({ id: 'pins', type: 'symbol', source: 'pts', filter: ['!', ['has', 'point_count']],
     layout: { ...common, 'icon-image': ['case', ['==', ['get', 'au'], 1], 'pin-au', 'pin-w'], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.55, 6, 0.7, 12, 0.9, 15, 1], 'symbol-sort-key': ['-', 0, ['get', 'i']] } });
-  for (const id of ['clu', 'pins']) { const L = map.getLayer(id), def = { id: id + '2', type: 'symbol', source: 'pts2', minzoom: CZ, filter: map.getFilter(id), layout: {} };
+  for (const id of ['clu', 'pins']) { const L = map.getLayer(id), def = { id: id + '2', type: 'symbol', source: 'pts2', filter: map.getFilter(id), layout: {} };
     for (const k of ['icon-allow-overlap', 'icon-ignore-placement', 'icon-pitch-alignment', 'icon-rotation-alignment', 'icon-anchor', 'icon-size', 'icon-image', 'symbol-sort-key']) { const v = map.getLayoutProperty(id, k); if (v !== undefined) def.layout[k] = v; }
     map.addLayer(def); }
   map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': 'pin-on', 'icon-anchor': 'bottom', 'icon-size': 1.25 } });
+  // switch between wide and tight grouping with a buffer, so a steady zoom never flips back and forth
+  let fine = null; const level = () => { const z = map.getZoom(), want = fine === null ? z > CZ : fine ? z > CZ - 0.25 : z > CZ + 0.25; if (want === fine) return; fine = want;
+    map.setLayoutProperty('clu', 'visibility', fine ? 'none' : 'visible'); map.setLayoutProperty('pins', 'visibility', fine ? 'none' : 'visible');
+    map.setLayoutProperty('clu2', 'visibility', fine ? 'visible' : 'none'); map.setLayoutProperty('pins2', 'visibility', fine ? 'visible' : 'none'); };
+  level(); map.on('zoomend', level); map.on('moveend', level);
   layersReady = true;
   const cluClick = e => { const f = e.features[0]; spinning = false; hideHint();
     map.getSource(f.source).getClusterExpansionZoom(f.properties.cluster_id).then(z => map.easeTo({ center: f.geometry.coordinates, zoom: Math.min(z + 0.5, 16), duration: 900 })); };
