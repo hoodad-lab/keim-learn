@@ -487,7 +487,7 @@ map.on('styleimagemissing', e => {
       if (img) { const sc = Math.max(40 / img.width, 46 / img.height), w = img.width * sc, h = img.height * sc; x.drawImage(img, (40 - w) / 2, (46 - h) / 2, w, h); } x.restore();
       x.lineWidth = 1.8; x.lineJoin = 'round'; x.strokeStyle = img ? '#D62025' : '#fff'; x.stroke(wd); return { width: W, height: H, data: x.getImageData(0, 0, W, H).data }; };
     map.addImage(e.id, frame(null), { pixelRatio: 4 });
-    const t = p && THUMB(p); if (t) { const im = new Image(); im.crossOrigin = 'anonymous'; im.onload = () => { try { if (map.hasImage(e.id)) map.updateImage(e.id, frame(im)); } catch (er) {} }; im.src = t; }
+    const t = p && PHOTO(p); if (t) { const im = new Image(); im.crossOrigin = 'anonymous'; im.onload = () => { try { if (map.hasImage(e.id)) map.updateImage(e.id, frame(im)); } catch (er) {} }; im.src = t; }
     return; }
   const m = /^clu-(au|w)-(\d+)$/.exec(e.id); if (!m) return;
   // group marker: the KEIM wedge with the count inside, a second wedge peeking behind like a stack
@@ -502,8 +502,8 @@ map.on('styleimagemissing', e => {
   x.fillStyle = '#fff'; x.font = `600 ${Math.round(11 + 2.5 * k)}px Jost, Futura, system-ui, sans-serif`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(String(n), pad + 20 * k, pad + 15 * k);
   map.addImage(e.id, { width: W, height: H, data: x.getImageData(0, 0, W, H).data }, { pixelRatio: S });
 });
-function geo() { return { type: 'FeatureCollection', features: vis.map(p => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0, ph: THUMB(p) ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
-function selGeo() { return { type: 'FeatureCollection', features: sel && sel.id !== 'keim-australia' ? [{ type: 'Feature', properties: { i: P.indexOf(sel), ph: THUMB(sel) ? 1 : 0 }, geometry: { type: 'Point', coordinates: [sel.lon, sel.lat] } }] : [] }; }
+function geo() { return { type: 'FeatureCollection', features: vis.map(p => ({ type: 'Feature', properties: { i: P.indexOf(p), au: p.country === 'Australia' ? 1 : 0, ph: PHOTO(p) ? 1 : 0 }, geometry: { type: 'Point', coordinates: [p.lon, p.lat] } })) }; }
+function selGeo() { return { type: 'FeatureCollection', features: sel && sel.id !== 'keim-australia' ? [{ type: 'Feature', properties: { i: P.indexOf(sel), ph: PHOTO(sel) ? 1 : 0 }, geometry: { type: 'Point', coordinates: [sel.lon, sel.lat] } }] : [] }; }
 let layersReady = false;
 map.on('load', async () => {
   const [pw, pa, po] = await Promise.all([svgImg(PIN(0, 0)), svgImg(PIN(1, 0)), svgImg(PIN(0, 1))]);
@@ -518,11 +518,11 @@ map.on('load', async () => {
   map.addLayer({ id: 'clu', type: 'symbol', source: 'pts', filter: ['has', 'point_count'],
     layout: { ...common, 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.8, 8, 0.95], 'icon-image': ['concat', 'clu-', ['case', ['==', ['get', 'au'], ['get', 'point_count']], 'au', 'w'], '-', ['to-string', ['get', 'point_count']]] } });
   map.addLayer({ id: 'pins', type: 'symbol', source: 'pts', filter: ['!', ['has', 'point_count']],
-    layout: { ...common, 'icon-image': ['step', ['zoom'], ['case', ['==', ['get', 'au'], 1], 'pin-au', 'pin-w'], 9, ['case', ['==', ['get', 'ph'], 1], ['concat', 'ph-', ['to-string', ['get', 'i']]], ['==', ['get', 'au'], 1], 'pin-au', 'pin-w']], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.55, 6, 0.62, 9, 0.68, 12, 0.85, 15, 1.05, 17, 1.3], 'symbol-sort-key': ['-', 0, ['get', 'i']] } });
+    layout: { ...common, 'icon-image': ['case', ['==', ['get', 'ph'], 1], ['concat', 'ph-', ['to-string', ['get', 'i']]], ['==', ['get', 'au'], 1], 'pin-au', 'pin-w'], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.55, 6, 0.62, 9, 0.68, 12, 0.85, 15, 1.05, 17, 1.3], 'symbol-sort-key': ['-', 0, ['get', 'i']] } });
   for (const id of ['clu', 'pins']) { const L = map.getLayer(id), def = { id: id + '2', type: 'symbol', source: 'pts2', filter: map.getFilter(id), layout: {} };
     for (const k of ['icon-allow-overlap', 'icon-ignore-placement', 'icon-pitch-alignment', 'icon-rotation-alignment', 'icon-anchor', 'icon-size', 'icon-image', 'symbol-sort-key']) { const v = map.getLayoutProperty(id, k); if (v !== undefined) def.layout[k] = v; }
     map.addLayer(def); }
-  map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': ['step', ['zoom'], 'pin-on', 9, ['case', ['==', ['get', 'ph'], 1], ['concat', 'ph-', ['to-string', ['get', 'i']], '-on'], 'pin-on']], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.62, 6, 0.72, 9, 0.8, 12, 1, 15, 1.2, 17, 1.5] } });
+  map.addLayer({ id: 'sel', type: 'symbol', source: 'sel', layout: { ...common, 'icon-image': ['case', ['==', ['get', 'ph'], 1], ['concat', 'ph-', ['to-string', ['get', 'i']], '-on'], 'pin-on'], 'icon-anchor': 'bottom', 'icon-size': ['interpolate', ['linear'], ['zoom'], 1, 0.62, 6, 0.72, 9, 0.8, 12, 1, 15, 1.2, 17, 1.5] } });
   // switch between wide and tight grouping with a buffer, so a steady zoom never flips back and forth
   let fine = null; const level = () => { const z = map.getZoom(), want = fine === null ? z > CZ : fine ? z > CZ - 0.25 : z > CZ + 0.25; if (want === fine) return; fine = want;
     map.setLayoutProperty('clu', 'visibility', fine ? 'none' : 'visible'); map.setLayoutProperty('pins', 'visibility', fine ? 'none' : 'visible');
@@ -794,6 +794,7 @@ fetch('projects.json?v=1792359605').then(r => r.json()).then(list => {
 const WEDGE_CLIP = (() => { const a0 = Math.atan2(-36.4, -15.6), a1 = Math.atan2(-36.4, 15.6), pt = (x, y) => (x / 40 * 100).toFixed(2) + '% ' + (y / 46 * 100).toFixed(2) + '%', pts = [pt(20, 44)];
   for (let k = 0; k <= 16; k++) { const a = a0 + (a1 - a0) * k / 16; pts.push(pt(20 + 39.6 * Math.cos(a), 44 + 39.6 * Math.sin(a))); } return 'polygon(' + pts.join(',') + ')'; })();
 document.documentElement.style.setProperty('--wedge', WEDGE_CLIP);
+const PHOTO = p => p.img && !p.priv ? (/^https?:/.test(p.img) ? p.img.replace(/\/\d{3,4}px-/, '/330px-') : 'img/' + p.img) : '';
 const THUMB = p => p.img && !p.priv ? (/^https?:/.test(p.img) ? p.img.replace(/\/\d{3,4}px-/, '/330px-') : 'img/' + p.img) : (canAer(p) ? AER(p, 160, 184) : '');
 function photoWedge(p) { const b = document.createElement('button'); b.type = 'button'; b.className = 'sp' + (p.country === 'Australia' ? ' au' : ''); const t = THUMB(p);
   b.innerHTML = `<i${t ? ` style="background-image:url('${t}')"` : ''}></i><b>${esc(p.name)}</b>`; b.setAttribute('aria-label', p.name); return b; }
