@@ -744,7 +744,7 @@ $('tList').onclick = () => { $('list').hidden = !$('list').hidden; renderList();
 $('lX').onclick = () => { $('list').hidden = true; };
 $('lSort').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; lSort = b.dataset.s; document.querySelectorAll('#lSort button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderList(); });
 map.on('moveend', renderList);
-fetch('projects.json?v=1792359605').then(r => r.json()).then(list => {
+fetch('projects.json?v=1792407514').then(r => r.json()).then(list => {
   P = list.filter(p => p.lat != null);
   TYPES.filter(t => P.some(p => p.type === t)).forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = LABEL[t]; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { fType = fType === t ? null : t; syncChips(); refilter(); }; $('bar').appendChild(b); });
   refilter();
