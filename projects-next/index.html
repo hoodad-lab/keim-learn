@@ -8,7 +8,7 @@
 <title>Projects built with KEIM — references</title>
 <meta name="description" content="KEIM mineral paint projects in Australia and around the world: hospitals, schools, heritage, landmarks and homes. Filter by sector, product and state.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap">
 <script>(function () { var t; try { t = localStorage.getItem("keim-theme"); } catch (e) {} document.documentElement.dataset.theme = "dark"; })();</script>
 <style>
 /* KEIM corporate design: panel + centred logo, KEIM Red / Anthracite / white, Futura (Jost web stand-in), Umbra headlines with underline bar */
@@ -227,13 +227,54 @@ html .cta, html[data-theme="dark"] .cta { background: transparent; padding: 0; m
 .sug b mark { background: none; color: #ff6b6f; font-weight: 600; }
 .sug span { display: block; margin-top: 3px; font: 400 11.5px/1.2 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
 .sug .none { padding: 12px; font: 400 13px/1.3 var(--sans); color: var(--mute); }
+
+/* ===== 2030 editorial pass ===== */
+:root { --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif; --sans: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif; --ink2: #0b0d12; --sand: #c9b99a; --hair: rgba(255,255,255,.1); }
+body { font-family: var(--sans); }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; text-transform: none; letter-spacing: -.01em; }
+.kick { font: 600 11px/1.3 var(--sans); letter-spacing: .22em; }
+.hero h1 { font-size: clamp(46px, 8vw, 96px); line-height: .96; }
+.hero h1 em, .hero h1 i { font-style: italic; color: var(--sand); }
+.hero h1::after, .shead h2::after, .drawer h2::after, .cta h2::after, html[data-theme="dark"] .hero h1::after { height: 2px; max-width: 72px; width: 72px; background: var(--red); margin-top: 20px; border-radius: 0; }
+.hero p { font: 400 clamp(17px, 2vw, 21px)/1.45 var(--sans); color: rgba(255,255,255,.78); }
+.stat b { font: 400 clamp(44px, 5vw, 68px)/1 var(--serif); letter-spacing: -.02em; }
+.stat span { font: 600 10px/1.3 var(--sans); letter-spacing: .2em; color: rgba(255,255,255,.5); }
+.shead h2 { font-size: clamp(30px, 4vw, 46px); }
+.fcard, html[data-theme="dark"] .fcard { border-radius: 8px; box-shadow: none; border: 1px solid var(--hair); }
+.fcard .cap { padding: 90px 18px 18px; background: linear-gradient(180deg, rgba(11,13,18,0), rgba(11,13,18,.9)); }
+.fcard .cap small { font: 600 9.5px/1.3 var(--sans); letter-spacing: .18em; color: var(--sand); }
+.fcard .cap b { font: 400 25px/1.02 var(--serif); letter-spacing: 0; text-transform: none; }
+.fcard .cap b::after { width: 28px; height: 2px; background: var(--red); border-radius: 0; margin-top: 10px; }
+.fcard .cap span { font: 400 13px/1.3 var(--sans); color: rgba(255,255,255,.7); }
+html .filters, html[data-theme="dark"] .filters { background: rgba(11,13,18,.96); backdrop-filter: none; -webkit-backdrop-filter: none; border-bottom: 1px solid var(--hair); }
+.seg button, .chip { font-family: var(--sans); letter-spacing: .1em; font-weight: 500; }
+.pc h3, .card h3 { font: 400 22px/1.08 var(--serif); letter-spacing: 0; text-transform: none; }
+.pc small, .card small { font: 600 9.5px/1.3 var(--sans); letter-spacing: .16em; }
+.pc, html[data-theme="dark"] .pc, .card, html[data-theme="dark"] .card { border-radius: 8px; box-shadow: none; border: 1px solid var(--hair); background: var(--ink2); }
+.fullmap, html[data-theme="dark"] .fullmap { background: rgba(11,13,18,.92); border: 1px solid var(--hair); backdrop-filter: none; -webkit-backdrop-filter: none; font: 500 11px/1 var(--sans); letter-spacing: .12em; }
+.drawer, html[data-theme="dark"] .drawer { background: var(--ink2); box-shadow: -30px 0 80px rgba(0,0,0,.8); border-left: 1px solid var(--hair); }
+.drawer .ph { aspect-ratio: 4/3.1; }
+.drawer .ph::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 46%; background: linear-gradient(180deg, rgba(11,13,18,0), rgba(11,13,18,.8) 60%, var(--ink2)); pointer-events: none; }
+.drawer .in { padding: 0 26px 40px; }
+.drawer .kick, html[data-theme="dark"] .drawer .kick { position: relative; z-index: 2; margin-top: -34px; color: var(--sand) !important; }
+.drawer h2 { font-size: clamp(34px, 8vw, 44px); line-height: .98; color: #fff; position: relative; z-index: 2; }
+.drawer .sub { font: 400 15px/1.45 var(--serif); font-style: italic; text-transform: none; letter-spacing: 0; color: rgba(255,255,255,.75); }
+.drawer .x, html[data-theme="dark"] .drawer .x { border-radius: 999px; background: rgba(11,13,18,.75); border: 1px solid var(--hair); color: #fff; }
+.drawer dl { border-top: 1px solid var(--hair); padding-top: 16px; }
+.drawer dt, .facts small { font: 600 10px/1.8 var(--sans); letter-spacing: .18em; color: rgba(255,255,255,.5); text-transform: uppercase; }
+.fact { border: 1px solid var(--hair); border-radius: 8px; background: rgba(255,255,255,.03); }
+.btn { border-radius: 999px; font: 500 11px/1 var(--sans); letter-spacing: .12em; }
+.cta { background: var(--ink2); border-top: 1px solid var(--hair); }
+.cta h2 { font-size: clamp(32px, 4.4vw, 52px); line-height: 1; }
+.cta p { font: 400 18px/1.5 var(--sans); color: rgba(255,255,255,.75); }
+.sug, html[data-theme="dark"] .sug { background: var(--ink2); border: 1px solid var(--hair); border-top: 2px solid var(--red); color: #fff; font-family: var(--sans); }
 </style>
 <!-- HubSpot tracking (KEIM Australia) --><script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47417993.js"></script>
 </head>
 <body>
 <div class="panel"><div class="nav"><a href="https://www.keim.com.au" target="_top">keim.com.au</a><a href="#browse">Browse projects</a></div><a class="logo" href="https://www.keim.com.au" target="_top" aria-label="KEIM Australia"><img src="keim-logo-neg.png" alt="KEIM" width="100" height="102"></a><button class="theme" id="theme" type="button" aria-label="Switch dark or light mode"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>
 <header class="hero">
-  <iframe src="map/?embed=1&v=1792463244" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen; geolocation"></iframe>
+  <iframe src="map/?embed=1&v=10" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen; geolocation"></iframe>
   <div class="shade"></div>
   <a class="fullmap" href="map/" target="_blank" rel="noopener">Full map ↗</a>
   <div class="over"><div class="wrap">
@@ -302,7 +343,7 @@ function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
   if (la > -29) return 'QLD'; if (la < -35.9 - (lo - 141) * 0.17) return 'VIC'; return 'NSW'; }
 function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(s => s && !/^products?$/i.test(s)).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
 let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
-fetch('map/projects.json?v=1792463244').then(r => r.json()).then(list => {
+fetch('map/projects.json?v=10').then(r => r.json()).then(list => {
   ALL = list.map(p => ({ ...p, au: p.country === 'Australia', st: p.country === 'Australia' ? auState(p) : '', pr: prods(p) }));
   $('sTot').textContent = ALL.length; $('sAu').textContent = ALL.filter(p => p.au).length; $('sCo').textContent = new Set(ALL.map(p => p.country)).size;
   // featured

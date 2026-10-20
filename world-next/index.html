@@ -9,7 +9,7 @@
 <title>KEIM References Map</title>
 <meta name="description" content="Fly around the globe to KEIM mineral paint projects: heritage, hospitals, schools, murals and landmarks.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.0/dist/maplibre-gl.css">
 <script>(function () { var t; try { t = localStorage.getItem("keim-theme"); } catch (e) {} if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.dataset.theme = t; })();</script>
 <style>
@@ -387,6 +387,62 @@ body.stripon .tools { transform: translateY(160%) !important; opacity: 0 !import
   .qdock.open .bar { display: flex; animation: fdrop .22s ease-out; }
   .under { padding: 0; min-height: 0; }
 }
+
+/* ===== 2030 editorial pass: serif display, flat surfaces, photo-led card ===== */
+:root { --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif; --sans: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif; --ink2: #0b0d12; --sand: #c9b99a; --hair: rgba(255,255,255,.1); }
+body { font-family: var(--sans); }
+.brand h1 { font: 400 clamp(24px, 2.8vw, 34px)/1 var(--serif); letter-spacing: -.01em; text-transform: none; color: #fff; }
+.brand h1 b { color: var(--sand); font-style: italic; }
+.brand .count { font: 400 13px/1.3 var(--sans); letter-spacing: .04em; color: rgba(255,255,255,.6); }
+.chip, html[data-theme="dark"] .chip { border-radius: 999px; border: 1px solid var(--hair); background: rgba(11,13,18,.9); color: rgba(255,255,255,.85); font: 500 11px/1 var(--sans); letter-spacing: .1em; padding: 9px 13px 8px; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.chip[aria-pressed="true"], html[data-theme="dark"] .chip[aria-pressed="true"] { background: #fff; color: var(--ink2); border-color: #fff; }
+.chip.au { border-color: rgba(214,32,37,.6); color: #ff8a8e; }
+.chip.au[aria-pressed="true"] { background: var(--red); color: #fff; border-color: var(--red); }
+.search, html[data-theme="dark"] .search, .qdock > .search { border-radius: 999px; border: 1px solid var(--hair); background-color: rgba(11,13,18,.92); color: #fff; font: 400 15px/1 var(--sans); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+.tools, .qdock .bar { background: rgba(11,13,18,.96) !important; border: 1px solid var(--hair); backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: 0 20px 50px -20px rgba(0,0,0,.8); }
+@media (max-width: 760px) { .tools button { font: 500 9.5px/1 var(--sans); letter-spacing: .1em; } }
+@media (min-width: 761px) { .tools button { border-radius: 999px; background: rgba(11,13,18,.92); border: 1px solid var(--hair); font: 500 11px/1.2 var(--sans); letter-spacing: .1em; } .tools { background: transparent !important; border: 0; box-shadow: none; } }
+/* card */
+.card, html[data-theme="dark"] .card { background: var(--ink2); color: #fff; box-shadow: 0 30px 80px -20px rgba(0,0,0,.9); border: 1px solid var(--hair); }
+@media (min-width: 761px) { .card { border-radius: 6px; width: 440px; } }
+@media (max-width: 760px) { .card { border-radius: 14px 14px 0 0; } .card .ph { border-radius: 14px 14px 0 0; } }
+.card .ph { aspect-ratio: 4 / 3.1; background: #15181f; }
+.card .ph::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 46%; background: linear-gradient(180deg, rgba(11,13,18,0) 0%, rgba(11,13,18,.78) 60%, var(--ink2) 100%); pointer-events: none; }
+.card .ph .noimg { color: rgba(255,255,255,.55); background: #15181f; }
+.card .credit { font: 400 10.5px/1.25 var(--sans); letter-spacing: .02em; color: rgba(255,255,255,.75); text-shadow: 0 1px 3px rgba(0,0,0,.8); top: 12px; bottom: auto; left: 12px; right: 60px; z-index: 2; }
+.card .tag, html .card .tag, html[data-theme="dark"] .card .tag { top: auto !important; bottom: 12px !important; left: auto !important; right: 12px; }
+.card .tag, html .card .tag, html[data-theme="dark"] .card .tag { border-radius: 999px; background: rgba(11,13,18,.7); border: 1px solid var(--hair); font: 500 9.5px/1 var(--sans); letter-spacing: .12em; }
+.card .x, html[data-theme="dark"] .card .x { border-radius: 999px; background: rgba(11,13,18,.75); border: 1px solid var(--hair); color: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.card .body { padding: 2px 24px 26px; }
+.card .kick { font: 600 10.5px/1.4 var(--sans); letter-spacing: .22em; color: var(--sand); position: relative; z-index: 2; margin-top: -34px; }
+.card h2 { font: 400 clamp(34px, 9vw, 42px)/.98 var(--serif) !important; letter-spacing: -.01em; text-transform: none; color: #fff; margin: 8px 0 0; position: relative; z-index: 2; }
+@media (min-width: 761px) { .card h2 { font-size: 40px !important; } .card .kick { margin-top: -30px; } }
+.card h2::after { content: ""; display: block; width: 44px; height: 2px; background: var(--red); margin-top: 16px; }
+.card .sub { font: 400 15px/1.45 var(--serif); font-style: italic; letter-spacing: 0; text-transform: none; color: rgba(255,255,255,.75); margin: 12px 0 0; }
+.card dl { gap: 9px 18px; margin: 18px 0 8px; padding-top: 16px; border-top: 1px solid var(--hair); font: 400 15px/1.4 var(--sans); }
+.card dt { font: 600 10px/1.8 var(--sans); letter-spacing: .18em; color: rgba(255,255,255,.5); }
+.card dd { color: rgba(255,255,255,.92); }
+.card dd.prod { color: #ff6b70; font-weight: 500; }
+.card .story { font: 400 15.5px/1.6 var(--sans); color: rgba(255,255,255,.8); }
+.card .approx, html[data-theme="dark"] .card .approx { background: rgba(255,255,255,.04); border-left: 2px solid var(--sand); color: rgba(255,255,255,.7); font: 400 13px/1.45 var(--sans); border-radius: 0 4px 4px 0; }
+.card .more, html[data-theme="dark"] .card .more { border-radius: 999px; font: 500 11px/1 var(--sans); letter-spacing: .12em; padding: 12px 16px 11px; background: #fff; color: var(--ink2); box-shadow: none; }
+.card .more.sv, html[data-theme="dark"] .card .more.sv { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.35); border: 0; }
+.card .src, html[data-theme="dark"] .card .src { font: 400 12px/1.5 var(--sans); color: rgba(255,255,255,.45); }
+.card .src a { color: rgba(255,255,255,.7); }
+.card .nav, html[data-theme="dark"] .card .nav { border-top: 1px solid var(--hair); }
+.card .nav button, html[data-theme="dark"] .card .nav button { border-radius: 999px; border: 1px solid rgba(255,255,255,.3); background: transparent; color: #fff; font: 500 11px/1 var(--sans); letter-spacing: .12em; }
+.card .nav button.solid, html[data-theme="dark"] .card .nav button.solid { background: #fff; color: var(--ink2); border-color: #fff; }
+.card .hqph::after { background: var(--red); }
+/* strip */
+.strip .sc, html[data-theme="dark"] .strip .sc { background: rgba(11,13,18,.96); border: 1px solid var(--hair); backdrop-filter: none; -webkit-backdrop-filter: none; border-radius: 12px; }
+.sc b { font: 400 18px/1.1 var(--serif); letter-spacing: 0; }
+.sc small { font: 600 9px/1.2 var(--sans); letter-spacing: .16em; color: var(--sand); }
+.sc span { font: 500 11.5px/1.3 var(--sans); }
+.strip .cnt, .strip .sx { background: rgba(11,13,18,.92); border: 1px solid var(--hair); backdrop-filter: none; -webkit-backdrop-filter: none; font-family: var(--sans); }
+/* list & tour menu */
+.list h3, .tmenu h3 { font: 400 22px/1.1 var(--serif); text-transform: none; letter-spacing: 0; }
+.cap b, .tcap b { font: 400 22px/1.1 var(--serif); letter-spacing: 0; text-transform: none; }
+.hint { font-family: var(--sans); }
 </style>
 <script>if (window.top === window.self) { var hs = document.createElement("script"); hs.id = "hs-script-loader"; hs.async = true; hs.defer = true; hs.src = "//js.hs-scripts.com/47417993.js"; document.head.appendChild(hs); }</script>
 </head>
@@ -474,7 +530,7 @@ const AER = (p, w, h) => { const d = 0.0011, e = d * w / h / Math.cos(p.lat * Ma
 const SV = p => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([p.name, p.sub && p.sub.length < 60 ? p.sub : '', p.place, p.country].filter((x,i,a)=>x && a.indexOf(x)===i).join(', '));
 const canAer = p => !p.img && p.exact && p.type !== 'Residential';
 const canSV = p => !p.priv && (p.type !== 'Residential' || !/house|homes?\b|villa|atrium|silent rock/i.test(p.name));
-const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" height="96" viewBox="0 0 40 50.5">${on ? `<path d="${WEDGE}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="7" stroke-linejoin="round"/>` : ''}<path d="${WEDGE}" transform="translate(0 1.2)" fill="rgba(0,0,0,.35)"/><path d="${WEDGE}" fill="${au || on ? '#D62025' : '#2a2d30'}" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+const PIN = (au, on) => `<svg xmlns="http://www.w3.org/2000/svg" width="76" height="96" viewBox="0 0 40 50.5">${on ? `<path d="${WEDGE}" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="7" stroke-linejoin="round"/>` : ''}<path d="${WEDGE}" transform="translate(0 1.2)" fill="rgba(0,0,0,.35)"/><path d="${WEDGE}" fill="${au || on ? '#D62025' : '#2a2d30'}" stroke="rgba(255,255,255,.88)" stroke-width="1.4" stroke-linejoin="round"/></svg>`;
 function svgImg(svg) { return new Promise((res, rej) => { const im = new Image(76, 96); im.onload = () => res(im); im.onerror = rej; im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }); }
 // cluster bubbles are drawn on demand, one image per count
 map.on('styleimagemissing', e => {
@@ -744,7 +800,7 @@ $('tList').onclick = () => { $('list').hidden = !$('list').hidden; renderList();
 $('lX').onclick = () => { $('list').hidden = true; };
 $('lSort').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; lSort = b.dataset.s; document.querySelectorAll('#lSort button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderList(); });
 map.on('moveend', renderList);
-fetch('projects.json?v=1792463244').then(r => r.json()).then(list => {
+fetch('projects.json?v=10').then(r => r.json()).then(list => {
   P = list.filter(p => p.lat != null);
   TYPES.filter(t => P.some(p => p.type === t)).forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = LABEL[t]; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { fType = fType === t ? null : t; syncChips(); refilter(); }; $('bar').appendChild(b); });
   refilter();
