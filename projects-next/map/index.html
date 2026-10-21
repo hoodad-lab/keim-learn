@@ -811,7 +811,7 @@ $('tList').onclick = () => { $('list').hidden = !$('list').hidden; renderList();
 $('lX').onclick = () => { $('list').hidden = true; };
 $('lSort').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; lSort = b.dataset.s; document.querySelectorAll('#lSort button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderList(); });
 map.on('moveend', renderList);
-fetch('projects.json?v=17').then(r => r.json()).then(list => {
+fetch('projects.json?v=18').then(r => r.json()).then(list => {
   P = list.filter(p => p.lat != null);
   TYPES.filter(t => P.some(p => p.type === t)).forEach(t => { const b = document.createElement('button'); b.className = 'chip'; b.type = 'button'; b.dataset.t = t; b.textContent = LABEL[t]; b.setAttribute('aria-pressed', 'false'); b.onclick = () => { fType = fType === t ? null : t; syncChips(); refilter(); }; $('bar').appendChild(b); });
   refilter();
@@ -896,7 +896,7 @@ map.on('moveend', photoPins); map.on('idle', photoPins);
 let ppT = 0; map.on('zoom', () => { const t = performance.now(); if (t - ppT > 260 && map.getZoom() >= PPZ) { ppT = t; photoPins(); } });
 map.once('idle', () => { try { map.setPaintProperty('pins2', 'icon-opacity-transition', { duration: 300, delay: 0 }); } catch (e) {} });
 // a tap on the map picks a project: the bottom strip on phones, the full card on bigger screens
-function choose(p) { if (innerWidth <= 760 && typeof showStrip === 'function') showStrip(p); else open(p, true); }
+function choose(p) { if (innerWidth <= 760 && typeof showStrip === 'function' && !document.documentElement.classList.contains('embed')) showStrip(p); else open(p, true); }
 
 
 // phone strip: tap a pin → slim cards of that project and its neighbours; swipe moves the map, tap opens the full card
