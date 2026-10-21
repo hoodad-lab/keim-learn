@@ -8,7 +8,7 @@
 <title>Mineral paint projects in Australia | Built with KEIM</title>
 <meta name="description" content="KEIM mineral paint projects in Australia and around the world: hospitals, schools, heritage, landmarks and homes. Filter by sector, product and state.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap">
 <script>(function () { var t; try { t = localStorage.getItem("keim-theme"); } catch (e) {} document.documentElement.dataset.theme = "dark"; })();</script>
 <style>
 /* KEIM corporate design: panel + centred logo, KEIM Red / Anthracite / white, Futura (Jost web stand-in), Umbra headlines with underline bar */
@@ -229,7 +229,7 @@ html .cta, html[data-theme="dark"] .cta { background: transparent; padding: 0; m
 .sug .none { padding: 12px; font: 400 13px/1.3 var(--sans); color: var(--mute); }
 
 /* ===== 2030 editorial pass ===== */
-:root { --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif; --sans: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif; --ink2: #0b0d12; --sand: #c9b99a; --hair: rgba(255,255,255,.1); }
+:root { --serif: "Inter Tight", "Helvetica Neue", Arial, sans-serif; --sans: "Inter Tight", "Inter", system-ui, -apple-system, sans-serif; --ink2: #0b0d12; --sand: #c9b99a; --hair: rgba(255,255,255,.1); }
 body { font-family: var(--sans); }
 h1, h2, h3 { font-family: var(--serif); font-weight: 400; text-transform: none; letter-spacing: -.01em; }
 .kick { font: 600 11px/1.3 var(--sans); letter-spacing: .22em; }
@@ -284,13 +284,20 @@ html .filters, html[data-theme="dark"] .filters { background: rgba(11,13,18,.96)
 .toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 50; background: #fff; color: #111; padding: 10px 18px; border-radius: 999px; font: 500 14px var(--sans); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
 .toast[hidden] { display: none; }
 @media (max-width: 760px) { .panel .logo { width: 74px; bottom: -30px; } .hero iframe { height: 58vh; min-height: 400px; } }
+
+/* Inter Tight headline pass */
+h1, h2, h3, .brand h1, .card h2, .stat b, .fcard .cap b, .pc h3, .card h3, .sc b, .list h3, .tmenu h3, .cap b, .tcap b, .drawer h2 { font-weight: 500 !important; letter-spacing: -.035em !important; }
+h1 em, h2 em, .brand h1 em { font-style: normal !important; color: var(--sand, #c9b99a); }
+.card .sub, .drawer .sub { font-family: var(--sans) !important; font-style: normal !important; }
+.hero h1, .over h1 { font-size: clamp(40px, 7vw, 84px) !important; } .drawer h2 { font-size: clamp(28px, 7vw, 38px) !important; } .stat b { font-size: clamp(38px, 4.4vw, 60px) !important; } .fcard .cap b { font-size: 22px !important; }
+.hero h1 { margin-top: 14px !important; }
 </style>
 <!-- HubSpot tracking (KEIM Australia) --><script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47417993.js"></script>
 </head>
 <body>
 <div class="panel"><div class="nav"><a href="https://www.keim.com.au" target="_top">keim.com.au</a><a href="#browse">Browse projects</a></div><a class="logo" href="https://www.keim.com.au" target="_top" aria-label="KEIM Australia"><img src="keim-logo-neg.png" alt="KEIM" width="100" height="102"></a><button class="theme" id="theme" type="button" aria-label="Switch dark or light mode"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>
 <header class="hero">
-  <iframe src="map/?embed=1&v=15" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen; geolocation"></iframe>
+  <iframe src="map/?embed=1&v=16" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen; geolocation"></iframe>
   <div class="shade"></div>
   <a class="fullmap" href="map/" target="_blank" rel="noopener">Full map ↗</a>
   <div class="over"><div class="wrap">
@@ -363,7 +370,7 @@ function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
 const YR = y => !y || /^none$/i.test(y) ? '' : y.replace(/^by\s+/i, 'c. ');
 function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(s => s && !/^products?$/i.test(s)).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
 let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
-fetch('map/projects.json?v=15').then(r => r.json()).then(list => {
+fetch('map/projects.json?v=16').then(r => r.json()).then(list => {
   ALL = list.map(p => ({ ...p, au: p.country === 'Australia', st: p.country === 'Australia' ? auState(p) : '', pr: prods(p) }));
   $('sTot').textContent = ALL.length; $('sAu').textContent = ALL.filter(p => p.au).length; $('sCo').textContent = new Set(ALL.map(p => p.country)).size;
   // featured
