@@ -283,13 +283,14 @@ html .filters, html[data-theme="dark"] .filters { background: rgba(11,13,18,.96)
 .askalt { margin: 0; padding: 10px 16px; font: 400 13px/1.4 var(--sans); color: #4a4e52; border-top: 1px solid #e5e5e5; text-align: center; } .askalt a { color: #D51F24; }
 .toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 50; background: #fff; color: #111; padding: 10px 18px; border-radius: 999px; font: 500 14px var(--sans); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
 .toast[hidden] { display: none; }
+@media (max-width: 760px) { .panel .logo { width: 74px; bottom: -30px; } .hero iframe { height: 58vh; min-height: 400px; } }
 </style>
 <!-- HubSpot tracking (KEIM Australia) --><script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47417993.js"></script>
 </head>
 <body>
 <div class="panel"><div class="nav"><a href="https://www.keim.com.au" target="_top">keim.com.au</a><a href="#browse">Browse projects</a></div><a class="logo" href="https://www.keim.com.au" target="_top" aria-label="KEIM Australia"><img src="keim-logo-neg.png" alt="KEIM" width="100" height="102"></a><button class="theme" id="theme" type="button" aria-label="Switch dark or light mode"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>
 <header class="hero">
-  <iframe src="map/?embed=1&v=14" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen; geolocation"></iframe>
+  <iframe src="map/?embed=1&v=15" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen; geolocation"></iframe>
   <div class="shade"></div>
   <a class="fullmap" href="map/" target="_blank" rel="noopener">Full map ↗</a>
   <div class="over"><div class="wrap">
@@ -362,7 +363,7 @@ function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
 const YR = y => !y || /^none$/i.test(y) ? '' : y.replace(/^by\s+/i, 'c. ');
 function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(s => s && !/^products?$/i.test(s)).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
 let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
-fetch('map/projects.json?v=13').then(r => r.json()).then(list => {
+fetch('map/projects.json?v=15').then(r => r.json()).then(list => {
   ALL = list.map(p => ({ ...p, au: p.country === 'Australia', st: p.country === 'Australia' ? auState(p) : '', pr: prods(p) }));
   $('sTot').textContent = ALL.length; $('sAu').textContent = ALL.filter(p => p.au).length; $('sCo').textContent = new Set(ALL.map(p => p.country)).size;
   // featured
