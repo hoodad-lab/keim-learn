@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="theme-color" content="#14171c">
-<meta property="og:type" content="website"><meta property="og:site_name" content="KEIM Australia"><meta property="og:title" content="Projects built with KEIM — references"><meta property="og:description" content="KEIM mineral paint projects in Australia and around the world: hospitals, schools, heritage, landmarks and homes. Filter by sector, product and state."><meta property="og:url" content="https://learn.keim.com.au/projects-next/"><meta property="og:image" content="https://learn.keim.com.au/og/projects.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://learn.keim.com.au/og/projects.png">
-<title>Projects built with KEIM — references</title>
+<meta property="og:type" content="website"><meta property="og:site_name" content="KEIM Australia"><meta property="og:title" content="Mineral paint projects in Australia | Built with KEIM"><meta property="og:description" content="KEIM mineral paint projects in Australia and around the world: hospitals, schools, heritage, landmarks and homes. Filter by sector, product and state."><meta property="og:url" content="https://learn.keim.com.au/projects-next/"><meta property="og:image" content="https://learn.keim.com.au/og/projects.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://learn.keim.com.au/og/projects.png">
+<title>Mineral paint projects in Australia | Built with KEIM</title>
 <meta name="description" content="KEIM mineral paint projects in Australia and around the world: hospitals, schools, heritage, landmarks and homes. Filter by sector, product and state.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&display=swap">
@@ -268,13 +268,28 @@ html .filters, html[data-theme="dark"] .filters { background: rgba(11,13,18,.96)
 .cta h2 { font-size: clamp(32px, 4.4vw, 52px); line-height: 1; }
 .cta p { font: 400 18px/1.5 var(--sans); color: rgba(255,255,255,.75); }
 .sug, html[data-theme="dark"] .sug { background: var(--ink2); border: 1px solid var(--hair); border-top: 2px solid var(--red); color: #fff; font-family: var(--sans); }
+.drawer:not(.on) { visibility: hidden; transition: transform .32s cubic-bezier(.2,.8,.2,1), visibility 0s .32s; }
+.shead { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.arrows { display: flex; gap: 8px; flex: none; }
+.arrows button { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: transparent; color: #fff; font: 400 18px/1 var(--sans); cursor: pointer; transition: background .2s, opacity .2s; }
+.arrows button:hover:not(:disabled) { background: rgba(255,255,255,.1); } .arrows button:disabled { opacity: .3; cursor: default; }
+@media (max-width: 760px) { .arrows { display: none; } }
+.card .ph.priv::after { content: ""; position: absolute; inset: 0; background: var(--tint, transparent); mix-blend-mode: multiply; opacity: .5; pointer-events: none; }
+.askm { position: fixed; inset: 0; z-index: 40; background: rgba(2,4,10,.72); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: grid; place-items: center; padding: 16px; }
+.askm[hidden] { display: none; }
+.askb { position: relative; width: min(640px, 100%); height: min(860px, 92dvh); background: #fff; border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.askb iframe { flex: 1; width: 100%; border: 0; }
+.askb .x { position: absolute; top: 10px; right: 10px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(16,18,22,.8); color: #fff; font: 400 16px/1 var(--sans); cursor: pointer; }
+.askalt { margin: 0; padding: 10px 16px; font: 400 13px/1.4 var(--sans); color: #4a4e52; border-top: 1px solid #e5e5e5; text-align: center; } .askalt a { color: #D51F24; }
+.toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 50; background: #fff; color: #111; padding: 10px 18px; border-radius: 999px; font: 500 14px var(--sans); box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+.toast[hidden] { display: none; }
 </style>
 <!-- HubSpot tracking (KEIM Australia) --><script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/47417993.js"></script>
 </head>
 <body>
 <div class="panel"><div class="nav"><a href="https://www.keim.com.au" target="_top">keim.com.au</a><a href="#browse">Browse projects</a></div><a class="logo" href="https://www.keim.com.au" target="_top" aria-label="KEIM Australia"><img src="keim-logo-neg.png" alt="KEIM" width="100" height="102"></a><button class="theme" id="theme" type="button" aria-label="Switch dark or light mode"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1.5 12h3M19.5 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button></div>
 <header class="hero">
-  <iframe src="map/?embed=1&v=13" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen; geolocation"></iframe>
+  <iframe src="map/?embed=1&v=14" title="Interactive globe of KEIM projects" loading="eager" allow="fullscreen; geolocation"></iframe>
   <div class="shade"></div>
   <a class="fullmap" href="map/" target="_blank" rel="noopener">Full map ↗</a>
   <div class="over"><div class="wrap">
@@ -284,12 +299,12 @@ html .filters, html[data-theme="dark"] .filters { background: rgba(11,13,18,.96)
 </header>
 
 <section><div class="wrap">
-  <div class="shead"><div><div class="kick">Australian landmarks</div><h2>Icons in mineral paint</h2><p>A few of the buildings Australians walk past every day.</p></div></div>
+  <div class="shead"><div><div class="kick">Australian landmarks</div><h2>Icons in mineral paint</h2><p>A few of the buildings Australians walk past every day.</p></div><div class="arrows" data-for="feat"><button type="button" aria-label="Previous">←</button><button type="button" aria-label="Next">→</button></div></div>
   <div class="feat" id="feat"></div>
 </div></section>
 
 <section><div class="wrap">
-  <div class="shead"><div><div class="kick">Global landmarks</div><h2>Extraordinary projects worldwide</h2><p>From Berlin’s Humboldt Forum to the US Capitol and Singapore’s Marina Bay Sands: KEIM on some of the world’s best-known buildings.</p></div></div>
+  <div class="shead"><div><div class="kick">Global landmarks</div><h2>Extraordinary projects worldwide</h2><p>From Berlin’s Humboldt Forum to the US Capitol and Singapore’s Marina Bay Sands: KEIM on some of the world’s best-known buildings.</p></div><div class="arrows" data-for="feat2"><button type="button" aria-label="Previous">←</button><button type="button" aria-label="Next">→</button></div></div>
   <div class="feat" id="feat2"></div>
 </div></section>
 
@@ -313,10 +328,12 @@ html .filters, html[data-theme="dark"] .filters { background: rgba(11,13,18,.96)
 
 <div class="cta"><div class="wrap">
   <div><div class="kick" style="color:rgba(255,255,255,.75)">Planning a project?</div><h2>Specify with confidence</h2><p>Ask for a reference pack for your sector, see the colours in our Matraville showroom, or book a CPD session for your practice.</p></div>
-  <div class="acts"><a class="btn red" id="ctaAsk" href="mailto:info@keim.com.au?subject=Project%20reference%20request" target="_top">Request a reference pack</a><a class="btn line" style="background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px #fff" href="https://learn.keim.com.au/education/embed.html#cpd" target="_top">Book a CPD</a></div>
+  <div class="acts"><a class="btn red" id="ctaAsk" href="https://form.jotform.com/262935688862072" target="_blank" rel="noopener" data-ask="">Request a reference pack</a><a class="btn line" style="background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px #fff" href="https://learn.keim.com.au/education/embed.html#cpd" target="_top">Book a CPD</a></div>
 </div></div>
 <div class="wrap foot">Project information from KEIM Australia records and keim.com references. Private homes are shown by suburb only. Photos © their owners and KEIMFARBEN; some building photos from Wikimedia Commons under the licences credited on each project. Map imagery © Esri, Maxar, Earthstar Geographics.</div>
 
+<div class="askm" id="askm" hidden><div class="askb" role="dialog" aria-modal="true" aria-label="Project reference request"><button class="x" id="askX" type="button" aria-label="Close">✕</button><iframe id="askF" title="Project reference request" loading="lazy"></iframe><p class="askalt">Prefer to talk? <a href="tel:+61297487160">(02) 9748 7160</a> · <a href="mailto:info@keim.com.au">info@keim.com.au</a></p></div></div>
+<div class="toast" id="toast" hidden></div>
 <div class="dim" id="dim"></div>
 <aside class="drawer" id="drawer" aria-hidden="true"><div class="ph" id="dPh"><button class="x" id="dX" type="button" aria-label="Close">✕</button></div><div class="in" id="dIn"></div></aside>
 
@@ -329,6 +346,7 @@ html .filters, html[data-theme="dark"] .filters { background: rgba(11,13,18,.96)
 <script>
 const $ = id => document.getElementById(id);
 const IMG = f => /^https?:/.test(f) ? f : 'map/img/' + f;
+const TH = f => /^https?:/.test(f) ? f.replace(/\/\d{3,4}px-/, '/640px-') : /\.(jpe?g|png|webp)$/i.test(f) ? 'map/img/t/' + f.replace(/\.\w+$/, '.jpg') : IMG(f);
 const AER = (p, w, h) => { const d = 0.0011, e = d * w / h / Math.cos(p.lat * Math.PI / 180); return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/export?bbox=' + [p.lon - e, p.lat - d, p.lon + e, p.lat + d].map(v => v.toFixed(6)).join(',') + '&bboxSR=4326&imageSR=3857&size=' + w + ',' + h + '&format=jpg&f=image'; };
 const SV = p => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([p.name, p.sub && p.sub.length < 60 ? p.sub : '', p.place, p.country].filter((x,i,a)=>x && a.indexOf(x)===i).join(', '));
 const canAer = p => !p.img && p.exact && p.type !== 'Residential';
@@ -341,6 +359,7 @@ function auState(p) { const la = p.lat, lo = p.lon; if (la == null) return '';
   if (la < -39.2) return 'TAS'; if (lo > 148.7 && lo < 149.45 && la < -35.1 && la > -35.95) return 'ACT';
   if (lo < 129) return 'WA'; if (lo < 138 && la > -26) return 'NT'; if (lo < 141 && la <= -26) return 'SA'; if (lo < 138) return 'NT';
   if (la > -29) return 'QLD'; if (la < -35.9 - (lo - 141) * 0.17) return 'VIC'; return 'NSW'; }
+const YR = y => !y || /^none$/i.test(y) ? '' : y.replace(/^by\s+/i, 'c. ');
 function prods(p) { return p.products.replace(/\s*\(.*?\)/g, '').replace(/ and | with |\/|,/g, '|').split('|').map(s => s.trim().replace(/^KEIM\s+/, '').replace(/\s+over.*$/, '')).filter(s => s && !/^products?$/i.test(s)).map(s => /concretal-lasur/i.test(s) ? 'Concretal-Lasur' : s); }
 let ALL = [], st = { r: 'au', state: '', prod: '', type: '', q: '' }, shown = 24;
 fetch('map/projects.json?v=13').then(r => r.json()).then(list => {
@@ -349,7 +368,7 @@ fetch('map/projects.json?v=13').then(r => r.json()).then(list => {
   // featured
   const feature = (names, box, intl) => names.map(n => ALL.find(p => p.name === n)).filter(p => p && p.img && !p.priv).forEach(p => { const b = document.createElement('button'); b.className = 'fcard'; b.type = 'button';
     b.innerHTML = '<img loading="lazy" alt=""><div class="cap"><small></small><b></b><span></span></div>'; b.querySelector('img').src = IMG(/^https?:/.test(p.img) ? p.img.replace(/\/\d{3,4}px-/, '/960px-') : p.img); b.querySelector('img').alt = p.name;
-    b.querySelector('small').textContent = (TYPE_LABEL[p.type] || p.type) + ' · ' + (intl ? [p.place, p.country].filter((v, i, a) => v && a.indexOf(v) === i).join(', ') : (p.place || p.country)) + (p.year && !/^by |None/.test(p.year) ? ' · ' + p.year : ''); b.querySelector('b').textContent = p.name; b.querySelector('span').textContent = (p.pr.filter(x => !/stripper|cleaner|remover|algicid|fixativ|primer|grund|silan/i.test(x)).length ? p.pr.filter(x => !/stripper|cleaner|remover|algicid|fixativ|primer|grund|silan/i.test(x)) : p.pr).slice(0, 2).join(' + ');
+    b.querySelector('small').textContent = (TYPE_LABEL[p.type] || p.type) + ' · ' + (intl ? [p.place, p.country].filter((v, i, a) => v && a.indexOf(v) === i).join(', ') : (p.place || p.country)) + (YR(p.year) ? ' · ' + YR(p.year) : ''); b.querySelector('b').textContent = p.name; b.querySelector('span').textContent = (p.pr.filter(x => !/stripper|cleaner|remover|algicid|fixativ|primer|grund|silan/i.test(x)).length ? p.pr.filter(x => !/stripper|cleaner|remover|algicid|fixativ|primer|grund|silan/i.test(x)) : p.pr).slice(0, 2).join(' + ');
     b.addEventListener('click', () => openP(p)); box.appendChild(b); });
   feature(FEATURED, $('feat'), false);
   feature(GLOBAL, $('feat2'), true);
@@ -372,19 +391,28 @@ fetch('map/projects.json?v=13').then(r => r.json()).then(list => {
 function syncUI() { document.querySelectorAll('#region button').forEach(b => b.setAttribute('aria-pressed', b.dataset.r === st.r)); document.querySelectorAll('#types .chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.t === st.type)); const noSt = st.r !== 'au' && st.r !== 'all'; $('state').disabled = noSt; $('state').value = noSt ? '' : st.state; $('prod').value = st.prod; }
 function match(p) { if (st.r === 'au' && !p.au) return false; if (st.r === 'world' && p.au) return false; if (st.r === 'eu' && !(p.lon > -25 && p.lon < 45 && p.lat > 34)) return false; if (st.r === 'am' && !(p.lon < -30 && p.lon > -170)) return false; if (st.state && p.st !== st.state) return false; if (st.prod && !p.pr.includes(st.prod)) return false; if (st.type && p.type !== st.type) return false;
   if (st.q) { const h = (p.name + ' ' + p.place + ' ' + p.country + ' ' + p.architect + ' ' + (p.artist || '') + ' ' + p.builder + ' ' + (p.applicator || '') + ' ' + p.products).toLowerCase(); if (!st.q.toLowerCase().split(/\s+/).every(w => h.includes(w))) return false; } return true; }
+const STAR = new Set([...FEATURED, ...GLOBAL]);
+function score(p) { let s = 0; if (STAR.has(p.name)) s += 60; if (p.img && !p.priv) s += 30; else if (canAer(p)) s += 8; if (p.au) s += 12;
+  if (p.pr.length) s += 6; if (p.story) s += 6; if (p.architect) s += 5; const y = parseInt((p.year || '').match(/\d{4}/) || 0); if (y) s += Math.max(0, Math.min(10, y - 2012)) * 0.8;
+  if (/^(Commercial|Culture|Civic|Health|Education|Transport|Heritage)$/.test(p.type)) s += 4; if (p.priv) s -= 25; return s; }
 function render() {
-  const L = ALL.filter(match).sort((a, b) => (!!b.img - !!a.img) || (b.au - a.au) || a.name.localeCompare(b.name));
+  const L = ALL.filter(match).sort((a, b) => score(b) - score(a) || a.name.localeCompare(b.name));
   $('count').textContent = L.length + (L.length === 1 ? ' project' : ' projects'); const g = $('grid'); g.innerHTML = '';
   L.slice(0, shown).forEach(p => { const b = document.createElement('button'); b.className = 'card'; b.type = 'button';
     b.innerHTML = '<div class="ph"><span class="tag"></span></div><div class="bd"><h3></h3><div class="pl"></div><div class="pr"></div></div>';
-    const ph = b.querySelector('.ph'); if (p.img) ph.style.backgroundImage = 'url("' + IMG(p.img) + '")'; else if (canAer(p)) { ph.style.backgroundImage = 'url("' + AER(p, 520, 347) + '")'; ph.insertAdjacentHTML('beforeend', '<span class="aer">Aerial view</span>'); } else { ph.classList.add('none'); ph.insertAdjacentHTML('beforeend', '<i></i>'); }
+    const ph = b.querySelector('.ph'); if (p.img) ph.style.backgroundImage = 'url("' + TH(p.img) + '")'; else if (canAer(p)) { ph.style.backgroundImage = 'url("' + AER(p, 520, 347) + '")'; ph.insertAdjacentHTML('beforeend', '<span class="aer">Aerial view</span>'); } else { ph.classList.add('none'); ph.insertAdjacentHTML('beforeend', '<i></i>'); }
+    if (p.priv) { const T = ['#B9A48C','#9FA79A','#B48E7A','#8E9AA3','#C2B49A','#A58F84','#93A08F','#B7A07C']; let h = 0; for (const c of p.id) h = (h * 31 + c.charCodeAt(0)) >>> 0; ph.classList.add('priv'); ph.style.setProperty('--tint', T[h % T.length]); }
     const tg = b.querySelector('.tag'); tg.textContent = TYPE_LABEL[p.type] || p.type; if (p.au) tg.classList.add('au');
-    b.querySelector('h3').textContent = p.name; b.querySelector('.pl').textContent = [p.place, p.au ? p.st : p.country].filter(Boolean).join(', ') + (p.year ? ' · ' + p.year : ''); b.querySelector('.pr').textContent = p.pr.slice(0, 2).map(x => 'KEIM ' + x).join(' · ');
+    b.querySelector('h3').textContent = p.name; b.querySelector('.pl').textContent = [p.place, p.au ? p.st : p.country].filter(Boolean).join(', ') + (YR(p.year) ? ' · ' + YR(p.year) : ''); b.querySelector('.pr').textContent = p.pr.length ? p.pr.slice(0, 2).map(x => 'KEIM ' + x).join(' · ') : 'KEIM product';
     b.addEventListener('click', () => openP(p)); g.appendChild(b); });
   if (!L.length) g.innerHTML = '<p style="font:italic 500 22px var(--serif);color:#6b6a66">No projects match those filters yet.</p>';
   $('moreB').hidden = L.length <= shown;
 }
 $('moreB').addEventListener('click', () => { shown += 24; render(); });
+document.querySelectorAll('.arrows').forEach(a => { const box = $(a.dataset.for); const [pv, nx] = a.querySelectorAll('button');
+  const step = d => box.scrollBy({ left: d * (box.querySelector('.fcard') ? box.querySelector('.fcard').offsetWidth + 16 : 320), behavior: 'smooth' });
+  pv.onclick = () => step(-1); nx.onclick = () => step(1);
+  const upd = () => { pv.disabled = box.scrollLeft < 8; nx.disabled = box.scrollLeft + box.clientWidth > box.scrollWidth - 8; }; box.addEventListener('scroll', upd, { passive: true }); setTimeout(upd, 1500); addEventListener('resize', upd); });
 $('region').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.r = b.dataset.r; if (st.r !== 'au' && st.r !== 'all') st.state = ''; try { document.querySelector('.hero iframe').contentWindow.postMessage({ keimRegion: st.r }, '*'); } catch (e) {} shown = 24; syncUI(); render(); });
 $('state').addEventListener('change', e => { st.state = e.target.value; if (st.state) st.r = 'au'; shown = 24; syncUI(); render(); });
 $('prod').addEventListener('change', e => { st.prod = e.target.value; shown = 24; render(); });
@@ -397,7 +425,7 @@ function openP(p) {
   $('dIn').innerHTML = '<div class="kick">' + esc((TYPE_LABEL[p.type] || p.type) + (p.au ? ' · Australia' : ' · ' + p.country)) + '</div><h2>' + esc(p.name) + '</h2>' + (p.sub ? '<p class="sub">' + esc(p.sub) + '</p>' : '') +
     '<div class="facts">' + f('Location', [p.place, p.au ? p.st : p.country].filter(Boolean).join(', ')) + f('Year painted / completed', p.year) + f('Sector', TYPE_LABEL[p.type] || p.type) + f('KEIM products', p.products, true) + f('Colours', p.colours, true) + f('Architect', p.architect) + f('Artist', p.artist) + f('Builder', p.builder) + f('Applicator', p.applicator) + f('Client / owner', p.client) + f('Consultant', p.consultant) + f('Area', p.area) + f('Status', p.status) + '</div>' +
     (p.story ? '<p class="story">' + esc(p.story) + '</p>' : '') +
-    '<div class="acts"><a class="btn red" target="_top" href="mailto:info@keim.com.au?subject=' + subj + '&body=' + body + '">Ask about this project</a>' + (p.link ? '<a class="btn line" target="_blank" rel="noopener" href="' + esc(p.link) + '">Full case study ↗</a>' : '') + '<a class="btn line" target="_blank" rel="noopener" href="map/#' + esc(p.id) + '">Show on map ↗</a>' + (canSV(p) ? '<a class="btn line" target="_blank" rel="noopener" href="' + SV(p) + '">Street View ↗</a>' : '') + (p.ppage ? '<a class="btn line" target="_blank" rel="noopener" href="' + esc(p.ppage) + '">See photos · ' + esc(p.powner || 'source') + ' ↗</a>' : '') + '</div>' +
+    '<div class="acts"><a class="btn red" href="https://form.jotform.com/262935688862072" target="_blank" rel="noopener" data-ask="' + esc(p.id) + '">Specify this look</a><a class="btn line" target="_top" href="mailto:info@keim.com.au?subject=' + subj + '&body=' + body + '">Email us</a><button class="btn line" type="button" data-share="' + esc(p.id) + '">Share</button>' + (p.link ? '<a class="btn line" target="_blank" rel="noopener" href="' + esc(p.link) + '">Full case study ↗</a>' : '') + '<a class="btn line" target="_blank" rel="noopener" href="map/#' + esc(p.id) + '">Show on map ↗</a>' + (canSV(p) ? '<a class="btn line" target="_blank" rel="noopener" href="' + SV(p) + '">Street View ↗</a>' : '') + (p.ppage ? '<a class="btn line" target="_blank" rel="noopener" href="' + esc(p.ppage) + '">See photos · ' + esc(p.powner || 'source') + ' ↗</a>' : '') + '</div>' +
     '<div class="src">Source: ' + esc(p.src || 'KEIM') + (p.credit ? ' · Photo: ' + esc(p.credit) : '') + (/^c\.|^by /.test(p.year || '') ? ' · Year is approximate (c. = circa, by = listed by that year)' : '') + '</div>' +
     (p.ipage ? '<div class="src">Photo: <a target="_blank" rel="noopener" href="' + esc(p.ipage) + '">' + esc(p.iby || 'Wikimedia Commons') + '</a>, ' + esc(p.ilic || '') + ', via Wikimedia Commons. General view of the building, not necessarily of the KEIM works.</div>' : '');
   $('drawer').classList.add('on'); $('dim').classList.add('on'); $('drawer').setAttribute('aria-hidden', 'false'); $('drawer').scrollTop = 0;
@@ -434,6 +462,23 @@ addEventListener('message', e => { const id = e.data && e.data.keimOpen; if (!id
   const p = ALL.find(x => x.id === id); if (p) openP(p); });
 
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]); }
+
+// enquiry form (Jotform → HubSpot), prefilled with the project the visitor was looking at
+const SECTOR = { Residential: 'Homes & apartments', Heritage: 'Heritage', Commercial: 'Commercial', Education: 'Education', Health: 'Healthcare', Civic: 'Civic', Hospitality: 'Hotels', Transport: 'Infrastructure', Mural: 'Murals & art', Culture: 'Other', Community: 'Other' };
+function openAsk(id) { const p = ALL.find(x => x.id === id); const q = new URLSearchParams();
+  if (p) { q.set('q12', p.name + (p.place ? ', ' + p.place : '')); if (SECTOR[p.type]) q.set('q8', SECTOR[p.type]); }
+  if (st.state) q.set('q7', st.state);
+  $('askF').src = 'https://form.jotform.com/262935688862072?' + q.toString(); $('askm').hidden = false; document.body.style.overflow = 'hidden';
+  try { window._hsq && window._hsq.push(['trackCustomBehavioralEvent', { name: 'projects_enquiry_open', properties: { project: p ? p.name : '' } }]); } catch (e) {} }
+function closeAsk() { $('askm').hidden = true; document.body.style.overflow = ''; }
+document.addEventListener('click', e => { const a = e.target.closest('[data-ask]'); if (a) { e.preventDefault(); openAsk(a.dataset.ask); return; }
+  const sh = e.target.closest('[data-share]'); if (sh) { const url = location.origin + location.pathname.replace(/[^/]*$/, '') + 'p/' + sh.dataset.share + '/';
+    const p = ALL.find(x => x.id === sh.dataset.share);
+    if (navigator.share) navigator.share({ title: p ? p.name + ' · KEIM' : 'KEIM project', url }).catch(() => {});
+    else { (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => toast('Link copied'), () => prompt('Copy this link', url)); } } });
+$('askX').onclick = closeAsk; $('askm').addEventListener('click', e => { if (e.target.id === 'askm') closeAsk(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !$('askm').hidden) closeAsk(); });
+function toast(t) { const el = $('toast'); el.textContent = t; el.hidden = false; clearTimeout(el._t); el._t = setTimeout(() => el.hidden = true, 1800); }
 </script>
 </body>
 </html>

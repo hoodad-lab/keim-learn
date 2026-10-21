@@ -1,40 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#EEF0F1"/>
-      <stop offset="1" stop-color="#D5D9DB"/>
+    <linearGradient id="light" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#D9CCBB"/>
+      <stop offset=".55" stop-color="#C4B3A0"/>
+      <stop offset="1" stop-color="#A8957F"/>
     </linearGradient>
-    <pattern id="grain" width="6" height="6" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r=".6" fill="#A3AAAE" opacity=".25"/>
-      <circle cx="4" cy="4" r=".5" fill="#957F68" opacity=".18"/>
-    </pattern>
+    <filter id="plaster" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 .25  0 0 0 0 .2  0 0 0 0 .16  0 0 0 .38 0"/>
+    </filter>
+    <filter id="cloud" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".006" numOctaves="3" seed="3" result="c"/>
+      <feColorMatrix in="c" type="matrix" values="0 0 0 0 1  0 0 0 0 .97  0 0 0 0 .92  0 0 0 .28 0"/>
+    </filter>
+    <radialGradient id="vig" cx=".5" cy=".42" r=".75">
+      <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".28"/>
+    </radialGradient>
   </defs>
-  <rect width="1200" height="800" fill="url(#bg)"/>
-  <rect width="1200" height="800" fill="url(#grain)"/>
-  <!-- ground -->
-  <rect y="600" width="1200" height="200" fill="#C9CED1"/>
-  <rect y="600" width="1200" height="4" fill="#A3AAAE"/>
-  <!-- house: mineral-paint façade in KEIM umbra tones -->
-  <g transform="translate(350 220)">
-    <polygon points="250,0 520,170 -20,170" fill="#36393C"/>
-    <rect x="20" y="170" width="460" height="210" fill="#E4DCD2"/>
-    <rect x="20" y="170" width="460" height="210" fill="url(#grain)"/>
-    <rect x="20" y="170" width="460" height="14" fill="#957F68" opacity=".55"/>
-    <rect x="70" y="220" width="96" height="88" fill="#4A4E52"/>
-    <rect x="334" y="220" width="96" height="88" fill="#4A4E52"/>
-    <rect x="114" y="220" width="8" height="88" fill="#E4DCD2"/>
-    <rect x="70" y="260" width="96" height="8" fill="#E4DCD2"/>
-    <rect x="378" y="220" width="8" height="88" fill="#E4DCD2"/>
-    <rect x="334" y="260" width="96" height="8" fill="#E4DCD2"/>
-    <rect x="210" y="250" width="80" height="130" fill="#957F68"/>
-    <circle cx="276" cy="318" r="5" fill="#E4DCD2"/>
-    <rect x="390" y="40" width="40" height="80" fill="#36393C"/>
+  <rect width="1200" height="800" fill="url(#light)"/>
+  <rect width="1200" height="800" filter="url(#cloud)"/>
+  <rect width="1200" height="800" filter="url(#plaster)"/>
+  <rect width="1200" height="800" fill="url(#vig)"/>
+  <!-- minimal roofline mark -->
+  <g fill="none" stroke="#FFFFFF" stroke-opacity=".9" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" transform="translate(540 262)">
+    <path d="M0 74 L60 22 L120 74"/>
+    <path d="M14 62 V122 H106 V62"/>
   </g>
-  <!-- KEIM wedge -->
-  <g transform="translate(560 96) scale(2)">
-    <path d="M4.4 7.6A40 40 0 0 1 35.6 7.6L20 44Z" fill="#D62025"/>
+  <g font-family="Helvetica Neue, Arial, sans-serif" fill="#FFFFFF" text-anchor="middle">
+    <text x="600" y="470" font-size="30" letter-spacing="9" font-weight="600" opacity=".95">PRIVATE RESIDENCE</text>
+    <rect x="570" y="494" width="60" height="3" fill="#D51F24"/>
+    <text x="600" y="548" font-size="20" letter-spacing="1.5" opacity=".85">Shown by suburb to protect the owner's privacy</text>
   </g>
-  <!-- label -->
-  <text x="600" y="690" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', Arial, sans-serif" font-size="44" font-weight="500" letter-spacing="9" fill="#36393C">PRIVATE RESIDENCE</text>
-  <text x="600" y="738" text-anchor="middle" font-family="Jost, Futura, 'Century Gothic', Arial, sans-serif" font-size="24" font-weight="400" letter-spacing="2" fill="#5E6468">Photo withheld to respect the owner’s privacy</text>
 </svg>
