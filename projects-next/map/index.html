@@ -507,7 +507,7 @@ const hist = [];
 
 // satellite imagery + place names, on a 3D globe
 const map = new maplibregl.Map({
-  container: 'map', center: innerWidth < 700 ? [138, -24] : [150, -20], zoom: innerWidth < 700 ? 1.35 : 1.9, maxPitch: 75, fadeDuration: 0, attributionControl: { compact: true },
+  container: 'map', center: innerWidth < 700 ? [138, -24] : [150, -20], zoom: innerWidth < 700 ? 1.35 : 1.9, minZoom: innerWidth < 700 ? 0.9 : 1.3, cooperativeGestures: document.documentElement.classList.contains('embed'), maxPitch: 75, fadeDuration: 0, attributionControl: { compact: true },
   style: { version: 8, projection: { type: 'globe' }, glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf', sprite: 'https://tiles.openfreemap.org/sprites/ofm_f384/ofm',
     sources: {
       sat: { type: 'raster', tileSize: 256, maxzoom: 19, tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'], attribution: 'Imagery © Esri, Maxar, Earthstar Geographics, and the GIS User Community' },
